@@ -1,0 +1,36 @@
+<html>
+<head>
+<script>
+
+i =0;
+function loop(){
+		showMissingTime();
+		setTimeout(loop, 30);
+}
+
+
+function showMissingTime(){
+today = new Date();
+
+BigDay = new Date("September 20, 2014 09:00:00");
+msPerDay = 24 * 60 * 60 * 1000 ;
+timeLeft = (BigDay.getTime() - today.getTime());
+e_daysLeft = timeLeft / msPerDay;
+daysLeft = Math.floor(e_daysLeft);
+e_hrsLeft = (e_daysLeft - daysLeft)*24;
+hrsLeft = Math.floor(e_hrsLeft);
+
+e_minsLeft = (e_hrsLeft - hrsLeft)*60;
+minsLeft = Math.floor(e_minsLeft);
+
+secsLeft = Math.floor((e_minsLeft - minsLeft)*60);
+document.getElementById("countdown").innerHTML = "<H4>" + daysLeft + " days " + hrsLeft +" hours " + minsLeft + " minutes and " + secsLeft + " seconds left </H4> to Oktoberfest!!!<P>";
+}
+
+</script>
+</head>
+<body onload="loop();">
+<div id="countdown" align="center" style="margin: auto; position: absolute; top: 30%; left: 0; bottom: 0; right: 0; font-size:xx-large;"> </div>
+
+ </body>
+</html>

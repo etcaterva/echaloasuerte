@@ -1,0 +1,23 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #202020 url(../images/bg.gif) fixed repeat-x;
+}
+
+h1 {
+	margin: 0 auto;
+	margin-top: 25px;
+	text-indent: -4200px;
+	width: 510px;
+	height: 20px;
+	background: url(../images/h-example.gif) no-repeat;
+	border-bottom: 1px solid #444;
+	overflow: hidden;
+}
+
+#yshout {
+	margin-top: 10px;
+}

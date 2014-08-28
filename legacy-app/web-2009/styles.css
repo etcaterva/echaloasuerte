@@ -1,0 +1,293 @@
+/*
+Design by Metamorphosis Design
+http://www.metamorphozis.com
+Released for free under a Creative Commons Attribution 2.5 License
+*/
+
+*
+{
+margin: 0px;
+padding: 0px;
+}
+
+a{
+	font-family: Arial, "Times New Roman", Times, serif;
+	color: #070e63;
+	font-weight:bold;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+a:hover {
+	
+	color: #000000;
+}
+
+body {	
+	background: url(img/bg.jpg);
+	background-repeat: repeat-y;
+	background-position:center;
+	background-color: #3a6bad;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #000000;
+	margin-bottom: 20px;
+}
+
+#content{
+	margin: 0 auto;
+	width: 1014px;
+	text-align: left;
+}
+
+#main{
+	width: 1014px;
+	margin: 0 auto;
+	clear:both;
+	background-color: #ffffff;
+	background: url(img/conbg.jpg);
+	background-repeat: repeat-x;
+	background-position:top;
+	padding-top:10px;
+}
+
+#header {
+	width: 1014px;
+	height: 200px;
+	background: url(img/header.jpg) no-repeat top right;
+}
+
+#logo {
+	height: 110px;
+	text-align: left;
+	padding-left: 460px;
+	padding-top: 80px;
+}
+
+#logo a {
+	text-decoration: none;
+	text-transform: lowercase;
+	font-style: italic;
+	font-size: 18px;
+	color: #ffffff;
+}
+
+#logo H2 a{
+	font-size: 12px;
+}
+
+#menu{
+	width: 600px;
+	height: 50px;
+	padding-left: 50px;
+	float:right;
+	margin-top:19px;
+}
+
+#menu ul {
+	padding-left: 0px;
+	margin: 0px;
+	list-style:none;
+}
+
+#menu li {
+	display: inline;
+	list-style: none;
+	padding-left:0px;
+}
+
+#menu a {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	float: left;
+	width: 115px;
+	height: 35px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: #d1d8e3;
+	font-weight: normal;
+	padding-top: 15px;
+	margin-right:1px;
+	font-size: 18px;
+}
+
+#menu a:hover{
+	width: 115px;
+	height: 35px;
+	color: #ffffff;
+	background: url(img/hov.png);
+	background-repeat:no-repeat;
+	background-position:center;
+}
+
+#left{
+	width: 291px;
+	margin-left: 10px;
+	margin-bottom:20px;
+}
+
+#left H3{
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 18px;
+	font-weight: normal;
+	color: #edf1f8;
+	height: 30px;
+	text-align: center;
+	background: url(img/title_left.png);
+	background-repeat:no-repeat;
+	background-position:top;
+	padding-top: 12px;
+	margin-bottom: 20px;
+}
+
+#left H3:hover {
+	cursor:pointer;
+	background: url(img/title_left_1.png);
+}
+
+#left ul{
+	list-style: none;
+	margin-bottom: 30px;
+	margin-left: 20px;
+	padding-top: 5px;
+}
+
+#left li{
+	padding-left: 25px;
+	padding-top: 4px;
+	margin-bottom: 10px;
+	margin-bottom: 5px;
+}
+
+#left ul li a{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+	text-decoration:none;
+	color: #000000;
+	font-weight:normal;
+}
+
+#left ul li a:hover {
+	color: #3f5c6d;
+}
+
+.comnews{
+	margin-left: 10px;
+	display: none;
+}
+
+.comnews h2{
+	font-family: Arial, Helvetica, sans-serif;
+	color: #070e63;
+	font-weight:bold;
+	font-size:12px;
+}
+
+.comnews p{
+	padding-right: 20px;
+	line-height:20px;
+}
+
+.comnews a{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #908c2c;
+	font-weight:bold;
+}
+
+#right{
+	float: right;
+	width: 687px;
+	margin-right:10px;
+	margin-bottom:20px;
+}
+
+#right H4{
+	height: 30px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 18px;
+	font-weight: normal;
+	color: #edf1f8;
+	background: url(img/title_right.png);
+	background-repeat:no-repeat;
+	background-position:top;
+	padding-top: 12px;
+	padding-left: 20px;
+	margin-bottom: 20px;
+}
+
+#right p {
+	margin: 0;
+	padding: 0;
+	padding-bottom: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	line-height:20px;
+}
+
+.read{
+	text-align:right;
+	margin-right:20px;
+	height:20px;
+	background: url(img/read.png);
+	background-repeat:no-repeat;
+	background-position:right top;
+	padding-right:10px;
+	padding-top:2px;
+	margin-top:15px;
+	margin-bottom: 15px;
+}
+
+.read a{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #ffffff;
+	font-weight:normal;
+	text-decoration:none;
+}
+
+.read a:hover{
+	color: #000000;
+}
+
+#footer {
+	height: 32px;
+	width: 1014px;
+	clear: both;
+	padding-top:10px;
+	background: url(img/footer.jpg);
+	background-repeat:no-repeat;
+	background-position:center top;
+	
+}
+
+#footer p {
+	margin: 0;
+	font-size: 10px;
+	text-align: center;
+	color: #000000;
+}
+
+#footer a {
+	color: #000000;
+	font-weight:normal;
+}
+
+.help {
+	background-color:#eee;
+	border:1px solid;
+	display: none;
+	clear: both;
+	padding: 1em 15px;
+}
+
+.help p{
+	background-color:#eee;
+	border:1px solid;
+	font-size: 1.3em;
+	margin: 1em 0;
+	color: #222;
+	display: none;
+	clear: both;
+	padding: 1em 15px;
+	
+}
