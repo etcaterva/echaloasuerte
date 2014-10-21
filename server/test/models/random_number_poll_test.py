@@ -10,7 +10,7 @@ class RandonNumberPollTestCase(TestCase):
         tested_item = RandomNumberPoll()
 
     def default_constructor_test(self):
-    	"""Validate a randon number just constructed sets the default values"""
+        """Validate a randon number just constructed sets the default values"""
         tested_item = RandomNumberPoll()
         self.assertEqual(tested_item.range_min,0)
         self.assertEqual(tested_item.range_max,None)
@@ -26,8 +26,8 @@ class RandonNumberPollTestCase(TestCase):
         self.assertEqual(tested_item.allow_repeat,True)
 
     def is_feasible_default_test(self):
-    	"""Default RandonNumberPoll is not feasible"""
-    	self.assertFalse(RandomNumberPoll().is_feasible())
+        """Default RandonNumberPoll is not feasible"""
+        self.assertFalse(RandomNumberPoll().is_feasible())
 
     def is_feasible_simple_test(self):
         """Simple RandonNumberPoll is feasible"""
