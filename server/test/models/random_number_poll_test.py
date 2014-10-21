@@ -8,7 +8,7 @@ class RandonNumberPollTestCase(TestCase):
     def build_random_number_test(self):
         """Builds a random number pool"""
 	tested_item = RandomNumberPoll()
-	
+
     def default_constructor_test(self):
 	"""Validate a randon number just constructed sets the default values"""
 	tested_item = RandomNumberPoll()
@@ -48,3 +48,5 @@ class RandonNumberPollTestCase(TestCase):
         """Border case for RandonNumberPoll is feasible with repeat"""
         tested_item = RandomNumberPoll(range_max=5,range_min=2,number_of_results=4,allow_repeat=True)
         self.assertTrue(tested_item.is_feasible())
+
+
