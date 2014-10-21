@@ -3,7 +3,7 @@ from server.models import RandomNumberPoll
 # Create your tests here.
 class RandonNumberPollTestCase(TestCase):
     def setUp(self):
-	pass
+        pass
 
     def build_random_number_test(self):
         """Builds a random number pool"""
