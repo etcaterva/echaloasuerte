@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+
 class RandomItemFromListDraw(models.Model):
     """
     Class that represents a draw with the details choose random items from a list
