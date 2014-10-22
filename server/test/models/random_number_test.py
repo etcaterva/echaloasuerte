@@ -1,7 +1,7 @@
 from django.test import TestCase
-from server.models import RandomNumberPoll
+from server.models import *
 # Create your tests here.
-class RandonNumberPollTestCase(TestCase):
+class RandonNumberTestCase(TestCase):
     def setUp(self):
         pass
 
@@ -9,7 +9,7 @@ class RandonNumberPollTestCase(TestCase):
         """Builds a random number pool"""
         tested_item = RandomNumberPoll()
 
-    def default_constructor_test(self):
+    def poll_default_constructor_test(self):
         """Validate a randon number just constructed sets the default values"""
         tested_item = RandomNumberPoll()
         self.assertEqual(tested_item.range_min,0)
@@ -17,7 +17,7 @@ class RandonNumberPollTestCase(TestCase):
         self.assertEqual(tested_item.number_of_results,1)
         self.assertEqual(tested_item.allow_repeat,False)
 
-    def parametrized_constructor_test(self):
+    def poll_parametrized_constructor_test(self):
         """Test parametrized constructor for RandonNumberPoll"""
         tested_item = RandomNumberPoll(range_max = 5,allow_repeat=True, number_of_results = 1)
         self.assertEqual(tested_item.range_min,0)
@@ -49,4 +49,17 @@ class RandonNumberPollTestCase(TestCase):
         tested_item = RandomNumberPoll(range_max=5,range_min=2,number_of_results=4,allow_repeat=True)
         self.assertTrue(tested_item.is_feasible())
 
-
+    def draw_poll_relationship_after_save_test(self):
+        """Validates the relation ship from draw to poll"""
+        t_poll = RandomNumberPoll(range_max=10)
+        t_poll.save()
+        t_draw1 = RandomNumberDraw(value=10)
+        t_draw2 = RandomNumberDraw(value=10)
+        self.assertEqual(0, t_poll.draws.count())
+        t_draw1.poll = t_poll
+        self.assertEqual(0, t_poll.draws.count())
+        t_draw1.save()
+        self.assertEqual(1, t_poll.draws.count())
+        t_draw2.poll = t_poll
+        t_draw2.save()
+        self.assertEqual(2, t_poll.draws.count())
