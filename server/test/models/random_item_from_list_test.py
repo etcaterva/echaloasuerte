@@ -7,5 +7,17 @@ class RandomItemFromListTestCase(TestCase):
         pass
 
     def build_random_item_from_list_test(self):
-        """Builds a draw for 'random item from a list'"""
+        """RandomItemFromList: Basic construction"""
         RandomItemFromListDraw()
+
+    def default_constructor_test(self):
+        """RandomItemFromList: Default constructor"""
+        tested_item = RandomItemFromListDraw()
+        self.assertEqual(tested_item.number_of_results,1)
+        self.assertEqual(tested_item.allow_repeat,False)
+
+    def parametrized_constructor_test(self):
+        """RandomItemFromList: Parametrized constructor"""
+        tested_item = RandomItemFromListDraw(allow_repeat=True, number_of_results = 5)
+        self.assertEqual(tested_item.number_of_results,5)
+        self.assertEqual(tested_item.allow_repeat,True)
