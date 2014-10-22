@@ -2,7 +2,7 @@ from django.test import TestCase
 from server.models import RandomNumberDraw
 
 
-class RandonNumberDrawTestCase(TestCase):
+class RandomNumberDrawTestCase(TestCase):
     def setUp(self):
         pass
 
