@@ -26,7 +26,7 @@ class RandomNumberPoll(models.Model):
         if self.range_max is None:
             return False
         if self.allow_repeat == True:
-            return True
+            return  self.range_min < self.range_max
         else:
             return self.range_max - self.range_min >= self.number_of_results
 
