@@ -35,18 +35,26 @@ class RandonNumberPollTestCase(TestCase):
         self.assertTrue(tested_item.is_feasible())
 
     def is_feasible_limit_ok_test(self):
-        """Border case for RandonNumberPoll is feasible OK"""
+        """Border case for RandonNumberPoll: is feasible"""
         tested_item = RandomNumberPoll(range_max=5,range_min=2,number_of_results=3,allow_repeat=False)
         self.assertTrue(tested_item.is_feasible())
 
     def is_feasible_limit_ko_test(self):
-        """Border case for RandonNumberPoll is feasible KO"""
+        """Border case for RandonNumberPoll: is not feasible"""
         tested_item = RandomNumberPoll(range_max=5,range_min=2,number_of_results=4,allow_repeat=False)
         self.assertFalse(tested_item.is_feasible())
 
-    def is_feasible_limit_ko_with_repeat(self):
-        """Border case for RandonNumberPoll is feasible with repeat"""
+    def is_feasible_limit_with_repeat_ok_test(self):
+        """Border case for RandonNumberPoll: is feasible with repeat"""
         tested_item = RandomNumberPoll(range_max=5,range_min=2,number_of_results=4,allow_repeat=True)
         self.assertTrue(tested_item.is_feasible())
 
+    def is_feasible_range_ko_test(self):
+        """Border case for RandonNumberPoll: Range not feasible"""
+        tested_item = RandomNumberPoll(range_max=2,range_min=4)
+        self.assertFalse(tested_item.is_feasible())
 
+    def is_feasible_range_with_repeat_ko_test(self):
+        """Border case for RandonNumberPoll: Range not feasible with repeat"""
+        tested_item = RandomNumberPoll(range_max=2,range_min=4, allow_repeat=True)
+        self.assertFalse(tested_item.is_feasible())
