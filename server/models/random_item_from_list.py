@@ -18,7 +18,9 @@ class RandomItemFromListDraw(models.Model):
     """Whether the set of items to generate can contain repetitions."""
 
     def is_feasible(self):
-        return True
+        if len(self.items) < 1:
+            return False
+        return self.allow_repeat or self.number_of_results > len(self.items)
 
 
 class RandomItemFromListResult(models.Model):
