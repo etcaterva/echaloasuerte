@@ -1,10 +1,9 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-
 class RandomNumberPoll(models.Model):
     """
-    Class that represents a poll with the details to produce random numbers.
+    Class that represents a draw with the details to produce random numbers.
     """
     class Meta:
         app_label="server"
@@ -25,7 +24,7 @@ class RandomNumberPoll(models.Model):
         if self.range_max is None:
             return False
         if self.allow_repeat == True:
-            return True
+            return  self.range_min < self.range_max
         else:
             return self.range_max - self.range_min >= self.number_of_results
 
@@ -42,3 +41,4 @@ class RandomNumberDraw(models.Model):
 
     value = models.BigIntegerField(_("Value"), blank=False, null=False)
     """ Value of the result"""
+
