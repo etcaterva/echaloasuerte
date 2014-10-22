@@ -17,7 +17,16 @@ class RandomItemFromListDrawTestCase(TestCase):
         self.assertEqual(tested_item.allow_repeat,False)
 
     def parametrized_constructor_test(self):
-        """RandomItemFromListDraw: Parametrized constructor"""
-        tested_item = RandomItemFromListDraw(allow_repeat=True, number_of_results = 5)
+        """RandomItemFromListDraw: Full Parametrized constructor"""
+        tested_item = RandomItemFromListDraw(items=['item1','item2'], allow_repeat=True, number_of_results = 5)
         self.assertEqual(tested_item.number_of_results,5)
         self.assertEqual(tested_item.allow_repeat,True)
+
+    def is_feasible_default_test(self):
+        """RandomItemFromListDraw: Default constructor is not feasible"""
+        self.assertFalse(RandomItemFromListDraw().is_feasible())
+
+    def is_feasible_simple_test(self):
+        """RandomNumberDraw: Simple parametrized constructor is feasible"""
+        #tested_item = RandomItemFromListDraw(items=['item1','item2'])
+        #self.assertTrue(tested_item.is_feasible())

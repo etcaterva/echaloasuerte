@@ -20,7 +20,7 @@ class RandomItemFromListDraw(models.Model):
     def is_feasible(self):
         if len(self.items) < 1:
             return False
-        return self.allow_repeat or self.number_of_results > len(self.items)
+        return self.allow_repeat or self.number_of_results <= len(self.items)
 
 
 class RandomItemFromListResult(models.Model):
