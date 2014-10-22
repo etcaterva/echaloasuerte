@@ -2,12 +2,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 class RandomNumberDraw(models.Model):
-    pass
-
-
-class RandomNumberPoll(models.Model):
     """
-    Class that represents a poll with the details to produce random numbers.
+    Class that represents a draw with the details to produce random numbers.
     """
 
     range_min = models.BigIntegerField(_("Range start"), blank=False, null=False, default=0)
@@ -29,3 +25,7 @@ class RandomNumberPoll(models.Model):
             return  self.range_min < self.range_max
         else:
             return self.range_max - self.range_min >= self.number_of_results
+
+
+class RandomNumberResult(models.Model):
+    pass
