@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-class RandonNumberDraw(models.Model):
+class RandomNumberDraw(models.Model):
     pass
 
 
@@ -29,4 +29,3 @@ class RandomNumberPoll(models.Model):
             return  self.range_min < self.range_max
         else:
             return self.range_max - self.range_min >= self.number_of_results
-

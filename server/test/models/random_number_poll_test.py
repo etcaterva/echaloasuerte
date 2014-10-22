@@ -1,7 +1,7 @@
 from django.test import TestCase
 from server.models import RandomNumberPoll
 # Create your tests here.
-class RandonNumberPollTestCase(TestCase):
+class RandomNumberPollTestCase(TestCase):
     def setUp(self):
         pass
 
