@@ -7,7 +7,7 @@ class RandomNumberDrawTestCase(TestCase):
         pass
 
     def build_random_number_test(self):
-        """Builds a random number pool"""
+        """Builds a random number draw"""
         RandomNumberDraw()
 
     def default_constructor_test(self):
