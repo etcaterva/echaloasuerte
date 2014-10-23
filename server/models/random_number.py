@@ -30,7 +30,7 @@ class RandomNumberDraw(models.Model):
 class RandomNumberResult(models.Model):
     """
     Class that represents a result of a RandonNumberDraw
-    Note that one pool can generate several draws
+    Note that one draw can generate several results
     """
     class Meta:
         app_label="server"

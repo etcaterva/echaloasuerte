@@ -22,9 +22,13 @@ class RandomItemFromListDraw(models.Model):
             return False
         return self.allow_repeat or self.number_of_results <= len(self.items)
 
+    class Meta:
+        app_label="server"
+
 
 class RandomItemFromListResult(models.Model):
     """
     Class that represents a result of a RandomItemFromListDraw. It consist on one or several items from the list
     """
-    pass
+    class Meta:
+        app_label="server"
