@@ -1,6 +1,17 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+class RandomNumberResultNumber(models.Model):
+    """
+    Class that store a number as the result (or part of it) of a RandomNumberDraw
+    """
+    number = models.BigIntegerField(_("Number"), blank=False, null=False)
+    result = models.ForeignKey(RandomNumberResult, verbose_name=_("Result"), blank=False, null=False, unique=False, related_name="number_result")
+
+    class Meta:
+        app_label="server"
+
+
 class RandomNumberDraw(models.Model):
     """
     Class that represents a draw with the details to produce random numbers.
