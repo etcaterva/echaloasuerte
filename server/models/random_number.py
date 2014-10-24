@@ -19,6 +19,7 @@ class RandomNumberDraw(models.Model):
     allow_repeat = models.BooleanField(_("Allow Repetitions"), blank=False, null=False, default=False)
     """Whether the set of numbers to generate can contain repetitions. Note, if false, max-min > num_res"""
 
+
     def is_feasible(self):
         if self.range_max is None:
             return False
@@ -26,6 +27,13 @@ class RandomNumberDraw(models.Model):
             return  self.range_min < self.range_max
         else:
             return self.range_max - self.range_min >= self.number_of_results
+
+
+    def toss(self):
+        """Carries out the toss"""
+        result = RandomNumberResult()
+        result.draw = self
+        result.save()
 
 
 class RandomNumberResult(models.Model):
@@ -46,7 +54,7 @@ class RandomNumberResultNumber(models.Model):
     Note that one result may be one or several numbers
     """
     value = models.BigIntegerField(_("Number"), blank=False, null=False)
-    result = models.ForeignKey(RandomNumberResult, verbose_name=_("Result"), blank=False, null=False, unique=False, related_name="result_number")
+    result = models.ForeignKey(RandomNumberResult, verbose_name=_("Result"), blank=False, null=False, unique=False, related_name="result_numbers")
 
     class Meta:
         app_label="server"

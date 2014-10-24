@@ -88,11 +88,22 @@ class RandomNumberDrawTestCase(TestCase):
         t_result = RandomNumberResult()
         t_result.draw = t_draw
         t_result.save()
-        self.assertEqual(0, t_result.result_number.count())
+        self.assertEqual(0, t_result.result_numbers.count())
         t_number1.result = t_result
         t_number2.result = t_result
-        self.assertEqual(0, t_result.result_number.count())
+        self.assertEqual(0, t_result.result_numbers.count())
         t_number1.save()
-        self.assertEqual(1, t_result.result_number.count())
+        self.assertEqual(1, t_result.result_numbers.count())
         t_number2.save()
-        self.assertEqual(2, t_result.result_number.count())
+        self.assertEqual(2, t_result.result_numbers.count())
+
+
+    def toss_several_results(self):
+        """RandomNumberDraw: Several tosses store several results"""
+        t_draw = RandomNumberDraw(range_max=10)
+        t_draw.save()
+        self.assertEqual(0,t_draw.draw_results.count())
+        t_draw.toss()
+        self.assertEqual(1,t_draw.draw_results.count())
+        t_draw.toss()
+        self.assertEqual(2,t_draw.draw_results.count())
