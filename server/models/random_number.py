@@ -39,9 +39,6 @@ class RandomNumberResult(models.Model):
     draw = models.ForeignKey(RandomNumberDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="draw_results")
     """ Stores the poll that generated this result. """
 
-    value = models.BigIntegerField(_("Result"), blank=False, null=False)
-    """ Value of the result"""
-
 
 class RandomNumberResultNumber(models.Model):
     """
