@@ -98,7 +98,7 @@ class RandomNumberDrawTestCase(TestCase):
         self.assertEqual(2, t_result.result_numbers.count())
 
 
-    def toss_several_results(self):
+    def toss_several_results_test(self):
         """RandomNumberDraw: Several tosses store several results"""
         t_draw = RandomNumberDraw(range_max=10)
         t_draw.save()
@@ -107,3 +107,21 @@ class RandomNumberDrawTestCase(TestCase):
         self.assertEqual(1,t_draw.draw_results.count())
         t_draw.toss()
         self.assertEqual(2,t_draw.draw_results.count())
+
+
+    def toss_multiple_numbers_test(self):
+        """RandomNumberDraw: a toss generates a result with several numbers"""
+        t_draw1 = RandomNumberDraw(range_max=10,number_of_results=2)
+        t_draw1.save()
+        t_draw1.toss()
+        result = t_draw1.draw_results.order_by("-id")[0]
+        self.assertEqual(2,result.result_numbers.count())
+        t_draw1.toss()
+
+        t_draw2 = RandomNumberDraw(range_max=10,number_of_results=7)
+        t_draw2.save()
+        t_draw2.toss()
+        result2 = t_draw2.draw_results.order_by("-id")[0]
+        self.assertEqual(7,result2.result_numbers.count())
+        t_draw2.toss()
+

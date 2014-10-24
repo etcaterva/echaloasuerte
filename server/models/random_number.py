@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
+import random
 
 class RandomNumberDraw(models.Model):
     """
@@ -34,6 +34,12 @@ class RandomNumberDraw(models.Model):
         result = RandomNumberResult()
         result.draw = self
         result.save()
+
+        for i in range(0,self.number_of_results):
+            random_value = random.randint(self.range_min, self.range_max)
+            number = RandomNumberResultNumber(value = random_value)
+            number.result=result
+            number.save()
 
 
 class RandomNumberResult(models.Model):
