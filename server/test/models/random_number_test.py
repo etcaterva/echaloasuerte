@@ -1,5 +1,7 @@
 from django.test import TestCase
 from server.models import *
+import django
+
 
 class RandomNumberDrawTestCase(TestCase):
     def setUp(self):
@@ -59,17 +61,18 @@ class RandomNumberDrawTestCase(TestCase):
         tested_item = RandomNumberDraw(range_max=2,range_min=4, allow_repeat=True)
         self.assertFalse(tested_item.is_feasible())
 
-    '''def draw_poll_relationship_after_save_test(self):
-        """Validates the relation ship from draw to poll"""
-        t_poll = RandomNumberPoll(range_max=10)
-        t_poll.save()
-        t_draw1 = RandomNumberDraw(value=10)
-        t_draw2 = RandomNumberDraw(value=10)
-        self.assertEqual(0, t_poll.draws.count())
-        t_draw1.poll = t_poll
-        self.assertEqual(0, t_poll.draws.count())
-        t_draw1.save()
-        self.assertEqual(1, t_poll.draws.count())
-        t_draw2.poll = t_poll
-        t_draw2.save()
-        self.assertEqual(2, t_poll.draws.count())'''
+    def draw_poll_relationship_after_save_test(self):
+        """RandomNumberDraw: Validates the relationship Draw-Result"""
+        django.setup() # to access to t_draw.draw_results
+        t_draw = RandomNumberDraw(range_max=10)
+        t_draw.save()
+        t_result1 = RandomNumberResult(value=10)
+        t_result2 = RandomNumberResult(value=10)
+        self.assertEqual(0, t_draw.draw_results.count())
+        t_result1.draw = t_draw
+        self.assertEqual(0, t_draw.draw_results.count())
+        t_result1.save()
+        self.assertEqual(1, t_draw.draw_results.count())
+        t_result2.draw = t_draw
+        t_result2.save()
+        self.assertEqual(2, t_draw.draw_results.count())
