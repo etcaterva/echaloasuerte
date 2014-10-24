@@ -51,7 +51,7 @@ class RandomNumberResult(models.Model):
         app_label="server"
 
     draw = models.ForeignKey(RandomNumberDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="draw_results")
-    """ Stores the poll that generated this result. """
+    """ Stores the draw that generated this result. """
 
 
 class RandomNumberResultNumber(models.Model):

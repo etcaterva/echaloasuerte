@@ -5,7 +5,7 @@ import django
 
 class RandomNumberDrawTestCase(TestCase):
     def setUp(self):
-        pass
+                django.setup() # to access the relationships
 
     def build_random_number_test(self):
         """RandomNumberDraw: Basic construction"""
@@ -63,7 +63,6 @@ class RandomNumberDrawTestCase(TestCase):
 
     def draw_rasult_relationship_after_save_test(self):
         """RandomNumberDraw: Validates the relationship Draw-Result"""
-        django.setup() # to access to t_draw.draw_results
         t_draw = RandomNumberDraw(range_max=10)
         t_draw.save()
         t_result1 = RandomNumberResult()
@@ -80,7 +79,6 @@ class RandomNumberDrawTestCase(TestCase):
 
     def result_number_relationship_after_save_test(self):
         """RandomNumberDraw: Validates the relationship Result-Number"""
-        #django.setup() # to access to t_draw.draw_results
         t_number1 = RandomNumberResultNumber(value=2)
         t_number2 = RandomNumberResultNumber(value=5)
         t_draw = RandomNumberDraw(range_max=10)
