@@ -43,9 +43,10 @@ class RandomNumberResult(models.Model):
 class RandomNumberResultNumber(models.Model):
     """
     Class that store a number as the result (or part of it) of a RandomNumberDraw
+    Note that one result may be one or several numbers
     """
-    number = models.BigIntegerField(_("Number"), blank=False, null=False)
-    result = models.ForeignKey(RandomNumberResult, verbose_name=_("Result"), blank=False, null=False, unique=False, related_name="number_result")
+    value = models.BigIntegerField(_("Number"), blank=False, null=False)
+    result = models.ForeignKey(RandomNumberResult, verbose_name=_("Result"), blank=False, null=False, unique=False, related_name="result_number")
 
     class Meta:
         app_label="server"

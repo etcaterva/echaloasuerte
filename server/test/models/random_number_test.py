@@ -61,13 +61,13 @@ class RandomNumberDrawTestCase(TestCase):
         tested_item = RandomNumberDraw(range_max=2,range_min=4, allow_repeat=True)
         self.assertFalse(tested_item.is_feasible())
 
-    def draw_poll_relationship_after_save_test(self):
+    def draw_rasult_relationship_after_save_test(self):
         """RandomNumberDraw: Validates the relationship Draw-Result"""
         django.setup() # to access to t_draw.draw_results
         t_draw = RandomNumberDraw(range_max=10)
         t_draw.save()
-        t_result1 = RandomNumberResult(value=10)
-        t_result2 = RandomNumberResult(value=10)
+        t_result1 = RandomNumberResult()
+        t_result2 = RandomNumberResult()
         self.assertEqual(0, t_draw.draw_results.count())
         t_result1.draw = t_draw
         self.assertEqual(0, t_draw.draw_results.count())
@@ -76,3 +76,23 @@ class RandomNumberDrawTestCase(TestCase):
         t_result2.draw = t_draw
         t_result2.save()
         self.assertEqual(2, t_draw.draw_results.count())
+
+
+    def result_number_relationship_after_save_test(self):
+        """RandomNumberDraw: Validates the relationship Result-Number"""
+        #django.setup() # to access to t_draw.draw_results
+        t_number1 = RandomNumberResultNumber(value=2)
+        t_number2 = RandomNumberResultNumber(value=5)
+        t_draw = RandomNumberDraw(range_max=10)
+        t_draw.save()
+        t_result = RandomNumberResult()
+        t_result.draw = t_draw
+        t_result.save()
+        self.assertEqual(0, t_result.result_number.count())
+        t_number1.result = t_result
+        t_number2.result = t_result
+        self.assertEqual(0, t_result.result_number.count())
+        t_number1.save()
+        self.assertEqual(1, t_result.result_number.count())
+        t_number2.save()
+        self.assertEqual(2, t_result.result_number.count())
