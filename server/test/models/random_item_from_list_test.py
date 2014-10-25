@@ -1,5 +1,5 @@
 from django.test import TestCase
-from server.models.random_item_from_list import RandomItemFromListDraw
+from server.models import *
 import django
 
 class RandomItemFromListDrawTestCase(TestCase):
@@ -30,3 +30,20 @@ class RandomItemFromListDrawTestCase(TestCase):
         """RandomNumberDraw: Simple parametrized constructor is feasible"""
         #tested_item = RandomItemFromListDraw(items=['item1','item2'])
         #self.assertTrue(tested_item.is_feasible())
+
+    def relationship_draw_result_test(self):
+        t_draw = RandomItemFromListDraw()
+        t_draw.save()
+        t_result1 = RandomItemFromListResult()
+        t_result1.draw = t_draw
+        t_result2 = RandomItemFromListResult()
+        t_result2.draw = t_draw
+        self.assertEqual(0, t_draw.draw_results.count())
+        t_result1.save()
+        self.assertEqual(1, t_draw.draw_results.count())
+        t_result2.save()
+        self.assertEqual(2, t_draw.draw_results.count())
+
+
+    def relationship_result_item(self):
+        pass
