@@ -77,23 +77,22 @@ class RandomNumberDrawTestCase(TestCase):
         self.assertEqual(2, t_draw.draw_results.count())
 
 
-    def result_number_relationship_after_save_test(self):
+    def result_number_relationship_test(self):
         """RandomNumberDraw: Validates the relationship Result-Number"""
         t_number1 = Number(value=2)
+        t_number1.save()
         t_number2 = Number(value=5)
+        t_number2.save()
         t_draw = RandomNumberDraw(range_max=10)
         t_draw.save()
         t_result = RandomNumberResult()
         t_result.draw = t_draw
         t_result.save()
-        self.assertEqual(0, t_result.result_numbers.count())
-        t_number1.result = t_result
-        t_number2.result = t_result
-        self.assertEqual(0, t_result.result_numbers.count())
-        t_number1.save()
-        self.assertEqual(1, t_result.result_numbers.count())
-        t_number2.save()
-        self.assertEqual(2, t_result.result_numbers.count())
+        self.assertEqual(0, t_result.number.count())
+        t_result.number.add(t_number1)
+        self.assertEqual(1, t_result.number.count())
+        t_result.number.add(t_number2)
+        self.assertEqual(2, t_result.number.count())
 
 
     def toss_several_results_test(self):
@@ -108,7 +107,7 @@ class RandomNumberDrawTestCase(TestCase):
 
 
     def toss_multiple_numbers_test(self):
-        """RandomNumberDraw: a toss generates a result with several numbers"""
+        """RandomNumberDraw: A toss generates a result with several numbers"""
         t_draw1 = RandomNumberDraw(range_max=10,number_of_results=2)
         t_draw1.save()
         t_draw1.toss()
