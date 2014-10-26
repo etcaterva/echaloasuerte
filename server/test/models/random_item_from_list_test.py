@@ -31,7 +31,7 @@ class RandomItemFromListDrawTestCase(TestCase):
         #tested_item = RandomItemFromListDraw(items=['item1','item2'])
         #self.assertTrue(tested_item.is_feasible())
 
-    def relationship_draw_result_test(self):
+    '''def relationship_draw_result_test(self):
         t_draw = RandomItemFromListDraw()
         t_draw.save()
         t_result1 = RandomItemFromListResult()
@@ -42,8 +42,5 @@ class RandomItemFromListDrawTestCase(TestCase):
         t_result1.save()
         self.assertEqual(1, t_draw.draw_results.count())
         t_result2.save()
-        self.assertEqual(2, t_draw.draw_results.count())
+        self.assertEqual(2, t_draw.draw_results.count())'''
 
-
-    def relationship_result_item(self):
-        pass

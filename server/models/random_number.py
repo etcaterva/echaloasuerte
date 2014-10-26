@@ -42,16 +42,6 @@ class RandomNumberDraw(models.Model):
             number.save()
 
 
-class Number(models.Model):
-    """
-    Class that store a number as the result (or part of it) of a RandomNumberDraw
-    Note that one result may be one or several numbers
-    """
-    value = models.BigIntegerField(_("Number"), blank=False, null=False)
-    #result = models.ForeignKey(RandomNumberResult, verbose_name=_("Result"), blank=False, null=False, unique=False, related_name="result_numbers")
-
-    class Meta:
-        app_label="server"
 
 class RandomNumberResult(models.Model):
     """
@@ -64,6 +54,18 @@ class RandomNumberResult(models.Model):
     draw = models.ForeignKey(RandomNumberDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="draw_results")
     """ Stores the draw that generated this result. """
 
-    number = models.ManyToManyField(Number, verbose_name=_("Number"), blank=False, null=False, unique=False, related_name="result_numbers")
+    #number = models.ManyToManyField(Number, verbose_name=_("Number"), blank=False, null=False, unique=False, related_name="result_numbers")
 
 
+
+class Number(models.Model):
+    """
+    Class that store a number as the result (or part of it) of a RandomNumberDraw
+    Note that one result may be one or several numbers
+    """
+    value = models.BigIntegerField(_("Number"), blank=False, null=False)
+
+    result = models.ForeignKey(RandomNumberResult, verbose_name=_("Result"), blank=False, null=False, unique=False, related_name="result_numbers")
+
+    class Meta:
+        app_label="server"
