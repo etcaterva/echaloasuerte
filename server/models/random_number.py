@@ -37,12 +37,12 @@ class RandomNumberDraw(models.Model):
 
         for i in range(0,self.number_of_results):
             random_value = random.randint(self.range_min, self.range_max)
-            number = RandomNumberResultNumber(value = random_value)
+            number = Number(value = random_value)
             number.result=result
             number.save()
 
 
-class RandomNumberResultNumber(models.Model):
+class Number(models.Model):
     """
     Class that store a number as the result (or part of it) of a RandomNumberDraw
     Note that one result may be one or several numbers
@@ -64,6 +64,6 @@ class RandomNumberResult(models.Model):
     draw = models.ForeignKey(RandomNumberDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="draw_results")
     """ Stores the draw that generated this result. """
 
-    number = models.ManyToManyField(RandomNumberResultNumber, verbose_name=_("Number"), blank=False, null=False, unique=False, related_name="result_numbers")
+    number = models.ManyToManyField(Number, verbose_name=_("Number"), blank=False, null=False, unique=False, related_name="result_numbers")
 
 

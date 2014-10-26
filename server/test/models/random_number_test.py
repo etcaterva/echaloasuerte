@@ -79,8 +79,8 @@ class RandomNumberDrawTestCase(TestCase):
 
     def result_number_relationship_after_save_test(self):
         """RandomNumberDraw: Validates the relationship Result-Number"""
-        t_number1 = RandomNumberResultNumber(value=2)
-        t_number2 = RandomNumberResultNumber(value=5)
+        t_number1 = Number(value=2)
+        t_number2 = Number(value=5)
         t_draw = RandomNumberDraw(range_max=10)
         t_draw.save()
         t_result = RandomNumberResult()
