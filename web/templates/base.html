@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_language_info_list for LANGUAGES as languages %}
+<!-- Current language: {{ LANGUAGE_CODE }} -->
+{% load staticfiles %}
+{% load bootstrap %}
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}MedCall{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Mario Corchero">
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+    <link href="{% static 'css/bootstrap-theme.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/jquery-clockpicker.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery-clockpicker.min.js' %}"></script>
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    <script src="{% static 'js/project.js' %}"></script>
+    <script>
+        {% block extra_js %}{% endblock extra_js %}
+        $(document).ready(function(){
+            $('#language-dropdown li a').click(function(){
+                $("#language-form option[value=" + $(this).attr('title') +"]").attr("selected","selected") ;
+                $("#change_language_but").click();
+            });
+            {% block extra_jq %}{% endblock extra_jq %}
+        });
+    </script>
+    <style>
+        {% block extra_css %}{% endblock extra_css %}
+    </style>
+
+    {% block extra_head %}{% endblock extra_head %}
+  </head>
+
+    <body>
+	    <div class="container">
+            {% block pre-content %}
+            {% endblock pre-content %}
+
+
+		    {% if user.is_authenticated %}
+		      <!-- Static navbar -->
+		      <div class="navbar navbar-default" role="navigation">
+		        <div class="container-fluid">
+		          <div class="navbar-header">
+		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		              <span class="sr-only">Toggle navigation</span>
+		              <span class="icon-bar"></span>
+		              <span class="icon-bar"></span>
+		              <span class="icon-bar"></span>
+		            </button>
+		            <a class="navbar-brand" href="/">MedCall</a>
+		          </div>
+		          <div class="navbar-collapse collapse">
+		            <ul class="nav navbar-nav">
+		            </ul>
+		            <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/">
+                            <span class="glyphicon glyphicon-user"></span> {{user.first_name}}
+                        </a></li>
+                        <li><a href="{% url 'doc_patients' %}">
+                            <span class="glyphicon glyphicon-book"></span> {% trans "Patients" %}
+                        </a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-flag"></span> {% trans "Language" %} <b class="caret"></b></a>
+                            <ul class="dropdown-menu" id="language-dropdown">
+                              {% for language in languages %}
+                              <li><a href="#" title="{{ language.code }}">{{ language.name_local }} ({{ language.code }})</a></li>
+                              {% endfor %}
+                            </ul>
+                        </li>
+                        <li><a href="{% url 'logout' %}">
+                            <span class="glyphicon glyphicon-off"></span> {% trans "Exit" %}
+                        </a></li>
+		            </ul>
+		          </div><!--/.nav-collapse -->
+		        </div><!--/.container-fluid -->
+		      </div>
+		    {% endif %}
+
+
+	        {% block content %}
+	          <p>Page to be filled.</p>
+	        {% endblock content %}
+
+        </div> <!-- container -->
+
+<!-- hidden form to change language -->
+<div class="hidden">
+<form action="{% url 'set_language' %}" method="post">
+{% csrf_token %}
+<input name="next" type="hidden" value="{{ redirect_to }}" />
+<select name="language" id="language-form">
+{% get_language_info_list for LANGUAGES as languages %}
+{% for language in languages %}
+<option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+    {{ language.name_local }} ({{ language.code }})
+</option>
+{% endfor %}
+</select>
+<input type="submit" value="Go" id="change_language_but"/>
+</form>
+</div>
+{% block extra_body %}{% endblock extra_body %}
+    </body>
+</html>
