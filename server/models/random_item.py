@@ -41,9 +41,9 @@ class RandomItemDraw(models.Model):
         result.draw = self
         result.save()
 
-        number_of_items = self.items.count()
+        value_max = self.items.count() - 1
         for i in range(0,self.number_of_results):
-            random_value = random.randint(0, number_of_items)
+            random_value = random.randint(0, value_max)
             random_item = self.items.order_by("-id")[random_value]
             result.items.add(random_item)
 

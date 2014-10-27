@@ -86,18 +86,26 @@ class RandomItemDrawTestCase(TestCase):
         t_draw.toss()
         self.assertEqual(2,t_draw.results.count())
 
-
-
-    def toss_one_result_test(self):
-        """RandomNumberDraw: One toss generate one result"""
-        t_draw = RandomItemDraw()
+    def toss_result_contains_items_test(self):
+        """RandomNumberDraw: after a toss items are in results"""
+        number_of_results=2
+        t_draw = RandomItemDraw(number_of_results=number_of_results)
         t_item1 = Item(name="table")
         t_item2 = Item(name="pencil")
+        t_item3 = Item(name="notebook")
+        t_item4 = Item(name="bottle")
         t_draw.save()
         t_item1.save()
         t_item2.save()
+        t_item3.save()
+        t_item4.save()
 
-        t_draw.items.add(t_item1,t_item2)
-        self.assertEqual(0,t_draw.results.count())
+        t_draw.items.add(t_item1,t_item2,t_item3,t_item4)
         t_draw.toss()
-        self.assertEqual(1,t_draw.results.count())
+        result = t_draw.results.order_by("-id")[0] # There is only one
+        counter = 0
+        counter += result.items.filter(id=t_item1.id).count()
+        counter += result.items.filter(id=t_item2.id).count()
+        counter += result.items.filter(id=t_item3.id).count()
+        counter += result.items.filter(id=t_item4.id).count()
+        self.assertEqual(number_of_results, counter)
