@@ -3,6 +3,18 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
+class Item(models.Model):
+    """
+    Class that store the items in the draw
+    Note that one result may be one or several items
+    """
+    class Meta:
+        app_label="server"
+
+    name = models.CharField(max_length=20, blank=False, null=False)
+    """String that stores the name of the item"""
+
+
 class RandomItemDraw(models.Model):
     """
     Class that represents a draw with the details choose random items from a list
@@ -14,28 +26,19 @@ class RandomItemDraw(models.Model):
     allow_repeat = models.BooleanField(_("Allow Repetitions"), blank=False, null=False, default=False)
     """Whether the set of items to generate can contain repetitions."""
 
+    items = models.ManyToManyField(Item, blank=False, null=False)
+    """The available set of item to choose from"""
+
     def is_feasible(self):
-        if self.draw_results.count() < 1:
+        if self.items.all().count() < 1:
             return False
-        return self.allow_repeat or self.number_of_results <= self.draw_results.count()
+        return self.allow_repeat or self.number_of_results <= self.items.all().count()
 
     class Meta:
         app_label="server"
 
 
-class Item(models.Model):
-    """
-    Class that store the items in the draw
-    Note that one result may be one or several items
-    """
-    class Meta:
-        app_label="server"
 
-    name = models.CharField(max_length=20)
-    """String that stores the name of the item"""
-
-    #result = models.ForeignKey(RandomItemResult, verbose_name=_("Result"), blank=False, null=False, unique=False, related_name="result_items")
-    """Stores the result asociated with this item"""
 
 
 class RandomItemResult(models.Model):
@@ -45,7 +48,7 @@ class RandomItemResult(models.Model):
     class Meta:
         app_label="server"
 
-    draw = models.ForeignKey(RandomItemDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="draw_results")
+    draw = models.ForeignKey(RandomItemDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="results")
     """ Stores the draw that generated this result. """
 
     items = models.ManyToManyField(Item, blank=False, null=False)

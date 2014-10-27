@@ -2,7 +2,7 @@ from django.test import TestCase
 from server.models import *
 import django
 
-class RandomItemFromListDrawTestCase(TestCase):
+class RandomItemDrawTestCase(TestCase):
     def setUp(self):
         django.setup()
 
@@ -24,12 +24,19 @@ class RandomItemFromListDrawTestCase(TestCase):
 
     def is_feasible_default_test(self):
         """RandomItemDraw: Default constructor is not feasible"""
-        self.assertFalse(RandomItemDraw().is_feasible())
+        t_draw = RandomItemDraw()
+        t_draw.save()
+        self.assertFalse(t_draw.is_feasible())
 
     def is_feasible_simple_test(self):
         """RandomNumberDraw: Simple parametrized constructor is feasible"""
-        #tested_item = RandomItemDraw(items=['item1','item2'])
-        #self.assertTrue(tested_item.is_feasible())
+        #TODO fix this
+        t_draw = RandomItemDraw()
+        t_draw.save()
+        t_item = Item(name="item1")
+        t_item.save()
+        t_draw.items.add(t_item)
+        self.assertTrue(t_draw.is_feasible())
 
     def relationship_draw_result_test(self):
         """RandomNumberDraw: Relationship Draw-Result"""
@@ -39,11 +46,11 @@ class RandomItemFromListDrawTestCase(TestCase):
         t_result1.draw = t_draw
         t_result2 = RandomItemResult()
         t_result2.draw = t_draw
-        self.assertEqual(0, t_draw.draw_results.count())
+        self.assertEqual(0, t_draw.results.count())
         t_result1.save()
-        self.assertEqual(1, t_draw.draw_results.count())
+        self.assertEqual(1, t_draw.results.count())
         t_result2.save()
-        self.assertEqual(2, t_draw.draw_results.count())
+        self.assertEqual(2, t_draw.results.count())
 
 
     def relationship_result_item_test(self):
