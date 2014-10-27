@@ -6,6 +6,8 @@ class RandomNumberDraw(models.Model):
     """
     Class that represents a draw with the details to produce random numbers.
     """
+    class Meta:
+        app_label="server"
 
     range_min = models.BigIntegerField(_("Range start"), blank=False, null=False, default=0)
     """"Minimun value to be generated. Inclusive."""
