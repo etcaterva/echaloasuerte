@@ -31,7 +31,8 @@ class RandomItemFromListDrawTestCase(TestCase):
         #tested_item = RandomItemDraw(items=['item1','item2'])
         #self.assertTrue(tested_item.is_feasible())
 
-    '''def relationship_draw_result_test(self):
+    def relationship_draw_result_test(self):
+        """RandomNumberDraw: Relationship Draw-Result"""
         t_draw = RandomItemDraw()
         t_draw.save()
         t_result1 = RandomItemResult()
@@ -42,5 +43,25 @@ class RandomItemFromListDrawTestCase(TestCase):
         t_result1.save()
         self.assertEqual(1, t_draw.draw_results.count())
         t_result2.save()
-        self.assertEqual(2, t_draw.draw_results.count())'''
+        self.assertEqual(2, t_draw.draw_results.count())
+
+
+    def relationship_result_item_test(self):
+        """RandomNumberDraw: Relationship Result-Item"""
+        t_draw = RandomItemDraw()
+        t_draw.save()
+        t_result = RandomItemResult()
+        t_result.draw = t_draw
+        t_result.save()
+
+        t_item1 = Item(name="item1")
+        t_item1.save()
+        t_item2 = Item(name="item2")
+        t_item2.save()
+        self.assertEqual(0, t_result.items.filter(name="item2").count())
+        t_result.items.add(t_item1)
+        self.assertEqual(0, t_result.items.filter(name="item2").count())
+        t_result.items.add(t_item2)
+        self.assertEqual(1, t_result.items.filter(name="item2").count())
+        self.assertEqual(2, t_result.items.all().count())
 

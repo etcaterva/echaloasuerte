@@ -23,16 +23,6 @@ class RandomItemDraw(models.Model):
         app_label="server"
 
 
-class RandomItemResult(models.Model):
-    """
-    Class that represents a result of a RandomItemDraw. It consist on one or several items from the list
-    """
-    class Meta:
-        app_label="server"
-
-    draw = models.ForeignKey(RandomItemDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="draw_results")
-    """ Stores the draw that generated this result. """
-
 class Item(models.Model):
     """
     Class that store the items in the draw
@@ -44,5 +34,19 @@ class Item(models.Model):
     name = models.CharField(max_length=20)
     """String that stores the name of the item"""
 
-    result = models.ForeignKey(RandomItemResult, verbose_name=_("Result"), blank=False, null=False, unique=False, related_name="result_items")
+    #result = models.ForeignKey(RandomItemResult, verbose_name=_("Result"), blank=False, null=False, unique=False, related_name="result_items")
     """Stores the result asociated with this item"""
+
+
+class RandomItemResult(models.Model):
+    """
+    Class that represents a result of a RandomItemDraw. It consist on one or several items from the list
+    """
+    class Meta:
+        app_label="server"
+
+    draw = models.ForeignKey(RandomItemDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="draw_results")
+    """ Stores the draw that generated this result. """
+
+    items = models.ManyToManyField(Item, blank=False, null=False)
+
