@@ -30,7 +30,6 @@ class RandomItemDrawTestCase(TestCase):
 
     def is_feasible_simple_test(self):
         """RandomNumberDraw: Simple parametrized constructor is feasible"""
-        #TODO fix this
         t_draw = RandomItemDraw()
         t_draw.save()
         t_item = Item(name="item1")
@@ -52,7 +51,6 @@ class RandomItemDrawTestCase(TestCase):
         t_result2.save()
         self.assertEqual(2, t_draw.results.count())
 
-
     def relationship_result_item_test(self):
         """RandomNumberDraw: Relationship Result-Item"""
         t_draw = RandomItemDraw()
@@ -61,14 +59,45 @@ class RandomItemDrawTestCase(TestCase):
         t_result.draw = t_draw
         t_result.save()
 
-        t_item1 = Item(name="item1")
+        t_item1 = Item(name="pencil")
         t_item1.save()
-        t_item2 = Item(name="item2")
+        t_item2 = Item(name="table")
         t_item2.save()
-        self.assertEqual(0, t_result.items.filter(name="item2").count())
+        self.assertEqual(0, t_result.items.filter(name="table").count())
         t_result.items.add(t_item1)
-        self.assertEqual(0, t_result.items.filter(name="item2").count())
+        self.assertEqual(0, t_result.items.filter(name="table").count())
         t_result.items.add(t_item2)
-        self.assertEqual(1, t_result.items.filter(name="item2").count())
+        self.assertEqual(1, t_result.items.filter(name="table").count())
         self.assertEqual(2, t_result.items.all().count())
 
+    def toss_one_result_test(self):
+        """RandomNumberDraw: Each toss generates a new result"""
+        t_draw = RandomItemDraw()
+        t_item1 = Item(name="table")
+        t_item2 = Item(name="pencil")
+        t_draw.save()
+        t_item1.save()
+        t_item2.save()
+
+        t_draw.items.add(t_item1,t_item2)
+        self.assertEqual(0,t_draw.results.count())
+        t_draw.toss()
+        self.assertEqual(1,t_draw.results.count())
+        t_draw.toss()
+        self.assertEqual(2,t_draw.results.count())
+
+
+
+    def toss_one_result_test(self):
+        """RandomNumberDraw: One toss generate one result"""
+        t_draw = RandomItemDraw()
+        t_item1 = Item(name="table")
+        t_item2 = Item(name="pencil")
+        t_draw.save()
+        t_item1.save()
+        t_item2.save()
+
+        t_draw.items.add(t_item1,t_item2)
+        self.assertEqual(0,t_draw.results.count())
+        t_draw.toss()
+        self.assertEqual(1,t_draw.results.count())

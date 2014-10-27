@@ -1,7 +1,7 @@
 from copy import name
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
+import random
 
 class Item(models.Model):
     """
@@ -34,11 +34,21 @@ class RandomItemDraw(models.Model):
             return False
         return self.allow_repeat or self.number_of_results <= self.items.all().count()
 
+    '''Preconditions: has to be feasible'''
+    def toss(self):
+        """Carries out the toss"""
+        result = RandomItemResult()
+        result.draw = self
+        result.save()
+
+        number_of_items = self.items.count()
+        for i in range(0,self.number_of_results):
+            random_value = random.randint(0, number_of_items)
+            random_item = self.items.order_by("-id")[random_value]
+            result.items.add(random_item)
+
     class Meta:
         app_label="server"
-
-
-
 
 
 class RandomItemResult(models.Model):
