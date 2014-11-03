@@ -16,6 +16,9 @@ class Item(models.Model):
     name = models.CharField(max_length=20, blank=False, null=False)
     """String that stores the name of the item"""
 
+    def __str__(self):
+        return self.name
+
 
 class RandomItemDraw(models.Model):
     """
