@@ -59,7 +59,7 @@ class RandomNumberResult(models.Model):
     draw = models.ForeignKey(RandomNumberDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="draw_results")
     """ Stores the draw that generated this result. """
 
-    #number = models.ManyToManyField(Number, verbose_name=_("Number"), blank=False, null=False, unique=False, related_name="result_numbers")
+    timestamp = models.DateTimeField(auto_now_add=True)
 
 
 
