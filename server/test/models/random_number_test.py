@@ -5,7 +5,7 @@ import django
 
 class RandomNumberDrawTestCase(TestCase):
     def setUp(self):
-                django.setup() # to access the relationships
+        pass
 
     def build_random_number_test(self):
         """RandomNumberDraw: Basic construction"""
