@@ -45,7 +45,7 @@ class RandomItemDraw(models.Model):
         for i in range(0,self.number_of_results):
             random_value = random.randint(0, value_max)
             random_item = self.items.order_by("-id")[random_value]
-            result.items.add(random_item)
+            RandomItemResultItem(result=result, item=random_item).save()
 
     class Meta:
         app_label="server"
@@ -61,5 +61,17 @@ class RandomItemResult(models.Model):
     draw = models.ForeignKey(RandomItemDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="results")
     """ Stores the draw that generated this result. """
 
-    items = models.ManyToManyField(Item, blank=False, null=False)
+    items = models.ManyToManyField(Item, through='RandomItemResultItem', blank=False, null=False)
 
+
+class RandomItemResultItem(models.Model):
+    """
+    Class that represents the many-to-many relationship between RandomItemResult and Item
+    The reason to use a intermediary model is to allow duplicate entries
+    """
+    class Meta:
+        app_label="server"
+
+
+    result = models.ForeignKey(RandomItemResult)
+    item = models.ForeignKey(Item)

@@ -63,11 +63,13 @@ class RandomItemDrawTestCase(TestCase):
         t_item1.save()
         t_item2 = Item(name="table")
         t_item2.save()
-        self.assertEqual(0, t_result.items.filter(name="table").count())
-        t_result.items.add(t_item1)
-        self.assertEqual(0, t_result.items.filter(name="table").count())
-        t_result.items.add(t_item2)
-        self.assertEqual(1, t_result.items.filter(name="table").count())
+        self.assertEqual(0, t_result.items.all().count())
+        result1 = RandomItemResultItem(result=t_result, item=t_item1)
+        result1.save()
+
+        self.assertEqual(1, t_result.items.all().count())
+        result2 = RandomItemResultItem(result=t_result, item=t_item2)
+        result2.save()
         self.assertEqual(2, t_result.items.all().count())
 
     def toss_one_result_test(self):
@@ -88,7 +90,7 @@ class RandomItemDrawTestCase(TestCase):
 
     def toss_result_contains_items_test(self):
         """RandomNumberDraw: after a toss items are in results"""
-        number_of_results=2
+        number_of_results=5
         t_draw = RandomItemDraw(number_of_results=number_of_results)
         t_item1 = Item(name="table")
         t_item2 = Item(name="pencil")
