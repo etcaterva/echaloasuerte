@@ -39,8 +39,6 @@ class RandomItemDraw(models.Model):
             return False
         return self.allow_repeat or self.number_of_results <= self.items.all().count()
 
-    '''Preconditions: has to be feasible'''
-
     def toss(self):
         """Carries out the toss"""
         result = RandomItemResult()
@@ -53,7 +51,7 @@ class RandomItemDraw(models.Model):
             while True:
                 random_value = random.randint(0, value_max)
                 random_item = options[random_value]
-                if (self.allow_repeat or result.items.filter(id=random_item.id).count() == 0):
+                if self.allow_repeat or result.items.filter(id=random_item.id).count() == 0:
                     break
             RandomItemResultItem(result=result, item=random_item).save()
 
