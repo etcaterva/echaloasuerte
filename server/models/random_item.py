@@ -48,9 +48,13 @@ class RandomItemDraw(models.Model):
         result.save()
 
         value_max = self.items.count() - 1
+        options = self.items.order_by("-id")
         for i in range(0, self.number_of_results):
-            random_value = random.randint(0, value_max)
-            random_item = self.items.order_by("-id")[random_value]
+            while True:
+                random_value = random.randint(0, value_max)
+                random_item = options[random_value]
+                if (self.allow_repeat or result.items.filter(id=random_item.id).count() == 0):
+                    break
             RandomItemResultItem(result=result, item=random_item).save()
 
     class Meta:
