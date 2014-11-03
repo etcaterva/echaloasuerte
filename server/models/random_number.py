@@ -58,8 +58,7 @@ class RandomNumberResult(models.Model):
     class Meta:
         app_label = "server"
 
-    draw = models.ForeignKey(RandomNumberDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False,
-                             related_name="draw_results")
+    draw = models.ForeignKey(RandomNumberDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="results")
     """ Stores the draw that generated this result. """
 
     timestamp = models.DateTimeField(auto_now_add=True)

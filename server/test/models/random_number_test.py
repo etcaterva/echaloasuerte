@@ -66,14 +66,14 @@ class RandomNumberDrawTestCase(TestCase):
         t_draw.save()
         t_result1 = RandomNumberResult()
         t_result2 = RandomNumberResult()
-        self.assertEqual(0, t_draw.draw_results.count())
+        self.assertEqual(0, t_draw.results.count())
         t_result1.draw = t_draw
-        self.assertEqual(0, t_draw.draw_results.count())
+        self.assertEqual(0, t_draw.results.count())
         t_result1.save()
-        self.assertEqual(1, t_draw.draw_results.count())
+        self.assertEqual(1, t_draw.results.count())
         t_result2.draw = t_draw
         t_result2.save()
-        self.assertEqual(2, t_draw.draw_results.count())
+        self.assertEqual(2, t_draw.results.count())
 
     def result_number_relationship_after_save_test(self):
         """RandomNumberDraw: Validates the relationship Result-Number"""
@@ -97,25 +97,25 @@ class RandomNumberDrawTestCase(TestCase):
         """RandomNumberDraw: Several tosses store several results"""
         t_draw = RandomNumberDraw(range_max=10)
         t_draw.save()
-        self.assertEqual(0, t_draw.draw_results.count())
+        self.assertEqual(0, t_draw.results.count())
         t_draw.toss()
-        self.assertEqual(1, t_draw.draw_results.count())
+        self.assertEqual(1, t_draw.results.count())
         t_draw.toss()
-        self.assertEqual(2, t_draw.draw_results.count())
+        self.assertEqual(2, t_draw.results.count())
 
     def toss_multiple_numbers_test(self):
         """RandomNumberDraw: A toss generates a result with several numbers"""
         t_draw1 = RandomNumberDraw(range_max=10, number_of_results=2)
         t_draw1.save()
         t_draw1.toss()
-        result = t_draw1.draw_results.latest('timestamp')
+        result = t_draw1.results.latest('timestamp')
         self.assertEqual(2, result.result_numbers.count())
         t_draw1.toss()
 
         t_draw2 = RandomNumberDraw(range_max=10, number_of_results=7)
         t_draw2.save()
         t_draw2.toss()
-        result2 = t_draw2.draw_results.latest('timestamp')
+        result2 = t_draw2.results.latest('timestamp')
         self.assertEqual(7, result2.result_numbers.count())
         t_draw2.toss()
 
@@ -125,7 +125,7 @@ class RandomNumberDrawTestCase(TestCase):
         t_draw = RandomNumberDraw(range_max=total - 1, number_of_results=total)
         t_draw.save()
         t_draw.toss()
-        result = t_draw.draw_results.latest('timestamp')
+        result = t_draw.results.latest('timestamp')
         for i in range(0, total):
             self.assertEqual(1, result.result_numbers.filter(value=i).count())
 
@@ -136,7 +136,7 @@ class RandomNumberDrawTestCase(TestCase):
         t_draw = RandomNumberDraw(range_max=range_max, number_of_results=number_of_results, allow_repeat=True)
         t_draw.save()
         t_draw.toss()
-        result = t_draw.draw_results.latest('timestamp')
+        result = t_draw.results.latest('timestamp')
 
         counter = 0
         for i in range(0, range_max + 1):
