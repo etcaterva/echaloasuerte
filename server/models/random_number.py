@@ -42,7 +42,7 @@ class RandomNumberDraw(models.Model):
         for i in range(0, self.number_of_results):
             while True:
                 random_value = random.randint(self.range_min, self.range_max)
-                if (self.allow_repeat or result.result_numbers.filter(value=random_value).count() == 0):
+                if (self.allow_repeat or result.numbers.filter(value=random_value).count() == 0):
                     break
             number = Number(value=random_value)
             number.result = result
@@ -73,7 +73,7 @@ class Number(models.Model):
     value = models.BigIntegerField(_("Number"), blank=False, null=False)
 
     result = models.ForeignKey(RandomNumberResult, verbose_name=_("Result"), blank=False, null=False, unique=False,
-                               related_name="result_numbers")
+                               related_name="numbers")
 
     def __str__(self):
         return str(self.value)

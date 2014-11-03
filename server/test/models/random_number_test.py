@@ -84,14 +84,14 @@ class RandomNumberDrawTestCase(TestCase):
         t_result = RandomNumberResult()
         t_result.draw = t_draw
         t_result.save()
-        self.assertEqual(0, t_result.result_numbers.count())
+        self.assertEqual(0, t_result.numbers.count())
         t_number1.result = t_result
         t_number2.result = t_result
-        self.assertEqual(0, t_result.result_numbers.count())
+        self.assertEqual(0, t_result.numbers.count())
         t_number1.save()
-        self.assertEqual(1, t_result.result_numbers.count())
+        self.assertEqual(1, t_result.numbers.count())
         t_number2.save()
-        self.assertEqual(2, t_result.result_numbers.count())
+        self.assertEqual(2, t_result.numbers.count())
 
     def toss_several_results_test(self):
         """RandomNumberDraw: Several tosses store several results"""
@@ -109,14 +109,14 @@ class RandomNumberDrawTestCase(TestCase):
         t_draw1.save()
         t_draw1.toss()
         result = t_draw1.results.latest('timestamp')
-        self.assertEqual(2, result.result_numbers.count())
+        self.assertEqual(2, result.numbers.count())
         t_draw1.toss()
 
         t_draw2 = RandomNumberDraw(range_max=10, number_of_results=7)
         t_draw2.save()
         t_draw2.toss()
         result2 = t_draw2.results.latest('timestamp')
-        self.assertEqual(7, result2.result_numbers.count())
+        self.assertEqual(7, result2.numbers.count())
         t_draw2.toss()
 
     def toss_without_repeat_test(self):
@@ -127,7 +127,7 @@ class RandomNumberDrawTestCase(TestCase):
         t_draw.toss()
         result = t_draw.results.latest('timestamp')
         for i in range(0, total):
-            self.assertEqual(1, result.result_numbers.filter(value=i).count())
+            self.assertEqual(1, result.numbers.filter(value=i).count())
 
     def toss_with_repeat_test(self):
         """RandomNumberDraw: It's possible to store several time the same result when allow_repeat is true"""
@@ -140,5 +140,5 @@ class RandomNumberDrawTestCase(TestCase):
 
         counter = 0
         for i in range(0, range_max + 1):
-            counter += result.result_numbers.filter(value=i).count()
+            counter += result.numbers.filter(value=i).count()
         self.assertEqual(number_of_results, counter)
