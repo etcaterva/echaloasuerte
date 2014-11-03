@@ -118,7 +118,7 @@ class RandomItemDrawTestCase(TestCase):
 
         t_draw.items.add(t_item1, t_item2, t_item3, t_item4)
         t_draw.toss()
-        result = t_draw.results.order_by("-id")[0]  # There is only one
+        result = t_draw.results.latest('timestamp')
         counter = 0
         counter += result.items.filter(id=t_item1.id).count()
         counter += result.items.filter(id=t_item2.id).count()
