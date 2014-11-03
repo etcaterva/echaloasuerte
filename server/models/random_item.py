@@ -67,6 +67,10 @@ class RandomItemResult(models.Model):
     """ Stores the draw that generated this result. """
 
     items = models.ManyToManyField(Item, through='RandomItemResultItem', blank=False, null=False)
+    """ Stores the result set of items """
+
+    timestamp = models.DateTimeField(auto_now_add=True)
+    """Stores when the result was created."""
 
 
 class RandomItemResultItem(models.Model):
@@ -78,6 +82,8 @@ class RandomItemResultItem(models.Model):
     class Meta:
         app_label = "server"
 
-
     result = models.ForeignKey(RandomItemResult)
+    """Foreign Key to the RandomItemResult"""
+
     item = models.ForeignKey(Item)
+    """Foreign Key to the Item"""
