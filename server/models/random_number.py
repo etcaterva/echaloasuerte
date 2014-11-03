@@ -60,6 +60,7 @@ class RandomNumberResult(models.Model):
     """ Stores the draw that generated this result. """
 
     timestamp = models.DateTimeField(auto_now_add=True)
+    """Stores when the result was created."""
 
 
 

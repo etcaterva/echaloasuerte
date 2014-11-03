@@ -112,14 +112,14 @@ class RandomNumberDrawTestCase(TestCase):
         t_draw1 = RandomNumberDraw(range_max=10,number_of_results=2)
         t_draw1.save()
         t_draw1.toss()
-        result = t_draw1.draw_results.order_by("-id")[0]
+        result = t_draw1.draw_results.latest('timestamp')
         self.assertEqual(2,result.result_numbers.count())
         t_draw1.toss()
 
         t_draw2 = RandomNumberDraw(range_max=10,number_of_results=7)
         t_draw2.save()
         t_draw2.toss()
-        result2 = t_draw2.draw_results.order_by("-id")[0]
+        result2 = t_draw2.draw_results.latest('timestamp')
         self.assertEqual(7,result2.result_numbers.count())
         t_draw2.toss()
 
@@ -130,7 +130,7 @@ class RandomNumberDrawTestCase(TestCase):
         t_draw = RandomNumberDraw(range_max=total-1, number_of_results=total)
         t_draw.save()
         t_draw.toss()
-        result = t_draw.draw_results.order_by("-id")[0]
+        result = t_draw.draw_results.latest('timestamp')
         for i in range(0, total):
             self.assertEqual(1, result.result_numbers.filter(value=i).count())
 
