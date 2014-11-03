@@ -29,13 +29,26 @@ class RandomItemDrawTestCase(TestCase):
         self.assertFalse(t_draw.is_feasible())
 
     def is_feasible_simple_test(self):
-        """RandomNumberDraw: Simple parametrized constructor is feasible"""
+        """RandomItemDraw: Simple parametrized constructor is feasible"""
         t_draw = RandomItemDraw()
         t_draw.save()
         t_item = Item(name="item1")
         t_item.save()
         t_draw.items.add(t_item)
         self.assertTrue(t_draw.is_feasible())
+
+    def is_feasible_too_many_results_without_repeat_test(self):
+        """RandomItemDraw: Too many results without repeat is not feasible"""
+        number_of_results = 3
+        t_draw = RandomItemDraw(number_of_results=number_of_results,allow_repeat=False)
+        t_item1 = Item(name="table")
+        t_item2 = Item(name="pencil")
+        t_draw.save()
+        t_item1.save()
+        t_item2.save()
+        t_draw.items.add(t_item1, t_item2)
+
+        self.assertFalse(t_draw.is_feasible())
 
     def relationship_draw_result_test(self):
         """RandomNumberDraw: Relationship Draw-Result"""
@@ -52,7 +65,7 @@ class RandomItemDrawTestCase(TestCase):
         self.assertEqual(2, t_draw.results.count())
 
     def relationship_result_item_test(self):
-        """RandomNumberDraw: Relationship Result-Item"""
+        """RandomItemDraw: Relationship Result-Item"""
         t_draw = RandomItemDraw()
         t_draw.save()
         t_result = RandomItemResult()
@@ -73,7 +86,7 @@ class RandomItemDrawTestCase(TestCase):
         self.assertEqual(2, t_result.items.all().count())
 
     def toss_one_result_test(self):
-        """RandomNumberDraw: Each toss generates a new result"""
+        """RandomItemDraw: Each toss generates a new result"""
         t_draw = RandomItemDraw()
         t_item1 = Item(name="table")
         t_item2 = Item(name="pencil")
@@ -89,8 +102,8 @@ class RandomItemDrawTestCase(TestCase):
         self.assertEqual(2,t_draw.results.count())
 
     def toss_result_contains_items_test(self):
-        """RandomNumberDraw: after a toss items are in results"""
-        number_of_results=5
+        """RandomItemDraw: after a toss items are in results"""
+        number_of_results=2
         t_draw = RandomItemDraw(number_of_results=number_of_results)
         t_item1 = Item(name="table")
         t_item2 = Item(name="pencil")
@@ -111,3 +124,5 @@ class RandomItemDrawTestCase(TestCase):
         counter += result.items.filter(id=t_item3.id).count()
         counter += result.items.filter(id=t_item4.id).count()
         self.assertEqual(number_of_results, counter)
+
+
