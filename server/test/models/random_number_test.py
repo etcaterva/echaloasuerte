@@ -123,3 +123,14 @@ class RandomNumberDrawTestCase(TestCase):
         self.assertEqual(7,result2.result_numbers.count())
         t_draw2.toss()
 
+
+    def toss_without_repeat_test(self):
+        """RandomNumberDraw: Unique results if allow_repeat is false"""
+        total = 10
+        t_draw = RandomNumberDraw(range_max=total-1, number_of_results=total)
+        t_draw.save()
+        t_draw.toss()
+        result = t_draw.draw_results.order_by("-id")[0]
+        for i in range(0, total):
+            self.assertEqual(1, result.result_numbers.filter(value=i).count())
+
