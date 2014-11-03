@@ -134,3 +134,16 @@ class RandomNumberDrawTestCase(TestCase):
         for i in range(0, total):
             self.assertEqual(1, result.result_numbers.filter(value=i).count())
 
+    def toss_with_repeat_test(self):
+        """RandomNumberDraw: It's possible to store several time the same result when allow_repeat is true"""
+        range_max = 1
+        number_of_results=5
+        t_draw = RandomNumberDraw(range_max=range_max, number_of_results=number_of_results, allow_repeat=True)
+        t_draw.save()
+        t_draw.toss()
+        result = t_draw.draw_results.latest('timestamp')
+
+        counter = 0
+        for i in range(0,range_max+1):
+            counter += result.result_numbers.filter(value=i).count()
+        self.assertEqual(number_of_results, counter)
