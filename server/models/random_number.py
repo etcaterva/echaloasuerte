@@ -2,12 +2,14 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 import random
 
+
 class RandomNumberDraw(models.Model):
     """
     Class that represents a draw with the details to produce random numbers.
     """
+
     class Meta:
-        app_label="server"
+        app_label = "server"
 
     range_min = models.BigIntegerField(_("Range start"), blank=False, null=False, default=0)
     """"Minimun value to be generated. Inclusive."""
@@ -26,7 +28,7 @@ class RandomNumberDraw(models.Model):
         if self.range_max is None:
             return False
         if self.allow_repeat == True:
-            return  self.range_min < self.range_max
+            return self.range_min < self.range_max
         else:
             return self.range_max - self.range_min >= self.number_of_results
 
@@ -37,15 +39,14 @@ class RandomNumberDraw(models.Model):
         result.draw = self
         result.save()
 
-        for i in range(0,self.number_of_results):
+        for i in range(0, self.number_of_results):
             while True:
                 random_value = random.randint(self.range_min, self.range_max)
-                if (self.allow_repeat or result.result_numbers.filter(value=random_value).count()==0):
+                if (self.allow_repeat or result.result_numbers.filter(value=random_value).count() == 0):
                     break
             number = Number(value=random_value)
             number.result = result
             number.save()
-
 
 
 class RandomNumberResult(models.Model):
@@ -53,15 +54,16 @@ class RandomNumberResult(models.Model):
     Class that represents a result of a RandonNumberDraw
     Note that one draw can generate several results
     """
-    class Meta:
-        app_label="server"
 
-    draw = models.ForeignKey(RandomNumberDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="draw_results")
+    class Meta:
+        app_label = "server"
+
+    draw = models.ForeignKey(RandomNumberDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False,
+                             related_name="draw_results")
     """ Stores the draw that generated this result. """
 
     timestamp = models.DateTimeField(auto_now_add=True)
     """Stores when the result was created."""
-
 
 
 class Number(models.Model):
@@ -71,10 +73,11 @@ class Number(models.Model):
     """
     value = models.BigIntegerField(_("Number"), blank=False, null=False)
 
-    result = models.ForeignKey(RandomNumberResult, verbose_name=_("Result"), blank=False, null=False, unique=False, related_name="result_numbers")
+    result = models.ForeignKey(RandomNumberResult, verbose_name=_("Result"), blank=False, null=False, unique=False,
+                               related_name="result_numbers")
 
     def __str__(self):
         return str(self.value)
 
     class Meta:
-        app_label="server"
+        app_label = "server"

@@ -3,13 +3,15 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 import random
 
+
 class Item(models.Model):
     """
     Class that store the items in the draw
     Note that one result may be one or several items
     """
+
     class Meta:
-        app_label="server"
+        app_label = "server"
 
     name = models.CharField(max_length=20, blank=False, null=False)
     """String that stores the name of the item"""
@@ -35,6 +37,7 @@ class RandomItemDraw(models.Model):
         return self.allow_repeat or self.number_of_results <= self.items.all().count()
 
     '''Preconditions: has to be feasible'''
+
     def toss(self):
         """Carries out the toss"""
         result = RandomItemResult()
@@ -42,23 +45,25 @@ class RandomItemDraw(models.Model):
         result.save()
 
         value_max = self.items.count() - 1
-        for i in range(0,self.number_of_results):
+        for i in range(0, self.number_of_results):
             random_value = random.randint(0, value_max)
             random_item = self.items.order_by("-id")[random_value]
             RandomItemResultItem(result=result, item=random_item).save()
 
     class Meta:
-        app_label="server"
+        app_label = "server"
 
 
 class RandomItemResult(models.Model):
     """
     Class that represents a result of a RandomItemDraw. It consist on one or several items from the list
     """
-    class Meta:
-        app_label="server"
 
-    draw = models.ForeignKey(RandomItemDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False, related_name="results")
+    class Meta:
+        app_label = "server"
+
+    draw = models.ForeignKey(RandomItemDraw, verbose_name=_("Draw"), blank=False, null=False, unique=False,
+                             related_name="results")
     """ Stores the draw that generated this result. """
 
     items = models.ManyToManyField(Item, through='RandomItemResultItem', blank=False, null=False)
@@ -69,8 +74,9 @@ class RandomItemResultItem(models.Model):
     Class that represents the many-to-many relationship between RandomItemResult and Item
     The reason to use a intermediary model is to allow duplicate entries
     """
+
     class Meta:
-        app_label="server"
+        app_label = "server"
 
 
     result = models.ForeignKey(RandomItemResult)

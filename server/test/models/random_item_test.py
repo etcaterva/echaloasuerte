@@ -2,6 +2,7 @@ from django.test import TestCase
 from server.models import *
 import django
 
+
 class RandomItemDrawTestCase(TestCase):
     def setUp(self):
         django.setup()
@@ -13,14 +14,14 @@ class RandomItemDrawTestCase(TestCase):
     def default_constructor_test(self):
         """RandomItemDraw: Default constructor"""
         tested_item = RandomItemDraw()
-        self.assertEqual(tested_item.number_of_results,1)
-        self.assertEqual(tested_item.allow_repeat,False)
+        self.assertEqual(tested_item.number_of_results, 1)
+        self.assertEqual(tested_item.allow_repeat, False)
 
     def parametrized_constructor_test(self):
         """RandomItemDraw: Full Parametrized constructor"""
-        tested_item = RandomItemDraw(number_of_results = 5, allow_repeat=True)
-        self.assertEqual(tested_item.number_of_results,5)
-        self.assertEqual(tested_item.allow_repeat,True)
+        tested_item = RandomItemDraw(number_of_results=5, allow_repeat=True)
+        self.assertEqual(tested_item.number_of_results, 5)
+        self.assertEqual(tested_item.allow_repeat, True)
 
     def is_feasible_default_test(self):
         """RandomItemDraw: Default constructor is not feasible"""
@@ -40,7 +41,7 @@ class RandomItemDrawTestCase(TestCase):
     def is_feasible_too_many_results_without_repeat_test(self):
         """RandomItemDraw: Too many results without repeat is not feasible"""
         number_of_results = 3
-        t_draw = RandomItemDraw(number_of_results=number_of_results,allow_repeat=False)
+        t_draw = RandomItemDraw(number_of_results=number_of_results, allow_repeat=False)
         t_item1 = Item(name="table")
         t_item2 = Item(name="pencil")
         t_draw.save()
@@ -94,16 +95,16 @@ class RandomItemDrawTestCase(TestCase):
         t_item1.save()
         t_item2.save()
 
-        t_draw.items.add(t_item1,t_item2)
-        self.assertEqual(0,t_draw.results.count())
+        t_draw.items.add(t_item1, t_item2)
+        self.assertEqual(0, t_draw.results.count())
         t_draw.toss()
-        self.assertEqual(1,t_draw.results.count())
+        self.assertEqual(1, t_draw.results.count())
         t_draw.toss()
-        self.assertEqual(2,t_draw.results.count())
+        self.assertEqual(2, t_draw.results.count())
 
     def toss_result_contains_items_test(self):
         """RandomItemDraw: after a toss items are in results"""
-        number_of_results=2
+        number_of_results = 2
         t_draw = RandomItemDraw(number_of_results=number_of_results)
         t_item1 = Item(name="table")
         t_item2 = Item(name="pencil")
@@ -115,9 +116,9 @@ class RandomItemDrawTestCase(TestCase):
         t_item3.save()
         t_item4.save()
 
-        t_draw.items.add(t_item1,t_item2,t_item3,t_item4)
+        t_draw.items.add(t_item1, t_item2, t_item3, t_item4)
         t_draw.toss()
-        result = t_draw.results.order_by("-id")[0] # There is only one
+        result = t_draw.results.order_by("-id")[0]  # There is only one
         counter = 0
         counter += result.items.filter(id=t_item1.id).count()
         counter += result.items.filter(id=t_item2.id).count()
