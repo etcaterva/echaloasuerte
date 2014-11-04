@@ -6,7 +6,7 @@
 {% load staticfiles %}
 {% load bootstrap %}
 <html lang="es">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>{% block title %}Echalo A Suerte{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,9 +32,9 @@
     <script src="{% static 'js/project.js' %}"></script>
     <script>
         {% block extra_js %}{% endblock extra_js %}
-        $(document).ready(function(){
-            $('#language-dropdown li a').click(function(){
-                $("#language-form option[value=" + $(this).attr('title') +"]").attr("selected","selected") ;
+        $(document).ready(function () {
+            $('#language-dropdown li a').click(function () {
+                $("#language-form option[value=" + $(this).attr('title') + "]").attr("selected", "selected");
                 $("#change_language_but").click();
             });
             {% block extra_jq %}{% endblock extra_jq %}
@@ -45,71 +45,78 @@
     </style>
 
     {% block extra_head %}{% endblock extra_head %}
-  </head>
+</head>
 
-    <body>
-	    <div class="container">
-            {% block pre-content %}
-            {% endblock pre-content %}
+<body>
+<div class="container">
+    {% block pre-content %}
+    {% endblock pre-content %}
 
 
-		      <!-- Static navbar -->
-		      <div class="navbar navbar-default" role="navigation">
-		        <div class="container-fluid">
-		          <div class="navbar-header">
-		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-		              <span class="sr-only">Toggle navigation</span>
-		              <span class="icon-bar"></span>
-		              <span class="icon-bar"></span>
-		              <span class="icon-bar"></span>
-		            </button>
-		            <a class="navbar-brand" href="/"> Echalo A Suerte </a>
-		          </div>
-		          <div class="navbar-collapse collapse">
-		            <ul class="nav navbar-nav">
-		            </ul>
-		            <ul class="nav navbar-nav navbar-right">
-		    {% if user.is_authenticated %}
+    <!-- Static navbar -->
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"> Echalo A Suerte </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
                         <li><a href="/">
-                            <span class="glyphicon glyphicon-user"></span> {{user.first_name}}
+                            <span class="glyphicon glyphicon-user"></span> {{ user.first_name }}
                         </a></li>
-		    {% endif %}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-flag"></span> {% trans "Language" %} <b class="caret"></b></a>
-                            <ul class="dropdown-menu" id="language-dropdown">
-                              {% for language in languages %}
-                              <li><a href="#" title="{{ language.code }}">{{ language.name_local }} ({{ language.code }})</a></li>
-                              {% endfor %}
-                            </ul>
-                        </li>
-		            </ul>
-		          </div><!--/.nav-collapse -->
-		        </div><!--/.container-fluid -->
-		      </div>
+                    {% endif %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                                class="glyphicon glyphicon-flag"></span> {% trans "Language" %} <b
+                                class="caret"></b></a>
+                        <ul class="dropdown-menu" id="language-dropdown">
+                            {% for language in languages %}
+                                <li><a href="#" title="{{ language.code }}">{{ language.name_local }}
+                                    ({{ language.code }})</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+        <!--/.container-fluid -->
+    </div>
 
 
-	        {% block content %}
-	          <p>Page to be filled.</p>
-	        {% endblock content %}
+    {% block content %}
+        <p>Page to be filled.</p>
+    {% endblock content %}
 
-        </div> <!-- container -->
+</div>
+<!-- container -->
 
 <!-- hidden form to change language -->
 <div class="hidden">
-<form action="{% url 'set_language' %}" method="post">
-{% csrf_token %}
-<input name="next" type="hidden" value="{{ redirect_to }}" />
-<select name="language" id="language-form">
-{% get_language_info_list for LANGUAGES as languages %}
-{% for language in languages %}
-<option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
-    {{ language.name_local }} ({{ language.code }})
-</option>
-{% endfor %}
-</select>
-<input type="submit" value="Go" id="change_language_but"/>
-</form>
+    <form action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ redirect_to }}"/>
+        <select name="language" id="language-form">
+            {% get_language_info_list for LANGUAGES as languages %}
+            {% for language in languages %}
+                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
+                        selected="selected"{% endif %}>
+                    {{ language.name_local }} ({{ language.code }})
+                </option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Go" id="change_language_but"/>
+    </form>
 </div>
 {% block extra_body %}{% endblock extra_body %}
-    </body>
+</body>
 </html>
