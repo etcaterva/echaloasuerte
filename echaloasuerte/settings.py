@@ -15,6 +15,7 @@ from sys import path,stdout
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+path.append(BASE_DIR)
 BASE_LOG_PATH = os.path.join(BASE_DIR, 'logs/')
 
 # Quick-start development settings - unsuitable for production
@@ -40,6 +41,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'bootstrapform',
+
     'server',
     'web',
 )

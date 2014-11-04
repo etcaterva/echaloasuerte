@@ -8,7 +8,7 @@
 <html lang="es">
   <head>
     <meta charset="utf-8">
-    <title>{% block title %}MedCall{% endblock title %}</title>
+    <title>{% block title %}Echalo A Suerte{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Mario Corchero">
@@ -53,7 +53,6 @@
             {% endblock pre-content %}
 
 
-		    {% if user.is_authenticated %}
 		      <!-- Static navbar -->
 		      <div class="navbar navbar-default" role="navigation">
 		        <div class="container-fluid">
@@ -64,18 +63,17 @@
 		              <span class="icon-bar"></span>
 		              <span class="icon-bar"></span>
 		            </button>
-		            <a class="navbar-brand" href="/">MedCall</a>
+		            <a class="navbar-brand" href="/"> Echalo A Suerte </a>
 		          </div>
 		          <div class="navbar-collapse collapse">
 		            <ul class="nav navbar-nav">
 		            </ul>
 		            <ul class="nav navbar-nav navbar-right">
+		    {% if user.is_authenticated %}
                         <li><a href="/">
                             <span class="glyphicon glyphicon-user"></span> {{user.first_name}}
                         </a></li>
-                        <li><a href="{% url 'doc_patients' %}">
-                            <span class="glyphicon glyphicon-book"></span> {% trans "Patients" %}
-                        </a></li>
+		    {% endif %}
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-flag"></span> {% trans "Language" %} <b class="caret"></b></a>
                             <ul class="dropdown-menu" id="language-dropdown">
@@ -84,14 +82,10 @@
                               {% endfor %}
                             </ul>
                         </li>
-                        <li><a href="{% url 'logout' %}">
-                            <span class="glyphicon glyphicon-off"></span> {% trans "Exit" %}
-                        </a></li>
 		            </ul>
 		          </div><!--/.nav-collapse -->
 		        </div><!--/.container-fluid -->
 		      </div>
-		    {% endif %}
 
 
 	        {% block content %}
