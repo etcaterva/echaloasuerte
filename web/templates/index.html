@@ -1,10 +1,15 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% load bootstrap %}
 {% load i18n %}
 {% block content %}
     <div class="row">
-        <div class="col-xs-10" >
-            IT WORKS!
+        <div class="col-xs-10 main-draw-list col-md-offset-1" >
+            <a><div class="navbar-default">
+                    <img width="80px" class="img-over" src="{% static "img/random_number.png" %}"/>
+                    <h2 class="text-center pull-right" style="display:inline">{% trans "Random Number" %}</h2>
+            </div></a>
+            <a><div class="navbar-default"> {% trans "Pick Item From List" %} </div></a>
         </div>
     </div>
 {% endblock %}

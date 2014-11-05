@@ -5,7 +5,7 @@
 <!-- Current language: {{ LANGUAGE_CODE }} -->
 {% load staticfiles %}
 {% load bootstrap %}
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>{% block title %}Echalo A Suerte{% endblock title %}</title>
@@ -37,6 +37,24 @@
                 $("#language-form option[value=" + $(this).attr('title') + "]").attr("selected", "selected");
                 $("#change_language_but").click();
             });
+        /** Raton sobre una imagen **/
+        $('.img-over').each(function(){
+            var imgFile= $(this).attr('src');
+            var imgExt = /(\.\w{3,4}$)/;
+            var preloadImage = new Image();
+            preloadImage.src = imgFile.replace(imgExt,'_over$1');
+            $this = $(this);
+            $(this).parent().hover(
+                function()
+                {
+                    $this.attr('src',preloadImage.src);
+                },
+                function()
+                {
+                    $this.attr('src',imgFile);
+                });
+        });
+
             {% block extra_jq %}{% endblock extra_jq %}
         });
     </script>
