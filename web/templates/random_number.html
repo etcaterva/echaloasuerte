@@ -9,15 +9,20 @@
 
             <form id="random_number_form" method="post" action="/number">
                 {% csrf_token %}
-                <p>Give me {{ form.number_of_results }} number(s)
-                from {{ form.range_min }} to {{ form.range_max }}</p>
-                <p>Allow repeat {{ form.allow_repeat }}</p>
+                <p>Give me {{ draw.number_of_results }} number(s)
+                from {{ draw.range_min }} to {{ draw.range_max }}</p>
+                <p>Allow repeat {{ draw.allow_repeat }}</p>
 
-                {{ form.number_of_results.errors }}
-                {{ form.range_min.errors }}
-                {{ form.range_max.errors }}
+                {{ draw.number_of_results.errors }}
+                {{ draw.range_min.errors }}
+                {{ draw.range_max.errors }}
                 <input type="submit" name="submit" value="Toss"/>
             </form>
+            {% if results %}
+                {% for number in results %}
+                    <p>* {{ number }}</p>
+                {% endfor %}
+            {%  endif %}
         </div>
     </div>
 {% endblock %}

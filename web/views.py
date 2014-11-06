@@ -19,21 +19,23 @@ def index(request):
 
 
 def random_number_draw(request):
+    data = {}
     if request.method == 'POST':
-        form = RandomNumberDrawForm(request.POST)
-        if form.is_valid():
-            draw = form.save()
+        draw_form = RandomNumberDrawForm(request.POST)
+        if draw_form.is_valid():
+            draw = draw_form.save()
             if draw.is_feasible():
-                draw.toss()
-                return index(request)
+                result = draw.toss()
+                list = []
+                for number in result.numbers.all():
+                    list.append(number.value)
+                data = {'results': list}
             else:
                 print "The draw is not feasible!"
         else:
-            print form.errors
+            print draw_form.errors
     else:
-        # If the request was not a POST, display the form to enter details.
-        form = RandomNumberDrawForm()
+        draw_form = RandomNumberDrawForm()
 
-    # Bad form (or form details), no form supplied...
-    # Render the form with error messages (if any).
-    return render_to_response('random_number.html', {'form':form}, context_instance=RequestContext(request))
+    data['draw'] = draw_form
+    return render_to_response('random_number.html', data, context_instance=RequestContext(request))
