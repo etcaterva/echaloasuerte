@@ -43,15 +43,15 @@
             var imgExt = /(\.\w{3,4}$)/;
             var preloadImage = new Image();
             preloadImage.src = imgFile.replace(imgExt,'_over$1');
-            $this = $(this);
             $(this).parent().hover(
                 function()
                 {
-                    $this.attr('src',preloadImage.src);
+                    $img = $(this).children("img")
+                    $img.attr('src',preloadImage.src);
                 },
                 function()
                 {
-                    $this.attr('src',imgFile);
+                    $img.attr('src',imgFile);
                 });
         });
 
