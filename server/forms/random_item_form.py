@@ -11,7 +11,7 @@ class RandomItemDrawForm(forms.ModelForm):
         widgets = {
           'number_of_results': forms.TextInput(attrs={'size': 1}),
         }
-        
+
 
 class ItemForm(forms.ModelForm):
 

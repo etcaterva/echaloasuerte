@@ -9,7 +9,7 @@
 
             <form id="random_item_form" method="post" action="/item">
                 {% csrf_token %}
-                <p>Choose {{ draw.number_of_results }} item(s)</p>
+                <p>Choose {{ draw.number_of_results | bootstrap}} item(s)</p>
                 {{ draw.items }}
 
                 <input type="submit" name="submit" value="Toss"/>
