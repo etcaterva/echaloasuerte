@@ -70,3 +70,8 @@ a{
   -moz-border-radius: 15px;
   border-radius: 15px;
 }
+
+.main-draw-list div img{
+  padding-right: 25px;
+  width: 100px;
+}

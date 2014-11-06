@@ -6,10 +6,9 @@
     <div class="row">
         <div class="col-xs-10 main-draw-list col-md-offset-1">
             <h1>Random Numbers</h1>
-
             <form id="random_number_form" method="post" action="/number">
                 {% csrf_token %}
-                <p>Give me {{ draw.number_of_results }} number(s)
+                <p>Give me {{ draw.number_of_results}} number(s)
                 from {{ draw.range_min }} to {{ draw.range_max }}</p>
                 <p>Allow repeat {{ draw.allow_repeat }}</p>
 
