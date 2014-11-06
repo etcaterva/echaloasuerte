@@ -47,6 +47,7 @@ class RandomNumberDraw(models.Model):
             number = Number(value=random_value)
             number.result = result
             number.save()
+        return result
 
 
 class RandomNumberResult(models.Model):
