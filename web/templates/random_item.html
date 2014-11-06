@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load bootstrap %}
+{% load i18n %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-10 main-draw-list col-md-offset-1">
+            <h1>Random Items</h1>
+
+            <form id="random_item_form" method="post" action="/item">
+                {% csrf_token %}
+                <p>Choose {{ draw.number_of_results }} item(s)</p>
+                {{ draw.items }}
+
+                <input type="submit" name="submit" value="Toss"/>
+            </form>
+            {% if results %}
+                {% for number in results %}
+                    <p>* {{ number }}</p>
+                {% endfor %}
+            {%  endif %}
+        </div>
+    </div>
+{% endblock %}

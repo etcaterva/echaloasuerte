@@ -39,3 +39,26 @@ def random_number_draw(request):
 
     data['draw'] = draw_form
     return render_to_response('random_number.html', data, context_instance=RequestContext(request))
+
+
+def random_item_draw(request):
+    data = {}
+    if request.method == 'POST':
+        draw_form = RandomItemDrawForm(request.POST)
+        if draw_form.is_valid():
+            draw = draw_form.save()
+            if draw.is_feasible():
+                result = draw.toss()
+                list = []
+                '''for number in result.numbers.all():
+                    list.append(number.value)
+                data = {'results': list}'''
+            else:
+                print "The draw is not feasible!"
+        else:
+            print draw_form.errors
+    else:
+        draw_form = RandomItemDrawForm()
+
+    data['draw'] = draw_form
+    return render_to_response('random_item.html', data, context_instance=RequestContext(request))
