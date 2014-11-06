@@ -22,10 +22,12 @@ def random_number_draw(request):
     if request.method == 'POST':
         form = RandomNumberDrawForm(request.POST)
         if form.is_valid():
-            form.save()
-
-            # generate a result
-            return index(request)
+            draw = form.save()
+            if draw.is_feasible():
+                draw.toss()
+                return index(request)
+            else:
+                print "The draw is not feasible!"
         else:
             print form.errors
     else:
