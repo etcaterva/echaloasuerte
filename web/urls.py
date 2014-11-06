@@ -6,5 +6,6 @@ urlpatterns = patterns(None)
 
 urlpatterns += patterns(
     '',
-    url(r'^$', views.index ,name='index'),
+    url(r'^$', views.index, name='index'),
+    url(r'^number$', views.random_number_draw, name="random_number"),
 )

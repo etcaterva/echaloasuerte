@@ -1,3 +1,5 @@
+from server.forms import *
+
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response,redirect
@@ -14,3 +16,22 @@ def index(request):
     logger.info("Serving index page.")
     return render_to_response('index.html', {'request':request},
         context_instance=RequestContext(request))
+
+
+def random_number_draw(request):
+    if request.method == 'POST':
+        form = RandomNumberDrawForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            # generate a result
+            return index(request)
+        else:
+            print form.errors
+    else:
+        # If the request was not a POST, display the form to enter details.
+        form = RandomNumberDrawForm()
+
+    # Bad form (or form details), no form supplied...
+    # Render the form with error messages (if any).
+    return render_to_response('random_number.html', {'form':form}, context_instance=RequestContext(request))

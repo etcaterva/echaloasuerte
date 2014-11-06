@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load bootstrap %}
+{% load i18n %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-10 main-draw-list col-md-offset-1">
+            <h1>Random Numbers</h1>
+
+            <form id="random_number_form" method="post" action="/number">
+                {% csrf_token %}
+                <p>Give me {{ form.number_of_results }} number(s)
+                from {{ form.range_min }} to {{ form.range_max }}</p>
+                <p>Allow repeat {{ form.allow_repeat }}</p>
+
+                {{ form.number_of_results.errors }}
+                {{ form.range_min.errors }}
+                {{ form.range_max.errors }}
+                <input type="submit" name="submit" value="Toss"/>
+            </form>
+        </div>
+    </div>
+{% endblock %}
