@@ -15,6 +15,11 @@
                 <input type="submit" name="submit" value="Toss"/>
             </form>
             {% if results %}
+                {% if results|length  == 1%}
+                    <h2>Result</h2>
+                {% else %}
+                    <h2>Results</h2>
+                {% endif %}
                 {% for number in results %}
                     <p>* {{ number }}</p>
                 {% endfor %}
