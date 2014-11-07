@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.utils.translation import ugettext_lazy as _
 import logging
+from server.models.random_item import RandomItemResultItem
 
 logger = logging.getLogger("echaloasuerte")
 
@@ -42,23 +43,27 @@ def random_number_draw(request):
 
 
 def random_item_draw(request):
-    data = {}
+    context = {}
     if request.method == 'POST':
         draw_form = RandomItemDrawForm(request.POST)
+        item_formset = ItemFormSet(request.POST)
         if draw_form.is_valid():
             draw = draw_form.save()
-            if draw.is_feasible():
-                result = draw.toss()
-                list = []
-                '''for number in result.numbers.all():
-                    list.append(number.value)
-                data = {'results': list}'''
+            if item_formset.is_valid():
+                item_set = item_formset.save()
+                for item in item_set:
+                    draw.items.add(item)
+                if draw.is_feasible():
+                    result = draw.toss()
+                    context = {'results': result.items.values_list('name', flat=True)}
             else:
                 print "The draw is not feasible!"
         else:
             print draw_form.errors
     else:
         draw_form = RandomItemDrawForm()
+        item_formset = ItemFormSet(queryset=Item.objects.none())
 
-    data['draw'] = draw_form
-    return render_to_response('random_item.html', data, context_instance=RequestContext(request))
+    context['draw'] = draw_form
+    context['items'] = item_formset
+    return render(request, 'random_item.html', context)

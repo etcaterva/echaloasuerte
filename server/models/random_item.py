@@ -54,6 +54,7 @@ class RandomItemDraw(models.Model):
                 if self.allow_repeat or result.items.filter(id=random_item.id).count() == 0:
                     break
             RandomItemResultItem(result=result, item=random_item).save()
+        return result
 
     class Meta:
         app_label = "server"

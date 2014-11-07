@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.models import modelformset_factory
 from server.models import RandomItemDraw
 from server.models import Item
 
@@ -7,14 +8,14 @@ class RandomItemDrawForm(forms.ModelForm):
 
     class Meta:
         model = RandomItemDraw
-        exclude = ()
-        widgets = {
-          'number_of_results': forms.TextInput(attrs={'size': 1}),
-        }
+        exclude = ['items']
 
 
 class ItemForm(forms.ModelForm):
 
     class Meta:
         model = Item
-        exclude = ()
+        exclude = []
+
+
+ItemFormSet = modelformset_factory(Item, extra=3)
