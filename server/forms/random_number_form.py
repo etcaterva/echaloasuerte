@@ -2,7 +2,9 @@ from django import forms
 from server.models import RandomNumberDraw
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from crispy_forms.layout import Field
+from crispy_forms.layout import Layout
+from crispy_forms.layout import Submit
+from crispy_forms.layout import Fieldset, Row, HTML, Div
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -22,9 +24,16 @@ class RandomNumberDrawForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_id = 'form-random_number'
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-xs-4'
-        self.helper.field_class = 'col-xs-8'
+        self.helper.label_class = 'col-xs-7'
+        self.helper.field_class = 'col-xs-5'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = '/number'
         self.helper.add_input(Submit('submit', 'Toss'))
+        self.helper.layout = Layout(
+            Div(
+                Row('number_of_results'),
+                Row('range_min'),
+                Row('range_max'),
+            ),
+        )

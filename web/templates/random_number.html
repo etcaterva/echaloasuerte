@@ -3,16 +3,18 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% block content %}
-    <div class="row">
-        <!--<div class="col-x   s-10 main-draw-list col-md-offset-1">-->
-        <div class="col-xs-10 col-xs-offset-1">
+    <div class="col-sm-4 col-sm-offset-4">
+        <div class="row">
             <h1>Random Numbers</h1>
             {% crispy draw draw.helper %}
         </div>
-            {% if results %}
-                {% for number in results %}
-                    <p>* {{ number }}</p>
-                {% endfor %}
-            {%  endif %}
+        <div class="row">
+                {% if results %}
+                    <h2>Results</h2>
+                    {% for number in results %}
+                        <p>* {{ number }}</p>
+                    {% endfor %}
+                {%  endif %}
+        </div>
     </div>
 {% endblock %}
