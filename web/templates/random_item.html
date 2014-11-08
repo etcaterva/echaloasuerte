@@ -5,14 +5,12 @@
 {% block content %}
     <div class="col-sm-4 col-sm-offset-4">
         <div class="row">
-            <h1>Random Numbers</h1>
+            <h1>Random Items</h1>
             <form action="/item" class="blueForms" method="post">
                 {% crispy draw draw.helper %}
                 <h3>Items</h3>
                 {% crispy items helper %}
-
-                    <input type="submit" name="sumbit" value="Toss" class="btn btn-primary" id="submit-id-submit">
-
+                <input type="submit" name="sumbit" value="Toss" class="btn btn-primary" id="submit-id-submit">
             </form>
 
         </div>

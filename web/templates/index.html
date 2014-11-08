@@ -3,32 +3,31 @@
 {% load bootstrap %}
 {% load i18n %}
 {% block content %}
+    <div class="col-md-6 main-draw-list col-md-offset-3" >
     <div class="row">
-        <div class="col-xs-10 main-draw-list col-md-offset-1" >
             <a href="/number"><div class="navbar-default">
                     <img  class="img-over" src="{% static "img/random_number.png" %}"/>
-                    <h3 class="text-center " style="display:inline">{% trans "Random numbers" %}</h3>
+                    <h4 class="text-center " style="display:inline">{% trans "Random numbers" %}</h4>
             </div></a>
             <a href="/item"><div class="navbar-default">
                 <img  class="img-over" src="{% static "img/random_item.png" %}"/>
-                <h3 class="text-center " style="display:inline">{% trans "Pick items from a list" %}</h3>
+                <h4 class="text-center " style="display:inline">{% trans "Pick items from a list" %}</h4>
             </div></a>
             <a href="#"><div class="navbar-default">
                     <img  class="img-over" src="{% static "img/item_asociation.png" %}"/>
-                    <h3 class="text-center " style="display:inline">{% trans "Asociate items from two lists" %}</h3>
+                    <h4 class="text-center " style="display:inline">{% trans "Asociate items from two lists" %}</h4>
             </div></a>
             <a href="#"><div class="navbar-default">
                     <img  class="img-over" src="{% static "img/coin.png" %}"/>
-                    <h3 class="text-center " style="display:inline">{% trans "Flip a coin" %}</h3>
+                    <h4 class="text-center " style="display:inline">{% trans "Flip a coin" %}</h4>
             </div></a>
             <a href="#"><div class="navbar-default">
                     <img  class="img-over" src="{% static "img/cards.png" %}"/>
-                    <h3 class="text-center " style="display:inline">{% trans "Take a card" %}</h3>
+                    <h4 class="text-center " style="display:inline">{% trans "Take a card" %}</h4>
             </div></a>
             <a href="#"><div class="navbar-default">
                     <img  class="img-over" src="{% static "img/dice.png" %}"/>
-                    <h3 class="text-center " style="display:inline">{% trans "Roll a die" %}</h3>
+                    <h4 class="text-center " style="display:inline">{% trans "Roll a die" %}</h4>
             </div></a>
-        </div>
     </div>
 {% endblock %}
