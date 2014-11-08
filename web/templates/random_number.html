@@ -10,7 +10,11 @@
         </div>
         <div class="row">
                 {% if results %}
-                    <h2>Results</h2>
+                    {% if results|length  == 1%}
+                        <h2>Result</h2>
+                    {% else %}
+                        <h2>Results</h2>
+                    {% endif %}
                     {% for number in results %}
                         <p>* {{ number }}</p>
                     {% endfor %}

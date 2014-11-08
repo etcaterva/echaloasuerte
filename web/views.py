@@ -66,4 +66,5 @@ def random_item_draw(request):
 
     context['draw'] = draw_form
     context['items'] = item_formset
+    context['helper'] = ItemFormsetHelper()
     return render(request, 'random_item.html', context)

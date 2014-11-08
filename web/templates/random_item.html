@@ -1,29 +1,32 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{% load bootstrap %}
+{% load crispy_forms_tags %}
 {% load i18n %}
 {% block content %}
-    <div class="row">
-        <div class="col-xs-10 col-md-offset-1">
-            <h1>Random Items</h1>
+    <div class="col-sm-4 col-sm-offset-4">
+        <div class="row">
+            <h1>Random Numbers</h1>
+            <form action="/item" class="blueForms" method="post">
+                {% crispy draw draw.helper %}
+                <h3>Items</h3>
+                {% crispy items helper %}
 
-            <form id="random_item_form" method="post" action="/item">
-                {% csrf_token %}
-                <p>Choose {{ draw.number_of_results | bootstrap}} item(s)</p>
-                {{ items | bootstrap_horizontal}}
+                    <input type="submit" name="sumbit" value="Toss" class="btn btn-primary" id="submit-id-submit">
 
-                <input type="submit" name="submit" value="Toss"/>
             </form>
-            {% if results %}
-                {% if results|length  == 1%}
-                    <h2>Result</h2>
-                {% else %}
-                    <h2>Results</h2>
-                {% endif %}
-                {% for number in results %}
-                    <p>* {{ number }}</p>
-                {% endfor %}
-            {%  endif %}
+
+        </div>
+        <div class="row">
+                {% if results %}
+                    {% if results|length  == 1%}
+                        <h2>Result</h2>
+                    {% else %}
+                        <h2>Results</h2>
+                    {% endif %}
+                    {% for number in results %}
+                        <p>* {{ number }}</p>
+                    {% endfor %}
+                {%  endif %}
         </div>
     </div>
 {% endblock %}

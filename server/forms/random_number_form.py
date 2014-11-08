@@ -1,10 +1,7 @@
 from django import forms
 from server.models import RandomNumberDraw
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-from crispy_forms.layout import Layout
-from crispy_forms.layout import Submit
-from crispy_forms.layout import Fieldset, Row, HTML, Div
+from crispy_forms.layout import Layout, Submit, Row, Div
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -12,8 +9,7 @@ class RandomNumberDrawForm(forms.ModelForm):
 
     class Meta:
         model = RandomNumberDraw
-        fields = ['number_of_results', 'range_min', 'range_max']
-
+        exclude = []
 
     def __init__(self, *args, **kwargs):
         super(RandomNumberDrawForm, self).__init__(*args, **kwargs)
