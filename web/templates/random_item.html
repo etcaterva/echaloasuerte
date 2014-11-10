@@ -21,9 +21,14 @@
                     {% else %}
                         <h2>Results</h2>
                     {% endif %}
-                    {% for number in results %}
-                        <p>* {{ number }}</p>
-                    {% endfor %}
+                    <ul class="list-group">
+                        {% for item in results %}
+                            <li class="list-group-item">
+                                {{ item }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
                 {%  endif %}
         </div>
     </div>
