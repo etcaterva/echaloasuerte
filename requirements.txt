@@ -1,3 +1,3 @@
 django
-crispy_forms
+django-crispy-forms
 django-bootstrap-form
