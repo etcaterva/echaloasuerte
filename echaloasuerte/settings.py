@@ -95,7 +95,7 @@ USE_TZ = True
 
 ########## STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = '/data/apache/serve/static'
+STATIC_ROOT = '/data/apache/serve/echaloasuerte/static'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
@@ -113,7 +113,7 @@ STATICFILES_FINDERS = (
 ########## END STATIC FILE CONFIGURATION
 ########## MEDIA CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = '/data/apache/serve/media'
+MEDIA_ROOT = '/data/apache/serve/echaloasuerte/media'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'
