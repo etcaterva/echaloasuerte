@@ -4,13 +4,13 @@
 {% load i18n %}
 {% block content %}
     <div class="col-md-6 main-draw-list col-md-offset-3" >
-        <a href="/number" >
+        <a href="{% url 'random_number' %}" >
             <div class="row">
                 <img class="img-over col-xs-3" src="{% static "img/random_number.png" %}"/>
                 <h4 class="text-center col-xs-9">{% trans "Random numbers" %}</h4>
             </div>
         </a>
-        <a href="/item">
+        <a href="{% url 'random_item' %}">
             <div class="row">
                 <img  class="img-over col-xs-3" src="{% static "img/random_item.png" %}"/>
                 <h4 class="text-center  col-xs-9">{% trans "Pick items from a list" %}</h4>
