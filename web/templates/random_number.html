@@ -6,9 +6,9 @@
     <div class="col-sm-4 col-sm-offset-4">
         <div class="row">
             <a href="{% url 'index' %}" >
-                <img class="col-xs-2" src="{% static "img/back_arrow.png" %}"/>
+                <img class="col-xs-3" src="{% static "img/back_arrow.png" %}"/>
             </a>
-            <h1>Random Numbers</h1>
+            <h1 class="col-xs-9">Random Numbers</h1>
             {% crispy draw draw.helper %}
         </div>
         <div class="row">
