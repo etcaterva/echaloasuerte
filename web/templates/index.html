@@ -4,41 +4,41 @@
 {% load i18n %}
 {% block content %}
     <div class="col-md-6 main-draw-list col-md-offset-3" >
-        <div class="row">
-            <a href="/number">
+        <a href="/number" >
+            <div class="row">
                 <img class="img-over col-xs-3" src="{% static "img/random_number.png" %}"/>
-                <h4 class="text-center col-xs-9" style="display:inline">{% trans "Random numbers" %}</h4>
-            </a>
-        </div>
-        <div class="row">
-            <a href="/item">
+                <h4 class="text-center col-xs-9">{% trans "Random numbers" %}</h4>
+            </div>
+        </a>
+        <a href="/item">
+            <div class="row">
                 <img  class="img-over col-xs-3" src="{% static "img/random_item.png" %}"/>
-                <h4 class="text-center  col-xs-9 " style="display:inline">{% trans "Pick items from a list" %}</h4>
-            </a>
-        </div>
-        <div class="row">
-            <a href="#">
+                <h4 class="text-center  col-xs-9">{% trans "Pick items from a list" %}</h4>
+            </div>
+        </a>
+        <a href="#">
+            <div class="row">
                 <img  class="img-over col-xs-3" src="{% static "img/item_asociation.png" %}"/>
-                <h4 class="text-center col-xs-9" style="display:inline">{% trans "Asociate items from two lists" %}</h4>
-            </a>
-        </div>
-        <div class="row">
-                <a href="#">
-                    <img  class="img-over col-xs-3" src="{% static "img/coin.png" %}"/>
-                    <h4 class="text-center col-xs-9" style="display:inline">{% trans "Flip a coin" %}</h4>
-                </a>
-        </div>
-        <div class="row">
-                <a href="#">
-                    <img  class="img-over col-xs-3" src="{% static "img/cards.png" %}"/>
-                    <h4 class="text-center col-xs-9" style="display:inline">{% trans "Take a card" %}</h4>
-                </a>
-        </div>
-        <div class="row">
-                <a href="#">
-                    <img  class="img-over col-xs-3" src="{% static "img/dice.png" %}"/>
-                    <h4 class="text-center col-xs-9" style="display:inline">{% trans "Roll a die" %}</h4>
-                </a>
-        </div>
+                <h4 class="text-center col-xs-9">{% trans "Asociate items from two lists" %}</h4>
+            </div>
+        </a>
+        <a href="#">
+            <div class="row">
+                <img  class="img-over col-xs-3" src="{% static "img/coin.png" %}"/>
+                <h4 class="text-center col-xs-9">{% trans "Flip a coin" %}</h4>
+            </div>
+        </a>
+        <a href="#">
+            <div class="row">
+                <img  class="img-over col-xs-3" src="{% static "img/cards.png" %}"/>
+                <h4 class="text-center col-xs-9">{% trans "Take a card" %}</h4>
+            </div>
+        </a>
+        <a href="#">
+            <div class="row">
+                <img  class="img-over col-xs-3" src="{% static "img/dice.png" %}"/>
+                <h4 class="text-center col-xs-9">{% trans "Roll a die" %}</h4>
+            </div>
+        </a>
     </div>
 {% endblock %}

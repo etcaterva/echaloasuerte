@@ -10,7 +10,9 @@
                 {% crispy draw draw.helper %}
                 <h3>Items</h3>
                 {% crispy items helper %}
-                <input type="submit" name="sumbit" value="Toss" class="btn btn-primary" id="submit-id-submit">
+                <div class="text-center">
+                    <input type="submit" name="sumbit" value="Toss" class="btn btn-primary btn-toss" id="submit-id-submit">
+                </div>
             </form>
 
         </div>
@@ -23,7 +25,7 @@
                     {% endif %}
                     <ul class="list-group">
                         {% for item in results %}
-                            <li class="list-group-item">
+                            <li class="list-group-item col-xs-6">
                                 {{ item }}
                             </li>
                         {% endfor %}
