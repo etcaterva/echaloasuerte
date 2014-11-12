@@ -71,7 +71,8 @@ a{
   border-radius: 15px;
 }
 
-.main-draw-list div img{
-  padding-right: 25px;
-  width: 100px;
+.main-draw-list img{
+    display: block;
+    height: auto;
+    max-width: 100%;
 }
