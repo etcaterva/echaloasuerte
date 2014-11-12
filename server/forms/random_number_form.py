@@ -25,11 +25,14 @@ class RandomNumberDrawForm(forms.ModelForm):
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = '/number'
-        self.helper.add_input(Submit('submit', 'Toss'))
         self.helper.layout = Layout(
             Div(
                 Row('number_of_results'),
                 Row('range_min'),
                 Row('range_max'),
             ),
+            Div(
+               Submit('submit', _("Toos"), css_class='btn btn-primary'),
+               css_class='text-center',
+            )
         )
