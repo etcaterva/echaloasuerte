@@ -39,7 +39,7 @@
             var imgFile= $(this).attr('src');
             var imgExt = /(\.\w{3,4}$)/;
             var preloadImage = new Image();
-            preloadImage.src = imgFile.replace(imgExt,'_over$1');
+            preloadImage.src = imgFile.replace(imgExt,'_hover$1');
             $(this).parent().hover(
                 function()
                 {
