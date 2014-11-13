@@ -34,7 +34,7 @@ class RandomNumberDrawForm(forms.ModelForm):
                 Row('range_max'),
             ),
             Div(
-               Submit('submit', _("Toos"), css_class='btn btn-primary'),
+               Submit('submit', _("Toss"), css_class='btn btn-primary'),
                css_class='text-center',
             )
         )

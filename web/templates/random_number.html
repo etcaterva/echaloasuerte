@@ -9,8 +9,10 @@
                 <img class="col-xs-3" src="{% static "img/back_arrow.png" %}"/>
             </a>
             <h1 class="col-xs-9">Random Numbers</h1>
+            <div class="clearfix visible-xs"></div>
             {% crispy draw draw.helper %}
         </div>
+
         <div class="row">
                 {% if results %}
                     {% if results|length  == 1%}
