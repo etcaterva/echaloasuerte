@@ -16,25 +16,25 @@
                 <h4 class="text-center  col-xs-9">{% trans "Pick items from a list" %}</h4>
             </div>
         </a>
-        <a href="#">
+        <a href="{% url 'association' %}">
             <div class="row">
                 <img  class="img-over col-xs-3" src="{% static "img/item_asociation.png" %}"/>
                 <h4 class="text-center col-xs-9">{% trans "Asociate items from two lists" %}</h4>
             </div>
         </a>
-        <a href="#">
+        <a href="{% url 'coin' %}">
             <div class="row">
                 <img  class="img-over col-xs-3" src="{% static "img/coin.png" %}"/>
                 <h4 class="text-center col-xs-9">{% trans "Flip a coin" %}</h4>
             </div>
         </a>
-        <a href="#">
+        <a href="{% url 'card' %}">
             <div class="row">
                 <img  class="img-over col-xs-3" src="{% static "img/cards.png" %}"/>
                 <h4 class="text-center col-xs-9">{% trans "Take a card" %}</h4>
             </div>
         </a>
-        <a href="#">
+        <a href="{% url 'die' %}">
             <div class="row">
                 <img  class="img-over col-xs-3" src="{% static "img/dice.png" %}"/>
                 <h4 class="text-center col-xs-9">{% trans "Roll a die" %}</h4>
