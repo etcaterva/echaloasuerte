@@ -8,5 +8,5 @@ install:
   - "python manage.py syncdb --noinput"
 # command to run tests
 script:
-  - export DJANGO_SETTINGS_MODULE="echaloasuerte.settings"
+  - export DJANGO_SETTINGS_MODULE="echaloasuerte.settings.develop"
   - nosetests -v
