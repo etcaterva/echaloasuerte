@@ -1,8 +1,10 @@
-from django import forms
 from server.models import RandomNumberDraw
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Div
+
+from django import forms
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 
 
 class RandomNumberDrawForm(forms.ModelForm):
@@ -24,7 +26,7 @@ class RandomNumberDrawForm(forms.ModelForm):
         self.helper.field_class = 'col-xs-5'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
-        self.helper.form_action = '/number'
+        self.helper.form_action = reverse('random_number')
         self.helper.layout = Layout(
             Div(
                 Row('number_of_results'),

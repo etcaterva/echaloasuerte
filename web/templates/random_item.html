@@ -9,7 +9,7 @@
                 <img class="col-xs-3" src="{% static "img/back_arrow.png" %}"/>
             </a>
             <h1 class="col-xs-9">Random Items</h1>
-            <form action="/item" class="blueForms" method="post">
+            <form action="{% url 'random_item' %}" class="blueForms" method="post">
                 {% crispy draw draw.helper %}
                 <h3>Items</h3>
                 {% crispy items helper %}
