@@ -12,11 +12,11 @@ from server.models.random_item import RandomItemResultItem
 
 logger = logging.getLogger("echaloasuerte")
 
+
 # Create your views here.
 def index(request):
     logger.info("Serving index page.")
-    return render_to_response('index.html', {'request':request},
-        context_instance=RequestContext(request))
+    return render_to_response('index.html', {'request': request}, context_instance=RequestContext(request))
 
 
 def random_number_draw(request):
@@ -32,9 +32,9 @@ def random_number_draw(request):
                     list.append(number.value)
                 data = {'results': list}
             else:
-                print "The draw is not feasible!"
+                print("The draw is not feasible!")
         else:
-            print draw_form.errors
+            print(draw_form.errors)
     else:
         draw_form = RandomNumberDrawForm()
 
@@ -57,9 +57,9 @@ def random_item_draw(request):
                     result = draw.toss()
                     context = {'results': result.items.values_list('name', flat=True)}
             else:
-                print "The draw is not feasible!"
+                print("The draw is not feasible!")
         else:
-            print draw_form.errors
+            print(draw_form.errors)
     else:
         draw_form = RandomItemDrawForm()
         item_formset = ItemFormSet(queryset=Item.objects.none())
