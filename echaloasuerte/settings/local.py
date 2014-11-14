@@ -1,6 +1,5 @@
 """Local settings and globals."""
 from echaloasuerte.settings.common import *
-from os.path import join, normpath
 
 
 ########## DEBUG CONFIGURATION

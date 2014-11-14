@@ -79,6 +79,10 @@ USE_L10N = True
 USE_TZ = True
 ########## END GENERAL CONFIGURATION
 
+LOCALE_PATHS = (
+        normpath(join(SITE_ROOT, 'locale')),
+            )
+
 
 ########## MEDIA CONFIGURATION
 # Absolute filesystem path to the directory that will hold user-uploaded files.
