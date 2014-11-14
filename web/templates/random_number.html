@@ -5,10 +5,19 @@
 {% block content %}
     <div class="col-sm-4 col-sm-offset-4">
         <div class="row">
+            <!-- OPTION 1
+            <a class="col-xs-6 col-sm-4" href="{% url 'index' %}" >
+                <img src="{% static "img/back_arrow.png" %}"/>
+            </a>
+            <img class="col-xs-6 col-sm-4 col-sm-push-4" src="{% static "img/public_draw.png" %}"/>
+            <div class="clearfix visible-xs"></div>
+            <h1 class="col-xs-12 col-sm-4 col-sm-pull-4">Random Numbers</h1>
+            -->
             <a href="{% url 'index' %}" >
                 <img class="col-xs-3" src="{% static "img/back_arrow.png" %}"/>
             </a>
-            <h1 class="col-xs-9">Random Numbers</h1>
+            <h1 class="col-xs-6">Random Numbers</h1>
+            <img class="col-xs-3" src="{% static "img/public_draw.png" %}"/>
             <div class="clearfix visible-xs"></div>
             {% crispy draw draw.helper %}
         </div>
