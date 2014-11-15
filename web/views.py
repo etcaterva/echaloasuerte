@@ -1,5 +1,4 @@
 from server.forms import *
-
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response,redirect
@@ -69,6 +68,25 @@ def random_item_draw(request):
     context['helper'] = ItemFormsetHelper()
     return render(request, 'random_item.html', context)
 
+
+def coin_draw(request):
+    context = {}
+    if request.method == 'POST':
+        draw_form = CoinDrawForm(request.POST)
+        if draw_form.is_valid():
+            draw = draw_form.save()
+            if draw.is_feasible():
+                result = draw.toss()
+                context = {'result': result.value}
+            else:
+                print("The draw is not feasible!")
+        else:
+            print(draw_form.errors)
+    else:
+        draw_form = CoinDrawForm()
+
+    context['draw'] = draw_form
+    return render(request, 'coin.html', context)
 
 def under_construction(request):
     return render(request, 'under_construction.html', {})
