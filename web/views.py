@@ -19,7 +19,7 @@ def index(request):
 
 
 def random_number_draw(request):
-    data = {}
+    context = {}
     if request.method == 'POST':
         draw_form = RandomNumberDrawForm(request.POST)
         if draw_form.is_valid():
@@ -29,7 +29,7 @@ def random_number_draw(request):
                 list = []
                 for number in result.numbers.all():
                     list.append(number.value)
-                data = {'results': list}
+                context = {'results': list}
             else:
                 print("The draw is not feasible!")
         else:
@@ -37,8 +37,8 @@ def random_number_draw(request):
     else:
         draw_form = RandomNumberDrawForm()
 
-    data['draw'] = draw_form
-    return render_to_response('random_number.html', data, context_instance=RequestContext(request))
+    context['draw'] = draw_form
+    return render(request, 'random_number.html', context)
 
 
 def random_item_draw(request):
