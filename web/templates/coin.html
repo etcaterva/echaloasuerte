@@ -21,7 +21,7 @@
             <form action="{% url 'coin' %}" class="blueForms" method="post">
                 {% crispy draw draw.helper %}
                 <div class="text-center">
-                    <p>Click the coin to flip it</p>
+                    <p>{% trans "Tap the coin to flip it" %}</p>
                     {% if result == 'tail'%}
                         <input type="image" src="{% static "img/coin_tail.png" %}" name="sumbit" alt="Flip the coin">
                     {% else %}
