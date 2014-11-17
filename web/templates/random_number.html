@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% block content %}
-    <div class="col-sm-4 col-sm-offset-4">
+    <div class="col-sm-6 col-sm-offset-3">
         <div class="row">
             <!-- OPTION 1
             <a class="col-xs-6 col-sm-4" href="{% url 'index' %}" >
@@ -17,7 +17,11 @@
                 <img class="col-xs-3" style="margin-left: -20px" src="{% static "img/back_arrow.png" %}"/>
             </a>
             <h1 class="col-xs-6">Random Numbers</h1>
-            <img class="col-xs-3" src="{% static "img/public_draw.png" %}"/>
+            <div class="col-xs-3">
+                a
+                <img src="{% static "img/public_draw.png" %}"/>
+                b
+            </div>
             <div class="clearfix visible-xs"></div>
             {% crispy draw draw.helper %}
         </div>

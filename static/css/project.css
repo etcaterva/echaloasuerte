@@ -72,8 +72,9 @@ a{
 }
 
 img{
-    display: block;
-    height: auto;
+   /* display: block;
+    height: auto;*/
+    min-width: 70px;
     max-width: 87px;
 }
 
