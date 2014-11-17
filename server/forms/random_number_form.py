@@ -32,6 +32,7 @@ class RandomNumberDrawForm(forms.ModelForm):
                 Row('number_of_results'),
                 Row('range_min'),
                 Row('range_max'),
+                Row('allow_repeat'),
             ),
             Div(
                Submit('submit', _("Toss"), css_class='btn btn-primary'),
