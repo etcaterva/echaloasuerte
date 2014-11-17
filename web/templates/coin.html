@@ -5,25 +5,31 @@
 {% block title %}Flip a coin | Echalo A Suerte{% endblock title %}
 {% block content %}
     <div class="col-sm-6 col-sm-offset-3">
-        <div class="row">
-            <a class="col-xs-6 col-sm-4" href="{% url 'index' %}" >
-                <img src="{% static "img/back_arrow.png" %}"/>
+        <!-- Draw Heading -->
+        <div class="row heading-draw">
+            <a href="{% url 'index' %}" class="col-xs-2">
+                <img class="small-responsive" style="margin-left: -20px" src="{% static "img/back_arrow.png" %}"/>
             </a>
-            <img class="col-xs-6 col-sm-4 col-sm-push-4" src="{% static "img/public_draw.png" %}"/>
-            <div class="clearfix visible-xs"></div>
-            <h1 class="text-center col-xs-12 col-sm-4 col-sm-pull-4">Flip a coin</h1>
-            <div class="clearfix"></div>
+            <h1 class="h3 col-xs-8 text-center">Flip a coin</h1>
+            <a class="col-xs-2 text-right">
+                <img class="small-responsive" src="{% static "img/public_draw.png" %}"/>
+            </a>
+        </div>
+        <!-- End Draw Heading -->
+        <!-- Input Form -->
+        <div class="row">
             <form action="{% url 'coin' %}" class="blueForms" method="post">
                 {% crispy draw draw.helper %}
                 <div class="text-center">
                     <p>{% trans "Tap the coin to flip it" %}</p>
-                    {% if result == 'tail'%}
+                    {% if result == 'tail' %}
                         <input type="image" src="{% static "img/coin_tail.png" %}" name="sumbit" alt="Flip the coin">
                     {% else %}
                         <input type="image" src="{% static "img/coin_head.png" %}" name="sumbit" alt="Flip the coin">
-                    {%  endif %}
+                    {% endif %}
                 </div>
             </form>
         </div>
+        <!-- Input Form -->
     </div>
 {% endblock %}

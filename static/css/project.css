@@ -71,7 +71,7 @@ a{
   border-radius: 15px;
 }
 
-img{
+img.small-responsive{
     width:100%;
     height: auto;
     min-width: 40px;
