@@ -72,12 +72,18 @@ a{
 }
 
 img{
-   /* display: block;
-    height: auto;*/
-    min-width: 70px;
-    max-width: 87px;
+    width:100%;
+    height: auto;
+    min-width: 40px;
+    max-width: 60px;
 }
 
 div.no-span{
     margin-top: -28px;
+}
+
+
+
+.row.heading-draw {
+    margin-bottom:20px;
 }

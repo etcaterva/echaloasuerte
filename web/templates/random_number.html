@@ -4,43 +4,39 @@
 {% load i18n %}
 {% block content %}
     <div class="col-sm-6 col-sm-offset-3">
-        <div class="row">
-            <!-- OPTION 1
-            <a class="col-xs-6 col-sm-4" href="{% url 'index' %}" >
-                <img src="{% static "img/back_arrow.png" %}"/>
+        <!-- Draw Heading -->
+        <div class="row heading-draw">
+            <a href="{% url 'index' %}" class="col-xs-2">
+                <img style="margin-left: -20px" src="{% static "img/back_arrow.png" %}"/>
             </a>
-            <img class="col-xs-6 col-sm-4 col-sm-push-4" src="{% static "img/public_draw.png" %}"/>
-            <div class="clearfix visible-xs"></div>
-            <h1 class="col-xs-12 col-sm-4 col-sm-pull-4">Random Numbers</h1>
-            -->
-            <a href="{% url 'index' %}" >
-                <img class="col-xs-3" style="margin-left: -20px" src="{% static "img/back_arrow.png" %}"/>
-            </a>
-            <h1 class="col-xs-6">Random Numbers</h1>
-            <div class="col-xs-3">
-                a
+            <h1 class="h3 col-xs-8 text-center">Random Numbers</h1>
+            <a class="col-xs-2 text-right">
                 <img src="{% static "img/public_draw.png" %}"/>
-                b
-            </div>
-            <div class="clearfix visible-xs"></div>
+            </a>
+        </div>
+        <!-- End Draw Heading -->
+        <!-- Input Form -->
+        <div class="row">
             {% crispy draw draw.helper %}
         </div>
-
-        <div class="row">
-                {% if results %}
-                    {% if results|length  == 1%}
-                        <p class="h2">Result</p>
-                    {% else %}
-                        <p class="h2">Results</p>
-                    {% endif %}
-                    <ul class="list-group">
-                        {% for number in results %}
-                            <li class="list-group-item col-xs-4">
-                                {{ number }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {%  endif %}
+        <!-- End Input Form -->
+        <!-- Results -->
+        <div class="row text-center">
+            {% if results %}
+                {% if results|length  == 1 %}
+                    <p class="h3">Result</p>
+                {% else %}
+                    <p class="h3">Results</p>
+                {% endif %}
+                <ul class="list-group">
+                    {% for number in results %}
+                        <li class="list-group-item col-xs-4 col-xs-offset-4">
+                            {{ number }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
+        <!-- End Results -->
     </div>
 {% endblock %}
