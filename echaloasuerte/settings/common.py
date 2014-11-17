@@ -177,3 +177,6 @@ ROOT_URLCONF = '%s.urls' % SITE_NAME
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '$a3e(-u8)4m4*(vfnfnfjba@bd13-2u#=(i$*7(p!(6ck0ugd='
 ########## END KEY CONFIGURATION
+
+# Fixing 1_6.W001
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
