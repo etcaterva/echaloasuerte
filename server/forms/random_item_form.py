@@ -25,12 +25,10 @@ class RandomItemDrawForm(forms.ModelForm):
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = '/item'
-        #self.helper.add_input(Submit('submit', 'Toss'))
         self.helper.layout = Layout(
             Div(
-                Row(
-                    Field('number_of_results', autocomplete='off')
-                ),
+                Row('number_of_results'),
+                Row('allow_repeat'),
             ),
         )
 
