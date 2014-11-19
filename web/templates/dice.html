@@ -3,6 +3,9 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% block title %}Roll a die | Echalo A Suerte{% endblock title %}
+{% block extra_head %}
+    <script src="{% static 'js/dice.js' %}"></script>
+{% endblock extra_head %}
 {% block content %}
     <div class="col-sm-6 col-sm-offset-3">
         <!-- Draw Heading -->
@@ -29,13 +32,11 @@
                 {% else %}
                     <p class="h3">Results</p>
                 {% endif %}
-                <ul class="list-group">
-                    {% for die in results %}
-                        <li class="list-group-item col-xs-4 col-xs-offset-4">
-                            {{ die }}
-                        </li>
-                    {% endfor %}
-                </ul>
+                <script>
+                    results = {{ results }}
+                    D6.baseUrl = '{{ STATIC_URL }}' + "img/"
+                    D6.dice(results);
+                </script>
             {% endif %}
         </div>
         <!-- End Results -->
