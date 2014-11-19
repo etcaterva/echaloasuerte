@@ -3,25 +3,6 @@ from django.utils.translation import ugettext_lazy as _
 import random
 
 
-class Die(models.Model):
-    """
-    Class that store the items in the draw
-    Note that one result may be one or several items
-    """
-
-    class Meta:
-        app_label = "server"
-
-    value = models.IntegerField(blank=False, null=False)
-    """String the value of the die"""
-
-    result = models.ForeignKey(DiceResult, verbose_name=_("Result"), blank=False, null=False, unique=False,
-                               related_name="dice")
-
-    def __str__(self):
-        return self.value
-
-
 class DiceDraw(models.Model):
     """
     Class that represents a draw with the details choose random items from a list
@@ -31,7 +12,7 @@ class DiceDraw(models.Model):
     """Number of dice to roll"""
 
     def is_feasible(self):
-        return True;
+        return self.number_of_dice > 0
 
     def toss(self):
         """Carries out the toss"""
@@ -65,3 +46,22 @@ class DiceResult(models.Model):
 
     timestamp = models.DateTimeField(auto_now_add=True)
     """Stores when the result was created."""
+
+
+class Die(models.Model):
+    """
+    Class that store the items in the draw
+    Note that one result may be one or several items
+    """
+
+    class Meta:
+        app_label = "server"
+
+    value = models.IntegerField(blank=False, null=False)
+    """String the value of the die"""
+
+    result = models.ForeignKey(DiceResult, verbose_name=_("Result"), blank=False, null=False, unique=False,
+                               related_name="dice")
+
+    def __str__(self):
+        return self.value
