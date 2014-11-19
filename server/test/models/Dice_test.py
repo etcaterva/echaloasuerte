@@ -92,3 +92,14 @@ class DiceTestCase(TestCase):
         result2 = t_draw2.results.latest('timestamp')
         self.assertEqual(7, result2.dice.count())
         t_draw2.toss()
+
+    def toss_result_between_1_6_test(self):
+        """DiceDraw: A toss generates a result from 1-6"""
+        for i in range(0,10):
+            t_draw = DiceDraw(number_of_dice=1)
+            t_draw.save()
+            t_draw.toss()
+            result = t_draw.results.latest('timestamp')
+            die = result.dice.order_by('-id')[0]
+            between_1_6 = die.value >= 1 and die.value <=6
+            self.assertTrue(between_1_6)

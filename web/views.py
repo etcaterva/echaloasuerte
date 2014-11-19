@@ -100,7 +100,7 @@ def dice_draw(request):
                 list = []
                 for number in result.dice.all():
                     list.append(number.value)
-                context = {'dice': list}
+                context = {'results': list}
             else:
                 print("The draw is not feasible!")
         else:
