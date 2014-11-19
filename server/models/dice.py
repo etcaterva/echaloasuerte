@@ -21,7 +21,7 @@ class DiceDraw(models.Model):
         result.save()
 
         for i in range(0, self.number_of_dice):
-            random_value = random.randint(0, 6)
+            random_value = random.randint(1, 5)
             number = Die(value=random_value)
             number.result = result
             number.save()
