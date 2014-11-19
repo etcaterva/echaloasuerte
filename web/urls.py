@@ -12,6 +12,6 @@ urlpatterns += patterns(
     url(r'^association.html$', views.under_construction, name="association"),
     url(r'^coin.html$', views.coin_draw, name="coin"),
     url(r'^card.html$', views.under_construction, name="card"),
-    url(r'^die.html$', views.under_construction, name="die"),
+    url(r'^die.html$', views.under_construction, name="dice"),
 
 )
