@@ -1,6 +1,6 @@
 from echaloasuerte.settings.common import *
 
-WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
+#WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 
 
 ########## DEBUG CONFIGURATION
