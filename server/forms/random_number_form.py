@@ -21,7 +21,7 @@ class RandomNumberDrawForm(forms.ModelForm):
 
 
         self.helper = FormHelper()
-        self.helper.field_template = 'bootstrap3/eas_field.html'
+        #self.helper.field_template = 'bootstrap3/eas_field.html'
         self.helper.form_id = 'form-random_number'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-7 text-right'
