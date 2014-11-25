@@ -16,15 +16,15 @@ coin.result = 0;
 
 coin.setup = function () {
     cachedimages[0] = new Image();
-    cachedimages[0].src = coin.baseUrl + "head.jpg";
+    cachedimages[0].src = coin.baseUrl + "head.png";
     cachedimages[1] = new Image();
-    cachedimages[1].src = coin.baseUrl + "tail_dist.jpg";
+    cachedimages[1].src = coin.baseUrl + "tail_dist.png";
     cachedimages[2] = new Image();
-    cachedimages[2].src = coin.baseUrl + "tail.jpg";
+    cachedimages[2].src = coin.baseUrl + "tail.png";
     cachedimages[3] = new Image();
-    cachedimages[3].src = coin.baseUrl + "head_dist.jpg";
+    cachedimages[3].src = coin.baseUrl + "head_dist.png";
     cachedimages[4] = new Image();
-    cachedimages[4].src = coin.baseUrl + "dist.jpg";
+    cachedimages[4].src = coin.baseUrl + "dist.png";
 	framecnt = 0;
 }
 
