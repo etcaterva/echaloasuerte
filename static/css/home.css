@@ -6,9 +6,8 @@
   border-radius: 15px;
 }
 
-img.small-responsive{
-    width:100%;
+.main-draw-list img{
     height: auto;
     min-width: 40px;
-    max-width: 60px;
+    max-width: 100px;
 }

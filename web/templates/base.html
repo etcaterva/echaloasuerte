@@ -31,7 +31,8 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    <link href="{% static 'css/home.css' %}" rel="stylesheet">
+    <link href="{% static 'css/base-theme.css' %}" rel="stylesheet">
     <script src="{% static 'js/project.js' %}"></script>
     <script>
         {% block extra_js %}{% endblock extra_js %}
@@ -71,9 +72,6 @@
     {% block pre-content %}
     {% endblock pre-content %}
 
-    <div class="visible-xs no-span">
-    </div>
-
     <!-- Showing screen size tag -->
     <div class="hidden">
         <p class="visible-xs">XS</p>
@@ -87,7 +85,7 @@
 
 
     <!-- Static navbar -->
-    <div class="navbar navbar-default" role="navigation">
+    <div id="cssmenu" class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
