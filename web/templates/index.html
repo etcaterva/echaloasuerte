@@ -4,7 +4,8 @@
 {% load i18n %}
 {% block content %}
     <div class="row" >
-        <div class="col-sm-6 col-md-4 col-md-offset-2">
+        <div class="draw-list col-md-8 col-md-offset-2">
+        <div class="col-sm-6">
             <a href="{% url 'coin' %}">
                 <div class="clearfix draw">
                     <img  class="img-over col-xs-3" src="{% static "img/coin.png" %}"/>
@@ -26,7 +27,7 @@
 
         </div>
 
-        <div class="col-sm-6 col-md-4">
+        <div class="col-sm-6">
         <a href="{% url 'random_number' %}" >
             <div class="clearfix draw">
                 <img class="img-over col-xs-3" src="{% static "img/random_number.png" %}"/>
@@ -46,6 +47,7 @@
             </div>
         </a>
 
+        </div>
         </div>
     </div>
 {% endblock %}

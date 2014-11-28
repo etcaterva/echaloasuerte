@@ -126,11 +126,34 @@ body {
 }
 
 #cssmenu .navbar-brand {
-      float: left;
-  height: 50px;
-  padding: 15px 15px;
-  font-size: 20px;
-  line-height: 20px;
-  color: #ffffff;
-  font-family: 'Kaushan Script', cursive;
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 20px;
+    line-height: 20px;
+    color: #ffffff;
+    font-family: 'Kaushan Script', cursive;
 }
+
+.draw-list {
+    background: #2a8a8f;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    padding: 30px 5px 30px 0px;
+}
+
+.draw {
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #fff;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
+
+.draw img{
+    height: auto;
+    min-width: 40px;
+    max-width: 100px;
+}
+
+
