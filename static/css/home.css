@@ -1,4 +1,4 @@
-.main-draw-list div{
+.draw {
   padding: 10px;
   margin-top: 5px;
   background-color: #fff;
@@ -6,7 +6,7 @@
   border-radius: 15px;
 }
 
-.main-draw-list img{
+.draw img{
     height: auto;
     min-width: 40px;
     max-width: 100px;
