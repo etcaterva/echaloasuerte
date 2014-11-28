@@ -1,4 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
+@import url(http://fonts.googleapis.com/css?family=Kaushan+Script);
 @charset "UTF-8";
 
 body {
@@ -122,4 +123,14 @@ body {
   -moz-box-shadow: inset 0 5px 10px #133e40;
   -webkit-box-shadow: inset 0 5px 10px #133e40;
   box-shadow: inset 0 5px 10px #133e40;
+}
+
+#cssmenu .navbar-brand {
+      float: left;
+  height: 50px;
+  padding: 15px 15px;
+  font-size: 20px;
+  line-height: 20px;
+  color: #ffffff;
+  font-family: 'Kaushan Script', cursive;
 }
