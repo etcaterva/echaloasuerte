@@ -136,8 +136,11 @@ body {
 }
 
 .content {
-    background: #2a8a8f;
+    /*background: #2a8a8f;*/
+    background: #afcecf;
     -moz-border-radius: 15px;
+    border: 2px solid;
+    border-color: #2a8a8f;
     border-radius: 15px;
     padding: 10px 0px 30px 0px;
 }

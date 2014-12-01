@@ -4,40 +4,41 @@
 {% load i18n %}
 {% block title %}Random Number | Echalo A Suerte{% endblock title %}
 {% block content %}
-    <div class="col-sm-6 col-sm-offset-3">
-        <!-- Draw Heading -->
-        <div class="row heading-draw">
+    <div class="row no-top-margin" >
+        <div class="content col-sm-6 col-sm-offset-3">
+
+            <!-- Draw Heading -->
             <a href="{% url 'index' %}" class="col-xs-2">
-                <img class="small-responsive" style="margin-left: -20px" src="{% static "img/back_arrow.png" %}"/>
+                <img class="small-responsive" src="{% static "img/back_arrow.png" %}"/>
             </a>
             <h1 class="h3 col-xs-8 text-center">Random Numbers</h1>
             <a class="col-xs-2 text-right">
                 <img class="small-responsive" src="{% static "img/public_draw.png" %}"/>
             </a>
-        </div>
-        <!-- End Draw Heading -->
-        <!-- Input Form -->
-        <div class="row">
-            {% crispy draw draw.helper %}
-        </div>
-        <!-- End Input Form -->
-        <!-- Results -->
-        <div class="row text-center">
-            {% if results %}
-                {% if results|length  == 1 %}
-                    <p class="h3">Result</p>
-                {% else %}
-                    <p class="h3">Results</p>
+            <!-- End Draw Heading -->
+            <!-- Input Form -->
+            <div class="col-sm-8 col-sm-offset-2">
+                {% crispy draw draw.helper %}
+            </div>
+            <!-- End Input Form -->
+            <!-- Results -->
+            <div class="text-center col-xs-6 col-sm-offset-3">
+                {% if results %}
+                    {% if results|length  == 1 %}
+                        <p class="h3">Result</p>
+                    {% else %}
+                        <p class="h3">Results</p>
+                    {% endif %}
+                    <ul class="list-group">
+                        {% for number in results %}
+                            <li class="list-group-item">
+                                {{ number }}
+                            </li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
-                <ul class="list-group">
-                    {% for number in results %}
-                        <li class="list-group-item col-xs-4 col-xs-offset-4">
-                            {{ number }}
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+            </div>
+            <!-- End Results -->
         </div>
-        <!-- End Results -->
     </div>
 {% endblock %}
