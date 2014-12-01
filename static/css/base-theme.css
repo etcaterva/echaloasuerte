@@ -135,11 +135,16 @@ body {
     font-family: 'Kaushan Script', cursive;
 }
 
-.draw-list {
+.content {
     background: #2a8a8f;
     -moz-border-radius: 15px;
     border-radius: 15px;
-    padding: 30px 0px 30px 0px;
+    padding: 10px 0px 30px 0px;
+}
+
+
+.no-top-margin {
+    margin-top: -20px;
 }
 
 .draw {
