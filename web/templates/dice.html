@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% block title %}Roll a die | Echalo A Suerte{% endblock title %}
+{% block title %}Roll a dice | Echalo A Suerte{% endblock title %}
 {% block extra_head %}
     <script src="{% static 'js/dice.js' %}"></script>
 {% endblock extra_head %}
@@ -13,7 +13,7 @@
             <a href="{% url 'index' %}" class="col-xs-2">
                 <img class="small-responsive" style="margin-left: -20px" src="{% static "img/back_arrow.png" %}"/>
             </a>
-            <h1 class="h3 col-xs-8 text-center">Roll a die</h1>
+            <h1 class="h3 col-xs-8 text-center">Roll a dice</h1>
             <a class="col-xs-2 text-right">
                 <img class="small-responsive" src="{% static "img/public_draw.png" %}"/>
             </a>
