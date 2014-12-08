@@ -1,10 +1,11 @@
 from django.test import TestCase
 from server.models import *
+import django
 
 
 class RandomNumberDrawTestCase(TestCase):
     def setUp(self):
-        pass
+        django.setup()
 
     def build_random_number_test(self):
         """RandomNumberDraw: Basic construction"""

@@ -1,10 +1,11 @@
 from django.test import TestCase
 from server.models import *
+import django
 
 
 class DiceTestCase(TestCase):
     def setUp(self):
-        pass
+        django.setup()
 
     def build_dice_test(self):
         """DiceDraw: Basic construction"""
