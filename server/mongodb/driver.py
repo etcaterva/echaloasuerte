@@ -17,6 +17,6 @@ class MongoDriver(object):
                 MongoDriver._instance = MongoDriver(*cnx_param)
             return MongoDriver._instance
         except Exception as e:
-            print "Imposible to connect to mongo db. {0}".format(e)
+            print "Imposible to connect to mongo db: {0}".format(e)
 
 
