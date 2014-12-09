@@ -7,7 +7,7 @@ class RandomNumberDraw(object):
     """
     Class that represents a draw with the details to produce random numbers.
     """
-    def __init__(self,range_min=0,range_max=None,number_of_results=1,allow_repeat=False, results=None):
+    def __init__(self,range_min=0,range_max=None,number_of_results=1,allow_repeat=False, results=None,_id=None):
         self.range_min = range_min
         """"Minimun value to be generated. Inclusive."""
 
@@ -25,6 +25,9 @@ class RandomNumberDraw(object):
 
         self.draw_type = "random_number"
         """Never modified, but will be used when deserialising."""
+
+        self._id = _id
+        """Unique id of the toss across the whole system"""
 
 
     def is_feasible(self):
