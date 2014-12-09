@@ -8,6 +8,14 @@ class MongoDriver(object):
         self._users = self._db.users
         self._draws = self._db.draws
 
+
+    def save_draw(self,draw):
+        """Given a draw, saves it, update its ID if not set and returns the _id"""
+        doc = draw.__dict__
+        self._draws.save(doc)
+        draw._id = doc["_id"]
+        return doc["_id"]
+
     @staticmethod
     def instance():
         try:
@@ -17,6 +25,6 @@ class MongoDriver(object):
                 MongoDriver._instance = MongoDriver(*cnx_param)
             return MongoDriver._instance
         except Exception as e:
-            print "Imposible to connect to mongo db: {0}".format(e)
+            print( "Imposible to connect to mongo db: {0}".format(e))
 
 

@@ -29,10 +29,10 @@ class SanityMongo(TestCase):
         """MongoDB: Raw read in draws collection"""
         self._driver._draws.insert(self.dummy_doc)
         self._driver._draws.find(self.dummy_doc)[0]
-        self._driver._users.remove(self.dummy_doc)
+        self._driver._draws.remove(self.dummy_doc)
 
     def can_read_users_test(self):
         """MongoDB: Raw read in users collection"""
         self._driver._users.insert(self.dummy_doc)
         self._driver._users.find(self.dummy_doc)[0]
-        self._driver._draws.remove(self.dummy_doc)
+        self._driver._users.remove(self.dummy_doc)

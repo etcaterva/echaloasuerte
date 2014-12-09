@@ -23,6 +23,9 @@ class RandomNumberDraw(object):
         self.results = results if results is not None else []
         """Results of the draw"""
 
+        self.draw_type = "random_number"
+        """Never modified, but will be used when deserialising."""
+
 
     def is_feasible(self):
         if self.range_max is None:
@@ -35,7 +38,6 @@ class RandomNumberDraw(object):
 
     def toss(self):
         """Carries out the toss"""
-        print "Toss!"
         result = {"datetime":datetime.datetime.utcnow(),"numbers":[]}
         for i in range(0, self.number_of_results):
             while True:
