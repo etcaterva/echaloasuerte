@@ -89,3 +89,5 @@ LOGGING = {
     }
 }
 ########## END LOGGING CONFIGURATION
+
+MONGO_DB='develop'
