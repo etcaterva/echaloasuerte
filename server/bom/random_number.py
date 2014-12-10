@@ -23,9 +23,6 @@ class RandomNumberDraw(object):
         self.results = results if results is not None else []
         """Results of the draw"""
 
-        self.draw_type = "random_number"
-        """Never modified, but will be used when deserialising."""
-
         self._id = _id
         """Unique id of the toss across the whole system"""
 
