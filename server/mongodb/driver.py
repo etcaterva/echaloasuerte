@@ -18,6 +18,15 @@ class MongoDriver(object):
         draw._id = doc["_id"]
         return doc["_id"]
 
+    def retrieve_draw(self,draw_class,draw_id):
+        """
+        Retrieves a draw from mongo. given its class and its id
+        E.g.: retrieve_draw(RandomNumberDraw,"dsdfdsafdsa")
+        It returns an object of type draw_class
+        """
+        doc = self._draws.find_one({"_id":draw_id})
+        return draw_class(**doc)
+
     @staticmethod
     def instance():
         try:
