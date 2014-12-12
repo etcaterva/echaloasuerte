@@ -82,7 +82,7 @@ LOGGING = {
             'propagate': False,
         },
         'echaloasuerte': {
-            'handlers': [],
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,
             },
