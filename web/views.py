@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.utils.translation import ugettext_lazy as _
 import logging
 from server.models.random_item import RandomItemResultItem
+from server.bom.random_number import RandomNumberDraw
 
 logger = logging.getLogger("echaloasuerte")
 
@@ -19,17 +20,19 @@ def index(request):
 
 
 def random_number_draw(request):
+    #TODO: proper logging
+    #TODO: save draws in db
+    #TODO: proper error propagation
     context = {}
     if request.method == 'POST':
         draw_form = RandomNumberDrawForm(request.POST)
         if draw_form.is_valid():
-            draw = draw_form.save()
-            if draw.is_feasible():
-                result = draw.toss()
-                list = []
-                for number in result.numbers.all():
-                    list.append(number.value)
-                context = {'results': list}
+            raw_draw = draw_form.cleaned_data
+            bom_draw = RandomNumberDraw(**raw_draw)#This works because form and python object have the same member names
+            if bom_draw.is_feasible():
+                result = bom_draw.toss()
+                res_numbers = result["numbers"]
+                context = {'results': res_numbers}
             else:
                 print("The draw is not feasible!")
         else:

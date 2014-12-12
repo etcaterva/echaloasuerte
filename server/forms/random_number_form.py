@@ -1,4 +1,3 @@
-from server.models import RandomNumberDraw
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Div
 
@@ -7,19 +6,15 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
 
-class RandomNumberDrawForm(forms.ModelForm):
+class RandomNumberDrawForm(forms.Form):
 
-    class Meta:
-        model = RandomNumberDraw
-        exclude = []
+    range_min = forms.IntegerField(_("From"), initial=0, required=True)
+    range_max = forms.IntegerField(_("To"), required=True)
+    number_of_results = forms.IntegerField(_("Number of results"), required=True, initial=1)
+    allow_repeat = forms.BooleanField(label=_("Allow repetitions"),required=False)
 
     def __init__(self, *args, **kwargs):
         super(RandomNumberDrawForm, self).__init__(*args, **kwargs)
-        self.fields['number_of_results'].label = _("Number of results")
-        self.fields['range_min'].label = _("From")
-        self.fields['range_max'].label = _("To")
-
-
         self.helper = FormHelper()
         #self.helper.field_template = 'bootstrap3/eas_field.html'
         self.helper.form_id = 'form-random_number'
