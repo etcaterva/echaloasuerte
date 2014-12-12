@@ -1,4 +1,6 @@
 from pymongo import MongoClient
+import logging
+logger = logging.getLogger("echaloasuerte")
 
 class MongoDriver(object):
     _instance = None
@@ -7,7 +9,7 @@ class MongoDriver(object):
         self._db = self.client[database]
         self._users = self._db.users
         self._draws = self._db.draws
-
+        logger.info("Connected to '{0}' port '{1}' database '{2}'".format(host,port,database))
 
     def save_draw(self,draw):
         """Given a draw, saves it, update its ID if not set and returns the _id"""
@@ -16,6 +18,7 @@ class MongoDriver(object):
             doc.pop("_id")
         self._draws.save(doc)
         draw._id = doc["_id"]
+        logger.debug("Saved documment: {0}".format(doc))
         return doc["_id"]
 
     def retrieve_draw(self,draw_class,draw_id):
@@ -25,6 +28,7 @@ class MongoDriver(object):
         It returns an object of type draw_class
         """
         doc = self._draws.find_one({"_id":draw_id})
+        logger.debug("Retrieved documment: {0}".format(doc))
         return draw_class(**doc)
 
     @staticmethod

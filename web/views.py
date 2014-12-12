@@ -9,8 +9,11 @@ from django.utils.translation import ugettext_lazy as _
 import logging
 from server.models.random_item import RandomItemResultItem
 from server.bom.random_number import RandomNumberDraw
+from server.mongodb.driver import MongoDriver
+
 
 logger = logging.getLogger("echaloasuerte")
+mongodb = MongoDriver.instance()
 
 
 # Create your views here.
@@ -20,23 +23,29 @@ def index(request):
 
 
 def random_number_draw(request):
-    #TODO: proper logging
-    #TODO: save draws in db
-    #TODO: proper error propagation
+    logger.info("Serving view for random number draw")
     context = {}
+    context['errors'] = []
     if request.method == 'POST':
+        logger.debug("Information posted. {0}".format(request.POST))
         draw_form = RandomNumberDrawForm(request.POST)
         if draw_form.is_valid():
             raw_draw = draw_form.cleaned_data
+            #in the future we could retrive draws, add results and list the historic
             bom_draw = RandomNumberDraw(**raw_draw)#This works because form and python object have the same member names
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
+                mongodb.save_draw(bom_draw)
                 res_numbers = result["numbers"]
-                context = {'results': res_numbers}
+                context['results'] =  res_numbers
+                logger.info("New result generated for draw {0}".format(bom_draw._id))
+                logger.debug("Generated draw: {0}".format(bom_draw))
             else:
-                print("The draw is not feasible!")
+                logger.info("Draw not feasible")
+                context['errors'].append(_("The draw is not feasible"))
         else:
-            print(draw_form.errors)
+            logger.info("Form not valid")
+            logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         draw_form = RandomNumberDrawForm()
 
