@@ -7,7 +7,8 @@ class RandomNumberDraw(object):
     """
     Class that represents a draw with the details to produce random numbers.
     """
-    def __init__(self,range_min=0,range_max=None,number_of_results=1,allow_repeat=False, results=None,_id=None):
+
+    def __init__(self, range_min=0, range_max=None, number_of_results=1, allow_repeat=False, results=None, _id=None):
         self.range_min = range_min
         """"Minimun value to be generated. Inclusive."""
 
@@ -38,13 +39,13 @@ class RandomNumberDraw(object):
 
     def toss(self):
         """Carries out the toss"""
-        result = {"datetime":datetime.datetime.utcnow(),"numbers":[]}
+        result = {"datetime": datetime.datetime.utcnow(), "numbers": []}
         for i in range(0, self.number_of_results):
             while True:
                 random_value = random.randint(self.range_min, self.range_max)
                 if (self.allow_repeat or random_value not in result["numbers"]):
                     result["numbers"].append(random_value)
                     break
-        #print "Generated: {0} \nFor Draw: {1}".format(result,self.__dict__)
+        # print "Generated: {0} \nFor Draw: {1}".format(result,self.__dict__)
         self.results.append(result)
         return result
