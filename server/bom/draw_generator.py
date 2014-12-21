@@ -1,6 +1,7 @@
 DRAW_SCHELETON_1 = '''
 from django.utils.translation import ugettext_lazy as _
 import random
+import datetime
 
 class {0}Draw(object):
     """
@@ -19,11 +20,11 @@ DRAW_SCHELETON_4 = '''
         """xxx"""
 '''
 DRAW_SCHELETON_5 = '''
-        def is_feasible(self):
-            pass
+    def is_feasible(self):
+        pass
 
-        def toss(self):
-            pass
+    def toss(self):
+        pass
 '''
 
 import argparse
