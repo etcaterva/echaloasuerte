@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.utils.translation import ugettext_lazy as _
 import logging
-from server.models.random_item import RandomItemResultItem
+from server.bom.random_item import RandomItemDraw
 from server.bom.random_number import RandomNumberDraw
 from server.mongodb.driver import MongoDriver
 
@@ -54,30 +54,33 @@ def random_number_draw(request):
 
 
 def random_item_draw(request):
+    logger.info("Serving view for random number draw")
     context = {}
+    context['errors'] = []
+
     if request.method == 'POST':
         draw_form = RandomItemDrawForm(request.POST)
-        item_formset = ItemFormSet(request.POST)
         if draw_form.is_valid():
-            draw = draw_form.save()
-            if item_formset.is_valid():
-                item_set = item_formset.save()
-                for item in item_set:
-                    draw.items.add(item)
-                if draw.is_feasible():
-                    result = draw.toss()
-                    context = {'results': result.items.values_list('name', flat=True)}
+            raw_draw = draw_form.cleaned_data
+            raw_draw["items"] = raw_draw["items"].split(',')
+            bom_draw = RandomItemDraw(**raw_draw)
+            if bom_draw.is_feasible():
+                result = bom_draw.toss()
+                mongodb.save_draw(bom_draw)
+                res_items = result["items"]
+                context['results'] =  res_items
+                logger.info("New result generated for draw {0}".format(bom_draw._id))
+                logger.debug("Generated draw: {0}".format(bom_draw))
             else:
-                print("The draw is not feasible!")
+                logger.info("Draw not feasible")
+                context['errors'].append(_("The draw is not feasible"))
         else:
-            print(draw_form.errors)
+            logger.info("Form not valid")
+            logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         draw_form = RandomItemDrawForm()
-        item_formset = ItemFormSet(queryset=Item.objects.none())
 
     context['draw'] = draw_form
-    context['items'] = item_formset
-    context['helper'] = ItemFormsetHelper()
     return render(request, 'random_item.html', context)
 
 

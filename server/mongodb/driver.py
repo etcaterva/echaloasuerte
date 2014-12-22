@@ -14,7 +14,7 @@ class MongoDriver(object):
     def save_draw(self,draw):
         """Given a draw, saves it, update its ID if not set and returns the _id"""
         doc = draw.__dict__
-        if doc["_id"] is None:#Ask mongo to generate an id
+        if "_id" in doc.keys() and doc["_id"] is None:#Ask mongo to generate an id
             doc.pop("_id")
         self._draws.save(doc)
         draw._id = doc["_id"]

@@ -3,6 +3,9 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% block title %}Random item | Echalo A Suerte{% endblock title %}
+{% block extra_jq %}
+$('#id_items').tokenfield();
+{% endblock extra_jq %}
 {% block content %}
     <div class="col-sm-6 col-sm-offset-3">
         <!-- Draw Heading -->
@@ -20,8 +23,6 @@
         <div class="row">
             <form action="{% url 'random_item' %}" class="blueForms" method="post">
                 {% crispy draw draw.helper %}
-                <h3>Items</h3>
-                {% crispy items helper %}
                 <div class="text-center">
                     <input type="submit" name="sumbit" value="Toss" class="btn btn-primary" id="submit-id-submit">
                 </div>
