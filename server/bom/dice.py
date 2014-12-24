@@ -20,7 +20,6 @@ class DiceDraw(object):
         return self.number_of_results > 0
 
     def toss(self):
-        for i in range(0,self.number_of_results):
-            result = {"datetime": datetime.datetime.utcnow(), "result": random.randint(1,6)}
-            self.results.append(result)
-            return result
+        result = {"datetime": datetime.datetime.utcnow(), "result": [random.randint(1,6) for x in range(0,self.number_of_results)] }
+        self.results.append(result)
+        return result
