@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 class RandomNumberDrawForm(forms.Form):
     range_min = forms.IntegerField(label=_("From"), initial=0, required=True)
     range_max = forms.IntegerField(label=_("To"), required=True)
-    number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1)
+    number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1, max_value=1000)
     allow_repeat = forms.BooleanField(label=_("Allow repetitions"), required=False)
 
     def __init__(self, *args, **kwargs):

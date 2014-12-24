@@ -6,11 +6,12 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.utils.translation import ugettext_lazy as _
-import logging
 from server.bom.random_item import RandomItemDraw
 from server.bom.random_number import RandomNumberDraw
 from server.bom.coin import CoinDraw
+from server.bom.dice import DiceDraw
 from server.mongodb.driver import MongoDriver
+import logging
 
 
 logger = logging.getLogger("echaloasuerte")
@@ -93,8 +94,7 @@ def coin_draw(request):
         logger.debug("Information posted. {0}".format(request.POST))
         bom_draw = CoinDraw()
         result = bom_draw.toss()
-        bom_draw._id = 1
-        #mongodb.save_draw(bom_draw)
+        mongodb.save_draw(bom_draw)
         res = result["result"][0]
         print res
         context['result'] = res
@@ -104,21 +104,28 @@ def coin_draw(request):
 
 
 def dice_draw(request):
+    logger.info("Serving view for dice draw")
     context = {}
+    context['errors'] = []
+
     if request.method == 'POST':
         draw_form = DiceDrawForm(request.POST)
         if draw_form.is_valid():
-            draw = draw_form.save()
-            if draw.is_feasible():
-                result = draw.toss()
-                list = []
-                for number in result.dice.all():
-                    list.append(number.value)
-                context = {'results': list}
+            raw_draw = draw_form.cleaned_data
+            bom_draw = DiceDraw(**raw_draw)
+            if bom_draw.is_feasible():
+                result = bom_draw.toss()
+                mongodb.save_draw(bom_draw)
+                res = result["result"]
+                context['results'] =  res
+                logger.info("New result generated for draw {0}".format(bom_draw._id))
+                logger.debug("Generated draw: {0}".format(bom_draw))
             else:
-                print("The draw is not feasible!")
+                logger.info("Draw not feasible")
+                context['errors'].append(_("The draw is not feasible"))
         else:
-            print(draw_form.errors)
+            logger.info("Form not valid")
+            logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         draw_form = DiceDrawForm()
 
