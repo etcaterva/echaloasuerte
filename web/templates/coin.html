@@ -22,10 +22,9 @@
         <!-- Input Form -->
         <div class="row">
             <form action="{% url 'coin' %}" class="blueForms" method="post">
-                {% crispy draw draw.helper %}
+                {% csrf_token %}
                 <div class="text-center">
                     <input type="image" id="img-coin" src="{% static "img/img_coin/head.png" %}" name="coin">
-
                     <p>{% trans "Tap the coin to flip it" %}</p>
                     {% if result %}
                         {% if result == 'tail' %}

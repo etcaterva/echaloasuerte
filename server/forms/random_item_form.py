@@ -1,8 +1,6 @@
 from django import forms
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
-from server.models import RandomItemDraw
-from server.models import Item
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Div, Field
 

@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 import logging
 from server.bom.random_item import RandomItemDraw
 from server.bom.random_number import RandomNumberDraw
+from server.bom.coin import CoinDraw
 from server.mongodb.driver import MongoDriver
 
 
@@ -85,22 +86,20 @@ def random_item_draw(request):
 
 
 def coin_draw(request):
+    logger.info("Serving view for coin draw")
     context = {}
+    context['errors'] = []
     if request.method == 'POST':
-        draw_form = CoinDrawForm(request.POST)
-        if draw_form.is_valid():
-            draw = draw_form.save()
-            if draw.is_feasible():
-                result = draw.toss()
-                context = {'result': result.value}
-            else:
-                print("The draw is not feasible!")
-        else:
-            print(draw_form.errors)
-    else:
-        draw_form = CoinDrawForm()
-
-    context['draw'] = draw_form
+        logger.debug("Information posted. {0}".format(request.POST))
+        bom_draw = CoinDraw()
+        result = bom_draw.toss()
+        bom_draw._id = 1
+        #mongodb.save_draw(bom_draw)
+        res = result["result"][0]
+        print res
+        context['result'] = res
+        logger.info("New result generated for draw {0}".format(bom_draw._id))
+        logger.debug("Generated draw: {0}".format(bom_draw))
     return render(request, 'coin.html', context)
 
 
