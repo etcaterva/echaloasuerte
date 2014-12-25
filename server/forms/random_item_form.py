@@ -7,15 +7,12 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Div, Field
 
 
-class RandomItemDrawForm(forms.ModelForm):
-    class Meta:
-        model = RandomItemDraw
-        exclude = ['items']
-
+class RandomItemDrawForm(forms.Form):
+    number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1)
+    allow_repeat = forms.BooleanField(label=_("Allow repetitions"), required=False)
+    items = forms.CharField(label=_("Items (comma separated)"),widget=forms.TextInput())
     def __init__(self, *args, **kwargs):
         super(RandomItemDrawForm, self).__init__(*args, **kwargs)
-        self.fields['number_of_results'].label = _("Number of results")
-
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_id = 'form-random_item'
@@ -29,27 +26,6 @@ class RandomItemDrawForm(forms.ModelForm):
             Div(
                 Row('number_of_results'),
                 Row('allow_repeat'),
+                Row('items'),
             ),
         )
-
-
-class ItemForm(forms.ModelForm):
-    class Meta:
-        model = Item
-        exclude = []
-
-
-class ItemFormsetHelper(FormHelper):
-    #Remove autocomplete from Items!
-    def __init__(self, *args, **kwargs):
-        super(ItemFormsetHelper, self).__init__(*args, **kwargs)
-        self.form_tag = False
-        self.form_class = 'form-inline'
-        self.field_template = 'bootstrap3/layout/inline_field.html'
-        self.layout = Layout(
-            'name',
-        )
-        self.render_required_fields = True,
-
-
-ItemFormSet = modelformset_factory(Item, fields=('name',), extra=3)
