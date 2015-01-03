@@ -96,7 +96,6 @@ def coin_draw(request):
         result = bom_draw.toss()
         mongodb.save_draw(bom_draw)
         res = result["result"][0]
-        print res
         context['result'] = res
         logger.info("New result generated for draw {0}".format(bom_draw._id))
         logger.debug("Generated draw: {0}".format(bom_draw))
