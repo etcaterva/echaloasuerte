@@ -7,11 +7,22 @@ body {
   margin-top: 150px;
 }
 
+.navbar-default {
+    background-color: #ffffff;
+    border-radius: 0px;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #999;
+    line-height: 30px;
+    font-size: 14.4px;
+}
+
 
 .content {
   background-color: #ececec;
-  border: 3px #d6d6d6 solid;
-  background-color: #fff;
+  border: 1px #d6d6d6 solid;
+  outline: 5px #e9e9e9 solid;
 
   /* TODO change this image pattern to something inside our STATIC*/
   background: url("http://doodle.com/builtstatic/1419407172/doodle/graphics/home/pattern.png") repeat;
@@ -35,9 +46,19 @@ body {
 
 
 .draw {
-  padding: 10px;
-  margin-top: 5px;
-  background-color: #fff;
-  -moz-border-radius: 15px;
-  border-radius: 15px;
+
+    padding: 10 0 10 0;
+    margin-top: 5px;
+    background-color: #fff;
+    -moz-border-radius: 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    color: #6f6f6f;
+
+}
+
+.draw img{
+    height: auto;
+    min-width: 40px;
+    max-width: 100px;
 }
