@@ -13,5 +13,7 @@ urlpatterns += patterns(
     url(r'^coin.html$', views.coin_draw, name="coin"),
     url(r'^card.html$', views.under_construction, name="card"),
     url(r'^dice.html$', views.dice_draw, name="dice"),
-
+    url(r'^about.html$', views.under_construction, name="about"),
+    url(r'^login.html$', views.under_construction, name="login"),
+    url(r'^publicdraw.html$', views.under_construction, name="public_draw"),
 )

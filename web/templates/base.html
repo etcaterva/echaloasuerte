@@ -117,8 +117,8 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Access Public Draw</a></li>
-                        <li><a href="#">Login</a></li>
+                        <li><a href="{% url 'public_draw' %}">{% trans "Access Public Draw" %}</a></li>
+                        <li><a href="{% url 'login' %}">{% trans "Login" %}</a></li>
                     </ul>
                 </div>
                 <!--/.nav-collapse -->
@@ -137,7 +137,7 @@
                     Copyright 2015 @ EchaloASuerte
                 </div>
                 <div class="col-xs-4">
-                    About us
+                    <a href="{% url 'about' %}">{% trans "About us" %}</a>
                 </div>
                 <div class="col-xs-4">
                         Choose language:
@@ -160,23 +160,25 @@
 <!-- container -->
 
 <!-- hidden form to change language -->
-<div class="hidden">
-    <form action="{% url 'set_language' %}" method="post">
-        {% csrf_token %}
-        <input name="next" type="hidden" value="{{ redirect_to }}"/>
-        <select name="language" id="language-form">
-            {% get_language_info_list for LANGUAGES as languages %}
-            {% for language in languages %}
-                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
-                        selected="selected"{% endif %}>
-                    {{ language.name_local }} ({{ language.code }})
-                </option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Go" id="change_language_but"/>
-    </form>
-</div>
-{% block extra_body %}{% endblock extra_body %}
-</body>
+    <div class="hidden">
+        <form action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ redirect_to }}"/>
+            <select name="language" id="language-form">
+                {% get_language_info_list for LANGUAGES as languages %}
+                {% for language in languages %}
+                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
+                            selected="selected"{% endif %}>
+                        {{ language.name_local }} ({{ language.code }})
+                    </option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Go" id="change_language_but"/>
+        </form>
+    </div>
 
+    {% block extra_body %}
+    {% endblock extra_body %}
+
+</body>
 </html>
