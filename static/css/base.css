@@ -1,0 +1,43 @@
+
+body {
+  background-color: #f5f5f5;
+}
+
+.padding-top {
+  margin-top: 150px;
+}
+
+
+.content {
+  background-color: #ececec;
+  border: 3px #d6d6d6 solid;
+  background-color: #fff;
+
+  /* TODO change this image pattern to something inside our STATIC*/
+  background: url("http://doodle.com/builtstatic/1419407172/doodle/graphics/home/pattern.png") repeat;
+}
+
+.footer {
+    font-size: 12px;
+    line-height: 40px;
+    color: #999;
+    text-align: center;
+    margin-top: 20px;
+    border-top: 1px #b7b7b7 solid;
+}
+
+.footer .language {
+      color: #06d;
+      display: inline-block;
+}
+
+
+
+
+.draw {
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #fff;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
