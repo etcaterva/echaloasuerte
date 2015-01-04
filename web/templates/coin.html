@@ -7,43 +7,45 @@
     <script src="{% static 'js/coin.js' %}"></script>
 {% endblock extra_head %}
 {% block content %}
-    <div class="col-sm-6 col-sm-offset-3">
-        <!-- Draw Heading -->
-        <div class="row heading-draw">
-            <a href="{% url 'index' %}" class="col-xs-2">
-                <img class="small-responsive" style="margin-left: -20px" src="{% static "img/back_arrow.png" %}"/>
-            </a>
-            <h1 class="h3 col-xs-8 text-center">Flip a coin</h1>
-            <a class="col-xs-2 text-right">
-                <img class="small-responsive" src="{% static "img/public_draw.png" %}"/>
-            </a>
-        </div>
-        <!-- End Draw Heading -->
-        <!-- Input Form -->
-        <div class="row">
-            <form action="{% url 'coin' %}" class="blueForms" method="post">
-                {% csrf_token %}
-                <div class="text-center">
-                    <input type="image" id="img-coin" src="{% static "img/img_coin/head.png" %}" name="coin">
-                    <p>{% trans "Tap the coin to flip it" %}</p>
-                    {% if result %}
-                        {% if result == 'tail' %}
-                            <script>
-                                coin.baseUrl = '{{ STATIC_URL }}' + "img/img_coin/"
-                                coin.result = 2
-                                coin.flip();
-                            </script>
-                        {% else %}
-                            <script>
-                                coin.baseUrl = '{{ STATIC_URL }}' + "img/img_coin/"
-                                coin.result = 0
-                                coin.flip();
-                            </script>
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <!-- Draw Heading -->
+            <div class="row heading-draw">
+                <a href="{% url 'index' %}" class="col-xs-2">
+                    <img class="small-responsive" style="margin-left: -20px" src="{% static "img/back_arrow.png" %}"/>
+                </a>
+                <h1 class="h3 col-xs-8 text-center">Flip a coin</h1>
+                <a class="col-xs-2 text-right">
+                    <img class="small-responsive" src="{% static "img/public_draw.png" %}"/>
+                </a>
+            </div>
+            <!-- End Draw Heading -->
+            <!-- Input Form -->
+            <div class="row">
+                <form action="{% url 'coin' %}" class="blueForms" method="post">
+                    {% csrf_token %}
+                    <div class="text-center">
+                        <input type="image" id="img-coin" src="{% static "img/img_coin/head.png" %}" name="coin">
+                        <p>{% trans "Tap the coin to flip it" %}</p>
+                        {% if result %}
+                            {% if result == 'tail' %}
+                                <script>
+                                    coin.baseUrl = '{{ STATIC_URL }}' + "img/img_coin/"
+                                    coin.result = 2
+                                    coin.flip();
+                                </script>
+                            {% else %}
+                                <script>
+                                    coin.baseUrl = '{{ STATIC_URL }}' + "img/img_coin/"
+                                    coin.result = 0
+                                    coin.flip();
+                                </script>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                </div>
-            </form>
+                    </div>
+                </form>
+            </div>
+            <!-- Input Form -->
         </div>
-        <!-- Input Form -->
     </div>
 {% endblock %}
