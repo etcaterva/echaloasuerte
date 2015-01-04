@@ -7,38 +7,40 @@
     <script src="{% static 'js/dice.js' %}"></script>
 {% endblock extra_head %}
 {% block content %}
-    <div class="col-sm-6 col-sm-offset-3">
-        <!-- Draw Heading -->
-        <div class="row heading-draw">
-            <a href="{% url 'index' %}" class="col-xs-2">
-                <img class="small-responsive" style="margin-left: -20px" src="{% static "img/back_arrow.png" %}"/>
-            </a>
-            <h1 class="h3 col-xs-8 text-center">Roll a dice</h1>
-            <a class="col-xs-2 text-right">
-                <img class="small-responsive" src="{% static "img/public_draw.png" %}"/>
-            </a>
-        </div>
-        <!-- End Draw Heading -->
-        <!-- Input Form -->
-        <div class="row">
-            {% crispy draw draw.helper %}
-        </div>
-        <!-- End Input Form -->
-        <!-- Results -->
-        <div class="row text-center">
-            {% if results %}
-                {% if results|length  == 1 %}
-                    <p class="h3">Result</p>
-                {% else %}
-                    <p class="h3">Results</p>
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <!-- Draw Heading -->
+            <div class="row draw-heading">
+                <a href="{% url 'index' %}" class="col-xs-2">
+                    <img class="small-responsive" style="margin-left: -20px" src="{% static "img/back_arrow.png" %}"/>
+                </a>
+                <h1 class="h3 col-xs-8 text-center">Roll a dice</h1>
+                <a class="col-xs-2 text-right">
+                    <img class="small-responsive" src="{% static "img/public_draw.png" %}"/>
+                </a>
+            </div>
+            <!-- End Draw Heading -->
+            <!-- Input Form -->
+            <div class="row">
+                {% crispy draw draw.helper %}
+            </div>
+            <!-- End Input Form -->
+            <!-- Results -->
+            <div class="row draw-result text-center">
+                {% if results %}
+                    {% if results|length  == 1 %}
+                        <p class="h3">Result</p>
+                    {% else %}
+                        <p class="h3">Results</p>
+                    {% endif %}
+                    <script>
+                        results = {{ results }}
+                        D6.baseUrl = '{{ STATIC_URL }}' + "img/"
+                        D6.dice(results);
+                    </script>
                 {% endif %}
-                <script>
-                    results = {{ results }}
-                    D6.baseUrl = '{{ STATIC_URL }}' + "img/"
-                    D6.dice(results);
-                </script>
-            {% endif %}
+            </div>
+            <!-- End Results -->
         </div>
-        <!-- End Results -->
     </div>
 {% endblock %}

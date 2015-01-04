@@ -46,7 +46,6 @@ body {
 
 
 .draw {
-
     padding: 10 0 10 0;
     margin-top: 5px;
     background-color: #fff;
@@ -54,11 +53,15 @@ body {
     border-radius: 8px;
     font-size: 18px;
     color: #6f6f6f;
-
+    border: 1px #d6d6d6 solid;
 }
 
 .draw img{
     height: auto;
     min-width: 40px;
     max-width: 100px;
+}
+
+.draw-result {
+    margin-top: 20px;
 }
