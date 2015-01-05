@@ -14,15 +14,13 @@ class DiceDrawForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_id = 'form-random_number'
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-xs-7'
+        self.helper.label_class = 'col-xs-7 text-right'
         self.helper.field_class = 'col-xs-5'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = reverse('dice')
         self.helper.layout = Layout(
-            Div(
-                Row('number_of_results'),
-            ),
+            Row('number_of_results'),
             Div(
                Submit('submit', _("Toss"), css_class='btn btn-primary'),
                css_class='text-center',

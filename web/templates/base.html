@@ -131,29 +131,27 @@
         {% endblock content %}
 
         <!-- Footer -->
-        <div class="footer">
-            <div class="row">
-                <div class="col-xs-5">
-                    Copyright 2015 @ EchaloASuerte
-                </div>
-                <div class="col-xs-3">
-                    <a href="{% url 'about' %}">{% trans "About us" %}</a>
-                </div>
-                <div class="col-xs-4 language">
-                        Choose language:
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <span class="glyphicon glyphicon-flag"></span>
-                            {{ LANGUAGE_CODE|language_name }} ▾
-                        </a>
-                        <!-- Language dropdown menu -->
-                        <ul class="dropdown-menu" role="menu">
-                            {% for language in languages %}
-                                <li><a href="#" title="{{ language.code }}">{{ language.name_local }}
-                                    ({{ language.code }})</a></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                </div>
+        <div class="row footer">
+            <div class="col-xs-5">
+                Copyright 2015 @ EchaloASuerte
+            </div>
+            <div class="col-xs-3">
+                <a href="{% url 'about' %}">{% trans "About us" %}</a>
+            </div>
+            <div class="col-xs-4 language">
+                    Choose language:
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <span class="glyphicon glyphicon-flag"></span>
+                        {{ LANGUAGE_CODE|language_name }} ▾
+                    </a>
+                    <!-- Language dropdown menu -->
+                    <ul class="dropdown-menu" role="menu">
+                        {% for language in languages %}
+                            <li><a href="#" title="{{ language.code }}">{{ language.name_local }}
+                                ({{ language.code }})</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
             </div>
         </div>
     </div>

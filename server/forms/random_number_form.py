@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, HTML
+from crispy_forms.layout import Layout, Submit, Row, HTML, Div
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -15,7 +15,7 @@ class RandomNumberDrawForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(RandomNumberDrawForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.field_template = 'eas_field.html'
+        '''self.helper.field_template = 'eas_field.html'''''
         self.helper.form_id = 'form-random_number'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-6 col-md-4 text-right'
@@ -28,6 +28,9 @@ class RandomNumberDrawForm(forms.Form):
             Row('range_max'),
             Row('number_of_results'),
             'allow_repeat',
-            HTML("{% include 'draw_errors.html' %}"),
-            Row(Submit('submit', _("Toss"), css_class='btn btn-primary'), css_class='text-center'),
+            Row(HTML("{% include 'draw_errors.html' %}")),
+            Div(
+               Submit('submit', _("Toss"), css_class='btn btn-primary'),
+               css_class='text-center',
+            )
         )
