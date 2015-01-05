@@ -37,13 +37,13 @@ body {
     border-top: 1px #b7b7b7 solid;
 }
 
-.footer .language {
-      color: #06d;
-      display: inline-block;
+.footer a {
+    color: #999;
 }
 
-
-
+.footer .language a{
+    color: #06D;
+}
 
 .draw {
     padding: 10 0 10 0;
@@ -54,14 +54,28 @@ body {
     font-size: 18px;
     color: #6f6f6f;
     border: 1px #d6d6d6 solid;
+
+    /* Vertical aligning */
+    display: flex;
+    flex-direction: row;
+}
+
+.draw > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
 }
 
 .draw img{
-    height: auto;
     min-width: 40px;
     max-width: 100px;
+    height: auto;
 }
+
 
 .draw-result {
     margin-top: 20px;
 }
+
+

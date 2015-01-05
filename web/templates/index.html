@@ -3,52 +3,70 @@
 {% load bootstrap %}
 {% load i18n %}
 {% block content %}
-
     <div class="row">
-
         <div class="col-sm-6">
             <a href="{% url 'coin' %}">
-                <div class="clearfix draw">
-                    <img  class="img-over col-xs-3" src="{% static "img/coin.png" %}"/>
-                    <p class="text-center col-xs-9">{% trans "Flip a coin" %}</p>
+                <div class="draw">
+                    <div class="col-xs-3">
+                        <img class="col-xs-12" src="{% static "img/coin.png" %}"/>
+                    </div>
+                    <div class="col-xs-9">
+                        {% trans "Flip a coin" %}
+                    </div>
                 </div>
             </a>
             <a href="{% url 'card' %}">
-                <div class="clearfix draw">
-                    <img  class="img-over col-xs-3" src="{% static "img/cards.png" %}"/>
-                    <p class="text-center col-xs-9">{% trans "Take a card" %}</p>
+                <div class="draw">
+                    <div class="col-xs-3">
+                        <img class="col-xs-12" src="{% static "img/cards.png" %}"/>
+                    </div>
+                    <div class="col-xs-9">
+                        {% trans "Take a card" %}
+                    </div>
                 </div>
             </a>
             <a href="{% url 'dice' %}">
-                <div class="clearfix draw">
-                    <img  class="img-over col-xs-3" src="{% static "img/dice.png" %}"/>
-                    <p class="text-center col-xs-9">{% trans "Roll a dice" %}</p>
+                <div class="draw">
+                    <div class="col-xs-3">
+                        <img class="col-xs-12" src="{% static "img/dice.png" %}"/>
+                    </div>
+                    <div class="col-xs-9">
+                        {% trans "Roll a dice" %}
+                    </div>
                 </div>
             </a>
-
         </div>
-
         <div class="col-sm-6">
-        <a href="{% url 'random_number' %}" >
-            <div class="clearfix draw">
-                <img class="img-over col-xs-3" src="{% static "img/random_number.png" %}"/>
-                <p class="text-center col-xs-9">{% trans "Random numbers" %}</p>
-            </div>
-        </a>
-        <a href="{% url 'random_item' %}">
-            <div class="clearfix draw">
-                <img  class="img-over col-xs-3" src="{% static "img/random_item.png" %}"/>
-                <p class="text-center  col-xs-9">{% trans "Pick items from a list" %}</p>
-            </div>
-        </a>
-        <a href="{% url 'association' %}">
-            <div class="clearfix draw">
-                <img  class="img-over col-xs-3" src="{% static "img/item_asociation.png" %}"/>
-                <p class="text-center col-xs-9">{% trans "Asociate items from two lists" %}</p>
-            </div>
-        </a>
-
+            <a href="{% url 'random_number' %}">
+                <div class="draw">
+                    <div class="col-xs-3">
+                        <img class="col-xs-12" src="{% static "img/random_number.png" %}"/>
+                    </div>
+                    <div class="col-xs-9">
+                        {% trans "Random Numbers" %}
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'random_item' %}">
+                <div class="draw">
+                    <div class="col-xs-3">
+                        <img class="col-xs-12" src="{% static "img/random_item.png" %}"/>
+                    </div>
+                    <div class="col-xs-9">
+                        {% trans "Pick random items from a list" %}
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'association' %}">
+                <div class="draw">
+                    <div class="col-xs-3">
+                        <img class="col-xs-12" src="{% static "img/item_asociation.png" %}"/>
+                    </div>
+                    <div class="col-xs-9">
+                        {% trans "Asociate items from two lists" %}
+                    </div>
+                </div>
+            </a>
         </div>
-
     </div>
 {% endblock %}
