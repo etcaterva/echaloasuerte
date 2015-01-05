@@ -8,18 +8,10 @@
 {% endblock extra_head %}
 {% block content %}
     <div class="row">
+        <!-- Draw Heading -->
+        {% include "draw_heading.html" with tittle="Roll a dice" %}
+
         <div class="col-sm-6 col-sm-offset-3">
-            <!-- Draw Heading -->
-            <div class="row">
-                <a href="{% url 'index' %}" class="col-xs-2">
-                    <img class="small-responsive" src="{% static "img/back_arrow.png" %}"/>
-                </a>
-                <h1 class="h3 col-xs-8 text-center">Roll a dice</h1>
-                <a class="col-xs-2 text-right">
-                    <img class="small-responsive" src="{% static "img/public_draw.png" %}"/>
-                </a>
-            </div>
-            <!-- End Draw Heading -->
             <!-- Input Form -->
             <div class="row">
                 {% crispy draw draw.helper %}
