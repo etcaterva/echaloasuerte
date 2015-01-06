@@ -24,15 +24,18 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-latest.js"></script>
+
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
+    <script src="{% static 'js/bootstrap-tokenfield.min.js' %}"></script>
+    <link href="{% static 'css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link href="{% static 'css/home.css' %}" rel="stylesheet">
-    <link href="{% static 'css/base-theme.css' %}" rel="stylesheet">
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
     <script src="{% static 'js/project.js' %}"></script>
     <script>
         {% block extra_js %}{% endblock extra_js %}
@@ -93,72 +96,87 @@
         <div class="col-xs-1" style="padding:0px; background: #cfb1af">12</div>
     </div>
 
+    <div class="visible-lg padding-top">
 
-    <!-- Static navbar -->
-    <div id="cssmenu" class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/"> Echalo A Suerte </a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">About</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <span class="glyphicon glyphicon-flag"></span>
-                            {% trans "Language" %}
-                            <span class="caret"></span>
-                        </a>
-                        <!-- Language dropdown menu -->
-                        <ul class="dropdown-menu" role="menu">
-                            {% for language in languages %}
-                                <li><a href="#" title="{{ language.code }}">{{ language.name_local }}
-                                    ({{ language.code }})</a></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-        <!--/.container-fluid -->
     </div>
+    <div class="content col-sm-8 col-sm-offset-2">
+        <!-- Static navbar -->
+        <div id="cssmenu" class="row navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"> Echalo A Suerte </a>
+                </div>
 
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{% url 'public_draw' %}">{% trans "Access Public Draw" %}</a></li>
+                        <li><a href="{% url 'login' %}">{% trans "Login" %}</a></li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+            <!--/.container-fluid -->
+        </div>
 
-    {% block content %}
-        <p>Page to be filled.</p>
-    {% endblock content %}
+        {% block content %}
+            <p>Page to be filled.</p>
+        {% endblock content %}
 
-</div>
+        <!-- Footer -->
+        <div class="row footer">
+            <div class="col-xs-5">
+                Copyright 2015 @ EchaloASuerte
+            </div>
+            <div class="col-xs-3">
+                <a href="{% url 'about' %}">{% trans "About us" %}</a>
+            </div>
+            <div class="col-xs-4 language">
+                    Choose language:
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <span class="glyphicon glyphicon-flag"></span>
+                        {{ LANGUAGE_CODE|language_name }} ▾
+                    </a>
+                    <!-- Language dropdown menu -->
+                    <ul class="dropdown-menu" role="menu">
+                        {% for language in languages %}
+                            <li><a href="#" title="{{ language.code }}">{{ language.name_local }}
+                                ({{ language.code }})</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </div>
+        </div>
+    </div>
 <!-- container -->
 
 <!-- hidden form to change language -->
-<div class="hidden">
-    <form action="{% url 'set_language' %}" method="post">
-        {% csrf_token %}
-        <input name="next" type="hidden" value="{{ redirect_to }}"/>
-        <select name="language" id="language-form">
-            {% get_language_info_list for LANGUAGES as languages %}
-            {% for language in languages %}
-                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
-                        selected="selected"{% endif %}>
-                    {{ language.name_local }} ({{ language.code }})
-                </option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Go" id="change_language_but"/>
-    </form>
-</div>
-{% block extra_body %}{% endblock extra_body %}
-</body>
+    <div class="hidden">
+        <form action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ redirect_to }}"/>
+            <select name="language" id="language-form">
+                {% get_language_info_list for LANGUAGES as languages %}
+                {% for language in languages %}
+                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
+                            selected="selected"{% endif %}>
+                        {{ language.name_local }} ({{ language.code }})
+                    </option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Go" id="change_language_but"/>
+        </form>
+    </div>
 
+    {% block extra_body %}
+    {% endblock extra_body %}
+
+</body>
 </html>

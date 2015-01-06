@@ -77,15 +77,17 @@ LOGGING = {
     },
     'loggers': {
         'django.request': {
-            'handlers': [],
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,
         },
         'echaloasuerte': {
-            'handlers': [],
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,
             },
     }
 }
 ########## END LOGGING CONFIGURATION
+
+MONGO_DB='develop'

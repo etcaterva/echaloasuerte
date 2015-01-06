@@ -3,50 +3,45 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% block title %}Random item | Echalo A Suerte{% endblock title %}
+{% block extra_jq %}
+$('#id_items').tokenfield();
+{% endblock extra_jq %}
 {% block content %}
-    <div class="col-sm-6 col-sm-offset-3">
+    <div class="row">
         <!-- Draw Heading -->
-        <div class="row heading-draw">
-            <a href="{% url 'index' %}" class="col-xs-2">
-                <img class="small-responsive" style="margin-left: -20px" src="{% static "img/back_arrow.png" %}"/>
-            </a>
-            <h1 class="h3 col-xs-8 text-center">Random Item</h1>
-            <a class="col-xs-2 text-right">
-                <img class="small-responsive" src="{% static "img/public_draw.png" %}"/>
-            </a>
-        </div>
-        <!-- End Draw Heading -->
-        <!-- Input Form -->
-        <div class="row">
-            <form action="{% url 'random_item' %}" class="blueForms" method="post">
-                {% crispy draw draw.helper %}
-                <h3>Items</h3>
-                {% crispy items helper %}
-                <div class="text-center">
-                    <input type="submit" name="sumbit" value="Toss" class="btn btn-primary" id="submit-id-submit">
-                </div>
-            </form>
-        </div>
-        <!-- End Input Form -->
+        {% include "draw_heading.html" with tittle="Random item" %}
 
-        <!-- Results -->
-        <div class="row text-center">
-            {% if results %}
-                {% if results|length  == 1%}
-                    <p class="h2">Result</p>
-                {% else %}
-                    <p class="h2">Results</p>
-                {% endif %}
-                <ul class="list-group">
-                    {% for item in results %}
-                        <li class="list-group-item col-xs-6 col-xs-offset-3">
-                            {{ item }}
-                        </li>
-                    {% endfor %}
-                </ul>
+        <div class="col-sm-6 col-sm-offset-3">
+            <!-- Input Form -->
+            <div class="row">
+                <form action="{% url 'random_item' %}" class="blueForms" method="post">
+                    {% crispy draw draw.helper %}
+                    <div class="text-center">
+                        <input type="submit" name="sumbit" value="Toss" class="btn btn-primary" id="submit-id-submit">
+                    </div>
+                </form>
+            </div>
+            <!-- End Input Form -->
 
-            {%  endif %}
+            <!-- Results -->
+            <div class="row text-center">
+                {% if results %}
+                    {% if results|length  == 1%}
+                        <p class="h2">Result</p>
+                    {% else %}
+                        <p class="h2">Results</p>
+                    {% endif %}
+                    <ul class="list-group">
+                        {% for item in results %}
+                            <li class="list-group-item col-xs-6 col-xs-offset-3">
+                                {{ item }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                {%  endif %}
+            </div>
+            <!-- Results -->
         </div>
-        <!-- Results -->
     </div>
 {% endblock %}
