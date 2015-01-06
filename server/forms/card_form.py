@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 
 class CardDrawForm(forms.Form):
     number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1, max_value=20)
-    type_of_deck = forms.CharField(label=_("Type of deck"), required=True)
+    type_of_deck = forms.CharField(label=_("Type of deck"), required=True, initial="french")
 
     def __init__(self, *args, **kwargs):
         super(CardDrawForm, self).__init__(*args, **kwargs)

@@ -4,7 +4,7 @@
 {% load i18n %}
 {% block title %}Roll a dice | Echalo A Suerte{% endblock title %}
 {% block extra_head %}
-    <script src="{% static 'js/dice.js' %}"></script>
+    <script src="{% static 'js/card.js' %}"></script>
 {% endblock extra_head %}
 {% block content %}
     <div class="row">
@@ -25,10 +25,12 @@
                     {% else %}
                         <p class="h3">Results</p>
                     {% endif %}
+
+
                     <script>
-                        results = {{ results }}
-                        D6.baseUrl = '{{ STATIC_URL }}' + "img/"
-                        D6.dice(results);
+                        results = {{ results }};
+                        Card.baseUrl = '{{ STATIC_URL }}' + "img/";
+                        Card.draw(results);
                     </script>
                 {% endif %}
             </div>
