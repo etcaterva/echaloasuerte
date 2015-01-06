@@ -10,6 +10,7 @@ from server.bom.random_item import RandomItemDraw
 from server.bom.random_number import RandomNumberDraw
 from server.bom.coin import CoinDraw
 from server.bom.dice import DiceDraw
+from server.bom.card import CardDraw
 from server.mongodb.driver import MongoDriver
 import logging
 
@@ -130,6 +131,36 @@ def dice_draw(request):
 
     context['draw'] = draw_form
     return render(request, 'dice.html', context)
+
+
+def card_draw(request):
+    logger.info("Serving view for card draw")
+    context = {}
+    context['errors'] = []
+
+    if request.method == 'POST':
+        draw_form = CardDrawForm(request.POST)
+        if draw_form.is_valid():
+            raw_draw = draw_form.cleaned_data
+            bom_draw = CardDraw(**raw_draw)
+            if bom_draw.is_feasible():
+                result = bom_draw.toss()
+                mongodb.save_draw(bom_draw)
+                res = result["result"]
+                context['results'] =  res
+                logger.info("New result generated for draw {0}".format(bom_draw._id))
+                logger.debug("Generated draw: {0}".format(bom_draw))
+            else:
+                logger.info("Draw not feasible")
+                context['errors'].append(_("The draw is not feasible"))
+        else:
+            logger.info("Form not valid")
+            logger.debug("Errors in the form: {0}".format(draw_form.errors))
+    else:
+        draw_form = CardDrawForm()
+
+    context['draw'] = draw_form
+    return render(request, 'card.html', context)
 
 def under_construction(request):
     return render(request, 'under_construction.html', {})
