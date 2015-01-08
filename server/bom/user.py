@@ -9,13 +9,15 @@ class User(object):
     Main user within echaloasuerte
     """
 
-    def __init__(self, email, password = None):
+    def __init__(self, email, password = None, _id = None):
 
         self.email = email
         """Email of the user"""
 
         self.password = password
         """encripted password of the user"""
+
+        self._id = _id
 
     def get_username(self):
         return self.email
