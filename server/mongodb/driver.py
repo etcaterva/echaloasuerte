@@ -26,6 +26,11 @@ class MongoDriver(object):
         logger.debug("Retrieved documment: {0}".format(doc))
         return user_type(**doc)
 
+    def retrieve_user_by_email(self,user_type,email):
+        doc = self._users.find_one({"email":email})
+        logger.debug("Retrieved documment: {0}".format(doc))
+        return user_type(**doc)
+
     def save_draw(self,draw):
         """Given a draw, saves it, update its ID if not set and returns the _id"""
         doc = draw.__dict__

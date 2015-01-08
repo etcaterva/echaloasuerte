@@ -146,7 +146,7 @@ MIDDLEWARE_CLASSES = (
 )
 ########## END MIDDLEWARE CONFIGURATION
 
-AUTHENTICATION_BACKENDS=('server.backends.authentication',)
+AUTHENTICATION_BACKENDS=('server.backends.authentication.EchaloasuerteAuthBE',)
 
 ########## APP CONFIGURATION
 INSTALLED_APPS = (
