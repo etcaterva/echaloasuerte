@@ -6,7 +6,7 @@ class RandomItemDraw(object):
     """
     Stores the content of a draw of random items
     """
-    def __init__(self, items= [], number_of_results = 1, allow_repeat=False, results= None):
+    def __init__(self, items= [], number_of_results = 1, allow_repeat=False, results= None, _id = None):
         self.items = items
         """Source items of the draw"""
 
@@ -18,6 +18,8 @@ class RandomItemDraw(object):
 
         self.results = results if results is not None else []
         """List of results (list of list of items)"""
+
+        self._id = _id
 
     def is_feasible(self):
         if len(self.items) == 0:
