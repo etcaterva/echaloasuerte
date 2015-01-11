@@ -11,6 +11,7 @@ from server.bom.random_item import RandomItemDraw
 from server.bom.random_number import RandomNumberDraw
 from server.bom.coin import CoinDraw
 from server.bom.dice import DiceDraw
+from server.bom.user import User
 from server.mongodb.driver import MongoDriver
 import logging
 from django.contrib.auth import authenticate, login, logout
@@ -19,13 +20,9 @@ from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
-@login_required
-def profile(request):
-    user = request.user
-    return render_to_response('profile.html', context_instance=RequestContext(request))
-
 
 def login_user(request):
+    logger.info("Serving login_user")
     logout(request)
     username = password = ''
     if request.POST:
@@ -38,6 +35,26 @@ def login_user(request):
                 login(request, user)
                 return HttpResponseRedirect('/')
     return render_to_response('login.html', context_instance=RequestContext(request))
+
+def register(request):
+    logger.info("Serving register page")
+    logout(request)
+    if request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+        u = User(username)
+        u.set_password(password)
+        try:
+            mongodb.create_user(u)
+            return login_user(request)
+        except Exception as e:
+            return render_to_response('register.html', {'error' : _("Username is already taken.")}, context_instance=RequestContext(request))
+    return  render_to_response('register.html', context_instance=RequestContext(request))
+
+@login_required
+def profile(request):
+    logger.info("Serving profile page")
+    return render_to_response('profile.html', context_instance=RequestContext(request))
 
 # Create your views here.
 def index(request):
