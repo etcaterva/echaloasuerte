@@ -116,13 +116,16 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{% url 'public_draw' %}">{% trans "Access Public Draw" %}</a></li>
+                        <li>
+                            <a href="{% url 'public_draw' %}">{% trans "Access Public Draw" %}
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        </li>
                         <li>
                             {% if user.is_authenticated %}
                                 <a href="{% url 'profile' %}">{{user}}
                             {% else %}
                                 <a href="{% url 'login' %}">{% trans "Login" %}
-                            {% endif %}
+                            {% endif %} <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                         </a></li>
                     </ul>
                 </div>
