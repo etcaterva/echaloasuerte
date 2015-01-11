@@ -18,5 +18,5 @@ urlpatterns += patterns(
     url(r'^publicdraw.html$', views.under_construction, name="public_draw"),
     #url(r'^accounts/create/$', 'WBS.views.createUser', name='wbs/createUser'),
     url(r'^accounts/login/$', views.login_user,name='login'),
-    url(r'^accounts/profile/$', views.under_construction, name='profile'),
+    url(r'^accounts/profile/$', views.profile, name='profile'),
 )

@@ -25,7 +25,10 @@ class User(object):
         """encripted password of the user"""
 
     def get_username(self):
-        return self._id
+        try:
+            return self._id.split('@')[0]
+        except Exception as e:
+            return self._id
 
     def is_anonymous(self):
         return True

@@ -19,6 +19,11 @@ from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
+@login_required
+def profile(request):
+    user = request.user
+    return render_to_response('profile.html', context_instance=RequestContext(request))
+
 
 def login_user(request):
     logout(request)
