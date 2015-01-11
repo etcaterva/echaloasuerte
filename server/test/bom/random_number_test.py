@@ -60,31 +60,31 @@ class RandomNumberDrawTest(TestCase):
         """RandomNumberDraw: Toss once"""
         tested_item = RandomNumberDraw(range_max=0, range_min=0)
         self.assertEqual(0,len(tested_item.results))
-        self.assertEqual(0,tested_item.toss()["numbers"][0])
+        self.assertEqual(0,tested_item.toss()["items"][0])
         self.assertEqual(1,len(tested_item.results))
-        self.assertEqual(1,len(tested_item.results[0]["numbers"]))
+        self.assertEqual(1,len(tested_item.results[0]["items"]))
 
     def toss_same_twice_test(self):
         """RandomNumberDraw: Toss same twice"""
         tested_item2 = RandomNumberDraw(range_max=0, range_min=0)
         self.assertEqual(0,len(tested_item2.results))
-        self.assertEqual(0,tested_item2.toss()["numbers"][0])
-        self.assertEqual(0,tested_item2.toss()["numbers"][0])
+        self.assertEqual(0,tested_item2.toss()["items"][0])
+        self.assertEqual(0,tested_item2.toss()["items"][0])
         self.assertEqual(2,len(tested_item2.results))
-        self.assertEqual(1,len(tested_item2.results[0]["numbers"]))
-        self.assertEqual(1,len(tested_item2.results[1]["numbers"]))
+        self.assertEqual(1,len(tested_item2.results[0]["items"]))
+        self.assertEqual(1,len(tested_item2.results[1]["items"]))
 
-    def toss_two_numbers_test(self):
-        """RandomNumberDraw: Toss generate two numbers"""
+    def toss_two_items_test(self):
+        """RandomNumberDraw: Toss generate two items"""
         tested_item2 = RandomNumberDraw(range_max=0, range_min=0, number_of_results=2,allow_repeat=True)
         self.assertEqual(0,len(tested_item2.results))
-        self.assertEqual(0,tested_item2.toss()["numbers"][0])
+        self.assertEqual(0,tested_item2.toss()["items"][0])
         self.assertEqual(1,len(tested_item2.results))
-        self.assertEqual(2,len(tested_item2.results[0]["numbers"]))
+        self.assertEqual(2,len(tested_item2.results[0]["items"]))
 
     def toss_on_existing_test(self):
         """RandomNumberDraw: Toss when list created with results already"""
-        tested_item2 = RandomNumberDraw(range_max=0, range_min=0, number_of_results=2,allow_repeat=True,results=[{"numbers":[0]}])
+        tested_item2 = RandomNumberDraw(range_max=0, range_min=0, number_of_results=2,allow_repeat=True,results=[{"items":[0]}])
         self.assertEqual(1,len(tested_item2.results))
-        self.assertEqual(0,tested_item2.toss()["numbers"][0])
+        self.assertEqual(0,tested_item2.toss()["items"][0])
         self.assertEqual(2,len(tested_item2.results))

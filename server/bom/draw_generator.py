@@ -1,9 +1,9 @@
 DRAW_SCHELETON_1 = '''from django.utils.translation import ugettext_lazy as _
 import random
 import datetime
+from server.bom.draw_base import *
 
-
-class {0}Draw(object):
+class {0}Draw(BaseDraw):
     """
     Stores the content of a draw of {0}
     """
@@ -23,8 +23,8 @@ DRAW_SCHELETON_5 = '''
     def is_feasible(self):
         pass
 
-    def toss(self):
-        pass
+    def generate_result(self):
+        #TODO
 '''
 
 import argparse
