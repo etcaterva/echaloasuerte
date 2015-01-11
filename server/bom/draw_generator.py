@@ -1,7 +1,7 @@
-DRAW_SCHELETON_1 = '''
-from django.utils.translation import ugettext_lazy as _
+DRAW_SCHELETON_1 = '''from django.utils.translation import ugettext_lazy as _
 import random
 import datetime
+
 
 class {0}Draw(object):
     """
@@ -10,7 +10,7 @@ class {0}Draw(object):
 
     def __init__(self'''
 
-DRAW_SCHELETON_2 = ''', {0} = X'''
+DRAW_SCHELETON_2 = ''', {0}=X'''
 
 DRAW_SCHELETON_3 = '''):
 '''

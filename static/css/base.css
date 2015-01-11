@@ -67,7 +67,7 @@ body {
     justify-content: center;
     padding: 0px;
 }
-
+.card-container img,
 .draw img{
     min-width: 40px;
     max-width: 100px;
@@ -75,8 +75,19 @@ body {
 }
 
 
+.responsive-img{
+    min-width: 40px;
+    max-width: 100px;
+    height: auto;
+}
+
 .draw-result {
     margin-top: 20px;
+}
+
+.card-container {
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 
