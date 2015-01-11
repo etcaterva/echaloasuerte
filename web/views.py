@@ -1,3 +1,4 @@
+from django.http import *
 from server.forms import *
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
@@ -12,11 +13,26 @@ from server.bom.coin import CoinDraw
 from server.bom.dice import DiceDraw
 from server.mongodb.driver import MongoDriver
 import logging
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 
 logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
 
+def login_user(request):
+    logout(request)
+    username = password = ''
+    if request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/')
+    return render_to_response('login.html', context_instance=RequestContext(request))
 
 # Create your views here.
 def index(request):
@@ -130,6 +146,7 @@ def dice_draw(request):
 
     context['draw'] = draw_form
     return render(request, 'dice.html', context)
+
 
 def under_construction(request):
     return render(request, 'under_construction.html', {})

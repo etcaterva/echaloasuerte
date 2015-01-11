@@ -12,7 +12,7 @@ class SanityMongo(TestCase):
 
     def persist_user_test(self):
         """MongoDB: Persist and retrieve user"""
-        tested_item = User(email="myemail@yop.tu", password="fake_hashed_pwd")
+        tested_item = User("myemail@yop.tu", password="fake_hashed_pwd")
         res_id = self._driver.save_user(tested_item)
         raw = self._driver._users.find_one({"_id":res_id})
         for k,v in tested_item.__dict__.items():
@@ -22,7 +22,7 @@ class SanityMongo(TestCase):
 
     def retrieve_users_test(self):
         """MongoDB: Retrieves an item using mongodb driver"""
-        tested_item = User(email="myemail@yop.tu", password="fake_hashed_pwd")
+        tested_item = User("myemail@yop.tu", password="fake_hashed_pwd")
         res_id = self._driver.save_user(tested_item)
         retrieved = self._driver.retrieve_user(User,res_id)
 
@@ -35,9 +35,9 @@ class SanityMongo(TestCase):
     def retrieve_users_mail_test(self):
         """MongoDB: Retrieves an item using mongodb driver by email"""
         self._driver._users.remove({"email":"myemail@yop.tu"})
-        tested_item = User(email="myemail@yop.tu", password="fake_hashed_pwd")
+        tested_item = User("myemail@yop.tu", password="fake_hashed_pwd")
         res_id = self._driver.save_user(tested_item)
-        retrieved = self._driver.retrieve_user_by_email(User,"myemail@yop.tu")
+        retrieved = self._driver.retrieve_user(User,"myemail@yop.tu")
 
         self.assertIsInstance(retrieved,User)
         for k,v in tested_item.__dict__.items():

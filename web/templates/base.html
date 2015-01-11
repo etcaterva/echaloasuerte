@@ -2,7 +2,7 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 {% get_language_info_list for LANGUAGES as languages %}
-<!-- Current language: {{ LANGUAGE_CODE }} -->
+<!-- Current language: {{ LANGUAGE_CODE }}  Current user: {{user}}-->
 {% load staticfiles %}
 <html lang="en">
 <head>
@@ -118,7 +118,13 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{% url 'public_draw' %}">{% trans "Access Public Draw" %}</a></li>
-                        <li><a href="{% url 'login' %}">{% trans "Login" %}</a></li>
+                        <li><a href="{% url 'login' %}">
+                            {% if user.is_authenticated %}
+                                {% trans "Logout" %}
+                            {% else %}
+                                {% trans "Login" %}
+                            {% endif %}
+                        </a></li>
                     </ul>
                 </div>
                 <!--/.nav-collapse -->

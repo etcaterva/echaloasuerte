@@ -12,23 +12,15 @@ class MongoDriver(object):
         logger.info("Connected to '{0}' port '{1}' database '{2}'".format(host,port,database))
 
     def save_user(self,user):
-        """Given a user, saves it, update its ID if not set and returns the _id"""
+        """Given a user, saves it, returns the _id"""
         doc = user.__dict__
-        if "_id" in doc.keys() and doc["_id"] is None:#Ask mongo to generate an id
-            doc.pop("_id")
         self._users.save(doc)
-        user._id = doc["_id"]
         logger.debug("Saved documment: {0}".format(doc))
         return doc["_id"]
 
     def retrieve_user(self,user_type,user_id):
         doc = self._users.find_one({"_id":user_id})
-        logger.debug("Retrieved documment: {0}".format(doc))
-        return user_type(**doc)
-
-    def retrieve_user_by_email(self,user_type,email):
-        doc = self._users.find_one({"email":email})
-        logger.debug("Retrieved documment: {0}".format(doc))
+        logger.debug("Retrieved documment: {0} using id {1}".format(doc,user_id))
         return user_type(**doc)
 
     def save_draw(self,draw):
