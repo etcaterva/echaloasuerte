@@ -11,6 +11,13 @@ class MongoDriver(object):
         self._draws = self._db.draws
         logger.info("Connected to '{0}' port '{1}' database '{2}'".format(host,port,database))
 
+    def create_user(self,user):
+        if self._users.find({"_id":user._id}).count() == 0:
+            self.save_user(user)
+        else:
+            logger.debug("User {0} already exists".format(user._id))
+            raise Exception("User already exists")
+
     def save_user(self,user):
         """Given a user, saves it, returns the _id"""
         doc = user.__dict__
