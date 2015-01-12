@@ -4,7 +4,7 @@
 {% block content %}
     <div id="profile">
         <h1>{{user}}</h1>
-        {%if draws %}<h3>{% trans "Draws" %}:</h3>{% endif %}
+        {%if draws.owner %}<h3>{% trans "Draws" %}:</h3>{% endif %}
         <ul>
         {% for d in draws.owner %}
         <a href="#TODO"><li>{{d.draw_type}} [{{d.creation_time}}] ({{d.results | length}} {%trans "results"%})</li></a>
