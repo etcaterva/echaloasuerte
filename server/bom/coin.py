@@ -1,28 +1,18 @@
-
 from django.utils.translation import ugettext_lazy as _
 import random
 import datetime
+from server.bom.draw_base import *
 
-class CoinDraw(object):
+class CoinDraw(BaseDraw):
     """
     Stores the content of a draw of Coin
     """
 
-    def __init__(self, number_of_results = 1,results = None):
-
-        self.number_of_results = number_of_results
-        """number of results to generate"""
-
-        self.results = results if results is not None else []
-        """resulsts"""
+    def __init__(self,**kwargs):
+        super(CoinDraw, self).__init__(**kwargs)
 
     def is_feasible(self):
         return self.number_of_results > 0
 
-    def toss(self):
-        result = {"datetime": datetime.datetime.utcnow(), "result": [random.choice(['head','tail']) for x in range(0,self.number_of_results)] }
-        self.results.append(result)
-        return result
-
-    def __str__(self):
-        return str(self.__dict__)
+    def generate_result(self):
+        return [random.choice(['head','tail']) for x in range(0,self.number_of_results)]

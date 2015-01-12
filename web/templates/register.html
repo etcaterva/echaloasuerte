@@ -1,16 +1,13 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% block content %}
-    <div id="login">
-        <form class="form-horizontal" name="LoginForm" action="/accounts/login/" method="post">
+    <div id="register">
+        <form class="form-horizontal" name="RegisterForm" action="/accounts/register/" method="post">
         {% csrf_token %}
-        {% if next %}
-            <input type="hidden" name="next" value="{{ next }}" />
-        {% endif %}
         <div class="control-group">
-            <label class="control-label" for="username">Email</label>
+            <label class="control-label" for="username">Username</label>
             <div class="controls">
-                <input type="text" id="username" name="username"  placeholder="Email">
+                <input type="email" id="username" name="username"  placeholder="email">
             </div>
         </div>
         <div class="control-group">
@@ -19,10 +16,16 @@
                 <input type="password" name="password" id="password" placeholder="Password">
             </div>
         </div>
+{% if error %}
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  {{error}}
+</div>
+{% endif %}
         <div class="control-group">
             <div class="controls">
-                <button type="submit" class="btn">Login</button>
-                <a href="{% url 'register' %}"><button type="button" class="btn">Register</button></a>
+                <button type="submit" class="btn">Register</button>
             </div>
         </div>
         </form>
