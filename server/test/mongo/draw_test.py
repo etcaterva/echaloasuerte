@@ -17,6 +17,8 @@ class SanityMongo(TestCase):
         res_id = self._driver.save_draw(tested_item)
         raw = self._driver._draws.find_one({"_id":res_id})
         for k,v in tested_item.__dict__.items():
+            if k == "creation_time":
+                continue
             self.assertTrue(k in raw.keys())
             self.assertTrue(v == raw[k])
         self._driver._draws.remove({"_id":res_id})
@@ -28,8 +30,10 @@ class SanityMongo(TestCase):
         draw = RandomNumberDraw(**self._driver._draws.find_one({"_id":res_id}))
 
         for k,v in tested_item.__dict__.items():
+            if k == "creation_time":
+                continue
             self.assertTrue(k in draw.__dict__.keys())
-            self.assertTrue(v == draw.__dict__[k])
+            self.assertEqual(v , draw.__dict__[k])
         self._driver._draws.remove({"_id":res_id})
 
     def retrieve_draw_test(self):

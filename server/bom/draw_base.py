@@ -4,6 +4,8 @@ import datetime
 from abc import ABCMeta, abstractmethod
 import logging
 logger = logging.getLogger("echaloasuerte")
+import django.utils.timezone
+import pytz
 
 class BaseDraw(object):
     """
@@ -11,7 +13,7 @@ class BaseDraw(object):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, owner = None, number_of_results = 1, results= None, _id = None, draw_type = None):
+    def __init__(self, creation_time = None, owner = None, number_of_results = 1, results= None, _id = None, draw_type = None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -26,6 +28,10 @@ class BaseDraw(object):
 
         self.draw_type = type(self).__name__
         """Type of the draw"""
+
+        self.creation_time = creation_time if creation_time is not None else django.utils.timezone.now()
+        """Time the draw was created"""
+        self.creation_time.replace(tzinfo=pytz.utc)
 
         if draw_type and draw_type != self.draw_type:
             logger.warning("A draw was built with type {0} but type {1} was passed as argument! Fix it!".format(draw_type,self.draw_type))
