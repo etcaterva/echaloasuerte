@@ -77,7 +77,7 @@ def random_number_draw(request):
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
-                res_numbers = result["numbers"]
+                res_numbers = result["items"]
                 context['results'] =  res_numbers
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
@@ -134,7 +134,7 @@ def coin_draw(request):
         bom_draw = CoinDraw()
         result = bom_draw.toss()
         mongodb.save_draw(bom_draw)
-        res = result["result"][0]
+        res = result["items"][0]
         context['result'] = res
         logger.info("New result generated for draw {0}".format(bom_draw._id))
         logger.debug("Generated draw: {0}".format(bom_draw))
@@ -154,7 +154,7 @@ def dice_draw(request):
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
-                res = result["result"]
+                res = result["items"]
                 context['results'] =  res
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
@@ -184,7 +184,7 @@ def card_draw(request):
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
-                res = result["result"]
+                res = result["items"]
                 context['results'] =  res
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
