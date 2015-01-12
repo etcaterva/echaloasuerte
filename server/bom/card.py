@@ -4,12 +4,13 @@ import datetime
 from server.bom.draw_base import *
 
 
-class CardDraw(DrawBase):
+class CardDraw(BaseDraw):
     """
     Stores the content of a draw of CardsDraw
     """
 
     def __init__(self, type_of_deck=1, **kwargs):
+        super(CardDraw, self).__init__(**kwargs)
 
         '''This may be interesting for the API'''
         self.decks = {'french': ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10", "hj", "hq", "hk",

@@ -27,7 +27,7 @@ class BaseDraw(object):
     def toss(self):
         result = {"datetime": datetime.datetime.utcnow(), "items": self.generate_result()}
         self.results.append(result)
-        logger.debug("Tossed draw: {0}".format(self.results))
+        logger.debug("Tossed draw: {0}".format(self))
         return result
 
     @abstractmethod
