@@ -11,7 +11,7 @@ class BaseDraw(object):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, number_of_results = 1, results= None, _id = None):
+    def __init__(self, owner = None, number_of_results = 1, results= None, _id = None, draw_type = None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -20,6 +20,15 @@ class BaseDraw(object):
 
         self._id = _id
         """Unique identifier of the draw"""
+
+        self.owner = owner
+        """ID of the owner of the draw"""
+
+        self.draw_type = type(self).__name__
+        """Type of the draw"""
+
+        if draw_type and draw_type != self.draw_type:
+            logger.warning("A draw was built with type {0} but type {1} was passed as argument! Fix it!".format(draw_type,self.draw_type))
 
     def is_feasible(self):
         return self.number_of_results > 0

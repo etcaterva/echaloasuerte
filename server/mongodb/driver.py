@@ -1,6 +1,20 @@
 from pymongo import MongoClient
 import logging
 logger = logging.getLogger("echaloasuerte")
+from server.bom.coin import *
+from server.bom.dice import *
+from server.bom.random_number import *
+from server.bom.card import *
+from server.bom.random_item import *
+from server.bom.user import *
+
+def build_draw(doc):
+    """Given a python dict that represnets a draw, builds it"""
+    try:
+        return eval(doc["draw_type"])(**doc)
+    except Exception as e:
+        logger.error("Error when decoding a draw. Exception: {1}. Draw: {0} ".format(doc,e))
+        return None
 
 class MongoDriver(object):
     _instance = None
@@ -25,10 +39,17 @@ class MongoDriver(object):
         logger.debug("Saved documment: {0}".format(doc))
         return doc["_id"]
 
-    def retrieve_user(self,user_type,user_id):
+    def retrieve_user(self,user_id):
         doc = self._users.find_one({"_id":user_id})
         logger.debug("Retrieved documment: {0} using id {1}".format(doc,user_id))
-        return user_type(**doc)
+        return User(**doc)
+
+    def get_user_draws(self, user_id, num_results = 50):
+        owner_draws = [build_draw(x) for x in self._draws.find({"owner":user_id}).limit(num_results)]
+        owner_draws = [x for x in owner_draws if x is not None]
+        #todo: related
+        logger.debug("Found {0} draws of which {1} is owner".format(len(owner_draws),user_id))
+        return {"user_id":user_id,"owner":owner_draws}
 
     def save_draw(self,draw):
         """Given a draw, saves it, update its ID if not set and returns the _id"""
@@ -40,15 +61,14 @@ class MongoDriver(object):
         logger.debug("Saved documment: {0}".format(doc))
         return doc["_id"]
 
-    def retrieve_draw(self,draw_class,draw_id):
+    def retrieve_draw(self,draw_id):
         """
-        Retrieves a draw from mongo. given its class and its id
-        E.g.: retrieve_draw(RandomNumberDraw,"dsdfdsafdsa")
-        It returns an object of type draw_class
+        Retrieves a draw from mongo.
+        Get the type from the serialized object
         """
         doc = self._draws.find_one({"_id":draw_id})
         logger.debug("Retrieved documment: {0}".format(doc))
-        return draw_class(**doc)
+        return build_draw(doc)
 
     @staticmethod
     def instance():

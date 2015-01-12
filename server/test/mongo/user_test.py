@@ -24,7 +24,7 @@ class SanityMongo(TestCase):
         """MongoDB: Retrieves an item using mongodb driver"""
         tested_item = User("myemail@yop.tu", password="fake_hashed_pwd")
         res_id = self._driver.save_user(tested_item)
-        retrieved = self._driver.retrieve_user(User,res_id)
+        retrieved = self._driver.retrieve_user(res_id)
 
         self.assertIsInstance(retrieved,User)
         for k,v in tested_item.__dict__.items():
@@ -37,7 +37,7 @@ class SanityMongo(TestCase):
         self._driver._users.remove({"email":"myemail@yop.tu"})
         tested_item = User("myemail@yop.tu", password="fake_hashed_pwd")
         res_id = self._driver.save_user(tested_item)
-        retrieved = self._driver.retrieve_user(User,"myemail@yop.tu")
+        retrieved = self._driver.retrieve_user("myemail@yop.tu")
 
         self.assertIsInstance(retrieved,User)
         for k,v in tested_item.__dict__.items():

@@ -12,7 +12,7 @@ class EchaloasuerteAuthBE(object):
     def authenticate(self, username=None, password=None):
         logger.debug("Autenticating username: {0}".format(username))
         try:
-            user = MongoDriver.instance().retrieve_user(User,username)
+            user = MongoDriver.instance().retrieve_user(username)
             if user.check_password(password):
                 logger.debug("Success")
                 return user
@@ -23,7 +23,7 @@ class EchaloasuerteAuthBE(object):
 
     def get_user(self, user_id):
         try:
-            return MongoDriver.instance().retrieve_user(User,user_id)
+            return MongoDriver.instance().retrieve_user(user_id)
         except Exception as e:
             logger.debug("When retrieving user {0}, Exception: ".format(user_id,e))
             return None
