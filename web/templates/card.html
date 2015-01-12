@@ -26,11 +26,11 @@
                         <p class="h3">Results</p>
                     {% endif %}
 
-
                     <script>
-                        results = {{ results }};
-                        Card.baseUrl = '{{ STATIC_URL }}' + "img/";
-                        Card.draw(results);
+                        var baseUrl = '{{ STATIC_URL }}' + "img/";
+                        var results = {{ results }};
+                        Card.setup(baseUrl, results);
+                        Card.draw();
                     </script>
                 {% endif %}
             </div>

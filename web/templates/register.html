@@ -1,33 +1,37 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load i18n %}
 {% block content %}
-    <div id="register">
+    <div id="register" class="row">
+        <div class="col-sm-6 col-sm-offset-3 text-center">
+            <h1>{% trans "Sing up" %}</h1>
         <form class="form-horizontal" name="RegisterForm" action="/accounts/register/" method="post">
-        {% csrf_token %}
-        <div class="control-group">
-            <label class="control-label" for="username">Username</label>
-            <div class="controls">
-                <input type="email" id="username" name="username"  placeholder="email">
+            {% csrf_token %}
+            <div class="row control-group">
+                <label class="control-label col-xs-4" for="username">Email</label>
+                <div class="controls col-xs-8">
+                    <input class="form-control" type="text" id="username" name="username"  placeholder="Email">
+                </div>
             </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="password">Password</label>
-            <div class="controls">
-                <input type="password" name="password" id="password" placeholder="Password">
+            <div class="row control-group">
+                <label class="control-label col-xs-4" for="password">Password</label>
+                <div class="controls col-xs-8">
+                    <input class="form-control" type="password" name="password" id="password" placeholder="Password">
+                </div>
             </div>
-        </div>
-{% if error %}
-<div class="alert alert-danger" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  <span class="sr-only">Error:</span>
-  {{error}}
-</div>
-{% endif %}
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn">Register</button>
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <span class="sr-only">Error:</span>
+                  {{error}}
+                </div>
+            {% endif %}
+            <div class="row control-group">
+                <div class="controls text-center">
+                    <button id="register-button" type="submit" class="btn btn-primary">{% trans "Sing up" %}</button>
+                </div>
             </div>
-        </div>
         </form>
     </div>
+</div>
 {% endblock %}

@@ -90,4 +90,23 @@ body {
     text-align: center;
 }
 
+#login-button {
+    margin-top: 20px;
+}
+
+#register-button {
+    margin-top: 20px;
+}
+
+/* Linea horizontal tipo ------------------  blabla  ------------------- */
+.line-separator {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.line-separator span{
+    color: #b7b7b7;
+    text-decoration: line-through;
+}
+
 
