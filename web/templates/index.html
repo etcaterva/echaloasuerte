@@ -5,7 +5,7 @@
 {% block content %}
     <div class="row">
         <div class="col-sm-6">
-            <a href="{% url 'coin' %}">
+            <a class="draw-link" href="{% url 'coin' %}">
                 <div class="draw">
                     <div class="col-xs-3">
                         <img class="col-xs-12" src="{% static "img/coin.png" %}"/>
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </a>
-            <a href="{% url 'card' %}">
+            <a class="draw-link" href="{% url 'card' %}">
                 <div class="draw">
                     <div class="col-xs-3">
                         <img class="col-xs-12" src="{% static "img/cards.png" %}"/>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </a>
-            <a href="{% url 'dice' %}">
+            <a class="draw-link" href="{% url 'dice' %}">
                 <div class="draw">
                     <div class="col-xs-3">
                         <img class="col-xs-12" src="{% static "img/dice.png" %}"/>
@@ -37,7 +37,7 @@
             </a>
         </div>
         <div class="col-sm-6">
-            <a href="{% url 'random_number' %}">
+            <a class="draw-link" href="{% url 'random_number' %}">
                 <div class="draw">
                     <div class="col-xs-3">
                         <img class="col-xs-12" src="{% static "img/random_number.png" %}"/>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </a>
-            <a href="{% url 'random_item' %}">
+            <a class="draw-link" href="{% url 'random_item' %}">
                 <div class="draw">
                     <div class="col-xs-3">
                         <img class="col-xs-12" src="{% static "img/random_item.png" %}"/>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
             </a>
-            <a href="{% url 'association' %}">
+            <a class="draw-link" href="{% url 'association' %}">
                 <div class="draw">
                     <div class="col-xs-3">
                         <img class="col-xs-12" src="{% static "img/item_asociation.png" %}"/>

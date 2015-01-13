@@ -75,6 +75,10 @@ body {
     flex-direction: row;
 }
 
+.draw-link:hover {
+    text-decoration: none;
+}
+
 .draw > div {
     display: flex;
     align-items: center;
