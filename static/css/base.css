@@ -1,8 +1,22 @@
-
 body {
   background-color: #f5f5f5;
 }
 
+#cssmenu a {
+  font-family: Arial, sans-serif;
+}
+
+
+.navbar-brand{
+    padding: 10px;
+}
+
+.navbar-brand img {
+    height: 40px;
+    width: auto;
+}
+
+/* Used to leave an empty region on the top of the screen - Only is used in some screen sizes */
 .padding-top {
   margin-top: 150px;
 }
@@ -18,7 +32,7 @@ body {
     font-size: 14.4px;
 }
 
-
+/* The "body" that host the content in the home screen */
 .content {
   background-color: #ececec;
   border: 1px #d6d6d6 solid;
