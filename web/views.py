@@ -22,6 +22,13 @@ from django.contrib.auth.decorators import login_required
 logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
 
+def set_owner(draw,request):
+    """Best effort to set the owner given a request"""
+    try:
+        draw.owner = request.user._id
+    except:
+        pass
+
 def login_user(request):
     logger.info("Serving login_user")
     logout(request)
@@ -54,8 +61,12 @@ def register(request):
 
 @login_required
 def profile(request):
-    logger.info("Serving profile page")
-    return render_to_response('profile.html', context_instance=RequestContext(request))
+    logger.info("Serving profile page for user {0}".format(request.user))
+    try:
+        draws = mongodb.get_user_draws(request.user._id)
+    except Exception as e:
+        logger.error("There was an issue when retrieving user draws. {0}".format(draws))
+    return render_to_response('profile.html', {'draws':draws}, context_instance=RequestContext(request))
 
 # Create your views here.
 def index(request):
@@ -74,6 +85,7 @@ def random_number_draw(request):
             raw_draw = draw_form.cleaned_data
             #in the future we could retrive draws, add results and list the historic
             bom_draw = RandomNumberDraw(**raw_draw)#This works because form and python object have the same member names
+            set_owner(bom_draw,request)
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
@@ -105,6 +117,7 @@ def random_item_draw(request):
             raw_draw = draw_form.cleaned_data
             raw_draw["items"] = raw_draw["items"].split(',')
             bom_draw = RandomItemDraw(**raw_draw)
+            set_owner(bom_draw,request)
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
@@ -132,6 +145,7 @@ def coin_draw(request):
     if request.method == 'POST':
         logger.debug("Information posted. {0}".format(request.POST))
         bom_draw = CoinDraw()
+        set_owner(bom_draw,request)
         result = bom_draw.toss()
         mongodb.save_draw(bom_draw)
         res = result["items"][0]
@@ -151,6 +165,7 @@ def dice_draw(request):
         if draw_form.is_valid():
             raw_draw = draw_form.cleaned_data
             bom_draw = DiceDraw(**raw_draw)
+            set_owner(bom_draw,request)
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
@@ -181,6 +196,7 @@ def card_draw(request):
         if draw_form.is_valid():
             raw_draw = draw_form.cleaned_data
             bom_draw = CardDraw(**raw_draw)
+            set_owner(bom_draw,request)
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)

@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load i18n %}
 {% block content %}
     <div id="profile">
         <h1>{{user}}</h1>
-        </form>
+        {%if draws.owner %}<h3>{% trans "Draws" %}:</h3>{% endif %}
+        <ul>
+        {% for d in draws.owner %}
+        <a href="#TODO"><li>{{d.draw_type}} [{{d.creation_time}}] ({{d.results | length}} {%trans "results"%})</li></a>
+        {% endfor %}
+    </ul>
+        <hr/>
         <a href="{% url 'login' %}"><button type="button" class="btn">Logout</button></a>
     </div>
 {% endblock %}
