@@ -43,22 +43,6 @@
                 $("#language-form option[value=" + $(this).attr('title') + "]").attr("selected", "selected");
                 $("#change_language_but").click();
             });
-            /** Raton sobre una imagen **/
-            $('.img-over').each(function () {
-                var imgFile = $(this).attr('src');
-                var imgExt = /(\.\w{3,4}$)/;
-                var preloadImage = new Image();
-                preloadImage.src = imgFile.replace(imgExt, '_hover$1');
-                $(this).parent().hover(
-                        function () {
-                            $img = $(this).children("img")
-                            $img.attr('src', preloadImage.src);
-                        },
-                        function () {
-                            $img.attr('src', imgFile);
-                        });
-            });
-
             {% block extra_jq %}{% endblock extra_jq %}
         });
     </script>
