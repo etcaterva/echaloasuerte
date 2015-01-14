@@ -38,7 +38,7 @@
         </div>
         <div class="col-sm-6">
             <a class="draw-link" href="{% url 'random_number' %}">
-                <div class="draw">
+                <div class="draw clearfix">
                     <div class="col-xs-3">
                         <img class="col-xs-12" src="{% static "img/random_number.png" %}"/>
                     </div>
@@ -48,7 +48,7 @@
                 </div>
             </a>
             <a class="draw-link" href="{% url 'random_item' %}">
-                <div class="draw">
+                <div class="draw"> <!--TODO add the class clearfix-->
                     <div class="col-xs-3">
                         <img class="col-xs-12" src="{% static "img/random_item.png" %}"/>
                     </div>
@@ -57,8 +57,8 @@
                     </div>
                 </div>
             </a>
-            <a class="draw-link clearfix" href="{% url 'association' %}">
-                <div class="draw clearfix">
+            <a class="draw-link" href="{% url 'association' %}">
+                <div class="draw"> <!--TODO add the class clearfix-->
                     <div class="col-xs-3">
                         <img class="col-xs-12" src="{% static "img/item_asociation.png" %}"/>
                     </div>
