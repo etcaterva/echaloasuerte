@@ -28,7 +28,7 @@ class RandomNumberDrawForm(forms.Form):
             Row('range_max'),
             Row('number_of_results'),
             'allow_repeat',
-            Row(HTML("{% include 'draw_errors.html' %}")),
+            Row(HTML("{% include 'render_errors.html' %}")),
             Div(
                Submit('submit', _("Toss"), css_class='btn btn-primary'),
                css_class='text-center',
