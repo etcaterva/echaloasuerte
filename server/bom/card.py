@@ -31,7 +31,7 @@ class CardDraw(BaseDraw):
         """Type of deck to be used"""
 
     def is_feasible(self):
-        return self.type_of_deck in decks and 0 > self.number_of_results <= len(decks[self.type_of_deck])
+        return self.type_of_deck in decks and self.number_of_results > 0
 
     def generate_result(self):
         return [random.randint(1, len(decks[self.type_of_deck])) for x in range(0, self.number_of_results)]
