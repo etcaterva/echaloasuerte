@@ -124,4 +124,19 @@ body {
     text-decoration: line-through;
 }
 
+/* Icon for public draw */
+.back-arrow,
+.public-draw {
+    padding: 5px;
+}
+
+.back-arrow img,
+.public-draw img{
+    /*display: block;*/
+    min-width: 30px;
+    max-width: 100%;
+    height: auto;
+}
+
+
 
