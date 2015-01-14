@@ -1,11 +1,33 @@
 {% load staticfiles %}
 {% load i18n %}
-<div class="row">
-    <a href="{% url 'index' %}" class="col-xs-2 text-right">
+
+    <!-- Showing screen size tag -->
+    <div class="clearfix">
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf" padd>
+            <div class="visible-xs">XS</div>
+            <div class="visible-sm">SM</div>
+            <div class="visible-md">MD</div>
+            <div class="visible-lg">LG</div>
+        </div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">2</div>
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">3</div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">4</div>
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">5</div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">6</div>
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">7</div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">8</div>
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">9</div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">10</div>
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">11</div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">12</div>
+    </div>
+
+    <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
         <img src="{% static "img/back_arrow.png" %}"/>
     </a>
-    <h1 class="h3 col-xs-8 text-center">{% trans tittle %}</h1>
-    <a class="col-xs-2">
-        <img src="{% static "img/public_draw.png" %}"/>
+    <div class="col-xs-8 visible-xs"></div>
+    <a class="public-draw col-xs-2 col-sm-2 col-sm-push-8 text-center">
+        <img src="{% static "img/public_draw3.png" %}"/>
     </a>
-</div>
+    <h1 class="h3 col-xs-12 col-sm-8 col-sm-pull-2 text-center">{% trans tittle %}</h1>
+
