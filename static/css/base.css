@@ -12,8 +12,10 @@ body {
 }
 
 .navbar-brand img {
-    height: 50px;
-    width: auto;
+    max-width: 100%;
+    height: auto;
+    /*height: 50px;
+    width: auto;*/
 }
 
 /* Used to leave an empty region on the top of the screen - Only is used in some screen sizes */
