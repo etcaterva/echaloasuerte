@@ -1,9 +1,10 @@
 body {
-  background-color: #f5f5f5;
+    background-color: #f5f5f5;
+    color: #6f6f6f;
 }
 
 #cssmenu a {
-  font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 
