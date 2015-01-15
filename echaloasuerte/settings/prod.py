@@ -82,7 +82,7 @@ LOGGING = {
             'propagate': False,
         },
         'echaloasuerte': {
-            'handlers': ['console'],
+            'handlers': ['log_file','error_log_file','debug_log_file'],
             'level': 'DEBUG',
             'propagate': False,
             },
@@ -90,4 +90,4 @@ LOGGING = {
 }
 ########## END LOGGING CONFIGURATION
 
-MONGO_DB='develop'
+MONGO_DB='echaloasuerte'
