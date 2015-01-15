@@ -19,8 +19,16 @@ body {
 }
 
 /* Used to leave an empty region on the top of the screen - Only is used in some screen sizes */
-.padding-top {
-  margin-top: 150px;
+.padding-top-big {
+  margin-top: 130px;
+}
+
+.padding-top-medium {
+  margin-top: 50px;
+}
+
+.padding-top-small {
+  margin-top: 15px;
 }
 
 .navbar-default {
@@ -36,6 +44,7 @@ body {
 
 /* The "body" that host the content in the home screen */
 .content {
+    margin-top: 10px;
   background: url('../img/background_pattern.png');
   border: 1px #d6d6d6 solid;
   outline: 5px #e9e9e9 solid;
