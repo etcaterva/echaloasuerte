@@ -32,7 +32,7 @@ def set_owner(draw,request):
 def login_user(request):
     logger.info("Serving login_user")
     logout(request)
-    username = password = ''
+    context = {}
     if request.POST:
         username = request.POST['username']
         password = request.POST['password']
@@ -42,11 +42,15 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 return HttpResponseRedirect('/')
-    return render_to_response('login.html', context_instance=RequestContext(request))
+        else:
+            context = {'error': "Username or password not valid."}
+    return render(request, 'login.html', context)
+
 
 def register(request):
     logger.info("Serving register page")
     logout(request)
+    context = {}
     if request.POST:
         username = request.POST['username']
         password = request.POST['password']
@@ -56,8 +60,9 @@ def register(request):
             mongodb.create_user(u)
             return login_user(request)
         except Exception as e:
-            return render_to_response('register.html', {'error' : _("Username is already taken.")}, context_instance=RequestContext(request))
-    return  render_to_response('register.html', context_instance=RequestContext(request))
+            context = {'error': _("Username is already taken.")}
+    return render(request, 'register.html', context)
+
 
 @login_required
 def profile(request):
@@ -66,12 +71,14 @@ def profile(request):
         draws = mongodb.get_user_draws(request.user._id)
     except Exception as e:
         logger.error("There was an issue when retrieving user draws. {0}".format(draws))
-    return render_to_response('profile.html', {'draws':draws}, context_instance=RequestContext(request))
 
-# Create your views here.
+    context = {'draws': draws}
+    return render(request, 'profile.html', context)
+
+
 def index(request):
     logger.info("Serving index page.")
-    return render_to_response('index.html', {'request': request}, context_instance=RequestContext(request))
+    return render(request, 'index.html')
 
 
 def random_number_draw(request):
