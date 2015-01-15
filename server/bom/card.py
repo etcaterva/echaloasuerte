@@ -16,14 +16,14 @@ class CardDraw(BaseDraw):
     Stores the content of a draw of CardsDraw
     """
 
-    def __init__(self, type_of_deck=1, **kwargs):
+    def __init__(self, type_of_deck='french', **kwargs):
         super(CardDraw, self).__init__(**kwargs)
 
         self.type_of_deck = type_of_deck
         """Type of deck to be used"""
 
     def is_feasible(self):
-        return self.type_of_deck in decks and self.number_of_results > 0
+        return self.type_of_deck in decks and 0 < self.number_of_results <= len(decks[self.type_of_deck])
 
     def generate_result(self):
         return [random.randint(1, len(decks[self.type_of_deck])) for x in range(0, self.number_of_results)]
