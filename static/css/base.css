@@ -118,7 +118,8 @@ body {
 }
 
 #login-button {
-    margin-top: 20px;
+    margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 #register-button {
@@ -148,6 +149,11 @@ body {
     min-width: 30px;
     max-width: 100%;
     height: auto;
+}
+
+.alert {
+    margin-top: 10px;
+    margin-bottom: 0px;
 }
 
 
