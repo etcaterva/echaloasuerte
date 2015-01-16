@@ -186,3 +186,10 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 MONGO_HOST='92.222.219.42'
 MONGO_PORT=27017
 MONGO_DB='echaloasuerte'
+
+#EMAIL settings
+DEFAULT_FROM_EMAIL="admin@echaloasuerte.com"
+EMAIL_HOST="localhost"
+EMAIL_PORT=25
+EMAIL_SUBJECT_PREFIX="[django][echaloasuerte] "#for admin mails
+SERVER_EMAIL="automation@echaloasuerte.com"

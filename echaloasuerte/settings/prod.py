@@ -4,7 +4,7 @@ from echaloasuerte.settings.common import *
 
 
 ########## DEBUG CONFIGURATION
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 ########## END DEBUG CONFIGURATION
 
@@ -82,7 +82,7 @@ LOGGING = {
             'propagate': False,
         },
         'echaloasuerte': {
-            'handlers': ['log_file','error_log_file','debug_log_file'],
+            'handlers': ['log_file','error_log_file','debug_log_file','mail_admins'],
             'level': 'DEBUG',
             'propagate': False,
             },
