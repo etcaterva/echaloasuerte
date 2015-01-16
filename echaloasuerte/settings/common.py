@@ -187,6 +187,15 @@ MONGO_HOST='92.222.219.42'
 MONGO_PORT=27017
 MONGO_DB='echaloasuerte'
 
+ALLOWED_HOSTS = [
+    '.onlinewbs.com',  # Allow domain and subdomains
+    '.onlinewbs.com.',  # Also allow FQDN and subdomains
+    '.echaloasuerte.com',  # Allow domain and subdomains
+    '.echaloasuerte.com.',  # Also allow FQDN and subdomains
+    '92.222.219.42',
+]
+
+
 #EMAIL settings
 DEFAULT_FROM_EMAIL="admin@echaloasuerte.com"
 EMAIL_HOST="localhost"
