@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.utils.translation import ugettext_lazy as _
 from server.bom.random_item import RandomItemDraw
 from server.bom.random_number import RandomNumberDraw
+from server.bom.link_sets import LinkSetsDraw
 from server.bom.coin import CoinDraw
 from server.bom.dice import DiceDraw
 from server.bom.card import CardDraw
@@ -113,8 +114,39 @@ def random_number_draw(request):
     return render(request, 'random_number.html', context)
 
 
+def link_sets_draw(request):
+    logger.info("Serving view for link sets draw")
+    context = {}
+    context['errors'] = []
+
+    if request.method == 'POST':
+        draw_form = LinkSetsForm(request.POST)
+        if draw_form.is_valid():
+            raw_draw = draw_form.cleaned_data
+            sets = [x.split(',') for x in [raw_draw['set_1'],raw_draw['set_2']] ]
+            bom_draw = LinkSetsDraw(sets)
+            set_owner(bom_draw,request)
+            if bom_draw.is_feasible():
+                result = bom_draw.toss()
+                mongodb.save_draw(bom_draw)
+                res_items = result["items"]
+                context['results'] =  res_items
+                logger.info("New result generated for draw {0}".format(bom_draw._id))
+                logger.debug("Generated draw: {0}".format(bom_draw))
+            else:
+                logger.info("Draw not feasible")
+                context['errors'].append(_("The draw is not feasible"))
+        else:
+            logger.info("Form not valid")
+            logger.debug("Errors in the form: {0}".format(draw_form.errors))
+    else:
+        draw_form = LinkSetsForm()
+
+    context['draw'] = draw_form
+    return render(request, 'link_sets.html', context)
+
 def random_item_draw(request):
-    logger.info("Serving view for random number draw")
+    logger.info("Serving view for random item draw")
     context = {}
     context['errors'] = []
 
