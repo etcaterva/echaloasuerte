@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 DRAW_SCHELETON_1 = '''from django.utils.translation import ugettext_lazy as _
 import random
 import datetime
@@ -12,7 +14,8 @@ class {0}Draw(BaseDraw):
 
 DRAW_SCHELETON_2 = ''', {0}=X'''
 
-DRAW_SCHELETON_3 = '''):
+DRAW_SCHELETON_3 = ''',**kwargs):
+        super({0}Draw, self).__init__(**kwargs)
 '''
 
 DRAW_SCHELETON_4 = '''
@@ -46,7 +49,7 @@ def main():
     result += DRAW_SCHELETON_1.format(args.c[0])
     for attr in args.attr:
         result += DRAW_SCHELETON_2.format(attr)
-    result += DRAW_SCHELETON_3
+    result += DRAW_SCHELETON_3.format(args.c[0])
     for attr in args.attr:
         result += DRAW_SCHELETON_4.format(attr)
     result += DRAW_SCHELETON_5
