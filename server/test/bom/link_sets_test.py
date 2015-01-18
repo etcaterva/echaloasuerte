@@ -1,5 +1,5 @@
 from django.test import TestCase
-from server.bom.link_sets_draw import *
+from server.bom.link_sets import *
 
 class LinkSetsDrawTest(TestCase):
     """ Basic sanity test for linking draws"""
