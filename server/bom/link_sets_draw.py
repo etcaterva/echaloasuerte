@@ -49,5 +49,5 @@ class LinkSetsDraw(BaseDraw):
         sets[1:] = [list(x) for x in self.sets[1:] ]
         for s in sets[1:]: shuffle(s)
         sets[1:] = [cycle(x) for x in sets[1:] ]
-        return zip(*sets)
+        return list(zip(*sets))
 
