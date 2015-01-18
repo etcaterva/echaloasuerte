@@ -187,11 +187,14 @@ MONGO_HOST='92.222.219.42'
 MONGO_PORT=27017
 MONGO_DB='echaloasuerte'
 
+#Allowed host to be used
 ALLOWED_HOSTS = [
-    '.onlinewbs.com',  # Allow domain and subdomains
+    '.etcaterva.com',
+    '.etcaterva.com.',
+    '.onlinewbs.com',
     '.onlinewbs.com.',  # Also allow FQDN and subdomains
-    '.echaloasuerte.com',  # Allow domain and subdomains
-    '.echaloasuerte.com.',  # Also allow FQDN and subdomains
+    '.echaloasuerte.com',
+    '.echaloasuerte.com.',
     '92.222.219.42',
 ]
 
