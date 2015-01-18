@@ -45,9 +45,9 @@ class LinkSetsDraw(BaseDraw):
         return self.sets and len(self.sets[0]) > 0 and len(self.sets) > 1
 
     def generate_result(self):
-        sets = [list(self.sets[0])]
-        sets[1:] = [list(x) for x in self.sets[1:] ]
-        for s in sets[1:]: shuffle(s)
-        sets[1:] = [cycle(x) for x in sets[1:] ]
-        return list(zip(*sets))
+        sets = [list(self.sets[0])] # No changes to the first
+        sets[1:] = [list(x) for x in self.sets[1:] ] # Copy
+        for s in sets[1:]: shuffle(s) # Shuffle change in place
+        sets[1:] = [cycle(x) for x in sets[1:] ] # create iterator
+        return list(zip(*sets)) # list needed for python 3
 
