@@ -5,7 +5,7 @@
     <div id="login" class="row">
         <div class="col-sm-6 col-sm-offset-3 text-center">
             <h1>{% trans "Login" %}</h1>
-            <form class="form-horizontal" name="LoginForm" action="/accounts/login/" method="post">
+            <form class="form-horizontal" name="LoginForm" action="{% url 'login' %}" method="post">
             {% csrf_token %}
             {% if next %}
                 <input type="hidden" name="next" value="{{ next }}" />
