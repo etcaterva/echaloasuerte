@@ -18,6 +18,6 @@ urlpatterns += patterns(
     url(r'^publishdraw.html$', views.under_construction, name="publish_draw"),
     url(r'^accounts/register/$', views.register, name='register'),
     url(r'^accounts/forgot_password/$', views.under_construction, name='forgot_password'),
-    url(r'^accounts/login/$', views.login_user,name='login'),
+    url(r'^accounts/login/$', views.login_user, name='login'),
     url(r'^accounts/profile/$', views.profile, name='profile'),
 )
