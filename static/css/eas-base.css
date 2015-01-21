@@ -33,6 +33,10 @@ body {
     width: auto;*/
 }
 
+.navbar-header {
+    padding-right: 0px;
+}
+
 .navbar-default {
     background-color: #ffffff;
     border-radius: 0px;
