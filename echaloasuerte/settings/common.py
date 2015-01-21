@@ -186,3 +186,22 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 MONGO_HOST='92.222.219.42'
 MONGO_PORT=27017
 MONGO_DB='echaloasuerte'
+
+#Allowed host to be used
+ALLOWED_HOSTS = [
+    '.etcaterva.com',
+    '.etcaterva.com.',
+    '.onlinewbs.com',
+    '.onlinewbs.com.',  # Also allow FQDN and subdomains
+    '.echaloasuerte.com',
+    '.echaloasuerte.com.',
+    '92.222.219.42',
+]
+
+
+#EMAIL settings
+DEFAULT_FROM_EMAIL="admin@echaloasuerte.com"
+EMAIL_HOST="localhost"
+EMAIL_PORT=25
+EMAIL_SUBJECT_PREFIX="[django][echaloasuerte] "#for admin mails
+SERVER_EMAIL="automation@echaloasuerte.com"
