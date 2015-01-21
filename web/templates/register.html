@@ -8,9 +8,9 @@
         <form class="form-horizontal" name="RegisterForm" action="/accounts/register/" method="post">
             {% csrf_token %}
             <div class="row control-group">
-                <label class="control-label col-xs-4" for="username">Email</label>
+                <label class="control-label col-xs-4" for="email">Email</label>
                 <div class="controls col-xs-8">
-                    <input class="form-control" type="text" id="username" name="username"  placeholder="Email">
+                    <input class="form-control" type="email" id="email" name="email"  placeholder="Email">
                 </div>
             </div>
             <div class="row control-group">

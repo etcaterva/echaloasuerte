@@ -35,7 +35,7 @@ def login_user(request):
     logout(request)
     context = {}
     if request.POST:
-        username = request.POST['username']
+        username = request.POST['email']
         password = request.POST['password']
 
         user = authenticate(username=username, password=password)
@@ -44,7 +44,7 @@ def login_user(request):
                 login(request, user)
                 return HttpResponseRedirect('/')
         else:
-            context = {'error': "Username or password not valid."}
+            context = {'error': "Email or password not valid."}
     return render(request, 'login.html', context)
 
 
@@ -53,15 +53,15 @@ def register(request):
     logout(request)
     context = {}
     if request.POST:
-        username = request.POST['username']
+        email = request.POST['email']
         password = request.POST['password']
-        u = User(username)
+        u = User(email)
         u.set_password(password)
         try:
             mongodb.create_user(u)
             return login_user(request)
         except Exception as e:
-            context = {'error': _("Username is already taken.")}
+            context = {'error': _("The email is already registered.")}
     return render(request, 'register.html', context)
 
 
