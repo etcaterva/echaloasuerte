@@ -11,17 +11,15 @@ $('.textinput').tokenfield({createTokensOnBlur:true});
         <!-- Draw Heading -->
         {% include "draw_heading.html" with tittle="Link Sets" %}
 
-        <div class="col-sm-6 col-sm-offset-3">
+        <div class="col-sm-8 col-sm-offset-2">
             <!-- Input Form -->
-            <div class="row">
-                <form action="{% url 'link_sets' %}" class="blueForms" method="post">
-                    <div class="alert alert-info" role="alert">{% trans 'Lists are comma separated. e.g: 1,2,3,' %}</div>
-                    {% crispy draw draw.helper %}
-                    <div class="text-center">
-                        <input type="submit" name="sumbit" value="Toss" class="btn btn-primary" id="submit-id-submit">
-                    </div>
-                </form>
-            </div>
+            <form action="{% url 'link_sets' %}" class="blueForms" method="post">
+                <div class="alert alert-info" role="alert">{% trans 'Lists are comma separated. e.g: 1,2,3,' %}</div>
+                {% crispy draw draw.helper %}
+                <div class="text-center">
+                    <input type="submit" name="sumbit" value="Toss" class="btn btn-primary" id="submit-id-submit">
+                </div>
+            </form>
             <!-- End Input Form -->
 
             <!-- Results -->
