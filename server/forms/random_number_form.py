@@ -24,12 +24,14 @@ class RandomNumberDrawForm(forms.Form):
         self.helper.form_method = 'post'
         self.helper.form_action = reverse('random_number')
         self.helper.layout = Layout(
-            Row('range_min'),
-            Row('range_max'),
-            Row('number_of_results'),
-            'allow_repeat',
-            Row(HTML("{% include 'render_errors.html' %}")),
-            Div(
+            Row(
+                'range_min',
+                'range_max',
+                'number_of_results',
+                'allow_repeat',
+                HTML("{% include 'render_errors.html' %}"),
+            ),
+            Row(
                Submit('submit', _("Toss"), css_class='btn btn-primary'),
                css_class='text-center',
             )

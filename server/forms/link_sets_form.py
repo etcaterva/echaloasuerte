@@ -21,7 +21,7 @@ class LinkSetsForm(forms.Form):
         self.helper.form_action = '/link_sets'
         self.helper.layout = Layout(
             Div(
-                Row('set_1'),
-                Row('set_2'),
+                'set_1',
+                'set_2',
             ),
         )

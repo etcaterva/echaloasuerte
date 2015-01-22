@@ -20,7 +20,7 @@ class DiceDrawForm(forms.Form):
         self.helper.form_method = 'post'
         self.helper.form_action = reverse('dice')
         self.helper.layout = Layout(
-            Row('number_of_results'),
+            'number_of_results',
             Div(
                Submit('submit', _("Toss"), css_class='btn btn-primary'),
                css_class='text-center',

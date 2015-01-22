@@ -26,10 +26,12 @@ class CardDrawForm(forms.Form):
         self.helper.form_method = 'post'
         self.helper.form_action = reverse('card')
         self.helper.layout = Layout(
-            Row('number_of_results'),
-            Row('type_of_deck'),
-            Row(HTML("{% include 'render_errors.html' %}")),
-            Div(
+            Row(
+                'number_of_results',
+                'type_of_deck',
+                HTML("{% include 'render_errors.html' %}"),
+            ),
+            Row(
                Submit('submit', _("Toss"), css_class='btn btn-primary'),
                css_class='text-center',
             )
