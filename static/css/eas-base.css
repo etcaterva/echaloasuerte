@@ -101,6 +101,11 @@ body {
     color: #999;
 }
 
+.language {
+    padding-left: 13px;
+    padding-right: 13px;
+}
+
 .footer .language a{
     color: #06D;
 }
