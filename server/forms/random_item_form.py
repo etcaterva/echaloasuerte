@@ -15,7 +15,7 @@ class RandomItemDrawForm(forms.Form):
         self.helper.form_tag = False
         self.helper.form_id = 'form-random_item'
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-xs-7'
+        self.helper.label_class = 'col-xs-7 text-right'
         self.helper.field_class = 'col-xs-5'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
@@ -23,7 +23,7 @@ class RandomItemDrawForm(forms.Form):
         self.helper.layout = Layout(
             Div(
                 Row('number_of_results'),
-                Row('allow_repeat'),
                 Row('items'),
+                Row('allow_repeat'),
             ),
         )
