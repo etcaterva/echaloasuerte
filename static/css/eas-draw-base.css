@@ -15,3 +15,19 @@
 .draw-result {
     margin-top: 20px;
 }
+
+.control-label {
+    padding-right: 5px;
+}
+
+.controls {
+    padding-left: 5px;
+}
+
+#id_type_of_deck {
+    max-width: 130px;
+}
+
+#id_number_of_results {
+    max-width: 130px;
+}
