@@ -18,8 +18,8 @@ class RandomNumberDrawForm(forms.Form):
         '''self.helper.field_template = 'eas_field.html'''''
         self.helper.form_id = 'form-random_number'
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-xs-6 col-md-4 text-right'
-        self.helper.field_class = 'col-xs-3'
+        self.helper.label_class = 'col-xs-7 text-right'
+        self.helper.field_class = 'col-xs-4'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = reverse('random_number')

@@ -29,5 +29,14 @@
 }
 
 #id_number_of_results {
-    max-width: 130px;
+    max-width: 75px;
 }
+
+#id_range_max {
+    max-width: 75px;
+}
+#id_range_min {
+    max-width: 75px;
+}
+
+
