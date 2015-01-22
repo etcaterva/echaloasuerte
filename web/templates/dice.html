@@ -11,12 +11,9 @@
         <!-- Draw Heading -->
         {% include "draw_heading.html" with tittle="Roll a dice" %}
 
-        <div class="col-sm-6 col-sm-offset-3">
+        <div class="col-sm-8 col-sm-offset-2">
             <!-- Input Form -->
-            <div class="row">
-                {% crispy draw draw.helper %}
-            </div>
-            <!-- End Input Form -->
+            {% crispy draw draw.helper %}
             <!-- Results -->
             <div class="row draw-result text-center">
                 {% if results %}
