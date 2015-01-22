@@ -89,126 +89,126 @@
 <div class="visible-sm padding-top-small"></div>
 
 <div class="content col-sm-8 col-sm-offset-2">
-    <!-- Static navbar -->
-    <div id="cssmenu" class="row navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="col-xs-12 col-sm-5 navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="col-xs-9 col-sm-12 navbar-brand" href="/">
-                    <img class="" src="{% static "img/brand_beta.png" %}"/>
-                </a>
-                <!--<a class="navbar-brand" href="/"> Echalo A Suerte </a>-->
-            </div>
+<!-- Static navbar -->
+<div id="cssmenu" class="row navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="col-xs-12 col-sm-5 navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="col-xs-9 col-sm-12 navbar-brand" href="/">
+                <img class="" src="{% static "img/brand_beta.png" %}"/>
+            </a>
+            <!--<a class="navbar-brand" href="/"> Echalo A Suerte </a>-->
+        </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="col-sm-7 collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="{% url 'join_public_draw' %}">{% trans "Join Public Draw" %}
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                    </li>
-                    <li class="visible-xs">
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'profile' %}">{{ user }}
-                        {% else %}
-                            <a href="{% url 'login' %}">{% trans "Login" %}
-                        {% endif %}
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="col-sm-7 collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="{% url 'join_public_draw' %}">{% trans "Join Public Draw" %}
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                </li>
+                <li class="visible-xs">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}">{{ user }}
+                    {% else %}
+                        <a href="{% url 'login' %}">{% trans "Login" %}
+                    {% endif %}
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    </a>
+                </li>
+
+                <li class="hidden-xs dropdown">
+                    {% if user.is_authenticated %}
+                        <!-- START ACCOUNT -->
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-user"></span> 
+                            {{ user }}
+                            <span class="glyphicon glyphicon-chevron-down"></span>
                         </a>
-                    </li>
-
-                    <li class="hidden-xs dropdown">
-                        {% if user.is_authenticated %}
-                            <!-- START ACCOUNT -->
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <span class="glyphicon glyphicon-user"></span> 
-                                {{ user }}
-                                <span class="glyphicon glyphicon-chevron-down"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <div class="navbar-login">
-                                        <div class="row">
-                                            <div class="col-lg-4">
-                                                <p class="text-center">
-                                                    <span class="glyphicon glyphicon-user icon-size"></span>
-                                                </p>
-                                            </div>
-                                            <div class="col-lg-8">
-                                                <p class="text-left"><strong>{{ user }}</strong></p>
-
-                                                <p class="text-left small"> email@email.com</p>
-
-                                                <p class="text-left">
-                                                    <a href="{% url 'profile' %}" class="btn btn-primary btn-block btn-sm">History</a>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="navbar-login navbar-login-session">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <p>
-                                                    <a href="{% url 'login' %}"
-                                                       class="btn btn-danger btn-block">{% trans "Sign out" %}</a>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <!-- END ACCOUNT -->
-                        {% else %}
-                            <!-- START SIGN IN -->
-                            <a class="dropdown-toggle" data-toggle="dropdown">{% trans "Sign in" %}<b class="caret"></b></a>
-                            <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
-                                <li>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <div class="navbar-login">
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <form class="form" role="form" method="post" action="{% url 'login' %}"
-                                                  accept-charset="UTF-8" id="login-nav">
-                                                {% csrf_token %}
-                                                <div class="form-group">
-                                                    <label class="sr-only" for="email">Email</label>
-                                                    <input type="email" class="form-control" id="email"
-                                                           placeholder="Email" name="email" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="sr-only" for="password">Password</label>
-                                                    <input type="password" class="form-control" id="password"
-                                                           placeholder="Password" name="password" required>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox"> Remember me
-                                                    </label>
-                                                </div>
-                                                <div class="form-group">
-                                                    <button type="submit" class="btn btn-success btn-block">Sign in
-                                                    </button>
-                                                    <a class="forgot-password"
-                                                       href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a>
-                                                </div>
-                                                <li class="divider"></li>
-                                                <div class="register-now text-center">
-                                                    Don't have an account?<br>
-                                                    <a href="{% url 'register' %}">{% trans "Register now!" %}</a>
-                                                </div>
-                                            </form>
+                                        <div class="col-lg-4">
+                                            <p class="text-center">
+                                                <span class="glyphicon glyphicon-user icon-size"></span>
+                                            </p>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <p class="text-left"><strong>{{ user }}</strong></p>
+
+                                            <p class="text-left small"> email@email.com</p>
+
+                                            <p class="text-left">
+                                                <a href="{% url 'profile' %}" class="btn btn-primary btn-block btn-sm">History</a>
+                                            </p>
                                         </div>
                                     </div>
-                                </li>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="navbar-login navbar-login-session">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <p>
+                                                <a href="{% url 'login' %}"
+                                                   class="btn btn-danger btn-block">{% trans "Sign out" %}</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <!-- END ACCOUNT -->
+                    {% else %}
+                        <!-- START SIGN IN -->
+                        <a class="dropdown-toggle" data-toggle="dropdown">{% trans "Sign in" %}<b class="caret"></b></a>
+                        <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form class="form" role="form" method="post" action="{% url 'login' %}"
+                                              accept-charset="UTF-8" id="login-nav">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label class="sr-only" for="email">Email</label>
+                                                <input type="email" class="form-control" id="email"
+                                                       placeholder="Email" name="email" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="sr-only" for="password">Password</label>
+                                                <input type="password" class="form-control" id="password"
+                                                       placeholder="Password" name="password" required>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox"> Remember me
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-success btn-block">Sign in
+                                                </button>
+                                                <a class="forgot-password"
+                                                   href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a>
+                                            </div>
+                                            <li class="divider"></li>
+                                            <div class="register-now text-center">
+                                                Don't have an account?<br>
+                                                <a href="{% url 'register' %}">{% trans "Register now!" %}</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
 
-                                <!--
+                            <!--
                                 <div class="line-separator">
                                     <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% trans "Or" %} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -217,53 +217,61 @@
                                 <a href="{% url 'register' %}"><button type="button" class="btn">Register</button></a>
 
                                 <!-- Social networks login -->
-                                <!--
-                                <li>
-                                    <input class="btn btn-primary btn-block" type="button" id="sign-in-google"
-                                           value="Sign In with Google">
-                                    <input class="btn btn-primary btn-block" type="button" id="sign-in-twitter"
-                                           value="Sign In with Twitter">
-                                </li>
-                                -->
-                            </ul>
-                            <!-- END SIGN IN -->
-                        {% endif %}
-                    </li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-        <!--/.container-fluid -->
-    </div>
-
-    {% block content %}
-        <p>Page to be filled.</p>
-    {% endblock content %}
-
-    <!-- Footer -->
-    <div class="row footer">
-        <div class="col-xs-5">
-            Copyright 2015 @ EchaloASuerte
-        </div>
-        <div class="col-xs-3">
-            <a href="{% url 'about' %}">{% trans "About us" %}</a>
-        </div>
-        <div class="col-xs-4 language">
-            Choose language:
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                <span class="glyphicon glyphicon-flag"></span>
-                {{ LANGUAGE_CODE|language_name }} ▾
-            </a>
-            <!-- Language dropdown menu -->
-            <ul class="dropdown-menu" role="menu">
-                {% for language in languages %}
-                    <li><a href="#" title="{{ language.code }}">{{ language.name_local }}
-                        ({{ language.code }})</a></li>
-                {% endfor %}
+                            <!--
+                            <li>
+                                <input class="btn btn-primary btn-block" type="button" id="sign-in-google"
+                                       value="Sign In with Google">
+                                <input class="btn btn-primary btn-block" type="button" id="sign-in-twitter"
+                                       value="Sign In with Twitter">
+                            </li>
+                            -->
+                        </ul>
+                        <!-- END SIGN IN -->
+                    {% endif %}
+                </li>
             </ul>
-            </li>
         </div>
+        <!--/.nav-collapse -->
     </div>
+    <!--/.container-fluid -->
+</div>
+
+{% block content %}
+    <p>Page to be filled.</p>
+{% endblock content %}
+
+<!-- Footer -->
+<div class="row footer">
+    <div class="col-xs-5">
+        Copyright 2015 @ EchaloASuerte
+    </div>
+    <div class="col-xs-3">
+        <a href="{% url 'about' %}">{% trans "About us" %}</a>
+    </div>
+    <!-- Language dropdown menu for SM, MD and LG -->
+    <div class="hidden-xs col-xs-4 language">
+        Choose language:
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <span class="glyphicon glyphicon-flag"></span>
+            {{ LANGUAGE_CODE|language_name }} ▾
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            {% for language in languages %}
+                <li><a href="#" title="{{ language.code }}">{{ language.name_local }}
+                    ({{ language.code }})</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- Language dropdown menu for XS -->
+    <div class="visible-xs">
+        <select id="language-selector">
+            {% for language in languages %}
+                <option value="{{ language.code }}" data-link="#" data-language="{{ language.code }}">{{ language.name_local }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
 </div>
 <!-- container -->
 
