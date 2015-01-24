@@ -1,4 +1,11 @@
+@import url(http://fonts.googleapis.com/css?family=PT+Sans);
+
 /* Icon for public draw */
+.draw-title {
+    font-family: 'PT Sans', sans-serif;
+}
+
+
 .back-arrow,
 .public-draw {
     padding: 5px;
