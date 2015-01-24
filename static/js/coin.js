@@ -1,6 +1,5 @@
 var framenum = 0;
 var framecnt = 0;
-var flipping = null;
 var pict = new Array(3, 4, 1, 4);
 var cachedimages = new Array(5);
 
@@ -12,6 +11,7 @@ function coin() {}
 
 /* Pre: the baseUrl has to point to the folder with the images through static files*/
 coin.baseUrl = "";
+coin.result = 0;
 
 coin.setup = function () {
     cachedimages[0] = new Image();
@@ -28,19 +28,19 @@ coin.setup = function () {
 }
 
 
-coin.animate = function (result) {
+coin.animate = function () {
 	framenum = (framecnt) % 4;
 	$("#img-coin" ).attr("src", cachedimages[pict[framenum]].src);
 	framecnt++;
-	if ((framecnt > 8) && (framenum == result)) {
+	if ((framecnt > 8) && (framenum == coin.result)) {
 		$("#img-coin" ).attr("src", cachedimages[framenum].src);
-		flipping = null;
 	}
 	else
-		flipping = setTimeout("coin.animate()", 30);
+		setTimeout("coin.animate()", 30);
 }
 
 
-coin.flip = function (result) {
-	coin.animate(result);
+coin.flip = function () {
+    coin.setup()
+	coin.animate();
 }

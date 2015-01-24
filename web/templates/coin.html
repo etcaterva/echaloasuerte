@@ -28,10 +28,14 @@
                         {% if result %}
                             {% if result == 'tail' %}
                                 <script>
+                                    coin.baseUrl = '{{ STATIC_URL }}' + "img/img_coin/"
+                                    coin.result = 2;
                                     coin.flip(2);
                                 </script>
                             {% else %}
                                 <script>
+                                    coin.baseUrl = '{{ STATIC_URL }}' + "img/img_coin/"
+                                    coin.result = 0;
                                     coin.flip(0);
                                 </script>
                             {% endif %}
