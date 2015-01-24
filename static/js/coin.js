@@ -1,6 +1,5 @@
 var framenum = 0;
 var framecnt = 0;
-var flipping = null;
 var pict = new Array(3, 4, 1, 4);
 var cachedimages = new Array(5);
 
@@ -35,10 +34,9 @@ coin.animate = function () {
 	framecnt++;
 	if ((framecnt > 8) && (framenum == coin.result)) {
 		$("#img-coin" ).attr("src", cachedimages[framenum].src);
-		flipping = null;
 	}
 	else
-		flipping = setTimeout("coin.animate()", 30);
+		setTimeout("coin.animate()", 30);
 }
 
 
