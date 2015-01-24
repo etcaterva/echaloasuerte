@@ -6,6 +6,12 @@
 {% block extra_head %}
     <script src="{% static 'js/dice.js' %}"></script>
 {% endblock extra_head %}
+{% block extra_js %}
+    window.onload = function () {
+        var baseUrl = '{{ STATIC_URL }}' + "img/";
+        D6Animator.getImageBank("", baseUrl);
+    }
+{% endblock extra_js %}
 {% block content %}
     <div class="row">
         <!-- Draw Heading -->
