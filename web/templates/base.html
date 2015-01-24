@@ -40,7 +40,9 @@
     <link href="{% static 'css/eas-login.css' %}" rel="stylesheet">
     <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
     <link href="{% static 'css/eas-draw-card.css' %}" rel="stylesheet">
-    <script src="{% static 'js/project.js' %}"></script>
+
+    {% block extra_head %}{% endblock extra_head %}
+
     <script>
         {% block extra_js %}{% endblock extra_js %}
         $(document).ready(function () {
@@ -48,14 +50,16 @@
                 $("#language-form option[value=" + $(this).attr('title') + "]").attr("selected", "selected");
                 $("#change_language_but").click();
             });
-            {% block extra_jq %}{% endblock extra_jq %}
+            {% block extra_jq_ready %}{% endblock extra_jq_ready %}
         });
+        window.onload = function (){
+            {% block extra_js_onload %}{% endblock extra_js_onload %}
+        }
     </script>
     <style>
         {% block extra_css %}{% endblock extra_css %}
     </style>
 
-    {% block extra_head %}{% endblock extra_head %}
 </head>
 
 <body>
