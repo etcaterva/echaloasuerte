@@ -3,7 +3,6 @@ var framecnt = 0;
 var pict = new Array(3, 4, 1, 4);
 var cachedimages = new Array(5);
 
-
 /* 	choice = 0 (HEAH)
 	choice = 2 (TAIL)
 */

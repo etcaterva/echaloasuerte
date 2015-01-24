@@ -8,7 +8,7 @@
 {% endblock extra_head %}
 {% block extra_js %}
     window.onload = function () {
-        var baseUrl = '{{ STATIC_URL }}' + "img/";
+        var baseUrl = '{{ STATIC_URL }}' + "img/img_dice/";
         D6Animator.getImageBank("", baseUrl);
     }
 {% endblock extra_js %}
@@ -30,7 +30,7 @@
                     {% endif %}
                     <script>
                         results = {{ results }}
-                        D6.baseUrl = '{{ STATIC_URL }}' + "img/"
+                        D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
                         D6.dice(results);
                     </script>
                 {% endif %}

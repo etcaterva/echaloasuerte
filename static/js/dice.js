@@ -50,8 +50,7 @@ D6Animator.getImageBank = function(key, baseUrl) {
 		D6Animator.imageBanks[key] = new Object();
 		imageBank = D6Animator.imageBanks[key];
 		if (typeof baseUrl != "string")
-			baseUrl = D6Animator.baseUrl + "img_dice/";
-            console.log(baseUrl);
+			baseUrl = D6Animator.baseUrl;
 		if (typeof baseUrl != "string") baseUrl = "";
 		imageBank.blank = new Image();
 		imageBank.blank.src = baseUrl + "blank.gif";
