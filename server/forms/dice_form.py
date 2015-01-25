@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Div
+from crispy_forms.layout import Layout, Submit, HTML, Div
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
@@ -21,6 +21,7 @@ class DiceDrawForm(forms.Form):
         self.helper.form_action = reverse('dice')
         self.helper.layout = Layout(
             'number_of_results',
+            HTML("{% include 'render_errors.html' %}"),
             Div(
                Submit('submit', _("Toss"), css_class='btn btn-primary'),
                css_class='text-center',
