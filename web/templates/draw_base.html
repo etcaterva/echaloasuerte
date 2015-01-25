@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block content %}
+    <div class="row">
+        <!-- Draw Heading -->
+        <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
+            <img src="{% static "img/back_arrow.png" %}"/>
+        </a>
+        <div class="col-xs-8 visible-xs"></div>
+        <a href="{% url 'publish_draw' %}" class="public-draw col-xs-2 col-sm-2 col-sm-push-8 text-center">
+            <img src="{% static "img/public_draw.png" %}"/>
+        </a>
+        <h1 class="draw-title col-xs-12 col-sm-8 col-sm-pull-2 text-center">
+            {% block draw_title %}
+            {% endblock draw_title %}
+        </h1>
+        <!-- End Draw Heading -->
+
+        <div class="col-sm-8 col-sm-offset-2">
+            <!-- Input Form -->
+            {% block input_form %}{% endblock input_form %}
+            <!-- End Input Form -->
+
+            <!-- Results -->
+            <div class="row text-center">
+                {% if results %}
+                    {% if results|length  == 1 %}
+                        <p class="h3">Result</p>
+                    {% else %}
+                        <p class="h3">Results</p>
+                    {% endif %}
+                    {% block result %}
+                    {% endblock result %}
+                {% endif %}
+            </div>
+            <!-- Results -->
+        </div>
+    </div>
+{% endblock %}

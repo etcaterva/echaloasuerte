@@ -222,7 +222,7 @@ def dice_draw(request):
         draw_form = DiceDrawForm()
 
     context['draw'] = draw_form
-    return render(request, 'dice.html', context)
+    return render(request, 'dice_new.html', context)
 
 
 def card_draw(request):
