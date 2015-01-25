@@ -24,6 +24,9 @@ class User(object):
         self.password = password
         """encripted password of the user"""
 
+    def get_email(self):
+        return self._id
+
     def get_username(self):
         try:
             return self._id.split('@')[0]

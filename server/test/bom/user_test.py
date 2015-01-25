@@ -15,3 +15,10 @@ class UserTest(TestCase):
     def check_password_ok_test(self):
         self.dummy_user.set_password("123")
         self.assertTrue(self.dummy_user.check_password("123"))
+
+    def get_username_id_is_email_test(self):
+        self.assertEqual("mario",User("mario@weirdmail.com").get_username())
+    def get_username_id_is_not_email_test(self):
+        self.assertEqual("marioX",User("marioX").get_username())
+    def get_email_test(self):
+        self.assertEqual("mario@gmail.com",User("mario@gmail.com").get_email())
