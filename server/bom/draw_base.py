@@ -13,6 +13,10 @@ class BaseDraw(object):
     """
     __metaclass__ = ABCMeta
 
+    @property
+    def pk(self):
+        return str(self._id)
+
     def __init__(self, creation_time = None, owner = None, number_of_results = 1, results= None, _id = None, draw_type = None):
         self.number_of_results = number_of_results
         """Number of results to generate"""

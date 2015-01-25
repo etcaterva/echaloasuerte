@@ -23,6 +23,10 @@ from django.contrib.auth.decorators import login_required
 logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
 
+
+def user_can_read_draw(user,draw):
+    return user._id == draw.owner
+
 def set_owner(draw,request):
     """Best effort to set the owner given a request"""
     try:
@@ -112,6 +116,24 @@ def random_number_draw(request):
 
     context['draw'] = draw_form
     return render(request, 'random_number.html', context)
+
+
+def retrieve_draw(request,draw_id):
+    logger.info("Serving view for retrieve draw with id {0}".format(draw_id))
+    context = {}
+    context['errors'] = []
+    bom_draw = mongodb.retrieve_draw(draw_id)
+    if bom_draw:
+        if user_can_read_draw(request.user,bom_draw):
+            context['draw'] = bom_draw
+        else:
+            context['errors'].append("Draw not found") #Even if not authorised we return not found. Security
+            logger.info("User {0} is not authoriced to read draw {1}".format(request.user._id,bom_draw._id))
+    else:
+        context['errors'].append("Draw not found")
+        logger.info("Draw with id {0} not found.".format(draw_id))
+
+    return render(request, 'retrieve_draw.html', context)
 
 
 def link_sets_draw(request):

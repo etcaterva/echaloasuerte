@@ -16,6 +16,7 @@ urlpatterns += patterns(
     url(r'^about.html$', views.under_construction, name="about"),
     url(r'^joinpublicdraw.html$', views.under_construction, name="join_public_draw"),
     url(r'^publishdraw.html$', views.under_construction, name="publish_draw"),
+    url(r'^draw/(?P<draw_id>[0-9a-g]+)/$', views.retrieve_draw, name="retrieve_draw"),
     url(r'^accounts/register/$', views.register, name='register'),
     url(r'^accounts/forgot_password/$', views.under_construction, name='forgot_password'),
     url(r'^accounts/login/$', views.login_user, name='login'),
