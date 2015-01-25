@@ -90,4 +90,5 @@ LOGGING = {
 }
 ########## END LOGGING CONFIGURATION
 
-MONGO_DB='echaloasuerte'
+#Mongo db configuration list
+MONGO_END_POINTS = [ {'host':'92.222.219.42', 'port':27017, 'database':'echaloasuerte'} ]

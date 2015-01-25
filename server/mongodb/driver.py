@@ -73,13 +73,16 @@ class MongoDriver(object):
 
     @staticmethod
     def instance():
-        try:
-            if MongoDriver._instance is None:
-                from django.conf import settings
-                cnx_param = settings.MONGO_HOST,settings.MONGO_PORT,settings.MONGO_DB
-                MongoDriver._instance = MongoDriver(*cnx_param)
-            return MongoDriver._instance
-        except Exception as e:
-            print( "Imposible to connect to mongo db: {0}".format(e))
+        if MongoDriver._instance is None:
+            from django.conf import settings
+            for cnx_param in settings.MONGO_END_POINTS:
+                try:
+                    MongoDriver._instance = MongoDriver(**cnx_param)
+                except Exception as e:
+                    logger.warning("Imposible to connect to mongo DB using parameters {0}, exception: {1}".format(cnx_param,e))
+                if MongoDriver._instance: break
+
+        assert(MongoDriver._instance is not None)
+        return MongoDriver._instance
 
 
