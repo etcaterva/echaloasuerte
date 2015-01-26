@@ -3,9 +3,9 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% block title %}Random item | Echalo A Suerte{% endblock title %}
-{% block extra_jq %}
-$('#id_items').tokenfield({createTokensOnBlur:true});
-{% endblock extra_jq %}
+{% block extra_jq_ready %}
+    $('#id_items').tokenfield({createTokensOnBlur:true});
+{% endblock extra_jq_ready %}
 {% block content %}
     <div class="row">
         <!-- Draw Heading -->

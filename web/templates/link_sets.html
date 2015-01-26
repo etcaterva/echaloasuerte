@@ -3,9 +3,9 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% block title %}Link Sets | Echalo A Suerte{% endblock title %}
-{% block extra_jq %}
-$('.textinput').tokenfield({createTokensOnBlur:true});
-{% endblock extra_jq %}
+{% block extra_jq_ready %}
+    $('.textinput').tokenfield({createTokensOnBlur:true});
+{% endblock extra_jq_ready %}
 {% block content %}
     <div class="row">
         <!-- Draw Heading -->
