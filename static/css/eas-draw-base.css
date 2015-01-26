@@ -19,22 +19,29 @@
     height: auto;
 }
 
+
+/* Makes the text be inline with the checkbox */
 .checkbox_label {
    line-height: 26px;
 }
 
-.draw-result {
-    margin-top: 20px;
+.btn-toss {
+    margin-top: 13px;
+    margin-bottom: 13px;
 }
 
+/* Place the labels closer to the input boxes */
 .control-label {
     padding-right: 5px;
 }
 
+/* Place the input boxes closer to the labels */
 .controls {
     padding-left: 5px;
 }
 
+
+/* Add minimim size to the input boxes */
 #id_type_of_deck {
     max-width: 130px;
 }
