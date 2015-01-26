@@ -8,6 +8,8 @@ from server.bom.card import *
 from server.bom.link_sets import *
 from server.bom.random_item import *
 from server.bom.user import *
+from bson.objectid import ObjectId
+
 
 def build_draw(doc):
     """Given a python dict that represnets a draw, builds it"""
@@ -67,7 +69,8 @@ class MongoDriver(object):
         Retrieves a draw from mongo.
         Get the type from the serialized object
         """
-        doc = self._draws.find_one({"_id":draw_id})
+        raw_id = ObjectId(draw_id) if draw_id is not ObjectId else draw_id
+        doc = self._draws.find_one({"_id":raw_id})
         logger.debug("Retrieved documment: {0}".format(doc))
         return build_draw(doc)
 
