@@ -15,7 +15,7 @@ class RandomNumberDrawForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(RandomNumberDrawForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        '''self.helper.field_template = 'eas_field.html'''''
+        self.helper.field_template = 'eas_crispy_field.html'
         self.helper.form_id = 'form-random_number'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-7 text-right'
