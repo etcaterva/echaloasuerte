@@ -15,9 +15,6 @@ $('#id_items').tokenfield({createTokensOnBlur:true});
             <!-- Input Form -->
             <form action="{% url 'random_item' %}" class="blueForms" method="post">
                 {% crispy draw draw.helper %}
-                <div class="text-center">
-                    <input type="submit" name="sumbit" value="Toss" class="btn btn-primary" id="submit-id-submit">
-                </div>
             </form>
             <!-- End Input Form -->
 

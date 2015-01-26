@@ -2,7 +2,7 @@ from django import forms
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Div, Field
+from crispy_forms.layout import Layout, Submit, Row, Div, Field, HTML
 
 
 class RandomItemDrawForm(forms.Form):
@@ -21,9 +21,14 @@ class RandomItemDrawForm(forms.Form):
         self.helper.form_method = 'post'
         self.helper.form_action = '/item'
         self.helper.layout = Layout(
-            Div(
+            Row(
                 'number_of_results',
                 'items',
                 'allow_repeat',
             ),
+            HTML("{% include 'render_errors.html' %}"),
+            Div(
+                Submit('submit', _("Toss"), css_class='btn-toss'),
+                css_class='text-center',
+            )
         )
