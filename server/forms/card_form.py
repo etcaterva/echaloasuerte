@@ -29,10 +29,10 @@ class CardDrawForm(forms.Form):
             Row(
                 'number_of_results',
                 'type_of_deck',
-                HTML("{% include 'render_errors.html' %}"),
             ),
-            Row(
-               Submit('submit', _("Toss"), css_class='btn btn-primary'),
-               css_class='text-center',
+            Div(
+                HTML("{% include 'render_errors.html' %}"),
+                Submit('submit', _("Toss"), css_class='btn-toss'),
+                css_class='text-center',
             )
         )
