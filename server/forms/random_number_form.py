@@ -30,8 +30,8 @@ class RandomNumberDrawForm(forms.Form):
                 'number_of_results',
                 'allow_repeat',
             ),
+            HTML("{% include 'render_errors.html' %}"),
             Div(
-                HTML("{% include 'render_errors.html' %}"),
                 Submit('submit', _("Toss"), css_class='btn-toss'),
                 css_class='text-center',
             )
