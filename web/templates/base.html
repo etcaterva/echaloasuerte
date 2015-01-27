@@ -105,7 +105,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="col-xs-9 col-sm-12 navbar-brand" href="/">
-                <img class="" src="{% static "img/brand_en.png" %}"/>
+                <img class="" src="{% static "img/brand_beta.png" %}"/>
             </a>
             <!--<a class="navbar-brand" href="/"> Echalo A Suerte </a>-->
         </div>
@@ -113,6 +113,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="col-sm-7 collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="collapse" data-target="#favorites-panel">{% trans "Favorites" %}
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+                </li>
                 <li>
                     <a href="{% url 'join_public_draw' %}">{% trans "Join Public Draw" %}
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
@@ -211,24 +215,6 @@
                                     </div>
                                 </div>
                             </li>
-
-                            <!--
-                                <div class="line-separator">
-                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% trans "Or" %} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                </div>
-                                <a href="{% url 'register' %}"><button type="button" class="btn">Register</button></a>
-
-                                <!-- Social networks login -->
-                            <!--
-                            <li>
-                                <input class="btn btn-primary btn-block" type="button" id="sign-in-google"
-                                       value="Sign In with Google">
-                                <input class="btn btn-primary btn-block" type="button" id="sign-in-twitter"
-                                       value="Sign In with Twitter">
-                            </li>
-                            -->
                         </ul>
                         <!-- END SIGN IN -->
                     {% endif %}
@@ -238,6 +224,12 @@
         <!--/.nav-collapse -->
     </div>
     <!--/.container-fluid -->
+</div>
+
+<div id="favorites-panel" class="row collapse">
+    <div class="col-xs-10">
+        Favorites list here
+    </div>
 </div>
 
 {% block content %}
