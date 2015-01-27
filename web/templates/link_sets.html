@@ -1,48 +1,29 @@
-{% extends "base.html" %}
+{% extends "draw_base.html" %}
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% block title %}Link Sets | Echalo A Suerte{% endblock title %}
+
+{% block title %}{% trans "Link Sets" %} | Echalo A Suerte{% endblock title %}
+
 {% block extra_jq_ready %}
     $('.textinput').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
-{% block content %}
-    <div class="row">
-        <!-- Draw Heading -->
-        {% include "draw_heading.html" with title="Link Sets" %}
 
-        <div class="col-sm-8 col-sm-offset-2">
-            <!-- Input Form -->
-            <form action="{% url 'link_sets' %}" class="blueForms" method="post">
-                <div class="alert alert-info" role="alert">{% trans 'Lists are comma separated. e.g: 1,2,3,' %}</div>
-                {% crispy draw draw.helper %}
-                <div class="text-center">
-                    <input type="submit" name="sumbit" value="Toss" class="btn btn-primary" id="submit-id-submit">
-                </div>
-            </form>
-            <!-- End Input Form -->
+{% block draw_title %} {% trans "Link Sets" %} {% endblock draw_title %}
 
-            <!-- Results -->
-            <div class="row text-center">
-                {% if results %}
-                    {% if results|length  == 1%}
-                        <p class="h2">Result</p>
-                    {% else %}
-                        <p class="h2">Results</p>
-                    {% endif %}
-                    <ul class="list-group">
-                        {% for link in results %}
-                            <li class="list-group-item col-xs-12">
-                                {% for item in link %}
-                                <b>{{ item }}</b> {%if not forloop.last %} <span class="glyphicon glyphicon-minus" ></span> {%endif%}
-                                {% endfor %}
-                            </li>
-                        {% endfor %}
-                    </ul>
+{% block input_form %}
+    <div class="alert alert-info" role="alert">{% trans 'Lists are comma separated. e.g: 1,2,3,' %}</div>
+    {% crispy draw draw.helper %}
+{% endblock input_form%}
 
-                {%  endif %}
-            </div>
-            <!-- Results -->
-        </div>
-    </div>
-{% endblock %}
+{% block result %}
+    <ul class="list-group">
+        {% for link in results %}
+            <li class="list-group-item col-xs-12">
+                {% for item in link %}
+                    <b>{{ item }}</b> {%if not forloop.last %} <span class="glyphicon glyphicon-minus" ></span> {%endif%}
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock result %}
