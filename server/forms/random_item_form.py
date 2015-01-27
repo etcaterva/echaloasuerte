@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
@@ -32,3 +33,8 @@ class RandomItemDrawForm(forms.Form):
                 css_class='text-center',
             )
         )
+
+    def clean_number_of_results(self):
+        if self.cleaned_data.get('number_of_results', 1) < 1:
+            raise ValidationError(_("Any result?"))
+        return self.cleaned_data.get('number_of_results', '')
