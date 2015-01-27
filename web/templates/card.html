@@ -1,37 +1,25 @@
-{% extends "base.html" %}
+{% extends "draw_base.html" %}
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% block title %}Take a card | Echalo A Suerte{% endblock title %}
+
+{% block title %}{% trans "Take a card" %} | Echalo A Suerte{% endblock title %}
+
 {% block extra_head %}
     <script src="{% static 'js/card.js' %}"></script>
 {% endblock extra_head %}
-{% block content %}
-    <div class="row">
-        <!-- Draw Heading -->
-        {% include "draw_heading.html" with title="Take a card" %}
 
-        <div class="col-sm-8 col-sm-offset-2">
-            <!-- Input Form -->
-            {% crispy draw draw.helper %}
-            <!-- Results -->
-            <div class="row text-center">
-                {% if results %}
-                    {% if results|length  == 1 %}
-                        <p class="h3">Result</p>
-                    {% else %}
-                        <p class="h3">Results</p>
-                    {% endif %}
+{% block draw_title %} {% trans "Take a card" %} {% endblock draw_title %}
 
-                    <script>
-                        var baseUrl = '{{ STATIC_URL }}' + "img/";
-                        var results = {{ results }};
-                        Card.setup(baseUrl, results);
-                        Card.draw();
-                    </script>
-                {% endif %}
-            </div>
-            <!-- End Results -->
-        </div>
-    </div>
-{% endblock %}
+{% block input_form %}
+    {% crispy draw draw.helper %}
+{% endblock input_form%}
+
+{% block result %}
+    <script>
+        var baseUrl = '{{ STATIC_URL }}' + "img/";
+        Card.setup(baseUrl, {{ results }});
+        Card.draw();
+    </script>
+{% endblock result %}
+

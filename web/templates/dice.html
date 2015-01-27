@@ -21,10 +21,10 @@
 {% endblock input_form%}
 
 {% block result %}
-        <script>
-            results = {{ results }}
-            D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
-            D6.dice(results);
-        </script>
+    <script>
+        results = {{ results }}
+        D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
+        D6.dice(results);
+    </script>
 {% endblock result %}
 
