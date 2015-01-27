@@ -23,15 +23,9 @@
             <input type="image" id="img-coin" src="{% static "img/img_coin/head.png" %}" name="coin">
             <p>{% trans "Tap the coin to flip it" %}</p>
             {% if result %}
-                {% if result == 'tail' %}
-                    <script>
-                        coin.flip(2);
-                    </script>
-                {% else %}
-                    <script>
-                        coin.flip(0);
-                    </script>
-                {% endif %}
+                <script>
+                    coin.flip("{{ result }}");
+                </script>
             {% endif %}
         </div>
     </form>
