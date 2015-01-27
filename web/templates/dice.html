@@ -1,38 +1,30 @@
-{% extends "base.html" %}
+{% extends "draw_base.html" %}
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% block title %}Roll a dice | Echalo A Suerte{% endblock title %}
+
+{% block title %}{% trans "Roll a dice" %} | Echalo A Suerte{% endblock title %}
+
 {% block extra_head %}
     <script src="{% static 'js/dice.js' %}"></script>
 {% endblock extra_head %}
+
 {% block extra_js_onload %}
+    //Precaching the images
     D6Animator.getImageBank("", '{{ STATIC_URL }}' + "img/img_dice/");
 {% endblock extra_js_onload %}
-{% block content %}
-    <div class="row">
-        <!-- Draw Heading -->
-        {% include "draw_heading.html" with title="Roll a dice" %}
 
-        <div class="col-sm-8 col-sm-offset-2">
-            <!-- Input Form -->
-            {% crispy draw draw.helper %}
-            <!-- Results -->
-            <div class="row draw-result text-center">
-                {% if results %}
-                    {% if results|length  == 1 %}
-                        <p class="h3">Result</p>
-                    {% else %}
-                        <p class="h3">Results</p>
-                    {% endif %}
-                    <script>
-                        results = {{ results }}
-                        D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
-                        D6.dice(results);
-                    </script>
-                {% endif %}
-            </div>
-            <!-- End Results -->
-        </div>
-    </div>
-{% endblock %}
+{% block draw_title %} {% trans "Roll a dice" %} {% endblock draw_title %}
+
+{% block input_form %}
+    {% crispy draw draw.helper %}
+{% endblock input_form%}
+
+{% block result %}
+        <script>
+            results = {{ results }}
+            D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
+            D6.dice(results);
+        </script>
+{% endblock result %}
+
