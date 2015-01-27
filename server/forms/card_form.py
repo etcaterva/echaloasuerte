@@ -41,4 +41,4 @@ class CardDrawForm(forms.Form):
         # TODO number_of_results should't be more that the number of cards that the deck has (not just 40)
         if 0 < self.cleaned_data.get('number_of_results', 1) < 40:
             return self.cleaned_data.get('number_of_results', '')
-        raise ValidationError(_("Between 1 and 50"))
+        raise ValidationError(_("Between 1 and 40"))
