@@ -3,7 +3,8 @@ from django.core.exceptions import ValidationError
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Div, Field, HTML
+from crispy_forms.layout import Layout, Submit, Row, Div, HTML
+from django.core.urlresolvers import reverse
 
 
 class RandomItemDrawForm(forms.Form):
@@ -13,14 +14,13 @@ class RandomItemDrawForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(RandomItemDrawForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag = False
         self.helper.form_id = 'form-random_item'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-7 col-md-6 text-right'
         self.helper.field_class = 'col-xs-5 col-md-6'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
-        self.helper.form_action = '/item'
+        self.helper.form_action = reverse('random_item')
         self.helper.layout = Layout(
             Row(
                 'number_of_results',

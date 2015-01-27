@@ -1,42 +1,26 @@
-{% extends "base.html" %}
+{% extends "draw_base.html" %}
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% block title %}Random item | Echalo A Suerte{% endblock title %}
+
+{% block title %}{% trans "Random item" %} | Echalo A Suerte{% endblock title %}
+
 {% block extra_jq_ready %}
     $('#id_items').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
-{% block content %}
-    <div class="row">
-        <!-- Draw Heading -->
-        {% include "draw_heading.html" with title="Random item" %}
 
-        <div class="col-sm-8 col-sm-offset-2">
-            <!-- Input Form -->
-            <form action="{% url 'random_item' %}" class="blueForms" method="post">
-                {% crispy draw draw.helper %}
-            </form>
-            <!-- End Input Form -->
+{% block draw_title %} {% trans "Random item" %} {% endblock draw_title %}
 
-            <!-- Results -->
-            <div class="row text-center">
-                {% if results %}
-                    {% if results|length  == 1%}
-                        <p class="h2">Result</p>
-                    {% else %}
-                        <p class="h2">Results</p>
-                    {% endif %}
-                    <ul class="list-group">
-                        {% for item in results %}
-                            <li class="list-group-item col-xs-6 col-xs-offset-3">
-                                {{ item }}
-                            </li>
-                        {% endfor %}
-                    </ul>
+{% block input_form %}
+    {% crispy draw draw.helper %}
+{% endblock input_form%}
 
-                {%  endif %}
-            </div>
-            <!-- Results -->
-        </div>
-    </div>
-{% endblock %}
+{% block result %}
+    <ul class="list-group">
+        {% for item in results %}
+            <li class="list-group-item col-xs-6 col-xs-offset-3">
+                {{ item }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock result %}
