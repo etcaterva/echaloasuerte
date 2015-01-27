@@ -1,6 +1,7 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML, Div, Row
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
@@ -29,3 +30,8 @@ class DiceDrawForm(forms.Form):
                 css_class='text-center',
             )
         )
+
+    def clean_number_of_results(self):
+        if 0 < self.cleaned_data.get('number_of_results', 1) < 20:
+            return self.cleaned_data.get('number_of_results', '')
+        raise ValidationError(_("Between 1 and 20"))
