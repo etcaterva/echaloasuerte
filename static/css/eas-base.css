@@ -5,7 +5,9 @@ body {
 
 /* Used to leave an empty region on the top of the screen - Only is used in some screen sizes */
 .padding-top-big {
-    margin-top: 130px;
+    color: #b9b9b9;
+    margin-top: 70px;
+    margin-bottom: 50px;
 }
 
 .padding-top-medium {
