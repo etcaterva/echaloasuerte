@@ -36,7 +36,7 @@ def login_user(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
-                if request.POST.get('remember-me', None):
+                if 'keep-logged' in request.POST:
                     request.session.set_expiry(31556926)  # 1 year
                 logger.info("expiration" + str(request.session.get_expiry_date()))
                 login(request, user)
