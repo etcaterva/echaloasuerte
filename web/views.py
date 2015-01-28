@@ -41,6 +41,10 @@ def login_user(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
+                #TODO session should never expire but it does
+                if request.POST.get('remember-me', None):
+                    request.session.set_expiry(0)
+                logger.info("expiration" + str(request.session.get_expiry_age()))
                 login(request, user)
                 return HttpResponseRedirect('/')
         else:
