@@ -1,11 +1,6 @@
 from django.http import *
 from server.forms import *
 from django.shortcuts import render
-from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response,redirect
-from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login as auth_login, logout
 from django.utils.translation import ugettext_lazy as _
 from server.bom.random_item import RandomItemDraw
 from server.bom.random_number import RandomNumberDraw
@@ -41,10 +36,9 @@ def login_user(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
-                #TODO session should never expire but it does
                 if request.POST.get('remember-me', None):
-                    request.session.set_expiry(0)
-                logger.info("expiration" + str(request.session.get_expiry_age()))
+                    request.session.set_expiry(31556926)  # 1 year
+                logger.info("expiration" + str(request.session.get_expiry_date()))
                 login(request, user)
                 return HttpResponseRedirect('/')
         else:
