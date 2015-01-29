@@ -1,11 +1,6 @@
 from django.http import *
 from server.forms import *
 from django.shortcuts import render
-from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response,redirect
-from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login as auth_login, logout
 from django.utils.translation import ugettext_lazy as _
 from server.bom.random_item import RandomItemDraw
 from server.bom.random_number import RandomNumberDraw
@@ -41,6 +36,9 @@ def login_user(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
+                if 'keep-logged' in request.POST:
+                    request.session.set_expiry(31556926)  # 1 year
+                logger.info("expiration" + str(request.session.get_expiry_date()))
                 login(request, user)
                 return HttpResponseRedirect('/')
         else:
@@ -222,7 +220,7 @@ def dice_draw(request):
         draw_form = DiceDrawForm()
 
     context['draw'] = draw_form
-    return render(request, 'dice_new.html', context)
+    return render(request, 'dice.html', context)
 
 
 def card_draw(request):

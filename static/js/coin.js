@@ -3,9 +3,7 @@ var framecnt = 0;
 var pict = new Array(3, 4, 1, 4);
 var cachedimages = new Array(5);
 
-/* 	choice = 0 (HEAH)
-	choice = 2 (TAIL)
-*/
+
 function coin() {}
 
 coin.result = 0;
@@ -36,6 +34,12 @@ coin.animate = function () {
 }
 
 coin.flip = function (result) {
-    coin.result = result;
+    /* 	choice = 0 (HEAH)
+	choice = 2 (TAIL)
+    */
+    if (result == "head")
+        coin.result = 0
+    else
+        coin.result = 2
 	coin.animate();
 }

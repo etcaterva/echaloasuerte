@@ -41,9 +41,19 @@ class RandomNumberDrawTest(TestCase):
         tested_item = RandomNumberDraw(range_max=2, range_min=4)
         self.assertFalse(tested_item.is_feasible())
 
+    def is_feasible_not_enough_results_ko_test(self):
+        """RandomNumberDraw: Number of numbers requested less than one is not feasible"""
+        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=0, allow_repeat=False)
+        self.assertFalse(tested_item.is_feasible())
+
     def is_feasible_too_many_results_ko_test(self):
         """RandomNumberDraw: Too many results requested is not feasible"""
         tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4, allow_repeat=False)
+        self.assertFalse(tested_item.is_feasible())
+
+    def is_feasible_results_over_the_limit_ko_test(self):
+        """RandomNumberDraw: Too many results requested is not feasible"""
+        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=60, allow_repeat=True)
         self.assertFalse(tested_item.is_feasible())
 
     def is_feasible_many_results_with_repeat_ok_test(self):

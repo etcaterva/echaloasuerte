@@ -21,10 +21,14 @@ class DiceDrawTest(TestCase):
         item = DiceDraw(**raw)
         self.assertEqual(item.number_of_results,2)
 
-    def is_feasible_test(self):
+    def is_feasible_defautl_test(self):
         """DiceDraw: Is Feasible"""
         self.assertTrue(DiceDraw().is_feasible())
-        self.assertTrue(DiceDraw(number_of_results=500).is_feasible())
+
+    def is_feasible_parametrized_test(self):
+        """DiceDraw: Too many results is not Feasible"""
+        tested_item = DiceDraw(number_of_results=30)
+        self.assertFalse(tested_item.is_feasible())
 
     def toss_once_test(self):
         """DiceDraw: Toss once"""

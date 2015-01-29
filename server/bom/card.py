@@ -23,7 +23,19 @@ class CardDraw(BaseDraw):
         """Type of deck to be used"""
 
     def is_feasible(self):
-        return self.type_of_deck in decks and 0 < self.number_of_results <= len(decks[self.type_of_deck])
+        if self.type_of_deck not in decks:
+            # The selected deck is not available
+            return False
+
+        if self.number_of_results < 1:
+            # At least one result is requested
+            return False
+
+        if self.number_of_results > len(decks[self.type_of_deck]):
+            # The selected deck does not have so many cards
+            return False
+
+        return True
 
     def generate_result(self):
         return [random.randint(1, len(decks[self.type_of_deck])) for x in range(0, self.number_of_results)]

@@ -1,6 +1,7 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Div, HTML
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
@@ -11,7 +12,6 @@ DECKS_CHOICES = (('french', _("French")),
 
 class CardDrawForm(forms.Form):
     number_of_results = forms.IntegerField(label=_("Number of cards to draw"), required=True, initial=1, max_value=20)
-    #type_of_deck = forms.CharField(label=_("Type of deck"), required=True, initial="french")
     type_of_deck = forms.ChoiceField(required=True, initial="french", choices=DECKS_CHOICES)
 
     def __init__(self, *args, **kwargs):
@@ -29,10 +29,16 @@ class CardDrawForm(forms.Form):
             Row(
                 'number_of_results',
                 'type_of_deck',
-                HTML("{% include 'render_errors.html' %}"),
             ),
-            Row(
-               Submit('submit', _("Toss"), css_class='btn btn-primary'),
-               css_class='text-center',
+            Div(
+                HTML("{% include 'render_errors.html' %}"),
+                Submit('submit', _("Toss"), css_class='btn-toss'),
+                css_class='text-center',
             )
         )
+
+    def clean_number_of_results(self):
+        # TODO number_of_results should't be more that the number of cards that the deck has (not just 40)
+        if 0 < self.cleaned_data.get('number_of_results', 1) < 40:
+            return self.cleaned_data.get('number_of_results', '')
+        raise ValidationError(_("Between 1 and 40"))

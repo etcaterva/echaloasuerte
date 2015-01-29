@@ -22,12 +22,25 @@ class RandomNumberDraw(BaseDraw):
         """Whether the set of numbers to generate can contain repetitions. Note, if false, max-min > num_res"""
 
     def is_feasible(self):
-        if self.range_max is None:
+        #TODO range_max must have a defaulf value
+        if self.range_max is None or self.number_of_results <= 0:
+            # At least one result is requested
             return False
-        if self.allow_repeat == True:
-            return self.range_min < self.range_max
+
+        if self.number_of_results > 50:
+            # Too many results
+            return False
+
+        if self.allow_repeat:
+            if self.range_min >= self.range_max:
+                # Range is too small
+                return False
         else:
-            return self.range_max - self.range_min >= self.number_of_results
+            if self.range_max - self.range_min < self.number_of_results:
+                # Range is too small, do you want to allow repeated numbers?
+                return False
+
+        return True
 
 
     def generate_result(self):

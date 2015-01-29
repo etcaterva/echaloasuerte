@@ -18,7 +18,7 @@ class RandomItemDraw(BaseDraw):
         """Whether the same item can appear more than once in the result"""
 
     def is_feasible(self):
-        if len(self.items) == 0:
+        if len(self.items) <= 0 or self.number_of_results <= 0:
             return False
         return self.number_of_results <= len(self.items) or self.allow_repeat
 
