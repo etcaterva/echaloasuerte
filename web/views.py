@@ -24,24 +24,27 @@ logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
 
 
-def compare_and_link_draws(curr_draw,prev_draw):
+def find_previous_version(curr_draw):
     """
-    Compares the content of both draws,
-    if they are equal, sets the metadata of the prev to the new
-    otherwise adds to the current draw the new draw id as a link
+    Search in the DB for a previous draw with the same id. If found, the old and current version are compared.
+    If the draw configuration didn't change returns the old version so later the results will be added to this one
+    Otherwise it will clean the draw id (so mongo will assign a new one to it later). A link to the older version of the
+    draw is added.
     """
-    if prev_draw is None:
+    if curr_draw.pk == '':
         return curr_draw
+    prev_draw = mongodb.retrieve_draw(curr_draw.pk)
     for k, v in curr_draw.__dict__.items():
-        if k in ["creation_time", "results", "_id"] or (k in prev_draw.__dict__.keys() and v == prev_draw.__dict__[k]):
-            pass
-        else:
-            #data changed
+        if k not in ["creation_time", "results", "_id"] and (k not in prev_draw.__dict__.keys() or v != prev_draw.__dict__[k]):
+            # Data have changed
             logger.info("Draw with id {0} changed on key {1}".format(prev_draw._id,k))
             curr_draw.prev_draw = prev_draw._id
+            # Clean the current's draw id, so a new one will be assigned to it
+            curr_draw._id = None
             return curr_draw
-    #value not changed, set current to the prev_draw
+    # Data haven't changed so return previous draw to work on it
     return prev_draw
+
 
 def user_can_read_draw(user,draw):
     return user._id == draw.owner
@@ -107,11 +110,7 @@ def index(request):
 
 def random_number_draw(request,draw_id = None):
     logger.info("Serving view for random number draw")
-    context = {}
-    context['errors'] = []
-    prev_draw = None
-    bom_draw = None
-
+    context = {'errors': []}
 
     if request.method == 'POST':
         logger.debug("Information posted. {0}".format(request.POST))
@@ -120,12 +119,9 @@ def random_number_draw(request,draw_id = None):
             raw_draw = draw_form.cleaned_data
             #in the future we could retrive draws, add results and list the historic
             bom_draw = RandomNumberDraw(**raw_draw)#This works because form and python object have the same member names
-            set_owner(bom_draw,request)
-            if bom_draw.pk:
-                prev_draw = mongodb.retrieve_draw(bom_draw.pk)
-            else:
-                prev_draw = None
-            bom_draw = compare_and_link_draws(bom_draw,prev_draw)
+            set_owner(bom_draw, request)
+
+            bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)

@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 
 
 class RandomNumberDrawForm(forms.Form):
-    _id = forms.CharField(required = False) #widget=forms.HiddenInput()
+    _id = forms.CharField(required=False, widget=forms.HiddenInput())
     range_min = forms.IntegerField(label=_("From"), initial=0, required=True)
     range_max = forms.IntegerField(label=_("To"), required=True)
     number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1, max_value=1000)
@@ -32,7 +32,6 @@ class RandomNumberDrawForm(forms.Form):
                 'number_of_results',
                 'allow_repeat',
                 HTML("{% include 'render_errors.html' %}"),
-                HTML("""<input id="hidden_id" name="draw_id" value="{{bom.pk}}">"""),
             ),
             Row(
                Submit('submit', _("Toss"), css_class='btn btn-primary'),
