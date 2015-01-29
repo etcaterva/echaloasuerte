@@ -30,6 +30,7 @@ class RandomNumberDrawForm(forms.Form):
                 'number_of_results',
                 'allow_repeat',
                 HTML("{% include 'render_errors.html' %}"),
+                HTML("""<input id="hidden_id" name="draw_id" type="hidden" value="{{bom.pk}}">"""),
             ),
             Row(
                Submit('submit', _("Toss"), css_class='btn btn-primary'),

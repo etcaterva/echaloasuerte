@@ -24,6 +24,26 @@ logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
 
 
+def compare_and_link_draws(curr_draw,prev_draw):
+    """
+    Compares the content of both draws,
+    if they are equal, sets the metadata of the prev to the new
+    otherwise adds to the current draw the new draw id as a link
+    """
+    if prev_draw is None:
+        return curr_draw
+    for k,v in curr_draw.__dict__.iteritems():
+        if (    ( k in ["creation_time","results","_id"] ) or #well... this is just needed... :(
+             (  ( k in prev_draw.__dict__.keys()) and ( v == prev_draw.__dict__[k] )    ) ):
+            pass
+        else:
+            #data changed
+            logger.info("Draw with id {0} changed on key {1}".format(prev_draw._id,k))
+            curr_draw.prev_draw = prev_draw._id
+            return curr_draw
+    #value not changed, set current to the prev_draw
+    return prev_draw
+
 def user_can_read_draw(user,draw):
     return user._id == draw.owner
 
@@ -86,10 +106,17 @@ def index(request):
     return render(request, 'index.html')
 
 
-def random_number_draw(request):
+def random_number_draw(request,draw_id = None):
     logger.info("Serving view for random number draw")
     context = {}
     context['errors'] = []
+    prev_draw = None
+    bom_draw = None
+    if draw_id or request.POST.get("draw_id",None):
+        draw_id = request.POST.get("draw_id",None) if draw_id is None else draw_id
+        prev_draw = mongodb.retrieve_draw(draw_id)
+        bom_draw = prev_draw
+
     if request.method == 'POST':
         logger.debug("Information posted. {0}".format(request.POST))
         draw_form = RandomNumberDrawForm(request.POST)
@@ -98,6 +125,7 @@ def random_number_draw(request):
             #in the future we could retrive draws, add results and list the historic
             bom_draw = RandomNumberDraw(**raw_draw)#This works because form and python object have the same member names
             set_owner(bom_draw,request)
+            bom_draw = compare_and_link_draws(bom_draw,prev_draw)
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
@@ -113,8 +141,12 @@ def random_number_draw(request):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         draw_form = RandomNumberDrawForm()
+        if prev_draw:
+            logger.debug("Filling form with retrieved draw {0}".format(prev_draw))
+            draw_form = RandomNumberDrawForm(initial=prev_draw.__dict__)
 
     context['draw'] = draw_form
+    context['bom'] = bom_draw
     return render(request, 'random_number.html', context)
 
 

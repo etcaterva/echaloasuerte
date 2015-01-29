@@ -7,7 +7,7 @@ urlpatterns = patterns(None)
 urlpatterns += patterns(
     '',
     url(r'^$', views.index, name='index'),
-    url(r'^number.html$', views.random_number_draw, name="random_number"),
+    url(r'^number/(?P<draw_id>[0-9a-g]+)?$', views.random_number_draw, name="random_number"),
     url(r'^item.html$', views.random_item_draw, name="random_item"),
     url(r'^link_sets.html$', views.link_sets_draw, name="link_sets"),
     url(r'^coin.html$', views.coin_draw, name="coin"),
