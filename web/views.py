@@ -111,6 +111,9 @@ def random_number_draw(request,draw_id = None):
     context['errors'] = []
     prev_draw = None
     bom_draw = None
+
+
+
     if draw_id or request.POST.get("draw_id",None):
         draw_id = request.POST.get("draw_id",None) if draw_id is None else draw_id
         prev_draw = mongodb.retrieve_draw(draw_id)
@@ -139,10 +142,12 @@ def random_number_draw(request,draw_id = None):
             logger.info("Form not valid")
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
-        draw_form = RandomNumberDrawForm()
-        if prev_draw:
-            logger.debug("Filling form with retrieved draw {0}".format(prev_draw))
-            draw_form = RandomNumberDrawForm(initial=prev_draw.__dict__)
+        if draw_id:
+            requested_draw = mongodb.retrieve_draw(draw_id)
+            logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
+            draw_form = RandomNumberDrawForm(initial=requested_draw.__dict__)
+        else:
+            draw_form = RandomNumberDrawForm()
 
     context['draw'] = draw_form
     context['bom'] = bom_draw
