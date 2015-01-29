@@ -13,7 +13,11 @@ class BaseDraw(object):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, creation_time = None, owner = None, number_of_results = 1, results= None, _id = None, draw_type = None):
+    @property
+    def pk(self):
+        return str(self._id)
+
+    def __init__(self, creation_time = None, owner = None, number_of_results = 1, results= None, _id = None, draw_type = None, prev_draw = None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -32,6 +36,9 @@ class BaseDraw(object):
         self.creation_time = creation_time if creation_time is not None else django.utils.timezone.now()
         """Time the draw was created"""
         self.creation_time.replace(tzinfo=pytz.utc)
+
+        self.prev_draw = prev_draw
+        """Id of the prev draw that was modified creating this one"""
 
         if draw_type and draw_type != self.draw_type:
             logger.warning("A draw was built with type {0} but type {1} was passed as argument! Fix it!".format(draw_type,self.draw_type))

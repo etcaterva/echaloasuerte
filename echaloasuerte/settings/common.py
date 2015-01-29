@@ -182,11 +182,6 @@ SECRET_KEY = '$a3e(-u8)4m4*(vfnfnfjba@bd13-2u#=(i$*7(p!(6ck0ugd='
 # Fixing 1_6.W001
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-#Mongo db configuration
-MONGO_HOST='92.222.219.42'
-MONGO_PORT=27017
-MONGO_DB='echaloasuerte'
-
 #Allowed host to be used
 ALLOWED_HOSTS = [
     '.etcaterva.com',

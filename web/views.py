@@ -18,6 +18,33 @@ from django.contrib.auth.decorators import login_required
 logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
 
+
+def find_previous_version(curr_draw):
+    """
+    Search in the DB for a previous draw with the same id. If found, the old and current version are compared.
+    If the draw configuration didn't change returns the old version so later the results will be added to this one
+    Otherwise it will clean the draw id (so mongo will assign a new one to it later). A link to the older version of the
+    draw is added.
+    """
+    if curr_draw._id == '':
+        curr_draw._id = None
+        return curr_draw
+    prev_draw = mongodb.retrieve_draw(curr_draw.pk)
+    for k, v in curr_draw.__dict__.items():
+        if k not in ["creation_time", "results", "_id"] and (k not in prev_draw.__dict__.keys() or v != prev_draw.__dict__[k]):
+            # Data have changed
+            logger.info("Draw with id {0} changed on key {1}".format(prev_draw._id,k))
+            curr_draw.prev_draw = prev_draw._id
+            # Clean the current's draw id, so a new one will be assigned to it
+            curr_draw._id = None
+            return curr_draw
+    # Data haven't changed so return previous draw to work on it
+    return prev_draw
+
+
+def user_can_read_draw(user,draw):
+    return user._id == draw.owner
+
 def set_owner(draw,request):
     """Best effort to set the owner given a request"""
     try:
@@ -80,10 +107,10 @@ def index(request):
     return render(request, 'index.html')
 
 
-def random_number_draw(request):
+def random_number_draw(request,draw_id = None):
     logger.info("Serving view for random number draw")
-    context = {}
-    context['errors'] = []
+    context = {'errors': []}
+
     if request.method == 'POST':
         logger.debug("Information posted. {0}".format(request.POST))
         draw_form = RandomNumberDrawForm(request.POST)
@@ -91,10 +118,20 @@ def random_number_draw(request):
             raw_draw = draw_form.cleaned_data
             #in the future we could retrive draws, add results and list the historic
             bom_draw = RandomNumberDraw(**raw_draw)#This works because form and python object have the same member names
-            set_owner(bom_draw,request)
+            set_owner(bom_draw, request)
+
+            bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
+
+                # TODO Option 1
+                draw_form.data = draw_form.data.copy()
+                draw_form.data['_id'] = bom_draw.pk
+
+                # TODO Option 2
+                #draw_form = RandomNumberDrawForm(initial=bom_draw.__dict__)
+
                 res_numbers = result["items"]
                 context['results'] =  res_numbers
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
@@ -106,10 +143,33 @@ def random_number_draw(request):
             logger.info("Form not valid")
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
-        draw_form = RandomNumberDrawForm()
+        if draw_id:
+            requested_draw = mongodb.retrieve_draw(draw_id)
+            logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
+            draw_form = RandomNumberDrawForm(initial=requested_draw.__dict__)
+        else:
+            draw_form = RandomNumberDrawForm()
 
     context['draw'] = draw_form
     return render(request, 'random_number.html', context)
+
+
+def retrieve_draw(request,draw_id):
+    logger.info("Serving view for retrieve draw with id {0}".format(draw_id))
+    context = {}
+    context['errors'] = []
+    bom_draw = mongodb.retrieve_draw(draw_id)
+    if bom_draw:
+        if user_can_read_draw(request.user,bom_draw):
+            context['draw'] = bom_draw
+        else:
+            context['errors'].append("Draw not found") #Even if not authorised we return not found. Security
+            logger.info("User {0} is not authoriced to read draw {1}".format(request.user._id,bom_draw._id))
+    else:
+        context['errors'].append("Draw not found")
+        logger.info("Draw with id {0} not found.".format(draw_id))
+
+    return render(request, 'retrieve_draw.html', context)
 
 
 def link_sets_draw(request):

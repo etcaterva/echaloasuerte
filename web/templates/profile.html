@@ -7,7 +7,7 @@
         {%if draws.owner %}<h3>{% trans "Draws" %}:</h3>{% endif %}
         <ul>
         {% for d in draws.owner %}
-        <a href="#TODO"><li>{{d.draw_type}} [{{d.creation_time}}] ({{d.results | length}} {%trans "results"%})</li></a>
+        <a href="{% url 'retrieve_draw' d.pk %}"><li>{{d.draw_type}} [{{d.creation_time}}] ({{d.results | length}} {%trans "results"%})</li></a>
         {% endfor %}
     </ul>
         <hr/>
