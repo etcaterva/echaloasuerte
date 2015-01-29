@@ -114,10 +114,10 @@ def random_number_draw(request,draw_id = None):
 
 
 
-    if draw_id or request.POST.get("draw_id",None):
+    '''if draw_id or request.POST.get("draw_id",None):
         draw_id = request.POST.get("draw_id",None) if draw_id is None else draw_id
         prev_draw = mongodb.retrieve_draw(draw_id)
-        bom_draw = prev_draw
+        bom_draw = prev_draw'''
 
     if request.method == 'POST':
         logger.debug("Information posted. {0}".format(request.POST))
@@ -127,6 +127,10 @@ def random_number_draw(request,draw_id = None):
             #in the future we could retrive draws, add results and list the historic
             bom_draw = RandomNumberDraw(**raw_draw)#This works because form and python object have the same member names
             set_owner(bom_draw,request)
+            if bom_draw.pk:
+                prev_draw = mongodb.retrieve_draw(bom_draw.pk)
+            else:
+                prev_draw = None
             bom_draw = compare_and_link_draws(bom_draw,prev_draw)
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
