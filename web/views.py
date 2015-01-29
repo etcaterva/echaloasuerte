@@ -13,7 +13,8 @@ from server.mongodb.driver import MongoDriver
 import logging
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
+from django.http import Http404
+from django.shortcuts import redirect
 
 logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
@@ -153,23 +154,18 @@ def random_number_draw(request,draw_id = None):
     context['draw'] = draw_form
     return render(request, 'random_number.html', context)
 
-
+DRAW_TO_URL_MAP = {
+        'RandomNumberDraw' : 'random_number',
+        }
 def retrieve_draw(request,draw_id):
     logger.info("Serving view for retrieve draw with id {0}".format(draw_id))
-    context = {}
-    context['errors'] = []
     bom_draw = mongodb.retrieve_draw(draw_id)
-    if bom_draw:
-        if user_can_read_draw(request.user,bom_draw):
-            context['draw'] = bom_draw
-        else:
-            context['errors'].append("Draw not found") #Even if not authorised we return not found. Security
-            logger.info("User {0} is not authoriced to read draw {1}".format(request.user._id,bom_draw._id))
-    else:
-        context['errors'].append("Draw not found")
-        logger.info("Draw with id {0} not found.".format(draw_id))
+    if bom_draw is None:
+        logger.info("Draw {0} not found.".format(draw_id))
+        raise Http404("Draw Not Found")
 
-    return render(request, 'retrieve_draw.html', context)
+    target_view = DRAW_TO_URL_MAP[bom_draw.draw_type]
+    return redirect(target_view,draw_id)
 
 
 def link_sets_draw(request):
