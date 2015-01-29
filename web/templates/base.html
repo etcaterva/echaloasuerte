@@ -115,10 +115,12 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="col-sm-7 collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li>
+                {% if user.is_authenticated %}
+                    <li>
                     <a href="#" data-toggle="collapse" data-target="#favorites-panel">{% trans "Favorites" %}
                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
-                </li>
+                    </li>
+                {% endif %}
                 <li>
                     <a href="{% url 'join_public_draw' %}">{% trans "Join Public Draw" %}
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
@@ -225,11 +227,13 @@
     <!--/.container-fluid -->
 </div>
 
-<div id="favorites-panel" class="row collapse">
-    <div class="col-xs-10">
-        Favorites list here
+{% if user.is_authenticated %}
+    <div id="favorites-panel" class="row collapse">
+        <div class="col-xs-10">
+            Favorites list here
+        </div>
     </div>
-</div>
+{% endif %}
 
 {% block content %}
     <p>Page to be filled.</p>
