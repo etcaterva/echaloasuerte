@@ -32,6 +32,7 @@ def find_previous_version(curr_draw):
     draw is added.
     """
     if curr_draw.pk == '':
+        curr_draw._id = None
         return curr_draw
     prev_draw = mongodb.retrieve_draw(curr_draw.pk)
     for k, v in curr_draw.__dict__.items():
