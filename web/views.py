@@ -31,7 +31,7 @@ def find_previous_version(curr_draw):
     Otherwise it will clean the draw id (so mongo will assign a new one to it later). A link to the older version of the
     draw is added.
     """
-    if curr_draw.pk == '':
+    if curr_draw._id == '':
         curr_draw._id = None
         return curr_draw
     prev_draw = mongodb.retrieve_draw(curr_draw.pk)
