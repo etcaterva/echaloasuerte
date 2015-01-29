@@ -113,12 +113,6 @@ def random_number_draw(request,draw_id = None):
     bom_draw = None
 
 
-
-    '''if draw_id or request.POST.get("draw_id",None):
-        draw_id = request.POST.get("draw_id",None) if draw_id is None else draw_id
-        prev_draw = mongodb.retrieve_draw(draw_id)
-        bom_draw = prev_draw'''
-
     if request.method == 'POST':
         logger.debug("Information posted. {0}".format(request.POST))
         draw_form = RandomNumberDrawForm(request.POST)
@@ -135,6 +129,14 @@ def random_number_draw(request,draw_id = None):
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
+
+                # TODO Option 1
+                draw_form.data = draw_form.data.copy()
+                draw_form.data['_id'] = bom_draw.pk
+
+                # TODO Option 2
+                #draw_form = RandomNumberDrawForm(initial=bom_draw.__dict__)
+
                 res_numbers = result["items"]
                 context['results'] =  res_numbers
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
@@ -154,7 +156,6 @@ def random_number_draw(request,draw_id = None):
             draw_form = RandomNumberDrawForm()
 
     context['draw'] = draw_form
-    context['bom'] = bom_draw
     return render(request, 'random_number.html', context)
 
 
