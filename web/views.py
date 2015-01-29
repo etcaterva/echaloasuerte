@@ -32,9 +32,8 @@ def compare_and_link_draws(curr_draw,prev_draw):
     """
     if prev_draw is None:
         return curr_draw
-    for k,v in curr_draw.__dict__.iteritems():
-        if (    ( k in ["creation_time","results","_id"] ) or #well... this is just needed... :(
-             (  ( k in prev_draw.__dict__.keys()) and ( v == prev_draw.__dict__[k] )    ) ):
+    for k, v in curr_draw.__dict__.items():
+        if k in ["creation_time", "results", "_id"] or (k in prev_draw.__dict__.keys() and v == prev_draw.__dict__[k]):
             pass
         else:
             #data changed
