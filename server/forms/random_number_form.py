@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 class RandomNumberDrawForm(forms.Form):
     _id = forms.CharField(required=False, widget=forms.HiddenInput())
     range_min = forms.IntegerField(label=_("From"), initial=0, required=True)
-    range_max = forms.IntegerField(label=_("To"), required=True)
+    range_max = forms.IntegerField(label=_("To"), initial=10, required=True)
     number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1, max_value=1000)
     allow_repeat = forms.BooleanField(label=_("Allow repetitions"), required=False)
 
@@ -46,12 +46,15 @@ class RandomNumberDrawForm(forms.Form):
         raise ValidationError(_("Between 1 and 50"))
 
     def clean(self):
-        range_min = self.cleaned_data.get('range_min', 0)
-        range_max = self.cleaned_data.get('range_max', 0)
-        if range_min >= range_max:
-            raise ValidationError(_("Range is too small"))
+        cleaned_data = self.cleaned_data
+        # Form errors will be shown only when there are not field errors
+        if not self._errors:
+            range_min = cleaned_data.get('range_min', 0)
+            range_max = cleaned_data.get('range_max', 0)
+            if range_min >= range_max:
+                raise ValidationError(_("Range is too small"))
 
-        if not self.cleaned_data.get('allow_repeat', False):
-            if range_max - range_min < self.cleaned_data.get('number_of_results', 0):
-                raise ValidationError(_("Range is too small, may be you want to allow repeated numbers?"))
-        return self.cleaned_data
+            if not cleaned_data.get('allow_repeat', False):
+                if range_max - range_min < cleaned_data.get('number_of_results', 0):
+                    raise ValidationError(_("Range is too small, may be you want to allow repeated numbers?"))
+        return cleaned_data

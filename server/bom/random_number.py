@@ -23,7 +23,7 @@ class RandomNumberDraw(BaseDraw):
 
     def is_feasible(self):
         #TODO range_max must have a defaulf value
-        if self.range_max is None or self.number_of_results <= 0:
+        if self.number_of_results <= 0:
             # At least one result is requested
             return False
 
