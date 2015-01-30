@@ -46,8 +46,10 @@
     <script>
         {% block extra_js %}{% endblock extra_js %}
         $(document).ready(function () {
-            $('#language-dropdown li a').click(function () {
-                $("#language-form option[value=" + $(this).attr('title') + "]").attr("selected", "selected");
+           $('#language-dropdown li a').click(function () {
+                var lang_code = $(this).attr('title');
+                alert(lang_code);
+                $("#language-option"). attr("value",lang_code);
                 $("#change_language_but").click();
             });
             {% block extra_jq_ready %}{% endblock extra_jq_ready %}
@@ -254,7 +256,7 @@
             <span class="glyphicon glyphicon-flag"></span>
             {{ LANGUAGE_CODE|language_name }} ▾
         </a>
-        <ul class="dropdown-menu" role="menu">
+        <ul class="dropdown-menu" id="language-dropdown" role="menu">
             {% for language in languages %}
                 <li><a href="#" title="{{ language.code }}">{{ language.name_local }}
                     ({{ language.code }})</a></li>
@@ -263,12 +265,17 @@
     </div>
     <!-- Language dropdown menu for XS -->
     <div class="visible-xs col-xs-5 text-right">
-        <select id="language-selector">
+    <form action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="/"/>
+        <select id="language-selector" name="language" onchange="this.form.submit()">
             {% for language in languages %}
-                <option value="{{ language.code }}" data-link="#" data-language="{{ language.code }}">{{ language.name_local }}
+            <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}
+            selected="selected"{% endif %}>{{ language.name_local }}
                 </option>
             {% endfor %}
         </select>
+    </form>
     </div>
 </div>
 </div>
@@ -278,15 +285,10 @@
 <div class="hidden">
     <form action="{% url 'set_language' %}" method="post">
         {% csrf_token %}
-        <input name="next" type="hidden" value="{{ redirect_to }}"/>
+        <input name="next" type="hidden" value="/"/>
         <select name="language" id="language-form">
-            {% get_language_info_list for LANGUAGES as languages %}
-            {% for language in languages %}
-                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
-                        selected="selected"{% endif %}>
-                    {{ language.name_local }} ({{ language.code }})
+                <option id="language-option" value="">
                 </option>
-            {% endfor %}
         </select>
         <input type="submit" value="Go" id="change_language_but"/>
     </form>
