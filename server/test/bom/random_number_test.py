@@ -24,7 +24,7 @@ class RandomNumberDrawTest(TestCase):
 
     def is_feasible_test(self):
         """RandomNumberDraw: Is Feasible"""
-        self.assertFalse(RandomNumberDraw().is_feasible())
+        self.assertTrue(RandomNumberDraw().is_feasible())
 
     def is_feasible_simple_test(self):
         """RandomNumberDraw: Simple parametrized constructor is feasible"""
