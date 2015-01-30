@@ -9,7 +9,7 @@ class RandomNumberDraw(BaseDraw):
     Class that represents a draw with the details to produce random numbers.
     """
 
-    def __init__(self, range_min=0, range_max=None, allow_repeat=False, **kwargs):
+    def __init__(self, range_min=0, range_max=10, allow_repeat=False, **kwargs):
         super(RandomNumberDraw, self).__init__(**kwargs)
 
         self.range_min = range_min
@@ -23,7 +23,7 @@ class RandomNumberDraw(BaseDraw):
 
     def is_feasible(self):
         #TODO range_max must have a defaulf value
-        if self.range_max is None or self.number_of_results <= 0:
+        if self.number_of_results <= 0:
             # At least one result is requested
             return False
 

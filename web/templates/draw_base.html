@@ -2,6 +2,12 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% block extra_jq_ready %}
+    // TODO This is overwritten in random_item.html (and others). Fix it
+    $('.form-control').click(function() {
+      $(this).select();
+    });
+{% endblock extra_jq_ready %}
 {% block content %}
     <div class="row">
         <!-- Draw Heading -->
