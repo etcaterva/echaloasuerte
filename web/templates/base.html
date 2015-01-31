@@ -48,7 +48,6 @@
         $(document).ready(function () {
            $('#language-dropdown li a').click(function () {
                 var lang_code = $(this).attr('title');
-                alert(lang_code);
                 $("#language-option"). attr("value",lang_code);
                 $("#change_language_but").click();
             });
@@ -108,10 +107,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="col-xs-9 col-sm-12 navbar-brand" href="/">
+            <a class="col-xs-9 col-sm-12 navbar-brand" href="{% url 'index' %}">
                 <img class="" src="{% static "img/brand_beta.png" %}"/>
             </a>
-            <!--<a class="navbar-brand" href="/"> Echalo A Suerte </a>-->
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -267,7 +265,7 @@
     <div class="visible-xs col-xs-5 text-right">
     <form action="{% url 'set_language' %}" method="post">
         {% csrf_token %}
-        <input name="next" type="hidden" value="/"/>
+        <input name="next" type="hidden" value="/"/> <!--check below to know why / -->
         <select id="language-selector" name="language" onchange="this.form.submit()">
             {% for language in languages %}
             <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}
@@ -285,6 +283,11 @@
 <div class="hidden">
     <form action="{% url 'set_language' %}" method="post">
         {% csrf_token %}
+        <!--
+           next needs to be / and not { % url 'index' % } as url index is within the
+           lang specific urls which is processed and resolved before loading this page
+           IN BRIEF: DONT BE A SMART ASS TRYING TO CHANGE IT
+        -->
         <input name="next" type="hidden" value="/"/>
         <select name="language" id="language-form">
                 <option id="language-option" value="">
