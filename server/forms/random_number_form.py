@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, HTML, Div
+from crispy_forms.layout import Layout, Submit, Row, HTML, Div, Field
 
 from django import forms
 from django.core.exceptions import ValidationError
@@ -18,6 +18,7 @@ class RandomNumberDrawForm(forms.Form):
         super(RandomNumberDrawForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.field_template = 'eas_crispy_field.html'
+        self.helper.render_hidden_fields = True
         self.helper.form_id = 'form-random_number'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-7 text-right'
@@ -27,7 +28,6 @@ class RandomNumberDrawForm(forms.Form):
         self.helper.form_action = reverse('random_number')
         self.helper.layout = Layout(
             Row(
-                '_id',
                 'range_min',
                 'range_max',
                 'number_of_results',

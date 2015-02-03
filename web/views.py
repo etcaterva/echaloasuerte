@@ -29,17 +29,19 @@ def find_previous_version(curr_draw):
     """
     if curr_draw._id == '':
         curr_draw._id = None
+        logger.info("There is not a previous version of this draw in the DB")
         return curr_draw
     prev_draw = mongodb.retrieve_draw(curr_draw.pk)
     for k, v in curr_draw.__dict__.items():
         if k not in ["creation_time", "results", "_id"] and (k not in prev_draw.__dict__.keys() or v != prev_draw.__dict__[k]):
             # Data have changed
-            logger.info("Draw with id {0} changed on key {1}".format(prev_draw._id,k))
+            logger.info("Old draw with id {0} changed on key {1}".format(prev_draw._id,k))
             curr_draw.prev_draw = prev_draw._id
             # Clean the current's draw id, so a new one will be assigned to it
             curr_draw._id = None
             return curr_draw
     # Data haven't changed so return previous draw to work on it
+    logger.info("There is a previous version of this draw in the DB {0}".format(prev_draw._id,k))
     return prev_draw
 
 
@@ -125,14 +127,7 @@ def random_number_draw(request, draw_id=None):
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
-
-                # TODO Option 1
-                draw_form.data = draw_form.data.copy()
-                draw_form.data['_id'] = bom_draw.pk
-
-                # TODO Option 2
-                #draw_form = RandomNumberDrawForm(initial=bom_draw.__dict__)
-
+                draw_form = RandomNumberDrawForm(initial=bom_draw.__dict__)
                 res_numbers = result["items"]
                 context['results'] =  res_numbers
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
@@ -150,17 +145,24 @@ def random_number_draw(request, draw_id=None):
             except:
                 raise Http404
             logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
-            #TODO raise exception when the type doesn't fit the template
-            draw_form = RandomNumberDrawForm(initial=requested_draw.__dict__)
+            if requested_draw.draw_type == "RandomNumberDraw":
+                draw_form = RandomNumberDrawForm(initial=requested_draw.__dict__)
+            else:
+                #TODO redirect to the right one?
+                raise Http404
         else:
             draw_form = RandomNumberDrawForm()
 
     context['draw'] = draw_form
     return render(request, 'random_number.html', context)
 
+
 DRAW_TO_URL_MAP = {
-        'RandomNumberDraw' : 'random_number',
-        }
+        'RandomNumberDraw': 'random_number',
+        'DiceDraw': 'dice',
+}
+
+
 def retrieve_draw(request,draw_id):
     logger.info("Serving view for retrieve draw with id {0}".format(draw_id))
     try:
@@ -172,7 +174,7 @@ def retrieve_draw(request,draw_id):
         raise Http404("Draw Not Found")
 
     target_view = DRAW_TO_URL_MAP[bom_draw.draw_type]
-    return redirect(target_view,draw_id)
+    return redirect(target_view, draw_id)
 
 
 def link_sets_draw(request):
@@ -257,20 +259,21 @@ def coin_draw(request):
 
 def dice_draw(request, draw_id=None):
     logger.info("Serving view for dice draw")
-    context = {}
-    context['errors'] = []
+    context = {'errors': []}
 
     if request.method == 'POST':
         draw_form = DiceDrawForm(request.POST)
         if draw_form.is_valid():
             raw_draw = draw_form.cleaned_data
             bom_draw = DiceDraw(**raw_draw)
-            set_owner(bom_draw,request)
+            set_owner(bom_draw, request)
+            bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
+                draw_form = DiceDrawForm(initial=bom_draw.__dict__)
                 res = result["items"]
-                context['results'] =  res
+                context['results'] =res
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:
@@ -280,7 +283,16 @@ def dice_draw(request, draw_id=None):
             logger.info("Form not valid")
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
-        draw_form = DiceDrawForm()
+        if draw_id:
+            try:
+                requested_draw = mongodb.retrieve_draw(draw_id)
+            except:
+                raise Http404
+            logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
+            #TODO raise exception when the type doesn't fit the template
+            draw_form = DiceDrawForm(initial=requested_draw.__dict__)
+        else:
+            draw_form = DiceDrawForm()
 
     context['draw'] = draw_form
     return render(request, 'dice.html', context)
@@ -288,8 +300,7 @@ def dice_draw(request, draw_id=None):
 
 def card_draw(request):
     logger.info("Serving view for card draw")
-    context = {}
-    context['errors'] = []
+    context = {'errors': []}
 
     if request.method == 'POST':
         draw_form = CardDrawForm(request.POST)
@@ -301,7 +312,7 @@ def card_draw(request):
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
                 res = result["items"]
-                context['results'] =  res
+                context['results'] =res
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:
