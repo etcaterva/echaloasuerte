@@ -116,6 +116,7 @@ def index(request):
 DRAW_TO_URL_MAP = {
     'RandomNumberDraw': 'random_number',
     'DiceDraw': 'dice',
+    'CardDraw': 'card',
 }
 
 
@@ -135,8 +136,7 @@ def retrieve_draw(request, draw_id):
 
 def coin_draw(request):
     logger.info("Serving view for coin draw")
-    context = {}
-    context['errors'] = []
+    context = {'errors': []}
     if request.method == 'POST':
         logger.debug("Information posted. {0}".format(request.POST))
         bom_draw = CoinDraw()
@@ -153,7 +153,6 @@ def coin_draw(request):
 def dice_draw(request, draw_id=None):
     logger.info("Serving view for dice draw")
     context = {'errors': []}
-
     if request.method == 'POST':
         draw_form = DiceDrawForm(request.POST)
         if draw_form.is_valid():
@@ -191,19 +190,20 @@ def dice_draw(request, draw_id=None):
     return render(request, 'dice.html', context)
 
 
-def card_draw(request):
+def card_draw(request, draw_id=None):
     logger.info("Serving view for card draw")
     context = {'errors': []}
-
     if request.method == 'POST':
         draw_form = CardDrawForm(request.POST)
         if draw_form.is_valid():
             raw_draw = draw_form.cleaned_data
             bom_draw = CardDraw(**raw_draw)
             set_owner(bom_draw, request)
+            bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
                 result = bom_draw.toss()
                 mongodb.save_draw(bom_draw)
+                draw_form = CardDrawForm(initial=bom_draw.__dict__)
                 res = result["items"]
                 context['results'] = res
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
@@ -215,7 +215,16 @@ def card_draw(request):
             logger.info("Form not valid")
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
-        draw_form = CardDrawForm()
+        if draw_id:
+            try:
+                requested_draw = mongodb.retrieve_draw(draw_id)
+            except:
+                raise Http404
+            logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
+            # TODO raise exception when the type doesn't fit the template
+            draw_form = CardDrawForm(initial=requested_draw.__dict__)
+        else:
+            draw_form = CardDrawForm()
 
     context['draw'] = draw_form
     return render(request, 'card.html', context)
