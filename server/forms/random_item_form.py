@@ -8,12 +8,16 @@ from django.core.urlresolvers import reverse
 
 
 class RandomItemDrawForm(forms.Form):
+    _id = forms.CharField(required=False, widget=forms.HiddenInput())
     number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1)
     allow_repeat = forms.BooleanField(label=_("Allow repetitions"), required=False)
     items = forms.CharField(label=_("Items (comma separated)"), widget=forms.TextInput())
+
     def __init__(self, *args, **kwargs):
         super(RandomItemDrawForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        #self.helper.field_template = 'eas_crispy_field.html'
+        self.helper.render_hidden_fields = True
         self.helper.form_id = 'form-random_item'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-7 col-md-6 text-right'
