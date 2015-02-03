@@ -108,7 +108,7 @@ def index(request):
     return render(request, 'index.html')
 
 
-def random_number_draw(request,draw_id = None):
+def random_number_draw(request, draw_id=None):
     logger.info("Serving view for random number draw")
     context = {'errors': []}
 
@@ -145,8 +145,12 @@ def random_number_draw(request,draw_id = None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            requested_draw = mongodb.retrieve_draw(draw_id)
+            try:
+                requested_draw = mongodb.retrieve_draw(draw_id)
+            except:
+                raise Http404
             logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
+            #TODO raise exception when the type doesn't fit the template
             draw_form = RandomNumberDrawForm(initial=requested_draw.__dict__)
         else:
             draw_form = RandomNumberDrawForm()
@@ -159,7 +163,10 @@ DRAW_TO_URL_MAP = {
         }
 def retrieve_draw(request,draw_id):
     logger.info("Serving view for retrieve draw with id {0}".format(draw_id))
-    bom_draw = mongodb.retrieve_draw(draw_id)
+    try:
+        bom_draw = mongodb.retrieve_draw(draw_id)
+    except:
+        raise Http404
     if bom_draw is None:
         logger.info("Draw {0} not found.".format(draw_id))
         raise Http404("Draw Not Found")
@@ -248,7 +255,7 @@ def coin_draw(request):
     return render(request, 'coin.html', context)
 
 
-def dice_draw(request):
+def dice_draw(request, draw_id=None):
     logger.info("Serving view for dice draw")
     context = {}
     context['errors'] = []

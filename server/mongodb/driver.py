@@ -69,7 +69,10 @@ class MongoDriver(object):
         Retrieves a draw from mongo.
         Get the type from the serialized object
         """
-        raw_id = ObjectId(draw_id) if draw_id is not ObjectId else draw_id
+        try:
+            raw_id = ObjectId(draw_id) if draw_id is not ObjectId else draw_id
+        except:
+            raise Exception("draw not found")
         doc = self._draws.find_one({"_id":raw_id})
         logger.debug("Retrieved documment: {0}".format(doc))
         return build_draw(doc)
