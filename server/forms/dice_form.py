@@ -7,12 +7,15 @@ from django.core.urlresolvers import reverse
 
 
 class DiceDrawForm(forms.Form):
+    _id = forms.CharField(required=False)
     number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1, max_value=20)
 
     def __init__(self, *args, **kwargs):
         super(DiceDrawForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
+        self.helper.field_template = 'eas_crispy_field.html'
+        self.helper.render_hidden_fields = True
         self.helper.form_id = 'form-random_number'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-7 text-right'
