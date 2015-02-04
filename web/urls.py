@@ -21,4 +21,7 @@ urlpatterns += patterns(
     url(r'^accounts/forgot_password/$', views.under_construction, name='forgot_password'),
     url(r'^accounts/login/$', views.login_user, name='login'),
     url(r'^accounts/profile/$', views.profile, name='profile'),
+    
+    #web services
+    url(r'^draw_add_users/$', views.add_user_to_draw, name="ws_add_users_to_draw"),
 )

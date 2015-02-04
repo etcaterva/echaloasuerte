@@ -14,6 +14,7 @@ import logging
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 
 logger = logging.getLogger("echaloasuerte")
@@ -31,6 +32,8 @@ def find_previous_version(curr_draw):
         curr_draw._id = None
         return curr_draw
     prev_draw = mongodb.retrieve_draw(curr_draw.pk)
+    if prev_draw.owner != curr_draw.owner: #security check
+        raise PermissionDenied()
     for k, v in curr_draw.__dict__.items():
         if k not in ["creation_time", "results", "_id"] and (k not in prev_draw.__dict__.keys() or v != prev_draw.__dict__[k]):
             # Data have changed
@@ -44,7 +47,15 @@ def find_previous_version(curr_draw):
 
 
 def user_can_read_draw(user,draw):
-    return user._id == draw.owner
+    if user.is_anonymous():
+        raise PermissionDenied()
+    if user._id != draw.owner:
+        if user not in draw.users:
+            raise PermissionDenied()
+
+def user_can_write_draw(user,draw):
+    if user._id != draw.owner:
+        raise PermissionDenied()
 
 def set_owner(draw,request):
     """Best effort to set the owner given a request"""
@@ -90,6 +101,38 @@ def register(request):
             context = {'error': _("The email is already registered.")}
     return render(request, 'register.html', context)
 
+
+def invite_user(user_email,draw_id):
+    logger.info("Inviting user {0} to draw {1}".format(user_email,draw_id))
+    #TODO email user and create account
+
+@login_required
+def add_user_to_draw(request,draw_id,new_users):
+    draw_id = request.POST.get('draw_id',None)
+    new_users = request.POST.get('new_users',[])
+
+    if draw_id is None:
+        return HttpResponseBadRequest()
+
+    logger.info("Adding {0} to draw {1}".format(new_users,draw_id))
+    bom_draw = mongodb.retrieve_draw(draw_id)
+    if bom_draw is None:
+        logger.info("Draw does not exist")
+        return HttpResponseBadRequest()
+
+    user_can_write_draw(request.user, bom_draw) #raises 500
+
+    user_list = new_users.replace(',',' ').split()
+    for user in user_list:
+        bom_draw.users += user
+        bom_user = mongodb.retrieve_user(user)
+        if bom_user is None:
+            invite_user(user, draw_id)
+        else:
+            pass
+        #TODO. EMAIL USER?
+
+    logger.info("{0} users added to draw {1}".format(len(user_list),draw_id))
 
 @login_required
 def profile(request):
@@ -146,6 +189,7 @@ def random_number_draw(request,draw_id = None):
     else:
         if draw_id:
             requested_draw = mongodb.retrieve_draw(draw_id)
+            user_can_read_draw(request.user, requested_draw)
             logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
             draw_form = RandomNumberDrawForm(initial=requested_draw.__dict__)
         else:
