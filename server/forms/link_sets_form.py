@@ -6,11 +6,15 @@ from django.core.urlresolvers import reverse
 
 
 class LinkSetsForm(forms.Form):
+    _id = forms.CharField(required=False, )
     set_1 = forms.CharField(label=_("Set 1"),widget=forms.TextInput())
     set_2 = forms.CharField(label=_("Set 2"),widget=forms.TextInput())
+
     def __init__(self, *args, **kwargs):
         super(LinkSetsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.field_template = 'eas_crispy_field.html'
+        self.helper.render_hidden_fields = True
         self.helper.form_id = 'form-link_sets'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-3'
@@ -20,6 +24,7 @@ class LinkSetsForm(forms.Form):
         self.helper.form_action = reverse('link_sets')
         self.helper.layout = Layout(
             Div(
+                '_id',
                 'set_1',
                 'set_2',
             ),
