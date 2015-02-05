@@ -16,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
+from django.core.mail import send_mail
 
 logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
@@ -107,9 +108,21 @@ def register(request):
     return render(request, 'register.html', context)
 
 
-def invite_user(user_email,draw_id):
+INVITE_EMAIL_TEMPLATE = _("""
+Hi!
+
+You have been invited to a draw in echaloasuerte by {0}
+Your link is <a href="http://www.echaloasuerte.com/draw/{1}/">http://www.echaloasuerte.com/draw/{1}/</a> .
+
+Good Luck,
+Echaloasuerte.com Team
+""")
+
+def invite_user(user_emails,draw_id,owner_user):
     logger.info("Inviting user {0} to draw {1}".format(user_email,draw_id))
-    #TODO email user and create account
+    send_mail('Echaloasuerte', INVITE_EMAIL_TEMPLATE.format(owner_user,draw_id),
+             'draws@echaloasuerte.com', user_email, fail_silently=True)
+
 
 @login_required
 def add_user_to_draw(request,draw_id,new_users):
@@ -131,11 +144,7 @@ def add_user_to_draw(request,draw_id,new_users):
     for user in user_list:
         bom_draw.users += user
         bom_user = mongodb.retrieve_user(user)
-        if bom_user is None:
-            invite_user(user, draw_id)
-        else:
-            pass
-        #TODO. EMAIL USER?
+    invite_user(user_list, draw_id,request.user.get_email())
 
     logger.info("{0} users added to draw {1}".format(len(user_list),draw_id))
 
@@ -229,7 +238,7 @@ def dice_draw(request, draw_id=None):
             if requested_draw.draw_type == "DiceDraw":
                 draw_form = DiceDrawForm(initial=requested_draw.__dict__)
             else:
-                # TODO redirect to the right one?
+                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
                 raise Http404
         else:
             draw_form = DiceDrawForm()
@@ -273,7 +282,7 @@ def card_draw(request, draw_id=None):
             if requested_draw.draw_type == "CardDraw":
                 draw_form = CardDrawForm(initial=requested_draw.__dict__)
             else:
-                # TODO redirect to the right one?
+                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
                 raise Http404
         else:
             draw_form = CardDrawForm()
@@ -320,7 +329,7 @@ def random_number_draw(request, draw_id=None):
             if requested_draw.draw_type == "RandomNumberDraw":
                 draw_form = RandomNumberDrawForm(initial=requested_draw.__dict__)
             else:
-                # TODO redirect to the right one?
+                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
                 raise Http404
         else:
             draw_form = RandomNumberDrawForm()
@@ -366,7 +375,7 @@ def random_item_draw(request, draw_id=None):
             if requested_draw.draw_type == "RandomItemDraw":
                 draw_form = RandomItemDrawForm(initial=requested_draw.__dict__)
             else:
-                # TODO redirect to the right one?
+                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
                 raise Http404
         else:
             draw_form = RandomItemDrawForm()
@@ -412,7 +421,7 @@ def link_sets_draw(request, draw_id=None):
             if requested_draw.draw_type == "LinkSets":
                 draw_form = LinkSetsForm(initial=requested_draw.__dict__)
             else:
-                # TODO redirect to the right one?
+                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
                 raise Http404
         else:
             draw_form = LinkSetsForm()
