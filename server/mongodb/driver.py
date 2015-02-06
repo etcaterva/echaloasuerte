@@ -17,9 +17,32 @@ def build_draw(doc):
         return eval(doc["draw_type"])(**doc)
     except Exception as e:
         logger.error("Error when decoding a draw. Exception: {1}. Draw: {0} ".format(doc,e))
-        return None
+        raise
 
 class MongoDriver(object):
+    """
+    Singleton to handle access to mongodb
+    """
+
+    class MongoException(Exception):
+        """
+        MongoDB Exception
+        """
+        pass
+
+    class NotFoundError(MongoException):
+        """
+        Exception thrown whenever an object is not found in mongo
+        """
+        pass
+
+
+    class DecodingError(MongoException):
+        """
+        Exception thrown whenever the decoding of an object fails
+        """
+        pass
+
     _instance = None
     def __init__(self, host='localhost', port=27017, database='echaloasuerte'):
         self.client = MongoClient(host,port)
@@ -44,6 +67,8 @@ class MongoDriver(object):
 
     def retrieve_user(self,user_id):
         doc = self._users.find_one({"_id":user_id})
+        if doc is None:
+            raise MongoDriver.NotFoundError("User not found: {0}".format(draw_id))
         logger.debug("Retrieved documment: {0} using id {1}".format(doc,user_id))
         return User(**doc)
 
@@ -72,8 +97,10 @@ class MongoDriver(object):
         try:
             raw_id = ObjectId(draw_id) if draw_id is not ObjectId else draw_id
         except:
-            raise Exception("draw not found")
+            raise MongoDriver.NotFoundError("Error with id: {0}".format(draw_id))
         doc = self._draws.find_one({"_id":raw_id})
+        if doc is None:
+            raise MongoDriver.NotFoundError("Draw not found: {0}".format(draw_id))
         logger.debug("Retrieved documment: {0}".format(doc))
         return build_draw(doc)
 
@@ -90,5 +117,4 @@ class MongoDriver(object):
 
         assert(MongoDriver._instance is not None)
         return MongoDriver._instance
-
 
