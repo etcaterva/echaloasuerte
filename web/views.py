@@ -14,7 +14,9 @@ import logging
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
+from django.core.mail import send_mail
 
 logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
@@ -33,6 +35,8 @@ def find_previous_version(curr_draw):
         return curr_draw
     logger.info("ID nothin: {0}".format(curr_draw._id))
     prev_draw = mongodb.retrieve_draw(curr_draw.pk)
+    if prev_draw.owner != curr_draw.owner: #security check
+        raise PermissionDenied()
     for k, v in curr_draw.__dict__.items():
         if k not in ["creation_time", "results", "_id"] and (
                 k not in prev_draw.__dict__.keys() or v != prev_draw.__dict__[k]):
@@ -47,9 +51,16 @@ def find_previous_version(curr_draw):
     return prev_draw
 
 
-def user_can_read_draw(user, draw):
-    return user._id == draw.owner
+def user_can_read_draw(user,draw):
+    if user.is_anonymous():
+        raise PermissionDenied()
+    if user._id != draw.owner:
+        if user not in draw.users:
+            raise PermissionDenied()
 
+def user_can_write_draw(user,draw):
+    if user._id != draw.owner:
+        raise PermissionDenied()
 
 def set_owner(draw, request):
     """Best effort to set the owner given a request"""
@@ -96,6 +107,46 @@ def register(request):
             context = {'error': _("The email is already registered.")}
     return render(request, 'register.html', context)
 
+
+INVITE_EMAIL_TEMPLATE = _("""
+Hi!
+
+You have been invited to a draw in echaloasuerte by {0}
+Your link is <a href="http://www.echaloasuerte.com/draw/{1}/">http://www.echaloasuerte.com/draw/{1}/</a> .
+
+Good Luck,
+Echaloasuerte.com Team
+""")
+
+def invite_user(user_emails,draw_id,owner_user):
+    logger.info("Inviting user {0} to draw {1}".format(user_email,draw_id))
+    send_mail('Echaloasuerte', INVITE_EMAIL_TEMPLATE.format(owner_user,draw_id),
+             'draws@echaloasuerte.com', user_email, fail_silently=True)
+
+
+@login_required
+def add_user_to_draw(request,draw_id,new_users):
+    draw_id = request.POST.get('draw_id',None)
+    new_users = request.POST.get('new_users',[])
+
+    if draw_id is None:
+        return HttpResponseBadRequest()
+
+    logger.info("Adding {0} to draw {1}".format(new_users,draw_id))
+    bom_draw = mongodb.retrieve_draw(draw_id)
+    if bom_draw is None:
+        logger.info("Draw does not exist")
+        return HttpResponseBadRequest()
+
+    user_can_write_draw(request.user, bom_draw) #raises 500
+
+    user_list = new_users.replace(',',' ').split()
+    for user in user_list:
+        bom_draw.users += user
+        bom_user = mongodb.retrieve_user(user)
+    invite_user(user_list, draw_id,request.user.get_email())
+
+    logger.info("{0} users added to draw {1}".format(len(user_list),draw_id))
 
 @login_required
 def profile(request):
@@ -182,11 +233,12 @@ def dice_draw(request, draw_id=None):
                 requested_draw = mongodb.retrieve_draw(draw_id)
             except:
                 raise Http404
+            user_can_read_draw(request.user, requested_draw)
             logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
             if requested_draw.draw_type == "DiceDraw":
                 draw_form = DiceDrawForm(initial=requested_draw.__dict__)
             else:
-                # TODO redirect to the right one?
+                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
                 raise Http404
         else:
             draw_form = DiceDrawForm()
@@ -230,7 +282,7 @@ def card_draw(request, draw_id=None):
             if requested_draw.draw_type == "CardDraw":
                 draw_form = CardDrawForm(initial=requested_draw.__dict__)
             else:
-                # TODO redirect to the right one?
+                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
                 raise Http404
         else:
             draw_form = CardDrawForm()
@@ -277,7 +329,7 @@ def random_number_draw(request, draw_id=None):
             if requested_draw.draw_type == "RandomNumberDraw":
                 draw_form = RandomNumberDrawForm(initial=requested_draw.__dict__)
             else:
-                # TODO redirect to the right one?
+                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
                 raise Http404
         else:
             draw_form = RandomNumberDrawForm()
@@ -323,7 +375,7 @@ def random_item_draw(request, draw_id=None):
             if requested_draw.draw_type == "RandomItemDraw":
                 draw_form = RandomItemDrawForm(initial=requested_draw.__dict__)
             else:
-                # TODO redirect to the right one?
+                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
                 raise Http404
         else:
             draw_form = RandomItemDrawForm()
@@ -369,7 +421,7 @@ def link_sets_draw(request, draw_id=None):
             if requested_draw.draw_type == "LinkSets":
                 draw_form = LinkSetsForm(initial=requested_draw.__dict__)
             else:
-                # TODO redirect to the right one?
+                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
                 raise Http404
         else:
             draw_form = LinkSetsForm()
