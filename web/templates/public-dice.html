@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}{% trans "Roll a dice" %} | Echalo A Suerte{% endblock title %}
+
+{% block extra_head %}
+    <script src="{% static 'js/dice.js' %}"></script>
+    <script src="{% static 'js/autoGrowInput.js' %}"></script>
+    <script src="{% static 'js/autoGrowArea.js' %}"></script>
+{% endblock extra_head %}
+
+{% block extra_js_onload %}
+    //Precaching the images
+    D6Animator.getImageBank("", '{{ STATIC_URL }}' + "img/img_dice/");
+{% endblock extra_js_onload %}
+
+{% block extra_jq_ready %}
+    $( window ).resize(function() {
+        var width = $("#id-draw-title").width()/2;
+        console.log("template:" + width);
+        console.log(":D:" + $("textarea.autogrow").autoGrowInput.prototype);
+        $("textarea.autogrow").autoGrowInput({maxWidth:width,minWidth:30,comfortZone:30});
+    });
+
+    // test
+    $("textarea.autogrow").width(200);
+
+    // Clear on focus
+    /*$('input.autogrow').focus(function() {
+        if ($(this).val() == '{% trans "Roll a dice" %}')
+            $(this).attr("size", 3);
+            $(this).val('');
+    });
+    $('input.autogrow').blur(function() {
+        if ($(this).val() == '')
+            $(this).val('{% trans "Roll a dice" %}');
+    });*/
+
+    $(function(){
+        $("textarea.autogrow").autoGrowInput({maxWidth: 200,minWidth:30,comfortZone:30});
+    });
+{% endblock extra_jq_ready %}
+
+{% block content %}
+    <div class="row">
+        <!-- Public Draw alert -->
+        <div class="alert alert-info info-public-draw" role="alert">
+            <div class="col-xs-9 text-center info-public-draw-text ">
+                Creating public draw...
+            </div>
+            <div class="col-xs-3 text-right">
+                <button type="button cancel-public-draw" class="btn btn-danger">Cancel</button>
+            </div>
+        </div>
+        <!-- End Public Draw alert -->
+
+        <form action="{% url 'public_dice' %}" class="uniForm bla" method="post">
+            <div id="id-draw-title" class="col-xs-12 col-lg-10 col-lg-offset-1 text-center">
+                <textarea class="form-control autogrow draw-title-area" rows="1">{% trans "Roll a dice" %}</textarea>
+                <!--<input class="autogrow">-->
+            </div>
+
+
+            <div class="col-sm-8 col-sm-offset-2">
+                <!-- Input Form -->
+                    {% crispy draw draw.helper %}
+                    <div class="col-xs-12 text-center">
+                    <button type="submit" name="try" class="btn btn-success">Try it!</button>
+                    <button type="submit" name="next" class="btn btn-primary">Next</button>
+                    </div>
+                <!-- End Input Form -->
+
+                <!-- Results -->
+                <div class="row text-center">
+                    {% if results %}
+                        {% if results|length  == 1 %}
+                            <p class="h3">Result</p>
+                        {% else %}
+                            <p class="h3">Results</p>
+                        {% endif %}
+                        <script>
+                            results = {{ results }}
+                            D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
+                            D6.dice(results);
+                        </script>
+                    {% endif %}
+                </div>
+                <!-- Results -->
+            </div>
+        </form>
+    </div>
+{% endblock %}

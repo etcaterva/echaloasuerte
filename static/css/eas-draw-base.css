@@ -3,8 +3,62 @@
 /* Icon for public draw */
 .draw-title {
     font-family: 'PT Sans', sans-serif;
+    color: #6f6f6f;
+    font-size: 28px;
 }
 
+.draw-editable-title {
+    background: transparent;
+    border: none;
+}
+
+.draw-editable-title:focus {
+    outline-color: #4cae4c;
+}
+
+.draw-title-area {
+    /* Font */
+    font-family: 'PT Sans', sans-serif;
+    color: #6f6f6f;
+    font-size: 28px;
+
+    /* Removing textarea look */
+    border: none;
+    overflow: hidden;
+    outline: none;
+    background: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    resize: none;
+
+
+    /* To center it */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    height: auto !important;
+}
+
+.draw-title-area:focus {
+  border-color: #4cae4c;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(76, 174, 76, 0.60);
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(76, 174, 76, 0.60);
+}
+
+
+.info-public-draw {
+    height: 36px;
+    padding: 0px;
+    line-height: 33px;
+}
+
+.info-public-draw-text {
+    vertical-align: middle;
+    display: inline-block;
+}
 
 .back-arrow,
 .public-draw {

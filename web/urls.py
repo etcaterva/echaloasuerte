@@ -14,7 +14,9 @@ urlpatterns += patterns(
     url(r'^card/(?P<draw_id>[0-9a-g]+)?$', views.card_draw, name="card"),
     url(r'^dice/(?P<draw_id>[0-9a-g]+)?$', views.dice_draw, name="dice"),
     url(r'^about.html$', views.under_construction, name="about"),
-    url(r'^joinpublicdraw.html$', views.under_construction, name="join_public_draw"),
+    #url(r'^joinpublicdraw.html$', views.under_construction, name="join_public_draw"),
+    url(r'^public_dice.html$', views.public_dice_draw, name="public_dice"),
+
     url(r'^publishdraw.html$', views.under_construction, name="publish_draw"),
     url(r'^draw/(?P<draw_id>[0-9a-g]+)/$', views.retrieve_draw, name="retrieve_draw"),
     url(r'^accounts/register/$', views.register, name='register'),
