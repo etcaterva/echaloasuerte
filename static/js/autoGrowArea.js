@@ -5,7 +5,8 @@
         o = $.extend({
             maxWidth: 100,
             minWidth: 30,
-            comfortZone: 7000
+            comfortZone: 7000,
+            title: "Default title"
         }, o);
 
         this.filter('textarea').each(function(){
@@ -50,8 +51,21 @@
                 };
 
             testSubject.insertAfter(input);
-
-            $(this).bind('keyup keydown blur update', check);
+            $(this).off('keyup');
+            $(this).off('keydown');
+            $(this).off('update');
+            $(this).bind('keyup keydown update', check);
+            $(this).focus(function() {
+                if ($(this).val() == o.title)
+                    $(this).attr("size", 3);
+                    $(this).val('');
+            });
+            $(this).blur(function() {
+                if ($(this).val() == '')
+                    $(this).val(o.title);
+                    var max_width = $("#draw-title-container").width()*2/3;
+                    $(this).width(max_width);
+            });
 
         });
 
