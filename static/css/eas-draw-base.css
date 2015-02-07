@@ -66,13 +66,12 @@
 }
 
 .back-arrow img,
-.public-draw img{
+.add-favorites img {
     /*display: block;*/
     min-width: 30px;
     max-width: 100%;
     height: auto;
 }
-
 
 /* Makes the text be inline with the checkbox */
 .checkbox_label {
