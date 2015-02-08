@@ -34,7 +34,7 @@ class User(object):
             return self._id
 
     def is_anonymous(self):
-        return True
+        return False
 
     def is_active(self):
         return True

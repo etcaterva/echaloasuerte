@@ -17,7 +17,9 @@ class BaseDraw(object):
     def pk(self):
         return str(self._id)
 
-    def __init__(self, creation_time = None, owner = None, number_of_results = 1, results= None, _id = None, draw_type = None, prev_draw = None):
+    def __init__(self, creation_time = None, owner = None, number_of_results = 1,
+                  results= None, _id = None, draw_type = None, prev_draw = None,
+                  users = None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -42,6 +44,9 @@ class BaseDraw(object):
 
         if draw_type and draw_type != self.draw_type:
             logger.warning("A draw was built with type {0} but type {1} was passed as argument! Fix it!".format(draw_type,self.draw_type))
+
+        self.users = users if users is not None else []
+        """List of users with access to the draw"""
 
     def is_feasible(self):
         return self.number_of_results > 0
