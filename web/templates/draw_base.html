@@ -2,26 +2,49 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% block extra_head %}
+    <script src="{% static 'js/autoGrowArea.js' %}"></script>
+{% endblock extra_head %}
 {% block extra_jq_ready %}
     // TODO This is overwritten in random_item.html (and others). Fix it
+    // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
       $(this).select();
+    });
+
+    // Autoresize the title box when window is resized
+    autosize = function(){
+        var max_width = $("#draw-title-container").width()*2/3;
+        $("textarea.autogrow").width(max_width);
+        $("textarea.autogrow").autoGrowInput({title:'{% trans "Roll a dice" %}',maxWidth: max_width,minWidth:30,comfortZone:30});
+    };
+
+    // Autosize the first time
+    autosize();
+    $( window ).resize(function() {
+        // Autosize when the window is resized
+        autosize();
     });
 {% endblock extra_jq_ready %}
 {% block content %}
     <div class="row">
         <!-- Draw Heading -->
-        <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
-            <img src="{% static "img/back_arrow.png" %}"/>
-        </a>
-        <div class="col-xs-8 visible-xs"></div>
-        <a href="#" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center">
-            <img src="{% static "img/favorite.png" %}"/>
-        </a>
-        <h1 class="draw-title col-xs-12 col-sm-8 col-sm-pull-2 text-center">
+        <div class="clearfix">
+            <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
+                <img src="{% static "img/back_arrow.png" %}"/>
+            </a>
+            <div class="col-xs-8 visible-xs"></div>
+            <a href="#" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center">
+                <img src="{% static "img/favorite.png" %}"/>
+            </a>
+            <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
+                <textarea class="form-control autogrow draw-title-area text-center" rows="1">{% trans "Roll a dice" %}</textarea>
+            </div>
+        </div>
+        <!--<h1 class="draw-title col-xs-12 col-sm-8 col-sm-pull-2 text-center">
             {% block draw_title %}
             {% endblock draw_title %}
-        </h1>
+        </h1>-->
         <!-- End Draw Heading -->
 
         <div class="col-sm-8 col-sm-offset-2">
