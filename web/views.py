@@ -78,15 +78,15 @@ def login_user(request):
         username = request.POST['email']
         password = request.POST['password']
 
-        user = authenticate(username=username, password=password)
-        if user is not None:
+        try:
+            user = authenticate(username=username, password=password)
             if user.is_active:
                 if 'keep-logged' in request.POST:
                     request.session.set_expiry(31556926)  # 1 year
                 logger.info("expiration" + str(request.session.get_expiry_date()))
                 login(request, user)
                 return HttpResponseRedirect('/')
-        else:
+        except MongoDriver.NotFoundError:
             context = {'error': "Email or password not valid."}
     return render(request, 'login.html', context)
 
@@ -134,9 +134,6 @@ def add_user_to_draw(request,draw_id,new_users):
 
     logger.info("Adding {0} to draw {1}".format(new_users,draw_id))
     bom_draw = mongodb.retrieve_draw(draw_id)
-    if bom_draw is None:
-        logger.info("Draw does not exist")
-        return HttpResponseBadRequest()
 
     user_can_write_draw(request.user, bom_draw) #raises 500
 
@@ -174,14 +171,7 @@ DRAW_TO_URL_MAP = {
 
 def retrieve_draw(request, draw_id):
     logger.info("Serving view for retrieve draw with id {0}".format(draw_id))
-    try:
-        bom_draw = mongodb.retrieve_draw(draw_id)
-    except:
-        raise Http404
-    if bom_draw is None:
-        logger.info("Draw {0} not found.".format(draw_id))
-        raise Http404("Draw Not Found")
-
+    bom_draw = mongodb.retrieve_draw(draw_id)
     target_view = DRAW_TO_URL_MAP[bom_draw.draw_type]
     return redirect(target_view, draw_id)
 
@@ -229,10 +219,7 @@ def dice_draw(request, draw_id=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            try:
-                requested_draw = mongodb.retrieve_draw(draw_id)
-            except:
-                raise Http404
+            requested_draw = mongodb.retrieve_draw(draw_id)
             user_can_read_draw(request.user, requested_draw)
             logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
             if requested_draw.draw_type == "DiceDraw":
@@ -274,10 +261,7 @@ def card_draw(request, draw_id=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            try:
-                requested_draw = mongodb.retrieve_draw(draw_id)
-            except:
-                raise Http404
+            requested_draw = mongodb.retrieve_draw(draw_id)
             logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
             if requested_draw.draw_type == "CardDraw":
                 draw_form = CardDrawForm(initial=requested_draw.__dict__)
@@ -321,10 +305,7 @@ def random_number_draw(request, draw_id=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            try:
-                requested_draw = mongodb.retrieve_draw(draw_id)
-            except:
-                raise Http404
+            requested_draw = mongodb.retrieve_draw(draw_id)
             logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
             if requested_draw.draw_type == "RandomNumberDraw":
                 draw_form = RandomNumberDrawForm(initial=requested_draw.__dict__)
@@ -367,10 +348,7 @@ def random_item_draw(request, draw_id=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            try:
-                requested_draw = mongodb.retrieve_draw(draw_id)
-            except:
-                raise Http404
+            requested_draw = mongodb.retrieve_draw(draw_id)
             logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
             if requested_draw.draw_type == "RandomItemDraw":
                 draw_form = RandomItemDrawForm(initial=requested_draw.__dict__)
@@ -413,10 +391,7 @@ def link_sets_draw(request, draw_id=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            try:
-                requested_draw = mongodb.retrieve_draw(draw_id)
-            except:
-                raise Http404
+            requested_draw = mongodb.retrieve_draw(draw_id)
             logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
             if requested_draw.draw_type == "LinkSets":
                 draw_form = LinkSetsForm(initial=requested_draw.__dict__)
