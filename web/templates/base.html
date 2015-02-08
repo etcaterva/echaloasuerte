@@ -46,6 +46,17 @@
     <script>
         {% block extra_js %}{% endblock extra_js %}
         $(document).ready(function () {
+            // Public draw dropdown animation
+            $("#public-draw-dropdown").hover(
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
+                $(this).toggleClass('open');
+            },
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
+                $(this).toggleClass('open');
+            });
+
            $('#language-dropdown li a').click(function () {
                 var lang_code = $(this).attr('title');
                 $("#language-option"). attr("value",lang_code);
@@ -122,8 +133,16 @@
                     </li>
                 {% endif %}
                 <li>
-                    <a href="{% url 'join_public_draw' %}">{% trans "Join Public Draw" %}
+                    <a href="{% url 'public_dice' %}">{% trans "Join Public Draw" %}
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                </li>
+                <li id="public-draw-dropdown" class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+			            <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Join public draw</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Create public draw</a></li>
+                    </ul>
                 </li>
                 <li class="visible-xs">
                     {% if user.is_authenticated %}
@@ -135,7 +154,7 @@
                     </a>
                 </li>
 
-                <li class="hidden-xs dropdown">
+                <li id="login-dropdown" class="hidden-xs dropdown">
                     {% if user.is_authenticated %}
                         <!-- START ACCOUNT -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -254,7 +273,7 @@
             <span class="glyphicon glyphicon-flag"></span>
             {{ LANGUAGE_CODE|language_name }} ▾
         </a>
-        <ul class="dropdown-menu" id="language-dropdown" role="menu">
+        <ul class="dropdown-menu pull-right drop-up" id="language-dropdown" role="menu">
             {% for language in languages %}
                 <li><a href="#" title="{{ language.code }}">{{ language.name_local }}
                     ({{ language.code }})</a></li>

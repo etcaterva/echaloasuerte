@@ -121,3 +121,8 @@ body {
 .footer .language a{
     color: #06D;
 }
+
+.drop-up {
+    top: auto;
+    bottom: 100% !important;
+}

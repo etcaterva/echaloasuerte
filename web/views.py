@@ -234,6 +234,42 @@ def dice_draw(request, draw_id=None):
     return render(request, 'dice.html', context)
 
 
+def public_dice_draw(request):
+    logger.info("Serving view for dice draw")
+    context = {'errors': []}
+    if request.method == 'POST':
+
+        draw_form = DiceDrawForm(request.POST)
+        public_form = PublicDrawForm(request.POST)
+        if draw_form.is_valid():
+            raw_draw = draw_form.cleaned_data
+            bom_draw = DiceDraw(**raw_draw)
+            if bom_draw.is_feasible():
+                if 'next' in request.POST:
+                    logger.info("The draw is being published")
+                    set_owner(bom_draw, request)
+                    mongodb.save_draw(bom_draw)
+                else:
+                    result = bom_draw.toss()
+                    res = result["items"]
+                    context['results'] = res
+                    logger.info("New result generated for draw {0}".format(bom_draw._id))
+                    logger.debug("Generated draw: {0}".format(bom_draw))
+            else:
+                logger.info("Draw not feasible")
+                context['errors'].append(_("The draw is not feasible"))
+        else:
+            logger.info("Form not valid")
+            logger.debug("Errors in the form: {0}".format(draw_form.errors))
+    else:
+        draw_form = DiceDrawForm()
+        public_form = PublicDrawForm()
+
+    context['draw'] = draw_form
+    context['public_draw'] = public_form
+    return render(request, 'public-dice.html', context)
+
+
 def card_draw(request, draw_id=None):
     logger.info("Serving view for card draw")
     context = {'errors': []}

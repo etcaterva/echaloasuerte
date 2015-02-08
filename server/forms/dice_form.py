@@ -22,14 +22,16 @@ class DiceDrawForm(forms.Form):
         self.helper.field_class = 'col-xs-5'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
-        self.helper.form_action = reverse('dice')
+        self.helper.form_tag = False                 # EDITION: added
+        self.helper.form_action = reverse('dice')    # EDITION: this should be removed
         self.helper.layout = Layout(
             Row(
                 'number_of_results',
             ),
             Div(
                 HTML("{% include 'render_errors.html' %}"),
-                Submit('submit', _("Toss"), css_class='btn btn-primary'),
+                # EDITION: the buttons are added manually in the template
+                #Submit('submit', _("Toss"), css_class='btn btn-primary'),
                 css_class='text-center',
             )
         )
