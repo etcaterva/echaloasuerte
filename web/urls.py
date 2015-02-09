@@ -7,7 +7,6 @@ urlpatterns = patterns(None)
 urlpatterns += patterns(
     '',
     url(r'^$', views.index, name='index'),
-    url(r'^publish_draw.html$', views.index, {'is_public': True}, name="publish_draw"),
 
     url(r'^coin.html$', views.coin_draw, name="coin"),
     url(r'^number/(?P<draw_id>[0-9a-g]+)?$', views.random_number_draw, name="random_number"),
@@ -20,7 +19,8 @@ urlpatterns += patterns(
 
     url(r'^public_dice.html$', views.public_dice_draw, name="public_dice"),
 
-    #url(r'^joinpublicdraw.html$', views.under_construction, name="join_public_draw"),
+    url(r'^publish_draw.html$', views.index, {'is_public': True}, name="publish_draw"),
+    url(r'^join_public_draw.html$', views.under_construction, name="join_public_draw"),
 
 
     url(r'^about.html$', views.under_construction, name="about"),

@@ -135,9 +135,9 @@
                 <li id="public-draw-dropdown" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Public Draw" %}<span class="caret"></span></a>
 			            <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Join public draw</a></li>
+                        <li><a href="{% url 'join_public_draw' %}">{% trans "Join public draw" %}</a></li>
                         <li class="divider"></li>
-                        <li><a href="{% url 'publish_draw' %}">Create public draw</a></li>
+                        <li><a href="{% url 'publish_draw' %}">{% trans "Create public draw" %}</a></li>
                     </ul>
                 </li>
                 <li class="visible-xs">
