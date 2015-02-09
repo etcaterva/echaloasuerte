@@ -213,7 +213,10 @@ def dice_draw(request, draw_id=None, publish=None):
                 draw_form.data = draw_form.data.copy()
                 draw_form.data['_id'] = bom_draw.pk
                 res = result["items"]
-                context['results'] = res
+                if 'next' in request.POST:
+                    logger.info("The draw is being published")
+                else:
+                    context['results'] = res
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:
