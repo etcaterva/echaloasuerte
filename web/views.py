@@ -189,7 +189,7 @@ def coin_draw(request):
         context['result'] = res
         logger.info("New result generated for draw {0}".format(bom_draw._id))
         logger.debug("Generated draw: {0}".format(bom_draw))
-    return render(request, 'coin.html', context)
+    return render(request, 'draws/coin.html', context)
 
 
 def dice_draw(request, draw_id=None):
@@ -231,7 +231,7 @@ def dice_draw(request, draw_id=None):
             draw_form = DiceDrawForm()
 
     context['draw'] = draw_form
-    return render(request, 'dice.html', context)
+    return render(request, 'draws/dice.html', context)
 
 
 def public_dice_draw(request):
@@ -308,7 +308,7 @@ def card_draw(request, draw_id=None):
             draw_form = CardDrawForm()
 
     context['draw'] = draw_form
-    return render(request, 'card.html', context)
+    return render(request, 'draws/card.html', context)
 
 
 def random_number_draw(request, draw_id=None):
@@ -352,7 +352,7 @@ def random_number_draw(request, draw_id=None):
             draw_form = RandomNumberDrawForm()
 
     context['draw'] = draw_form
-    return render(request, 'random_number.html', context)
+    return render(request, 'draws/random_number.html', context)
 
 
 def random_item_draw(request, draw_id=None):
@@ -395,7 +395,7 @@ def random_item_draw(request, draw_id=None):
             draw_form = RandomItemDrawForm()
 
     context['draw'] = draw_form
-    return render(request, 'random_item.html', context)
+    return render(request, 'draws/random_item.html', context)
 
 
 def link_sets_draw(request, draw_id=None):
@@ -438,7 +438,7 @@ def link_sets_draw(request, draw_id=None):
             draw_form = LinkSetsForm()
 
     context['draw'] = draw_form
-    return render(request, 'link_sets.html', context)
+    return render(request, 'draws/link_sets.html', context)
 
 
 def under_construction(request):

@@ -20,7 +20,8 @@ class CardDrawForm(forms.Form):
         super(CardDrawForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.field_template = 'eas_crispy_field.html'
+        self.helper.field_template = 'draws/eas_crispy_field.html'
+        self.helper.form_tag = False
         self.helper.render_hidden_fields = True
         self.helper.form_id = 'form-random_number'
         self.helper.form_class = 'form-horizontal'
@@ -34,11 +35,7 @@ class CardDrawForm(forms.Form):
                 'number_of_results',
                 'type_of_deck',
             ),
-            Div(
-                HTML("{% include 'render_errors.html' %}"),
-                Submit('submit', _("Toss"), css_class='btn-toss'),
-                css_class='text-center',
-            )
+            HTML("{% include 'draws/draw_render_errors.html' %}"),
         )
 
     def clean_number_of_results(self):
