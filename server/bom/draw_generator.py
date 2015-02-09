@@ -9,6 +9,7 @@ class {0}Draw(BaseDraw):
     """
     Stores the content of a draw of {0}
     """
+    DEFAULT_TITLE = None #_("""XXX""") TODO
 
     def __init__(self'''
 

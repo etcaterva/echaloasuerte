@@ -12,6 +12,7 @@ class BaseDraw(object):
     Stores the content of a draw of random items
     """
     __metaclass__ = ABCMeta
+    DEFAULT_TITLE = None
 
     @property
     def pk(self):
@@ -19,7 +20,7 @@ class BaseDraw(object):
 
     def __init__(self, creation_time = None, owner = None, number_of_results = 1,
                   results= None, _id = None, draw_type = None, prev_draw = None,
-                  users = None):
+                  users = None, title = None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -42,11 +43,17 @@ class BaseDraw(object):
         self.prev_draw = prev_draw
         """Id of the prev draw that was modified creating this one"""
 
+        self.users = users if users is not None else []
+        """List of users with access to the draw"""
+
+        self.title = title
+        """Title of the concrete draw"""
+
         if draw_type and draw_type != self.draw_type:
             logger.warning("A draw was built with type {0} but type {1} was passed as argument! Fix it!".format(draw_type,self.draw_type))
 
-        self.users = users if users is not None else []
-        """List of users with access to the draw"""
+        #if self.title is None:
+        #    logger.warning("Draw with id {0} and type {1} have no title".format(self._id,str(type(self).__name__)))
 
     def is_feasible(self):
         return self.number_of_results > 0

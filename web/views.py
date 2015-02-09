@@ -192,11 +192,13 @@ def coin_draw(request):
         context['result'] = res
         logger.info("New result generated for draw {0}".format(bom_draw._id))
         logger.debug("Generated draw: {0}".format(bom_draw))
+    context["bom"] = bom_draw
     return render(request, 'draws/coin.html', context)
 
 
 def dice_draw(request, draw_id=None, publish=None):
     logger.info("Serving view for dice draw")
+    bom_draw = DiceDraw()
     context = {'errors': []}
     if publish:
         context['is_public'] = 'publish'
@@ -227,18 +229,19 @@ def dice_draw(request, draw_id=None, publish=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            requested_draw = mongodb.retrieve_draw(draw_id)
-            user_can_read_draw(request.user, requested_draw)
-            logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
-            if requested_draw.draw_type == "DiceDraw":
-                draw_form = DiceDrawForm(initial=requested_draw.__dict__)
+            bom_draw = mongodb.retrieve_draw(draw_id)
+            user_can_read_draw(request.user, bom_draw)
+            logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
+            if bom_draw.draw_type == "DiceDraw":
+                draw_form = DiceDrawForm(initial=bom_draw.__dict__)
             else:
-                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
+                logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
                 raise Http404
         else:
             draw_form = DiceDrawForm()
 
     context['draw'] = draw_form
+    context["bom"] = bom_draw
     return render(request, 'draws/dice.html', context)
 
 
@@ -280,6 +283,7 @@ def public_dice_draw(request):
 
 def card_draw(request, draw_id=None):
     logger.info("Serving view for card draw")
+    bom_draw = CardDraw()
     context = {'errors': []}
     if request.method == 'POST':
         draw_form = CardDrawForm(request.POST)
@@ -305,22 +309,24 @@ def card_draw(request, draw_id=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            requested_draw = mongodb.retrieve_draw(draw_id)
-            logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
-            if requested_draw.draw_type == "CardDraw":
-                draw_form = CardDrawForm(initial=requested_draw.__dict__)
+            bom_draw = mongodb.retrieve_draw(draw_id)
+            logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
+            if bom_draw.draw_type == "CardDraw":
+                draw_form = CardDrawForm(initial=bom_draw.__dict__)
             else:
-                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
+                logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
                 raise Http404
         else:
             draw_form = CardDrawForm()
 
     context['draw'] = draw_form
+    context["bom"] = bom_draw
     return render(request, 'draws/card.html', context)
 
 
 def random_number_draw(request, draw_id=None):
     logger.info("Serving view for random number draw")
+    bom_draw = RandomNumberDraw()
     context = {'errors': []}
 
     if request.method == 'POST':
@@ -349,22 +355,24 @@ def random_number_draw(request, draw_id=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            requested_draw = mongodb.retrieve_draw(draw_id)
-            logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
-            if requested_draw.draw_type == "RandomNumberDraw":
-                draw_form = RandomNumberDrawForm(initial=requested_draw.__dict__)
+            bom_draw = mongodb.retrieve_draw(draw_id)
+            logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
+            if bom_draw.draw_type == "RandomNumberDraw":
+                draw_form = RandomNumberDrawForm(initial=bom_draw.__dict__)
             else:
-                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
+                logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
                 raise Http404
         else:
             draw_form = RandomNumberDrawForm()
 
     context['draw'] = draw_form
+    context["bom"] = bom_draw
     return render(request, 'draws/random_number.html', context)
 
 
 def random_item_draw(request, draw_id=None):
     logger.info("Serving view for random item draw")
+    bom_draw = RandomItemDraw()
     context = {'errors': []}
 
     if request.method == 'POST':
@@ -392,22 +400,24 @@ def random_item_draw(request, draw_id=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            requested_draw = mongodb.retrieve_draw(draw_id)
-            logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
-            if requested_draw.draw_type == "RandomItemDraw":
-                draw_form = RandomItemDrawForm(initial=requested_draw.__dict__)
+            bom_draw = mongodb.retrieve_draw(draw_id)
+            logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
+            if bom_draw.draw_type == "RandomItemDraw":
+                draw_form = RandomItemDrawForm(initial=bom_draw.__dict__)
             else:
-                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
+                logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
                 raise Http404
         else:
             draw_form = RandomItemDrawForm()
 
     context['draw'] = draw_form
+    context["bom"] = bom_draw
     return render(request, 'draws/random_item.html', context)
 
 
 def link_sets_draw(request, draw_id=None):
     logger.info("Serving view for link sets draw")
+    bom_draw = LinkSetsDraw()
     context = {'errors': []}
 
     if request.method == 'POST':
@@ -435,17 +445,18 @@ def link_sets_draw(request, draw_id=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            requested_draw = mongodb.retrieve_draw(draw_id)
-            logger.debug("Filling form with retrieved draw {0}".format(requested_draw))
-            if requested_draw.draw_type == "LinkSets":
-                draw_form = LinkSetsForm(initial=requested_draw.__dict__)
+            bom_draw = mongodb.retrieve_draw(draw_id)
+            logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
+            if bom_draw.draw_type == "LinkSets":
+                draw_form = LinkSetsForm(initial=bom_draw.__dict__)
             else:
-                logger.info("Draw type mismatch, type: {0}".format(requested_draw.draw_type))
+                logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
                 raise Http404
         else:
             draw_form = LinkSetsForm()
 
     context['draw'] = draw_form
+    context["bom"] = bom_draw
     return render(request, 'draws/link_sets.html', context)
 
 

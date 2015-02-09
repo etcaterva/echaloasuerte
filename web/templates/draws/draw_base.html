@@ -16,7 +16,7 @@
     autosize = function(){
         var max_width = $("#draw-title-container").width()*2/3;
         $("textarea.autogrow").width(max_width);
-        $("textarea.autogrow").autoGrowInput({title:'{% trans "Roll a dice" %}',maxWidth: max_width,minWidth:30,comfortZone:30});
+        $("textarea.autogrow").autoGrowInput({title:'{{ bom.title|default:bom.DEFAULT_TITLE }}',maxWidth: max_width,minWidth:30,comfortZone:30});
     };
 
     // Autosize the first time
@@ -44,7 +44,7 @@
                 <img src="{% static "img/favorite.png" %}"/>
             </a>
             <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
-                <textarea class="form-control autogrow draw-title-area text-center" rows="1">{% trans "Roll a dice" %}</textarea>
+                <textarea class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title|default:bom.DEFAULT_TITLE }}</textarea>
             </div>
         </div>
         <!-- End Draw Heading -->
@@ -68,7 +68,7 @@
             <div class="row text-center">
                 {% if results %}
                     {% if results|length  == 1 %}
-                        <p class="h3">Result</p>
+                    <p class="h3">Result</p>
                     {% else %}
                         <p class="h3">Results</p>
                     {% endif %}

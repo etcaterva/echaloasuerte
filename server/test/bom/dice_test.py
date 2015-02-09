@@ -10,6 +10,10 @@ class DiceDrawTest(TestCase):
         """DiceDraw: Basic construction"""
         pass
 
+    def default_title_test(self):
+        """DiceDraw: Basic construction"""
+        self.assertTrue(self.dummy_draw.title is None)
+
     def serialization_test(self):
         """DiceDraw: Serialization"""
         raw = DiceDraw(number_of_results=1).__dict__

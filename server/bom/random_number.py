@@ -8,6 +8,7 @@ class RandomNumberDraw(BaseDraw):
     """
     Class that represents a draw with the details to produce random numbers.
     """
+    DEFAULT_TITLE= _("""Random Number""")
 
     def __init__(self, range_min=0, range_max=10, allow_repeat=False, **kwargs):
         super(RandomNumberDraw, self).__init__(**kwargs)

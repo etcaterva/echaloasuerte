@@ -7,6 +7,7 @@ class DiceDraw(BaseDraw):
     """
     Stores the content of a draw of Dice
     """
+    DEFAULT_TITLE = _("""Roll a dice""")
 
     def __init__(self, **kwargs):
         super(DiceDraw, self).__init__(**kwargs)
