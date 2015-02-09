@@ -1,0 +1,26 @@
+{% extends "draws/draw_base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}{% trans "Roll a dice" %} | Echalo A Suerte{% endblock title %}
+
+{% block extra_head %}
+    <script src="{% static 'js/dice.js' %}"></script>
+{% endblock extra_head %}
+
+{% block extra_js_onload %}
+    //Precaching the images
+    D6Animator.getImageBank("", '{{ STATIC_URL }}' + "img/img_dice/");
+{% endblock extra_js_onload %}
+
+{% block draw_title %} {% trans "Roll a dice" %} {% endblock draw_title %}
+
+{% block result %}
+    <script>
+        results = {{ results }}
+        D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
+        D6.dice(results);
+    </script>
+{% endblock result %}
+

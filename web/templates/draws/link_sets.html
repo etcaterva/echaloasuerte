@@ -1,0 +1,29 @@
+{% extends "draws/draw_base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}{% trans "Link Sets" %} | Echalo A Suerte{% endblock title %}
+
+{% block draw_extra_jq_ready %}
+    $('.textinput').tokenfield({createTokensOnBlur:true});
+{% endblock draw_extra_jq_ready %}
+
+{% block draw_title %} {% trans "Link Sets" %} {% endblock draw_title %}
+
+{% block input_form %}
+    <div class="alert alert-info" role="alert">{% trans 'Lists are comma separated. e.g: 1,2,3,' %}</div>
+    {% crispy draw draw.helper %}
+{% endblock input_form%}
+
+{% block result %}
+    <ul class="list-group">
+        {% for link in results %}
+            <li class="list-group-item col-xs-12">
+                {% for item in link %}
+                    <b>{{ item }}</b> {%if not forloop.last %} <span class="glyphicon glyphicon-minus" ></span> {%endif%}
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock result %}
