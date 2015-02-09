@@ -25,6 +25,11 @@
         // Autosize when the window is resized
         autosize();
     });
+
+    // Disable submit button after submitting
+    $('form').submit(function() {
+        $(this).find("button[type='submit']").prop('disabled',true);
+    });
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
 {% endblock extra_jq_ready %}
 {% block content %}
@@ -46,7 +51,7 @@
 
         <div class="col-sm-8 col-sm-offset-2">
             <!-- Input Form -->
-            <form class="blueForms" method="post">
+            <form method="post">
                 {% crispy draw draw.helper %}
                 <div class="col-xs-12 text-center">
                     <button type="submit" name="try" class="btn btn-success">Try it!</button>
