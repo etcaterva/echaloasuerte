@@ -157,9 +157,12 @@ def profile(request):
     return render(request, 'profile.html', context)
 
 
-def index(request):
+def index(request, is_public=None):
     logger.info("Serving index page.")
-    return render(request, 'index.html')
+    context = {}
+    if is_public:
+        context['is_public'] = 'publish'
+    return render(request, 'index.html', context)
 
 
 DRAW_TO_URL_MAP = {
@@ -192,9 +195,11 @@ def coin_draw(request):
     return render(request, 'draws/coin.html', context)
 
 
-def dice_draw(request, draw_id=None):
+def dice_draw(request, draw_id=None, publish=None):
     logger.info("Serving view for dice draw")
     context = {'errors': []}
+    if publish:
+        context['is_public'] = 'publish'
     if request.method == 'POST':
         draw_form = DiceDrawForm(request.POST)
         if draw_form.is_valid():
@@ -208,7 +213,10 @@ def dice_draw(request, draw_id=None):
                 draw_form.data = draw_form.data.copy()
                 draw_form.data['_id'] = bom_draw.pk
                 res = result["items"]
-                context['results'] = res
+                if 'next' in request.POST:
+                    logger.info("The draw is being published")
+                else:
+                    context['results'] = res
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:

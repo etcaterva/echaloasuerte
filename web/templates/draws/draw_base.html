@@ -54,8 +54,12 @@
             <form method="post">
                 {% crispy draw draw.helper %}
                 <div class="col-xs-12 text-center">
-                    <button type="submit" name="try" class="btn btn-success">Try it!</button>
-                    <button type="submit" name="next" class="btn btn-primary">Next</button>
+                    {% if is_public %}
+                        <button type="submit" name="try" class="btn btn-success">Try it!</button>
+                        <button type="submit" name="next" class="btn btn-primary">Next</button>
+                    {% else %}
+                        <button type="submit" name="toss" class="btn btn-success">Toss</button>
+                    {% endif %}
                 </div>
             </form>
             <!-- End Input Form -->

@@ -126,7 +126,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="col-sm-7 collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                {% if user.is_authenticated %}
+                {% if user.is_authenticated and not is_public%}
                     <li>
                     <a href="#" data-toggle="collapse" data-target="#favorites-panel">{% trans "Favorites" %}
                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
@@ -135,9 +135,9 @@
                 <li id="public-draw-dropdown" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Public Draw" %}<span class="caret"></span></a>
 			            <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Join public draw</a></li>
+                        <li><a href="{% url 'join_public_draw' %}">{% trans "Join public draw" %}</a></li>
                         <li class="divider"></li>
-                        <li><a href="{% url 'public_dice' %}">Create public draw</a></li>
+                        <li><a href="{% url 'publish_draw' %}">{% trans "Create public draw" %}</a></li>
                     </ul>
                 </li>
                 <li class="visible-xs">
@@ -242,7 +242,20 @@
     <!--/.container-fluid -->
 </div>
 
-{% if user.is_authenticated %}
+{% if is_public%}
+    <!-- Public Draw alert -->
+    <div class="row alert alert-info info-public-draw clearfix" role="alert">
+        <div class="col-xs-8 col-md-6 col-md-offset-2 text-center info-public-draw-text ">
+            Select the type of draw to make it public
+        </div>
+        <div class="col-xs-4 text-right">
+            <a href="{% url 'index' %}" type="button" class="row btn btn-danger" role="button">Cancel</a>
+        </div>
+    </div>
+    <!-- End Public Draw alert -->
+{% endif %}
+
+{% if user.is_authenticated and not is_public%}
     <div id="favorites-panel" class="row collapse">
         <div class="col-xs-10">
             Favorites list here
