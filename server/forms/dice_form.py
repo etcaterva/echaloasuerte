@@ -14,7 +14,8 @@ class DiceDrawForm(forms.Form):
         super(DiceDrawForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.field_template = 'eas_crispy_field.html'
+        self.helper.field_template = 'draws/eas_crispy_field.html'
+        self.helper.form_tag = False
         self.helper.render_hidden_fields = True
         self.helper.form_id = 'form-random_number'
         self.helper.form_class = 'form-horizontal'
@@ -22,18 +23,11 @@ class DiceDrawForm(forms.Form):
         self.helper.field_class = 'col-xs-5'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
-        self.helper.form_tag = False                 # EDITION: added
-        self.helper.form_action = reverse('dice')    # EDITION: this should be removed
         self.helper.layout = Layout(
             Row(
                 'number_of_results',
             ),
-            Div(
-                HTML("{% include 'render_errors.html' %}"),
-                # EDITION: the buttons are added manually in the template
-                #Submit('submit', _("Toss"), css_class='btn btn-primary'),
-                css_class='text-center',
-            )
+            HTML("{% include 'draws/draw_render_errors.html' %}"),
         )
 
     def clean_number_of_results(self):

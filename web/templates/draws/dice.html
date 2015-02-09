@@ -1,4 +1,4 @@
-{% extends "draw_base.html" %}
+{% extends "draws/draw_base.html" %}
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
@@ -15,10 +15,6 @@
 {% endblock extra_js_onload %}
 
 {% block draw_title %} {% trans "Roll a dice" %} {% endblock draw_title %}
-
-{% block input_form %}
-    {% crispy draw draw.helper %}
-{% endblock input_form%}
 
 {% block result %}
     <script>

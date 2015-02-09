@@ -1,19 +1,15 @@
-{% extends "draw_base.html" %}
+{% extends "draws/draw_base.html" %}
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
 
 {% block title %}{% trans "Random item" %} | Echalo A Suerte{% endblock title %}
 
-{% block extra_jq_ready %}
+{% block draw_extra_jq_ready %}
     $('#id_items').tokenfield({createTokensOnBlur:true});
-{% endblock extra_jq_ready %}
+{% endblock draw_extra_jq_ready %}
 
 {% block draw_title %} {% trans "Random item" %} {% endblock draw_title %}
-
-{% block input_form %}
-    {% crispy draw draw.helper %}
-{% endblock input_form%}
 
 {% block result %}
     <ul class="list-group">

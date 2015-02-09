@@ -1,13 +1,13 @@
-{% extends "draw_base.html" %}
+{% extends "draws/draw_base.html" %}
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
 
 {% block title %}{% trans "Link Sets" %} | Echalo A Suerte{% endblock title %}
 
-{% block extra_jq_ready %}
+{% block draw_extra_jq_ready %}
     $('.textinput').tokenfield({createTokensOnBlur:true});
-{% endblock extra_jq_ready %}
+{% endblock draw_extra_jq_ready %}
 
 {% block draw_title %} {% trans "Link Sets" %} {% endblock draw_title %}
 

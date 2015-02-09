@@ -1,19 +1,13 @@
-{% extends "draw_base.html" %}
+{% extends "draws/draw_base.html" %}
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
 
 {% block title %}{% trans "Take a card" %} | Echalo A Suerte{% endblock title %}
 
-{% block extra_head %}
-    <script src="{% static 'js/card.js' %}"></script>
-{% endblock extra_head %}
+{% block extra_head %}<script src="{% static 'js/card.js' %}"></script>{% endblock extra_head %}
 
 {% block draw_title %} {% trans "Take a card" %} {% endblock draw_title %}
-
-{% block input_form %}
-    {% crispy draw draw.helper %}
-{% endblock input_form%}
 
 {% block result %}
     <script>

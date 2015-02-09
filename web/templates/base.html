@@ -132,16 +132,12 @@
                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
                     </li>
                 {% endif %}
-                <li>
-                    <a href="{% url 'public_dice' %}">{% trans "Join Public Draw" %}
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                </li>
                 <li id="public-draw-dropdown" class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Public Draw" %}<span class="caret"></span></a>
 			            <ul class="dropdown-menu" role="menu">
                         <li><a href="#">Join public draw</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">Create public draw</a></li>
+                        <li><a href="{% url 'public_dice' %}">Create public draw</a></li>
                     </ul>
                 </li>
                 <li class="visible-xs">

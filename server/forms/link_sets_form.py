@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit
+from crispy_forms.layout import Layout, Div, HTML
 from django.core.urlresolvers import reverse
 
 
@@ -13,7 +13,8 @@ class LinkSetsForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(LinkSetsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.field_template = 'eas_crispy_field.html'
+        self.helper.field_template = 'draws/eas_crispy_field.html'
+        self.helper.form_tag = False
         self.helper.render_hidden_fields = True
         self.helper.form_id = 'form-link_sets'
         self.helper.form_class = 'form-horizontal'
@@ -24,12 +25,10 @@ class LinkSetsForm(forms.Form):
         self.helper.form_action = reverse('link_sets')
         self.helper.layout = Layout(
             Div(
+                HTML("<div class='alert alert-info' role='alert'>{0}</div>".format(_("Lists are comma separated. e.g: 1,2,3,"))),
                 '_id',
                 'set_1',
                 'set_2',
             ),
-            Div(
-                Submit('submit', _("Toss"), css_class='btn-toss'),
-                css_class='text-center',
-            )
+            HTML("{% include 'draws/draw_render_errors.html' %}"),
         )
