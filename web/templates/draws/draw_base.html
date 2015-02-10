@@ -70,7 +70,8 @@
             {% for result in bom.results reversed %}
             {% with result.items as results%}
                 {% if results %}
-                <h3>{%trans 'Result' %}{{results.length|pluralize}}{%trans ' generated on '%}{{result.datetime}}</h3>
+                    <h3>{%trans 'Result' %}{{results|length|pluralize}}</h3>
+                    {%trans ' generated on '%}{{result.datetime}}
                     <div >{% block result %}{% endblock result %}</div>
                 {% endif %}
             {% endwith %}
