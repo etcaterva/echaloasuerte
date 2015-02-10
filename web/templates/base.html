@@ -175,7 +175,7 @@
                                             <p class="text-left small"> email@email.com</p>
 
                                             <p class="text-left">
-                                                <a href="{% url 'profile' %}" class="btn btn-primary btn-block btn-sm">History</a>
+                                            <a href="{% url 'profile' %}" class="btn btn-primary btn-block btn-sm">{%trans 'History'%}</a>
                                             </p>
                                         </div>
                                     </div>
@@ -248,10 +248,10 @@
     <!-- Public Draw alert -->
     <div class="row alert alert-info info-public-draw clearfix" role="alert">
         <div class="col-xs-8 col-md-6 col-md-offset-2 text-center info-public-draw-text ">
-            Select the type of draw to make it public
+            {%trans 'Select the type of draw to make it public' %}
         </div>
         <div class="col-xs-4 text-right">
-            <a href="{% url 'index' %}" type="button" class="row btn btn-danger" role="button">Cancel</a>
+            <a href="{% url 'index' %}" type="button" class="row btn btn-danger" role="button">{%trans 'Cancel'%}</a>
         </div>
     </div>
     <!-- End Public Draw alert -->
@@ -279,7 +279,7 @@
     </div>
     <!-- Language dropdown menu for SM, MD and LG -->
     <div class="hidden-xs col-sm-5 language text-right">
-        Choose language:
+        {%trans 'Choose language'%}:
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
             <span class="glyphicon glyphicon-flag"></span>
             {{ LANGUAGE_CODE|language_name }} ▾
