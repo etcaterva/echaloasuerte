@@ -26,7 +26,6 @@ class RandomNumberDrawForm(forms.Form):
         self.helper.field_class = 'col-xs-4'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
-        self.helper.form_action = reverse('random_number')
         self.helper.layout = Layout(
             Row(
                 'range_min',
