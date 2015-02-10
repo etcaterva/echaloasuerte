@@ -30,6 +30,7 @@
     $('form').submit(function() {
         $(this).find("button[type='submit']").prop('disabled',true);
     });
+    $('.accordion').accordion({collapsible: true});
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
 {% endblock extra_jq_ready %}
 {% block content %}
@@ -65,16 +66,15 @@
             <!-- End Input Form -->
 
             <!-- Results -->
-            <div class="row text-center">
+            <div class="row text-center accordion">
+            {% for result in bom.results reversed %}
+            {% with result.items as results%}
                 {% if results %}
-                    {% if results|length  == 1 %}
-                    <p class="h3">Result</p>
-                    {% else %}
-                        <p class="h3">Results</p>
-                    {% endif %}
-                    {% block result %}
-                    {% endblock result %}
+                <h3>{%trans 'Result' %}{{results.length|pluralize}}{%trans ' generated on '%}{{result.datetime}}</h3>
+                    <div >{% block result %}{% endblock result %}</div>
                 {% endif %}
+            {% endwith %}
+            {% endfor %}
             </div>
             <!-- Results -->
         </div>

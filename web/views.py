@@ -38,7 +38,7 @@ def find_previous_version(curr_draw):
     if prev_draw.owner != curr_draw.owner: #security check
         raise PermissionDenied()
     for k, v in curr_draw.__dict__.items():
-        if k not in ["creation_time", "results", "_id"] and (
+        if k not in ["creation_time", "results", "_id", "prev_draw" ] and (
                 k not in prev_draw.__dict__.keys() or v != prev_draw.__dict__[k]):
             # Data have changed
             logger.info("Old draw with id {0} changed on key {1}".format(prev_draw._id, k))
@@ -210,15 +210,12 @@ def dice_draw(request, draw_id=None, publish=None):
             set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
-                result = bom_draw.toss()
+                bom_draw.toss()
                 mongodb.save_draw(bom_draw)
                 draw_form.data = draw_form.data.copy()
                 draw_form.data['_id'] = bom_draw.pk
-                res = result["items"]
                 if 'next' in request.POST:
                     logger.info("The draw is being published")
-                else:
-                    context['results'] = res
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:
@@ -261,9 +258,7 @@ def public_dice_draw(request):
                     set_owner(bom_draw, request)
                     mongodb.save_draw(bom_draw)
                 else:
-                    result = bom_draw.toss()
-                    res = result["items"]
-                    context['results'] = res
+                    bom_draw.toss()
                     logger.info("New result generated for draw {0}".format(bom_draw._id))
                     logger.debug("Generated draw: {0}".format(bom_draw))
             else:
@@ -293,12 +288,10 @@ def card_draw(request, draw_id=None):
             set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
-                result = bom_draw.toss()
+                bom_draw.toss()
                 mongodb.save_draw(bom_draw)
                 draw_form.data = draw_form.data.copy()
                 draw_form.data['_id'] = bom_draw.pk
-                res = result["items"]
-                context['results'] = res
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:
@@ -334,17 +327,14 @@ def random_number_draw(request, draw_id=None):
         draw_form = RandomNumberDrawForm(request.POST)
         if draw_form.is_valid():
             raw_draw = draw_form.cleaned_data
-            # in the future we could retrive draws, add results and list the historic
             bom_draw = RandomNumberDraw(**raw_draw)  #This works because form and python object have the same member names
             set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
-                result = bom_draw.toss()
+                bom_draw.toss()
                 mongodb.save_draw(bom_draw)
                 draw_form.data = draw_form.data.copy()
                 draw_form.data['_id'] = bom_draw.pk
-                res_numbers = result["items"]
-                context['results'] = res_numbers
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:
@@ -384,12 +374,10 @@ def random_item_draw(request, draw_id=None):
             set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
-                result = bom_draw.toss()
+                bom_draw.toss()
                 mongodb.save_draw(bom_draw)
                 draw_form.data = draw_form.data.copy()
                 draw_form.data['_id'] = bom_draw.pk
-                res_items = result["items"]
-                context['results'] = res_items
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:
@@ -429,12 +417,10 @@ def link_sets_draw(request, draw_id=None):
             set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
-                result = bom_draw.toss()
+                bom_draw.toss()
                 mongodb.save_draw(bom_draw)
                 draw_form.data = draw_form.data.copy()
                 draw_form.data['_id'] = bom_draw.pk
-                res_items = result["items"]
-                context['results'] = res_items
                 logger.info("New result generated for draw {0}".format(bom_draw._id))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:
