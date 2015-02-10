@@ -11,11 +11,6 @@
 
 {% block draw_title %} {% trans "Link Sets" %} {% endblock draw_title %}
 
-{% block input_form %}
-    <div class="alert alert-info" role="alert">{% trans 'Lists are comma separated. e.g: 1,2,3,' %}</div>
-    {% crispy draw draw.helper %}
-{% endblock input_form%}
-
 {% block result %}
     <ul class="list-group">
         {% for link in results %}

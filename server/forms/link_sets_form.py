@@ -1,12 +1,12 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, HTML
+from crispy_forms.layout import Layout, HTML, Row
 from django.core.urlresolvers import reverse
 
 
 class LinkSetsForm(forms.Form):
-    _id = forms.CharField(required=False, )
+    _id = forms.CharField(required=False, widget=forms.HiddenInput())
     set_1 = forms.CharField(label=_("Set 1"),widget=forms.TextInput())
     set_2 = forms.CharField(label=_("Set 2"),widget=forms.TextInput())
 
@@ -24,9 +24,8 @@ class LinkSetsForm(forms.Form):
         self.helper.form_method = 'post'
         self.helper.form_action = reverse('link_sets')
         self.helper.layout = Layout(
-            Div(
+            Row(
                 HTML("<div class='alert alert-info' role='alert'>{0}</div>".format(_("Lists are comma separated. e.g: 1,2,3,"))),
-                '_id',
                 'set_1',
                 'set_2',
             ),
