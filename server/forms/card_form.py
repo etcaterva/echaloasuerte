@@ -29,7 +29,6 @@ class CardDrawForm(forms.Form):
         self.helper.field_class = 'col-xs-5'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
-        self.helper.form_action = reverse('card')
         self.helper.layout = Layout(
             Row(
                 'number_of_results',

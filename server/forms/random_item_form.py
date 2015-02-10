@@ -25,7 +25,6 @@ class RandomItemDrawForm(forms.Form):
         self.helper.field_class = 'col-xs-5 col-md-6'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
-        self.helper.form_action = reverse('random_item')
         self.helper.layout = Layout(
             Row(
                 'number_of_results',

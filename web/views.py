@@ -165,7 +165,7 @@ def index(request, is_public=None):
     return render(request, 'index.html', context)
 
 
-DRAW_TO_URL_MAP = {
+DRAW_TO_VIEW_MAP = {
     'RandomNumberDraw': 'random_number',
     'DiceDraw': 'dice',
     'CardDraw': 'card',
@@ -175,7 +175,7 @@ DRAW_TO_URL_MAP = {
 def retrieve_draw(request, draw_id):
     logger.info("Serving view for retrieve draw with id {0}".format(draw_id))
     bom_draw = mongodb.retrieve_draw(draw_id)
-    target_view = DRAW_TO_URL_MAP[bom_draw.draw_type]
+    target_view = DRAW_TO_VIEW_MAP[bom_draw.draw_type]
     return redirect(target_view, draw_id)
 
 
@@ -196,17 +196,28 @@ def coin_draw(request):
     return render(request, 'draws/coin.html', context)
 
 
-def dice_draw(request, draw_id=None, publish=None):
-    logger.info("Serving view for dice draw")
-    bom_draw = DiceDraw()
+URL_TO_DRAW_MAP = {
+    'dice': 'DiceDraw',
+    'card': 'CardDraw',
+    'number': 'RandomNumberDraw',
+    'item': 'RandomItemDraw',
+    'link_sets': 'LinkSetsDraw',
+}
+
+
+def draw(request, draw_type=None,  draw_id=None, publish=None):
+    model_name = URL_TO_DRAW_MAP[draw_type]
+    form_name = model_name + "Form"
+    logger.info("Serving view for {0}".format(model_name))
+    bom_draw = globals()[model_name]()                                                               # FORM NAME
     context = {'errors': []}
     if publish:
         context['is_public'] = 'publish'
     if request.method == 'POST':
-        draw_form = DiceDrawForm(request.POST)
+        draw_form = globals()[form_name](request.POST)                                              # FORM NAME
         if draw_form.is_valid():
             raw_draw = draw_form.cleaned_data
-            bom_draw = DiceDraw(**raw_draw)
+            bom_draw = globals()[model_name](**raw_draw)                                            # MODEL NAME
             set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
@@ -216,7 +227,7 @@ def dice_draw(request, draw_id=None, publish=None):
                 draw_form.data['_id'] = bom_draw.pk
                 if 'next' in request.POST:
                     logger.info("The draw is being published")
-                logger.info("New result generated for draw {0}".format(bom_draw._id))
+                logger.info("New result generated for draw {0}".format(bom_draw.pk))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:
                 logger.info("Draw not feasible")
@@ -229,187 +240,18 @@ def dice_draw(request, draw_id=None, publish=None):
             bom_draw = mongodb.retrieve_draw(draw_id)
             user_can_read_draw(request.user, bom_draw)
             logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
-            if bom_draw.draw_type == "DiceDraw":
-                draw_form = DiceDrawForm(initial=bom_draw.__dict__)
+            if bom_draw.draw_type == model_name:                                                    # MODEL NAME
+                draw_form = globals()[form_name](initial=bom_draw.__dict__)                         # FORM NAME
             else:
                 logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
                 raise Http404
         else:
-            draw_form = DiceDrawForm()
+            draw_form = globals()[form_name]()                                                      # FORM NAME
 
     context['draw'] = draw_form
     context["bom"] = bom_draw
-    return render(request, 'draws/dice.html', context)
-
-
-def card_draw(request, draw_id=None):
-    logger.info("Serving view for card draw")
-    bom_draw = CardDraw()
-    context = {'errors': []}
-    if request.method == 'POST':
-        draw_form = CardDrawForm(request.POST)
-        if draw_form.is_valid():
-            raw_draw = draw_form.cleaned_data
-            bom_draw = CardDraw(**raw_draw)
-            set_owner(bom_draw, request)
-            bom_draw = find_previous_version(bom_draw)
-            if bom_draw.is_feasible():
-                bom_draw.toss()
-                mongodb.save_draw(bom_draw)
-                draw_form.data = draw_form.data.copy()
-                draw_form.data['_id'] = bom_draw.pk
-                logger.info("New result generated for draw {0}".format(bom_draw._id))
-                logger.debug("Generated draw: {0}".format(bom_draw))
-            else:
-                logger.info("Draw not feasible")
-                context['errors'].append(_("The draw is not feasible"))
-        else:
-            logger.info("Form not valid")
-            logger.debug("Errors in the form: {0}".format(draw_form.errors))
-    else:
-        if draw_id:
-            bom_draw = mongodb.retrieve_draw(draw_id)
-            logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
-            if bom_draw.draw_type == "CardDraw":
-                draw_form = CardDrawForm(initial=bom_draw.__dict__)
-            else:
-                logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
-                raise Http404
-        else:
-            draw_form = CardDrawForm()
-
-    context['draw'] = draw_form
-    context["bom"] = bom_draw
-    return render(request, 'draws/card.html', context)
-
-
-def random_number_draw(request, draw_id=None):
-    logger.info("Serving view for random number draw")
-    bom_draw = RandomNumberDraw()
-    context = {'errors': []}
-
-    if request.method == 'POST':
-        logger.debug("Information posted. {0}".format(request.POST))
-        draw_form = RandomNumberDrawForm(request.POST)
-        if draw_form.is_valid():
-            raw_draw = draw_form.cleaned_data
-            bom_draw = RandomNumberDraw(**raw_draw)  #This works because form and python object have the same member names
-            set_owner(bom_draw, request)
-            bom_draw = find_previous_version(bom_draw)
-            if bom_draw.is_feasible():
-                bom_draw.toss()
-                mongodb.save_draw(bom_draw)
-                draw_form.data = draw_form.data.copy()
-                draw_form.data['_id'] = bom_draw.pk
-                logger.info("New result generated for draw {0}".format(bom_draw._id))
-                logger.debug("Generated draw: {0}".format(bom_draw))
-            else:
-                logger.info("Draw not feasible")
-                context['errors'].append(_("The draw is not feasible"))
-        else:
-            logger.info("Form not valid")
-            logger.debug("Errors in the form: {0}".format(draw_form.errors))
-    else:
-        if draw_id:
-            bom_draw = mongodb.retrieve_draw(draw_id)
-            logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
-            if bom_draw.draw_type == "RandomNumberDraw":
-                draw_form = RandomNumberDrawForm(initial=bom_draw.__dict__)
-            else:
-                logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
-                raise Http404
-        else:
-            draw_form = RandomNumberDrawForm()
-
-    context['draw'] = draw_form
-    context["bom"] = bom_draw
-    return render(request, 'draws/random_number.html', context)
-
-
-def random_item_draw(request, draw_id=None):
-    logger.info("Serving view for random item draw")
-    bom_draw = RandomItemDraw()
-    context = {'errors': []}
-
-    if request.method == 'POST':
-        draw_form = RandomItemDrawForm(request.POST)
-        if draw_form.is_valid():
-            raw_draw = draw_form.cleaned_data
-            raw_draw["items"] = raw_draw["items"].split(',')
-            bom_draw = RandomItemDraw(**raw_draw)
-            set_owner(bom_draw, request)
-            bom_draw = find_previous_version(bom_draw)
-            if bom_draw.is_feasible():
-                bom_draw.toss()
-                mongodb.save_draw(bom_draw)
-                draw_form.data = draw_form.data.copy()
-                draw_form.data['_id'] = bom_draw.pk
-                logger.info("New result generated for draw {0}".format(bom_draw._id))
-                logger.debug("Generated draw: {0}".format(bom_draw))
-            else:
-                logger.info("Draw not feasible")
-                context['errors'].append(_("The draw is not feasible"))
-        else:
-            logger.info("Form not valid")
-            logger.debug("Errors in the form: {0}".format(draw_form.errors))
-    else:
-        if draw_id:
-            bom_draw = mongodb.retrieve_draw(draw_id)
-            logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
-            if bom_draw.draw_type == "RandomItemDraw":
-                draw_form = RandomItemDrawForm(initial=bom_draw.__dict__)
-            else:
-                logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
-                raise Http404
-        else:
-            draw_form = RandomItemDrawForm()
-
-    context['draw'] = draw_form
-    context["bom"] = bom_draw
-    return render(request, 'draws/random_item.html', context)
-
-
-def link_sets_draw(request, draw_id=None):
-    logger.info("Serving view for link sets draw")
-    bom_draw = LinkSetsDraw()
-    context = {'errors': []}
-
-    if request.method == 'POST':
-        draw_form = LinkSetsForm(request.POST)
-        if draw_form.is_valid():
-            raw_draw = draw_form.cleaned_data
-            sets = [x.split(',') for x in [raw_draw['set_1'], raw_draw['set_2']]]
-            bom_draw = LinkSetsDraw(sets)
-            set_owner(bom_draw, request)
-            bom_draw = find_previous_version(bom_draw)
-            if bom_draw.is_feasible():
-                bom_draw.toss()
-                mongodb.save_draw(bom_draw)
-                draw_form.data = draw_form.data.copy()
-                draw_form.data['_id'] = bom_draw.pk
-                logger.info("New result generated for draw {0}".format(bom_draw._id))
-                logger.debug("Generated draw: {0}".format(bom_draw))
-            else:
-                logger.info("Draw not feasible")
-                context['errors'].append(_("The draw is not feasible"))
-        else:
-            logger.info("Form not valid")
-            logger.debug("Errors in the form: {0}".format(draw_form.errors))
-    else:
-        if draw_id:
-            bom_draw = mongodb.retrieve_draw(draw_id)
-            logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
-            if bom_draw.draw_type == "LinkSets":
-                draw_form = LinkSetsForm(initial=bom_draw.__dict__)
-            else:
-                logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
-                raise Http404
-        else:
-            draw_form = LinkSetsForm()
-
-    context['draw'] = draw_form
-    context["bom"] = bom_draw
-    return render(request, 'draws/link_sets.html', context)
+    template_path = 'draws/{0}.html'.format(model_name)                                             # MODEL NAME
+    return render(request, template_path, context)
 
 
 def under_construction(request):
