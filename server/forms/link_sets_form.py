@@ -12,6 +12,10 @@ class LinkSetsDrawForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(LinkSetsDrawForm, self).__init__(*args, **kwargs)
+
+        self.fields['set_1'].initial = ', '.join(kwargs['initial']['sets'][0])
+        self.fields['set_2'].initial = ', '.join(kwargs['initial']['sets'][1])
+
         self.helper = FormHelper()
         self.helper.field_template = 'draws/eas_crispy_field.html'
         self.helper.form_tag = False
@@ -30,3 +34,10 @@ class LinkSetsDrawForm(forms.Form):
             ),
             HTML("{% include 'draws/draw_render_errors.html' %}"),
         )
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['sets'] = [cleaned_data.get('set_1').split(","), cleaned_data.get('set_2').split(",")]
+        cleaned_data.pop('set_1')
+        cleaned_data.pop('set_2')
+        return cleaned_data
