@@ -276,6 +276,8 @@ def public_dice_draw(request):
     return render(request, 'public-dice.html', context)
 
 
+=======
+>>>>>>> origin/removing_public_dice_draw
 def card_draw(request, draw_id=None):
     logger.info("Serving view for card draw")
     bom_draw = CardDraw()

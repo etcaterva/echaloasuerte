@@ -17,8 +17,6 @@ urlpatterns += patterns(
     url(r'^dice/(?P<publish>publish)?$', views.dice_draw, name="dice"),
     url(r'^dice/(?P<draw_id>[0-9a-g]+)?$', views.dice_draw, name="dice"),
 
-    url(r'^public_dice.html$', views.public_dice_draw, name="public_dice"),
-
     url(r'^publish_draw.html$', views.index, {'is_public': True}, name="publish_draw"),
     url(r'^join_public_draw.html$', views.under_construction, name="join_public_draw"),
 
