@@ -3,13 +3,9 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-{% block title %}{% trans "Random item" %} | Echalo A Suerte{% endblock title %}
-
 {% block draw_extra_jq_ready %}
     $('#id_items').tokenfield({createTokensOnBlur:true});
 {% endblock draw_extra_jq_ready %}
-
-{% block draw_title %} {% trans "Random item" %} {% endblock draw_title %}
 
 {% block result %}
     <ul class="list-group">

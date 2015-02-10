@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}Echalo A Suerte{% endblock title %}</title>
+    <title>{% block title %}{% endblock title %}Echalo A Suerte</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <meta name="description" content="">
 
@@ -130,8 +130,10 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated and not is_public%}
                     <li>
-                    <a href="#" data-toggle="collapse" data-target="#favorites-panel">{% trans "Favorites" %}
-                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+                    <a href="#" data-toggle="collapse" data-target="#favorites-panel">
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                        {% trans "Favorites" %}
+                    </a>
                     </li>
                 {% endif %}
                 <li id="public-draw-dropdown" class="dropdown">

@@ -3,18 +3,12 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-{% block title %}{% trans "Flip a coin" %} | Echalo A Suerte{% endblock title %}
-
-{% block extra_head %}
-    <script src="{% static 'js/coin.js' %}"></script>
-{% endblock extra_head %}
+{% block extra_head %}<script src="{% static 'js/coin.js' %}"></script>{% endblock extra_head %}
 
 {% block extra_js %}
     //Precaching the images
     coin.setup('{{ STATIC_URL }}' + "img/img_coin/");
 {% endblock extra_js %}
-
-{% block draw_title %} {% trans "Flip a coin" %} {% endblock draw_title %}
 
 {% block input_form %}
     <form action="{% url 'coin' %}" class="blueForms" method="post">
