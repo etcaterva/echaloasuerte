@@ -1,15 +1,58 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% load i18n %}
+{% block extra_jq_ready %}
+    $('.data-table').DataTable(
+        {
+            "language" : {
+                "emptyTable":     "{% trans 'No data available in table'%}",
+                "info":           "{% trans 'Showing _START_ to _END_ of _TOTAL_ entries'%}",
+                "infoEmpty":      "{% trans 'Showing 0 to 0 of 0 entries'%}",
+                "infoFiltered":   "{% trans '(filtered from _MAX_ total entries)'%}",
+                "infoPostFix":    "{% trans ''%}",
+                "thousands":      "{% trans ','%}",
+                "lengthMenu":     "{% trans 'Show _MENU_ entries'%}",
+                "loadingRecords": "{% trans 'Loading...'%}",
+                "processing":     "{% trans 'Processing...'%}",
+                "search":         "{% trans 'Search:'%}",
+                "zeroRecords":    "{% trans 'No matching records found'%}",
+                "paginate": {
+                    "first":      "{% trans 'First'%}",
+                    "last":       "{% trans 'Last'%}",
+                    "next":       "{% trans 'Next'%}",
+                    "previous":   "{% trans 'Previous'%}"
+                },
+                "aria": {
+                    "sortAscending":  "{% trans ': activate to sort column ascending'%}",
+                    "sortDescending": "{% trans ': activate to sort column descending'%}"
+                }
+            }
+        }
+    );
+{% endblock extra_jq_ready %}
+
 {% block content %}
     <div id="profile">
         <h1>{{user}}</h1>
         {%if draws.owner %}<h3>{% trans "Draws" %}:</h3>{% endif %}
-        <ul>
-        {% for d in draws.owner %}
-        <a href="{% url 'retrieve_draw' d.pk %}"><li>{{ d.title|default:d.DEFAULT_TITLE }} [{{d.creation_time}}] ({{d.results | length}} {%trans "results"%})</li></a>
-        {% endfor %}
-    </ul>
+        <table class="data-table" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>{%trans 'Draw Name' %}</th>
+                    <th>{%trans 'Created on' %}</th>
+                    <th>{%trans '# results' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for d in draws.owner %}
+                <a href="{% url 'retrieve_draw' d.pk %}"><tr>
+                    <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
+                    <td>{{d.creation_time}}</td>
+                    <td>{{d.results | length}}</td>
+                </tr></a>
+            {% endfor %}
+            </tbody>
+        </table>
         <hr/>
         <a href="{% url 'login' %}"><button type="button" class="btn">Logout</button></a>
     </div>
