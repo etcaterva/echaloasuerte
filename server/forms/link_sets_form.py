@@ -13,8 +13,9 @@ class LinkSetsDrawForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(LinkSetsDrawForm, self).__init__(*args, **kwargs)
 
-        self.fields['set_1'].initial = ', '.join(kwargs['initial']['sets'][0])
-        self.fields['set_2'].initial = ', '.join(kwargs['initial']['sets'][1])
+        if 'initial' in kwargs:
+            self.fields['set_1'].initial = ', '.join(kwargs['initial']['sets'][0])
+            self.fields['set_2'].initial = ', '.join(kwargs['initial']['sets'][1])
 
         self.helper = FormHelper()
         self.helper.field_template = 'draws/eas_crispy_field.html'

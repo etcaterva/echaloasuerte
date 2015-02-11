@@ -3,10 +3,6 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-{% block title %}{% trans "Random number" %} | Echalo A Suerte{% endblock title %}
-
-{% block draw_title %} {% trans "Random number" %} {% endblock draw_title %}
-
 {% block result %}
     <ul class="list-group">
         {% for number in results %}

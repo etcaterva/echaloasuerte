@@ -3,13 +3,9 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-{% block title %}{% trans "Link Sets" %} | Echalo A Suerte{% endblock title %}
-
 {% block draw_extra_jq_ready %}
     $('.textinput').tokenfield({createTokensOnBlur:true});
 {% endblock draw_extra_jq_ready %}
-
-{% block draw_title %} {% trans "Link Sets" %} {% endblock draw_title %}
 
 {% block result %}
     <ul class="list-group">

@@ -21,14 +21,6 @@ body {
 
 /* ---------------- HEADING --------------------- */
 /* To avoid the separation with the favorites panel */
-#cssmenu {
-    margin-bottom: 0px;
-}
-
-#cssmenu a {
-    font-family: Arial, sans-serif;
-}
-
 .navbar-brand{
     padding: 5px;
 }
@@ -40,11 +32,16 @@ body {
     width: auto;*/
 }
 
+.navbar-toggle {
+
+}
+
 .navbar-header {
-    padding-right: 0px;
+    margin-left: 0px;
 }
 
 .navbar-default {
+    margin-bottom: 0px;
     background-color: #ffffff;
     border-radius: 0px;
 }

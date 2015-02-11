@@ -7,34 +7,29 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}Echalo A Suerte{% endblock title %}</title>
+    <title>{% block title %}{% endblock title %}Echalo A Suerte</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <meta name="description" content="">
 
-    <!--
-    <link href="{% static 'css/jquery-clockpicker.min.css' %}" rel="stylesheet">
-    <script src="{% static 'js/jquery-clockpicker.min.js' %}"></script>
-    <script src="{% static 'js/Chart.min.js' %}"></script>
-    <link href="{% static 'css/bootstrap-theme.css' %}" rel="stylesheet">
-
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    -->
+    <!-- Favicon -->
     <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}img/favicon.ico"/>
-    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" rel="stylesheet" />
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <!-- JQuery -->
+    <script src="{% static 'js/jquery-1.11.2.js' %}"></script>
 
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+
+    <!-- Bootstrap TokenField -->
     <script src="{% static 'js/bootstrap-tokenfield.min.js' %}"></script>
     <link href="{% static 'css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
 
     <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
     <link href="{% static 'css/jquery.dataTables.css' %}" rel="stylesheet">
+    <!-- JQueryUI -->
+    <link href="{% static 'css/jquery-ui.css' %}" rel="stylesheet" />
+    <script src="{% static 'js/jquery-ui.js' %}"></script>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -110,30 +105,34 @@
 <div class="visible-md padding-top-medium"></div>
 <div class="visible-sm padding-top-small"></div>
 
-<div class="content col-sm-8 col-sm-offset-2">
+<div class="content col-sm-10 col-md-10 col-lg-8 col-lg-offset-2 col-md-offset-1 col-sm-offset-1">
 <!-- Static navbar -->
-<div id="cssmenu" class="row navbar navbar-default" role="navigation">
+<div class="row navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="col-xs-12 col-sm-5 navbar-header">
+        <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="col-xs-9 col-sm-12 navbar-brand" href="{% url 'index' %}">
-                <img class="" src="{% static "img/brand_beta.png" %}"/>
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img class="visible-md visible-lg" src="{% static "img/brand_lg.png" %}"/>
+                <img class="visible-xs visible-sm" src="{% static "img/brand_xs.png" %}"/>
+
             </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="col-sm-7 collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated and not is_public%}
                     <li>
-                    <a href="#" data-toggle="collapse" data-target="#favorites-panel">{% trans "Favorites" %}
-                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+                    <a href="#" data-toggle="collapse" data-target="#favorites-panel">
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                        {% trans "Favorites" %}
+                    </a>
                     </li>
                 {% endif %}
                 <li id="public-draw-dropdown" class="dropdown">
