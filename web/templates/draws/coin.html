@@ -1,4 +1,4 @@
-{% extends "draws/draw_base.html" %}
+{% extends "base.html" %}
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
@@ -10,7 +10,24 @@
     coin.setup('{{ STATIC_URL }}' + "img/img_coin/");
 {% endblock extra_js %}
 
-{% block input_form %}
+
+
+{% block content %}
+    <!-- Draw Heading -->
+        <div class="clearfix">
+            <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
+                <img src="{% static "img/back_arrow.png" %}"/>
+            </a>
+            <div class="col-xs-8 visible-xs"></div>
+            <a href="#" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center">
+                <img src="{% static "img/favorite.png" %}"/>
+            </a>
+            <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
+                <textarea class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title|default:bom.DEFAULT_TITLE }}</textarea>
+            </div>
+        </div>
+    <!-- End Draw Heading -->
+
     <form action="{% url 'coin' %}" class="blueForms" method="post">
         {% csrf_token %}
         <div class="text-center">
@@ -23,5 +40,4 @@
             {% endif %}
         </div>
     </form>
-{% endblock input_form%}
-
+{% endblock content %}

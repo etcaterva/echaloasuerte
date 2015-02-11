@@ -182,9 +182,9 @@ def retrieve_draw(request, draw_id):
 def coin_draw(request):
     logger.info("Serving view for coin draw")
     context = {'errors': []}
+    bom_draw = CoinDraw()
     if request.method == 'POST':
         logger.debug("Information posted. {0}".format(request.POST))
-        bom_draw = CoinDraw()
         set_owner(bom_draw, request)
         result = bom_draw.toss()
         mongodb.save_draw(bom_draw)
