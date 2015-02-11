@@ -110,25 +110,25 @@
 <div class="visible-md padding-top-medium"></div>
 <div class="visible-sm padding-top-small"></div>
 
-<div class="content col-sm-8 col-sm-offset-2">
+<div class="content col-sm-10 col-md-10 col-lg-8 col-lg-offset-2 col-md-offset-1 col-sm-offset-1">
 <!-- Static navbar -->
-<div id="cssmenu" class="row navbar navbar-default" role="navigation">
+<div class="row navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="col-xs-12 col-sm-5 navbar-header">
+        <div class="col-xs-12 col-md-5 navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="col-xs-9 col-sm-12 navbar-brand" href="{% url 'index' %}">
+            <a class="col-xs-9 col-md-12 navbar-brand" href="{% url 'index' %}">
                 <img class="" src="{% static "img/brand_beta.png" %}"/>
             </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="col-sm-7 collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+        <div class="col-md-7 collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated and not is_public%}
                     <li>
