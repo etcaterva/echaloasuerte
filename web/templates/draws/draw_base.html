@@ -52,6 +52,14 @@
         <!-- End Draw Heading -->
 
         <div class="col-sm-8 col-sm-offset-2">
+            <!-- Prev Draw -->
+            {% if bom.results|length == 1 and bom.prev_draw %}
+            <div class="alert alert-danger text-center" role="alert">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {%trans 'New draw generated as data was changed.'%}<br/>
+                {%trans 'Your previous draw: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw}}">{{ bom.title|default:bom.DEFAULT_TITLE }}</a>
+            </div>
+            {% endif %}
             <!-- Input Form -->
             <form class="clearfix" method="post">
                 {% crispy draw draw.helper %}
