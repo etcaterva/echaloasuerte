@@ -10,16 +10,44 @@ from server.bom.dice import DiceDraw
 from server.bom.card import CardDraw
 from server.bom.user import User
 from server.mongodb.driver import MongoDriver
-import logging
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.core.mail import send_mail
+from contextlib import contextmanager
+import logging
+import time
 
 logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
+
+
+@contextmanager
+def scoped_timer(func_name):
+    st = time.time()
+    yield
+    elapsed = time.time() - st
+    logger.debug("{1} completed in {0:.2f}ms.".format(elapsed,func_name))
+
+def minimice(data):
+    """Reduces the amount of info for some types of object"""
+    if isinstance(data,HttpRequest):
+        return dict(user=data.user.pk, post=data.POST, get=data.GET)
+    else:
+        return data
+
+def time_it(func):
+    """decorator to add trace information"""
+    def _(*args,**kwargs):
+        min_args = [minimice(x) for x in args]
+        min_kwargs = {k:minimice(x) for k,x in kwargs.items()}
+        logger.debug("Calling: {0} with args: {1}, and kwargs {2}".format(func.__name__,min_args,min_kwargs))
+        with scoped_timer(func.__name__):
+            return func(*args,**kwargs)
+    return _
+
 
 
 def find_previous_version(curr_draw):
@@ -69,9 +97,8 @@ def set_owner(draw, request):
     except:
         pass
 
-
+@time_it
 def login_user(request):
-    logger.info("Serving login_user")
     logout(request)
     context = {}
     if request.POST:
@@ -91,8 +118,8 @@ def login_user(request):
     return render(request, 'login.html', context)
 
 
+@time_it
 def register(request):
-    logger.info("Serving register page")
     logout(request)
     context = {}
     if request.POST:
@@ -125,6 +152,7 @@ def invite_user(user_emails,draw_id,owner_user):
 
 
 @login_required
+@time_it
 def add_user_to_draw(request,draw_id,new_users):
     draw_id = request.POST.get('draw_id',None)
     new_users = request.POST.get('new_users',[])
@@ -146,8 +174,8 @@ def add_user_to_draw(request,draw_id,new_users):
     logger.info("{0} users added to draw {1}".format(len(user_list),draw_id))
 
 @login_required
+@time_it
 def profile(request):
-    logger.info("Serving profile page for user {0}".format(request.user))
     draw = []
     try:
         draws = mongodb.get_user_draws(request.user._id)
@@ -158,16 +186,16 @@ def profile(request):
     return render(request, 'profile.html', context)
 
 
+@time_it
 def index(request, is_public=None):
-    logger.info("Serving index page.")
     context = {}
     if is_public:
         context['is_public'] = 'publish'
     return render(request, 'index.html', context)
 
 
+@time_it
 def coin_draw(request):
-    logger.info("Serving view for coin draw")
     context = {'errors': []}
     bom_draw = CoinDraw()
     if request.method == 'POST':
@@ -191,16 +219,16 @@ URL_TO_DRAW_MAP = {
     'link_sets': 'LinkSetsDraw',
 }
 
+@time_it
 def retrieve_draw(request, draw_id):
-    logger.info("Serving view for retrieve draw with id {0}".format(draw_id))
     bom_draw = mongodb.retrieve_draw(draw_id)
     draw_type_key = URL_TO_DRAW_MAP.keys()[URL_TO_DRAW_MAP.values().index(bom_draw.draw_type)]
     return draw(request, draw_type_key, draw_id)
 
+@time_it
 def draw(request, draw_type=None,  draw_id=None, publish=None):
     model_name = URL_TO_DRAW_MAP[draw_type]
     form_name = model_name + "Form"
-    logger.info("Serving view for {0}".format(model_name))
     bom_draw = globals()[model_name]()                                                               # FORM NAME
     context = {'errors': []}
     if publish:
@@ -248,5 +276,6 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
     return render(request, template_path, context)
 
 
+@time_it
 def under_construction(request):
     return render(request, 'under_construction.html', {})
