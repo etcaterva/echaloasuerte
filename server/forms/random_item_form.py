@@ -14,10 +14,11 @@ class RandomItemDrawForm(forms.Form):
     items = forms.CharField(label=_("Items (comma separated)"), widget=forms.TextInput())
 
     def __init__(self, *args, **kwargs):
+        if 'initial' in kwargs:
+            kwargs['initial']['items'] = ','.join(kwargs['initial']['items'])
         super(RandomItemDrawForm, self).__init__(*args, **kwargs)
 
-        if 'initial' in kwargs:
-            self.fields['items'].initial = ', '.join(kwargs['initial']['items'])
+
 
         self.helper = FormHelper()
         self.helper.field_template = 'draws/eas_crispy_field.html'
