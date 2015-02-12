@@ -9,7 +9,6 @@
                 "info":           "{% trans 'Showing _START_ to _END_ of _TOTAL_ entries'%}",
                 "infoEmpty":      "{% trans 'Showing 0 to 0 of 0 entries'%}",
                 "infoFiltered":   "{% trans '(filtered from _MAX_ total entries)'%}",
-                "infoPostFix":    "{% trans ''%}",
                 "thousands":      "{% trans ','%}",
                 "lengthMenu":     "{% trans 'Show _MENU_ entries'%}",
                 "loadingRecords": "{% trans 'Loading...'%}",
@@ -29,6 +28,14 @@
             }
         }
     );
+
+    $('.data-table').on( 'click', 'tr', function () {
+        if(!($(this).attr('alt')))
+            return false;
+
+        window.location = $(this).attr('alt');
+    } );
+
 {% endblock extra_jq_ready %}
 
 {% block content %}
@@ -44,12 +51,12 @@
                 </tr>
             </thead>
             <tbody>
-            {% for d in draws.owner %}
-                <a href="{% url 'retrieve_draw' d.pk %}"><tr>
+            {% for d in draws.owner reversed%}
+                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" style="cursor: pointer;">
                     <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
                     <td>{{d.creation_time}}</td>
                     <td>{{d.results | length}}</td>
-                </tr></a>
+                </tr>
             {% endfor %}
             </tbody>
         </table>

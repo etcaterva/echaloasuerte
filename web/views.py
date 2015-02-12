@@ -165,20 +165,6 @@ def index(request, is_public=None):
     return render(request, 'index.html', context)
 
 
-DRAW_TO_VIEW_MAP = {
-    'RandomNumberDraw': 'random_number',
-    'DiceDraw': 'dice',
-    'CardDraw': 'card',
-}
-
-
-def retrieve_draw(request, draw_id):
-    logger.info("Serving view for retrieve draw with id {0}".format(draw_id))
-    bom_draw = mongodb.retrieve_draw(draw_id)
-    target_view = DRAW_TO_VIEW_MAP[bom_draw.draw_type]
-    return redirect(target_view, draw_id)
-
-
 def coin_draw(request):
     logger.info("Serving view for coin draw")
     context = {'errors': []}
@@ -204,6 +190,11 @@ URL_TO_DRAW_MAP = {
     'link_sets': 'LinkSetsDraw',
 }
 
+def retrieve_draw(request, draw_id):
+    logger.info("Serving view for retrieve draw with id {0}".format(draw_id))
+    bom_draw = mongodb.retrieve_draw(draw_id)
+    draw_type_key = URL_TO_DRAW_MAP.keys()[URL_TO_DRAW_MAP.values().index(bom_draw.draw_type)]
+    return draw(request, draw_type_key, draw_id)
 
 def draw(request, draw_type=None,  draw_id=None, publish=None):
     model_name = URL_TO_DRAW_MAP[draw_type]
@@ -214,9 +205,11 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
     if publish:
         context['is_public'] = 'publish'
     if request.method == 'POST':
+        logger.debug("Received post data: {0}".format(request.POST))
         draw_form = globals()[form_name](request.POST)                                              # FORM NAME
         if draw_form.is_valid():
             raw_draw = draw_form.cleaned_data
+            logger.debug("Form cleaned data: {0}".format(raw_draw))
             bom_draw = globals()[model_name](**raw_draw)                                            # MODEL NAME
             set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
@@ -230,7 +223,7 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
                 logger.info("New result generated for draw {0}".format(bom_draw.pk))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:
-                logger.info("Draw not feasible")
+                logger.info("Draw {0} is not feasible".format(bom_draw))
                 context['errors'].append(_("The draw is not feasible"))
         else:
             logger.info("Form not valid")

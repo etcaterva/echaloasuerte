@@ -15,6 +15,10 @@ class RandomItemDrawForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(RandomItemDrawForm, self).__init__(*args, **kwargs)
+
+        if 'initial' in kwargs:
+            self.fields['items'].initial = ', '.join(kwargs['initial']['items'])
+
         self.helper = FormHelper()
         self.helper.field_template = 'draws/eas_crispy_field.html'
         self.helper.form_tag = False
@@ -38,3 +42,9 @@ class RandomItemDrawForm(forms.Form):
         if self.cleaned_data.get('number_of_results', 1) < 1:
             raise ValidationError(_("Any result?"))
         return self.cleaned_data.get('number_of_results', '')
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        raw_items = cleaned_data.get('items')
+        cleaned_data['items'] = raw_items.split(",") if ',' in raw_items else raw_items.split()
+        return cleaned_data
