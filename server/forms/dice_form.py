@@ -27,7 +27,6 @@ class DiceDrawForm(forms.Form):
             Row(
                 'number_of_results',
             ),
-            HTML("{% include 'draws/draw_render_errors.html' %}"),
         )
 
     def clean_number_of_results(self):

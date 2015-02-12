@@ -52,6 +52,13 @@
         <!-- End Draw Heading -->
 
         <div class="col-sm-8 col-sm-offset-2">
+            <!-- Errors -->
+            {%for err in errors %}
+                <div class="alert alert-danger text-center" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{err}}
+                </div>
+            {% endfor  %}
             <!-- Prev Draw -->
             {% if bom.results|length == 1 and bom.prev_draw %}
             <div class="alert alert-danger text-center" role="alert">

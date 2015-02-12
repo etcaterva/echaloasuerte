@@ -36,7 +36,6 @@ class RandomItemDrawForm(forms.Form):
                 'items',
                 'allow_repeat',
             ),
-            HTML("{% include 'draws/draw_render_errors.html' %}"),
         )
 
     def clean_number_of_results(self):

@@ -33,7 +33,6 @@ class RandomNumberDrawForm(forms.Form):
                 'number_of_results',
                 'allow_repeat',
             ),
-            HTML("{% include 'draws/draw_render_errors.html' %}"),
         )
 
     def clean_number_of_results(self):

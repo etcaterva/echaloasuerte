@@ -34,7 +34,6 @@ class CardDrawForm(forms.Form):
                 'number_of_results',
                 'type_of_deck',
             ),
-            HTML("{% include 'draws/draw_render_errors.html' %}"),
         )
 
     def clean_number_of_results(self):

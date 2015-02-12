@@ -33,7 +33,6 @@ class LinkSetsDrawForm(forms.Form):
                 'set_1',
                 'set_2',
             ),
-            HTML("{% include 'draws/draw_render_errors.html' %}"),
         )
 
     def clean(self):
