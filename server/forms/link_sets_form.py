@@ -7,8 +7,8 @@ from django.core.urlresolvers import reverse
 
 class LinkSetsDrawForm(forms.Form):
     _id = forms.CharField(required=False, widget=forms.HiddenInput())
-    set_1 = forms.CharField(label=_("Set 1"),widget=forms.TextInput())
-    set_2 = forms.CharField(label=_("Set 2"),widget=forms.TextInput())
+    set_1 = forms.CharField(label=_("Set 1"), widget=forms.TextInput(), required=True)
+    set_2 = forms.CharField(label=_("Set 2"), widget=forms.TextInput(), required=True)
 
     def __init__(self, *args, **kwargs):
         super(LinkSetsDrawForm, self).__init__(*args, **kwargs)
@@ -38,7 +38,8 @@ class LinkSetsDrawForm(forms.Form):
 
     def clean(self):
         cleaned_data = self.cleaned_data
-        cleaned_data['sets'] = [cleaned_data.get('set_1').split(","), cleaned_data.get('set_2').split(",")]
-        cleaned_data.pop('set_1')
-        cleaned_data.pop('set_2')
+        if not self._errors:
+            cleaned_data['sets'] = [cleaned_data.get('set_1').split(","), cleaned_data.get('set_2').split(",")]
+            cleaned_data.pop('set_1')
+            cleaned_data.pop('set_2')
         return cleaned_data
