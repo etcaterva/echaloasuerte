@@ -148,10 +148,11 @@ def add_user_to_draw(request,draw_id,new_users):
 @login_required
 def profile(request):
     logger.info("Serving profile page for user {0}".format(request.user))
+    draw = []
     try:
         draws = mongodb.get_user_draws(request.user._id)
     except Exception as e:
-        logger.error("There was an issue when retrieving user draws. {0}".format(draws))
+        logger.error("There was an issue when retrieving user draws. {0}".format(e))
 
     context = {'draws': draws}
     return render(request, 'profile.html', context)

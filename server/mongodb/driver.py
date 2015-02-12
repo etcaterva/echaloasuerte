@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+import pymongo
 import logging
 logger = logging.getLogger("echaloasuerte")
 from server.bom.coin import *
@@ -45,7 +45,7 @@ class MongoDriver(object):
 
     _instance = None
     def __init__(self, host='localhost', port=27017, database='echaloasuerte'):
-        self.client = MongoClient(host,port)
+        self.client = pymongo.MongoClient(host,port)
         self._db = self.client[database]
         self._users = self._db.users
         self._draws = self._db.draws
@@ -73,7 +73,7 @@ class MongoDriver(object):
         return User(**doc)
 
     def get_user_draws(self, user_id, num_results = 50):
-        owner_draws = [build_draw(x) for x in self._draws.find({"owner":user_id}).limit(num_results)]
+        owner_draws = [build_draw(x) for x in self._draws.find({"owner":user_id}).sort("creation_time",pymongo.DESCENDING).limit(num_results)]
         owner_draws = [x for x in owner_draws if x is not None]
         #todo: related
         logger.debug("Found {0} draws of which {1} is owner".format(len(owner_draws),user_id))
