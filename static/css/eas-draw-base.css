@@ -93,6 +93,12 @@
     padding-left: 5px;
 }
 
+/* Padding for the checkbox "allow repeat" in draws */
+.allow-repeat {
+    padding-top: 3px;
+    padding-left: 25px;
+}
+
 
 /* Add minimim size to the input boxes */
 #id_type_of_deck {

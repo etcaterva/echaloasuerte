@@ -45,6 +45,7 @@ class RandomItemDrawForm(forms.Form):
 
     def clean(self):
         cleaned_data = self.cleaned_data
-        raw_items = cleaned_data.get('items')
-        cleaned_data['items'] = raw_items.split(",") if ',' in raw_items else raw_items.split()
+        if not self._errors:
+            raw_items = cleaned_data.get('items')
+            cleaned_data['items'] = raw_items.split(",") if ',' in raw_items else raw_items.split()
         return cleaned_data
