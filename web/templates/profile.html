@@ -31,7 +31,7 @@
 
     $('.data-table').on( 'click', 'tr', function () {
         if(!($(this).attr('alt')))
-            return false;
+            return true;
 
         window.location = $(this).attr('alt');
     } );
@@ -54,7 +54,7 @@
             {% for d in draws.owner reversed%}
                 <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" style="cursor: pointer;">
                     <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
-                    <td>{{d.creation_time}}</td>
+                    <td>{{d.creation_time|date:" Y/m/d G:i:s "}}</td>
                     <td>{{d.results | length}}</td>
                 </tr>
             {% endfor %}
