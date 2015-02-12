@@ -28,7 +28,7 @@
 						<span class="checkbox_label" for="{{ field.id_for_label }}">{{ field.label|safe }}</span>
 					</div>
                 {% endif %}
-				<div class="controls {{ field_class }}" style="margin-left:15px;">
+				<div class="controls allow-repeat {{ field_class }}">
 					{% crispy_field field 'class' 'checkbox' %}
 					{% include 'bootstrap3/layout/help_text_and_errors.html' %}
 				</div>
