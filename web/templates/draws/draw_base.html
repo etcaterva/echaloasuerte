@@ -52,6 +52,7 @@
         <!-- End Draw Heading -->
 
         <div class="col-sm-8 col-sm-offset-2">
+            {%block pre_draw %} {%endblock pre_draw%}
             <!-- Errors -->
             {%for err in errors %}
                 <div class="alert alert-danger text-center" role="alert">

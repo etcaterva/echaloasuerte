@@ -7,6 +7,11 @@
     $('.textinput').tokenfield({createTokensOnBlur:true});
 {% endblock draw_extra_jq_ready %}
 
+{% block pre_draw %}
+    <div class='alert alert-info' role='alert'>{%trans 'Lists are comma separated. e.g: 1,2,3,'%}</div>
+{% endblock pre_draw %}
+
+
 {% block result %}
     <ul class="list-group">
         {% for link in results %}

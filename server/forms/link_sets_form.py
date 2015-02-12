@@ -29,7 +29,6 @@ class LinkSetsDrawForm(forms.Form):
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
             Row(
-                HTML("<div class='alert alert-info' role='alert'>{0}</div>".format(_("Lists are comma separated. e.g: 1,2,3,"))),
                 'set_1',
                 'set_2',
             ),
