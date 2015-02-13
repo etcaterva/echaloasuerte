@@ -49,7 +49,6 @@ class MongoDriver(object):
         self._db = self.client[database]
         self._users = self._db.users
         self._draws = self._db.draws
-        logger.info("Connected to '{0}' port '{1}' database '{2}'".format(host,port,database))
 
     def create_user(self,user):
         if self._users.find({"_id":user._id}).count() == 0:
@@ -113,6 +112,9 @@ class MongoDriver(object):
                     MongoDriver._instance = MongoDriver(**cnx_param)
                 except Exception as e:
                     logger.warning("Imposible to connect to mongo DB using parameters {0}, exception: {1}".format(cnx_param,e))
+                else:
+                    logger.info("Connected to to mongo using parameter {0}".format(cnx_param))
+                
                 if MongoDriver._instance: break
 
         assert(MongoDriver._instance is not None)
