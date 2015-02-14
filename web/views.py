@@ -222,7 +222,7 @@ URL_TO_DRAW_MAP = {
 @time_it
 def retrieve_draw(request, draw_id):
     bom_draw = mongodb.retrieve_draw(draw_id)
-    draw_type_key = URL_TO_DRAW_MAP.keys()[URL_TO_DRAW_MAP.values().index(bom_draw.draw_type)]
+    draw_type_key = list(URL_TO_DRAW_MAP.keys())[list(URL_TO_DRAW_MAP.values()).index(bom_draw.draw_type)]
     return draw(request, draw_type_key, draw_id)
 
 @time_it
