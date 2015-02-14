@@ -61,23 +61,15 @@
                     {{err}}
                 </div>
             {% endfor  %}
-            <!-- Prev Draw -->
-            {% if bom.results|length == 1 and bom.prev_draw %}
-            <div class="alert alert-danger text-center" role="alert">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {%trans 'New draw generated as data was changed.'%}<br/>
-                {%trans 'Your previous draw: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw}}">{{ bom.title|default:bom.DEFAULT_TITLE }}</a>
-            </div>
-            {% endif %}
             <!-- Input Form -->
             <form class="clearfix" method="post">
                 {% crispy draw draw.helper %}
                 <div class="col-xs-12 text-center">
                     {% if is_public %}
-                        <button type="submit" name="try" class="btn btn-success">Try it!</button>
+                        <button type="submit" name="try" class="btn btn-success ">Try it!</button>
                         <button type="submit" name="next" class="btn btn-primary">Next</button>
                     {% else %}
-                        <button type="submit" name="toss" class="btn btn-success">Toss</button>
+                        <button type="submit" name="toss" class="btn btn-success btn-toss">Toss</button>
                     {% endif %}
                 </div>
             </form>
@@ -88,11 +80,23 @@
             {% for result in bom.results reversed %}
             {% with result.items as results%}
                 {% if results %}
-                    <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated on '%}{{result.datetime}}</small>.</p>
-                    <div >{% block result %}{% endblock result %}</div>
+                    <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated on '%}{{result.datetime}}</small></p>
+                    <div >
+                        {% block result %}{% endblock result %}
+
+                    </div>
                 {% endif %}
             {% endwith %}
             {% endfor %}
+            <!-- Previous draw -->
+            {% if bom.prev_draw %}
+                <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated before '%}</small></p>
+                <div >
+                   {%trans 'The configuration of the draw was changed.'%}<br/>
+                   {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.title|default:bom.DEFAULT_TITLE }}</a>
+
+                </div>
+            {% endif %}
             </div>
             <!-- Results -->
         </div>
