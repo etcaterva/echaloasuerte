@@ -27,9 +27,11 @@ Card.setup = function(baseUrl, results){
 }
 
 Card.draw = function(){
+    document.write("<div class='row'>");
     for (i = 0; i < Card.results.length; i++) {
-        img_path = Card.baseUrl + Card.results[i] + ".png";
-        html = "<div class='" + Card.css_class + "'><img src='" + img_path + "'/></div>";
+        var img_path = Card.baseUrl + Card.results[i] + ".png";
+        var html = "<div class='" + Card.css_class + "'><img src='" + img_path + "'/></div>";
         document.write(html);
     }
+    document.write("</div>");
 }

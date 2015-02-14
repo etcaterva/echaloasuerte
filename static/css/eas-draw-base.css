@@ -116,4 +116,18 @@
     max-width: 75px;
 }
 
+/* Container for the card images in CardDraw */
+.card-container {
+    margin-bottom: 10px;
+    text-align: center;
+    height: 95px;
+}
+
+/* Images for CardDraw */
+.card-container img {
+    height: 100%;
+    width: auto;
+}
+
+
 
