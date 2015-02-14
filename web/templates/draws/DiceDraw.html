@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-{% block extra_head %}<script src="{% static 'js/dice.js' %}"></script>{% endblock extra_head %}
+{% block draw_extra_head %}<script src="{% static 'js/dice.js' %}"></script>{% endblock draw_extra_head %}
 
 {% block extra_js_onload %}
     //Precaching the images
@@ -11,10 +11,14 @@
 {% endblock extra_js_onload %}
 
 {% block result %}
-    <script>
-        results = {{ results }}
-        D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
-        D6.dice(results);
-    </script>
+    {% if forloop.counter == 1 %}
+        <script>console.log("Hola");
+            results = {{ results }}
+            D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
+            D6.dice(results);
+        </script>
+    {% endif %}
+
+    {{ results }}
 {% endblock result %}
 
