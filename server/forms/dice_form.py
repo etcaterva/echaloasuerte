@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 
 
 class DiceDrawForm(forms.Form):
-    _id = forms.CharField(required=False)
+    _id = forms.CharField(required=False, widget=forms.HiddenInput())
     number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1, max_value=20)
 
     def __init__(self, *args, **kwargs):
