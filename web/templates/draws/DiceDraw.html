@@ -5,20 +5,24 @@
 
 {% block draw_extra_head %}<script src="{% static 'js/dice.js' %}"></script>{% endblock draw_extra_head %}
 
+{% block extra_js %}
+            D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
+{% endblock extra_js %}
+
 {% block extra_js_onload %}
     //Precaching the images
-    D6Animator.getImageBank("", '{{ STATIC_URL }}' + "img/img_dice/");
+    D6Animator.getImageBank("", D6.baseUrl);
 {% endblock extra_js_onload %}
 
 {% block result %}
     {% if forloop.counter == 1 %}
-        <script>console.log("Hola");
-            results = {{ results }}
-            D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
-            D6.dice(results);
+        <script>
+            D6.dice({{ results }});
+        </script>
+    {% else %}
+        <script>
+            D6.showPastResult({{ results}})
         </script>
     {% endif %}
-
-    {{ results }}
 {% endblock result %}
 

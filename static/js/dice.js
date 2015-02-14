@@ -458,3 +458,14 @@ D6.middleManCallback = function(middleManData) {
 	}
 	callback(resultsTotal, callbackData, results);
 }
+
+
+D6.showPastResult = function(results) {
+    var html;
+    for (var i=0;i<results.length;i++){
+        var result = "die"+ results[i];
+        var src = this.builder.animGroups[0].animators[0][result].die.src;
+        html = "<img id='dice"+"' class='die' src='"+ src + "' alt='"+"'></img>";
+        document.write(html);
+    }
+}
