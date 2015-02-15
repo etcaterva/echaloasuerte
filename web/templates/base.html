@@ -40,7 +40,6 @@
     <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
 
     {% block extra_head %}{% endblock extra_head %}
-
     <script>
         {% block extra_js %}{% endblock extra_js %}
         $(document).ready(function () {
@@ -135,8 +134,11 @@
                     </li>
                 {% endif %}
                 <li id="public-draw-dropdown" class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Public Draw" %}<span class="caret"></span></a>
-			            <ul class="dropdown-menu" role="menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    	<span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+                    	{% trans "Public Draw" %}<span class="caret">
+                    </span></a>
+			        <ul class="dropdown-menu" role="menu">
                         <li><a href="{% url 'join_public_draw' %}">{% trans "Join public draw" %}</a></li>
                         <li class="divider"></li>
                         <li><a href="{% url 'publish_draw' %}">{% trans "Create public draw" %}</a></li>
@@ -243,19 +245,6 @@
     </div>
     <!--/.container-fluid -->
 </div>
-
-{% if is_public%}
-    <!-- Public Draw alert -->
-    <div class="row alert alert-info info-public-draw clearfix" role="alert">
-        <div class="col-xs-8 col-md-6 col-md-offset-2 text-center info-public-draw-text ">
-            {%trans 'Select the type of draw to make it public' %}
-        </div>
-        <div class="col-xs-4 text-right">
-            <a href="{% url 'index' %}" type="button" class="row btn btn-danger" role="button">{%trans 'Cancel'%}</a>
-        </div>
-    </div>
-    <!-- End Public Draw alert -->
-{% endif %}
 
 {% if user.is_authenticated and not is_public%}
     <div id="favorites-panel" class="row collapse">

@@ -2,10 +2,42 @@
 {% load staticfiles %}
 {% load bootstrap %}
 {% load i18n %}
+{% block extra_jq_ready %}
+	var default_help_header = $(".header-help").text();
+	$(".draw-link").hover(
+	function(){ //in
+        var help_header = $(this).attr("data-help");
+	    $(".header-help").text(help_header);
+	},
+	function(){ //out
+	    $(".header-help").text(default_help_header);
+	}
+	);
+{% endblock extra_jq_ready %}
 {% block content %}
+	<div class="row">
+	{% if is_public%}
+	    <!-- Public Draw alert -->
+	    <div class="row alert alert-info info-public-draw clearfix" role="alert">
+	        <div class="col-xs-8 col-md-6 col-md-offset-2 text-center info-public-draw-text header-help">
+	            {%trans 'Select the type of draw to make it public' %}
+	        </div>
+	        <div class="col-xs-4 text-right">
+	            <a href="{% url 'index' %}" type="button" class="row btn btn-danger" role="button">{%trans 'Cancel'%}</a>
+	        </div>
+	    </div>
+	    <!-- End Public Draw alert -->
+	{% else %}
+	    <div class="row alert alert-info info-public-draw clearfix" role="alert">
+	        <div class="col-md-12 .hidden-phone .hidden-tablet text-center info-public-draw-text header-help">
+	            {%trans 'Mouse over a draw to get help.' %}
+	        </div>
+	    </div>
+	{% endif %}
+	</div>
     <div class="row">
         <div class="col-sm-6">
-            <a class="draw-link" href="{% url 'coin' %}">
+            <a class="draw-link" href="{% url 'coin' %}" data-help="{% trans 'Heads or tail, get a numer of coin results.'%}">
                 <div class="draw clearfix">
                     <div class="col-xs-3">
                         <img class="col-xs-12" src="{% static "img/coin.gif" %}"/>
