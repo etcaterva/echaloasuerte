@@ -219,11 +219,12 @@ URL_TO_DRAW_MAP = {
     'link_sets': 'LinkSetsDraw',
 }
 
+DRAW_TO_URL_MAP ={ v:k for k,v in URL_TO_DRAW_MAP.items()}
+
 @time_it
 def retrieve_draw(request, draw_id):
     bom_draw = mongodb.retrieve_draw(draw_id)
-    draw_type_key = list(URL_TO_DRAW_MAP.keys())[list(URL_TO_DRAW_MAP.values()).index(bom_draw.draw_type)]
-    return draw(request, draw_type_key, draw_id)
+    return draw(request, DRAW_TO_URL_MAP[bom_draw.draw_type], draw_id)
 
 @time_it
 def draw(request, draw_type=None,  draw_id=None, publish=None):
