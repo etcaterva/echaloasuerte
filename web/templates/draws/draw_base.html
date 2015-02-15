@@ -37,32 +37,32 @@
 {% endblock extra_jq_ready %}
 {% block content %}
     <div class="row">
-        <!-- Draw Heading -->
-        <div class="clearfix">
-            <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
-                <img src="{% static "img/back_arrow.png" %}"/>
-            </a>
-            <div class="col-xs-8 visible-xs"></div>
-            <a href="#" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center">
-                <img src="{% static "img/favorite.png" %}"/>
-            </a>
-            <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
-                <textarea class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title|default:bom.DEFAULT_TITLE }}</textarea>
-            </div>
-        </div>
-        <!-- End Draw Heading -->
-
-        <div class="col-sm-8 col-sm-offset-2">
-            {%block pre_draw %} {%endblock pre_draw%}
-            <!-- Errors -->
-            {%for err in errors %}
-                <div class="alert alert-danger text-center" role="alert">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{err}}
+        <form class="clearfix" method="post">
+            <!-- Draw Heading -->
+            <div class="clearfix">
+                <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
+                    <img src="{% static "img/back_arrow.png" %}"/>
+                </a>
+                <div class="col-xs-8 visible-xs"></div>
+                <a href="#" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center">
+                    <img src="{% static "img/favorite.png" %}"/>
+                </a>
+                <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
+                    <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title|default:bom.DEFAULT_TITLE }}</textarea>
                 </div>
-            {% endfor  %}
-            <!-- Input Form -->
-            <form class="clearfix" method="post">
+            </div>
+            <!-- End Draw Heading -->
+
+            <div class="col-sm-8 col-sm-offset-2">
+                {%block pre_draw %} {%endblock pre_draw%}
+                <!-- Errors -->
+                {%for err in errors %}
+                    <div class="alert alert-danger text-center" role="alert">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{err}}
+                    </div>
+                {% endfor  %}
+                <!-- Input Form -->
                 {% crispy draw draw.helper %}
                 <div class="col-xs-12 text-center">
                     {% if is_public %}
@@ -72,10 +72,11 @@
                         <button type="submit" name="toss" class="btn btn-success btn-toss">Toss</button>
                     {% endif %}
                 </div>
-            </form>
-            <!-- End Input Form -->
-
-            <!-- Results -->
+            </div>
+        </form>
+        <!-- End Input Form -->
+        <!-- Results -->
+        <div class="col-sm-8 col-sm-offset-2">
             <div class="row text-center accordion">
             {% for result in bom.results reversed %}
             {% with result.items as results%}
@@ -102,7 +103,7 @@
                 </div>
             {% endif %}
             </div>
-            <!-- Results -->
+            <!-- End Results -->
         </div>
     </div>
 {% endblock %}

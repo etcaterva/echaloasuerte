@@ -1,12 +1,10 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML, Row
-from django.core.urlresolvers import reverse
+from crispy_forms.layout import Layout, Row
+from server.forms import FormBase
 
 
-class LinkSetsDrawForm(forms.Form):
-    _id = forms.CharField(required=False, widget=forms.HiddenInput())
+class LinkSetsDrawForm(FormBase):
     set_1 = forms.CharField(label=_("Set 1"), widget=forms.TextInput(), required=True)
     set_2 = forms.CharField(label=_("Set 2"), widget=forms.TextInput(), required=True)
 
@@ -17,16 +15,8 @@ class LinkSetsDrawForm(forms.Form):
             self.fields['set_1'].initial = ','.join(kwargs['initial']['sets'][0])
             self.fields['set_2'].initial = ','.join(kwargs['initial']['sets'][1])
 
-        self.helper = FormHelper()
-        self.helper.field_template = 'draws/eas_crispy_field.html'
-        self.helper.form_tag = False
-        self.helper.render_hidden_fields = True
-        self.helper.form_id = 'form-link_sets'
-        self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-3'
         self.helper.field_class = 'col-xs-9'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
         self.helper.layout = Layout(
             Row(
                 'set_1',

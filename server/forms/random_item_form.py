@@ -1,14 +1,11 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Div, HTML
-from django.core.urlresolvers import reverse
+from crispy_forms.layout import Layout, Row
+from server.forms import FormBase
 
 
-class RandomItemDrawForm(forms.Form):
-    _id = forms.CharField(required=False, widget=forms.HiddenInput())
+class RandomItemDrawForm(FormBase):
     number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1)
     allow_repeat = forms.BooleanField(label=_("Allow repetitions"), required=False)
     items = forms.CharField(label=_("Items (comma separated)"), widget=forms.TextInput())
@@ -18,18 +15,8 @@ class RandomItemDrawForm(forms.Form):
             kwargs['initial']['items'] = ','.join(kwargs['initial']['items'])
         super(RandomItemDrawForm, self).__init__(*args, **kwargs)
 
-
-
-        self.helper = FormHelper()
-        self.helper.field_template = 'draws/eas_crispy_field.html'
-        self.helper.form_tag = False
-        self.helper.render_hidden_fields = True
-        self.helper.form_id = 'form-random_item'
-        self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-7 col-md-6 text-right'
         self.helper.field_class = 'col-xs-5 col-md-6'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
         self.helper.layout = Layout(
             Row(
                 'number_of_results',
