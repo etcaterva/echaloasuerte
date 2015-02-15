@@ -9,11 +9,10 @@ class LinkSetsDrawForm(FormBase):
     set_2 = forms.CharField(label=_("Set 2"), widget=forms.TextInput(), required=True)
 
     def __init__(self, *args, **kwargs):
-        super(LinkSetsDrawForm, self).__init__(*args, **kwargs)
-
         if 'initial' in kwargs:
             self.fields['set_1'].initial = ','.join(kwargs['initial']['sets'][0])
             self.fields['set_2'].initial = ','.join(kwargs['initial']['sets'][1])
+        super(LinkSetsDrawForm, self).__init__(*args, **kwargs)
 
         self.helper.label_class = 'col-xs-3'
         self.helper.field_class = 'col-xs-9'
