@@ -13,7 +13,7 @@
     font-size: 18px;
     color: #6f6f6f;
     border: 1px #d6d6d6 solid;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
     display: -webkit-flex;
    display: flex;
@@ -45,4 +45,11 @@
         flex: 0 0 56px;
     }
 
+}
+
+.draw-link-subtitle {
+    font-style: italic;
+    font-size: 11px;
+    color: #bcbcbc;
+    display: none;
 }

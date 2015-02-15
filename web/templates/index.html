@@ -34,7 +34,10 @@
             <a class="draw-link" href="{% url 'coin' %}">
                 <div class="draw-box">
                     <div class="draw-img"><img src="{% static "img/coin.gif" %}"/></div>
-                    <div class="draw-label text-center">{% trans "Flip a coin" %}</div>
+                    <div class="draw-label text-center">
+                        <div>{% trans "Flip a coin" %}</div>
+                        <div class="draw-link-subtitle"> Esto es una prueba de un subtitulo</div>
+                    </div>
                 </div>
             </a>
             <a class="draw-link" href="{% url 'draw' draw_type='card' publish=is_public %}">
