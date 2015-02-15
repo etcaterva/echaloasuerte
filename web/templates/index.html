@@ -27,76 +27,46 @@
 	        </div>
 	    </div>
 	    <!-- End Public Draw alert -->
-	{% else %}
-	    <div class="row alert alert-info info-public-draw clearfix" role="alert">
-	        <div class="col-md-12 .hidden-phone .hidden-tablet text-center info-public-draw-text header-help">
-	            {%trans 'Mouse over a draw to get help.' %}
-	        </div>
-	    </div>
 	{% endif %}
 	</div>
     <div class="row">
         <div class="col-sm-6">
-            <a class="draw-link" href="{% url 'coin' %}" data-help="{% trans 'Heads or tail, get a numer of coin results.'%}">
-                <div class="draw clearfix">
-                    <div class="col-xs-3">
-                        <img class="col-xs-12" src="{% static "img/coin.gif" %}"/>
-                    </div>
-                    <div class="col-xs-9">
-                        {% trans "Flip a coin" %}
-                    </div>
+            <a class="draw-link" href="{% url 'coin' %}">
+                <div class="draw-box">
+                    <div class="draw-img"><img src="{% static "img/coin.gif" %}"/></div>
+                    <div class="draw-label text-center">{% trans "Flip a coin" %}</div>
                 </div>
             </a>
             <a class="draw-link" href="{% url 'draw' draw_type='card' publish=is_public %}">
-                <div class="draw clearfix">
-                    <div class="col-xs-3">
-                        <img class="col-xs-12" src="{% static "img/cards.png" %}"/>
-                    </div>
-                    <div class="col-xs-9">
-                        {% trans "Take a card" %}
-                    </div>
+                <div class="draw-box">
+                    <div class="draw-img"><img src="{% static "img/cards.png" %}"/></div>
+                    <div class="draw-label text-center">{% trans "Take a card" %}</div>
                 </div>
             </a>
             <a class="draw-link" href="{% url 'draw' draw_type='dice' publish=is_public %}">
-                <div class="draw clearfix">
-                    <div class="col-xs-3">
-                        <img class="col-xs-12" src="{% static "img/dice.png" %}"/>
-                    </div>
-                    <div class="col-xs-9">
-                        {% trans "Roll a dice" %}
-                    </div>
+                <div class="draw-box">
+                    <div class="draw-img"><img src="{% static "img/dice.png" %}"/></div>
+                    <div class="draw-label text-center">{% trans "Roll a dice" %}</div>
                 </div>
             </a>
         </div>
         <div class="col-sm-6">
             <a class="draw-link" href="{% url 'draw' draw_type='number' publish=is_public %}">
-                <div class="draw clearfix">
-                    <div class="col-xs-3">
-                        <img class="col-xs-12" src="{% static "img/random_number.png" %}"/>
-                    </div>
-                    <div class="col-xs-9">
-                        {% trans "Random Numbers" %}
-                    </div>
+                <div class="draw-box">
+                    <div class="draw-img"><img src="{% static "img/random_number.png" %}"/></div>
+                    <div class="draw-label text-center">{% trans "Random number" %}</div>
                 </div>
             </a>
             <a class="draw-link" href="{% url 'draw' draw_type='item' publish=is_public %}">
-                <div class="draw clearfix">
-                    <div class="col-xs-3">
-                        <img class="col-xs-12" src="{% static "img/random_item.png" %}"/>
-                    </div>
-                    <div class="col-xs-9">
-                        {% trans "Pick random items from a list" %}
-                    </div>
+                <div class="draw-box">
+                    <div class="draw-img"><img src="{% static "img/random_item.png" %}"/></div>
+                    <div class="draw-label text-center">{% trans "Pick random items from a list" %}</div>
                 </div>
             </a>
             <a class="draw-link" href="{% url 'draw' draw_type='link_sets' publish=is_public %}">
-                <div class="draw clearfix">
-                    <div class="col-xs-3">
-                        <img class="col-xs-12" src="{% static "img/item_asociation.gif" %}"/>
-                    </div>
-                    <div class="col-xs-9">
-                        {% trans "Asociate items from two lists" %}
-                    </div>
+                <div class="draw-box">
+                    <div class="draw-img"><img src="{% static "img/item_asociation.png" %}"/></div>
+                    <div class="draw-label text-center">{% trans "Asociate items from two lists" %}</div>
                 </div>
             </a>
         </div>

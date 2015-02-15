@@ -1,9 +1,11 @@
-@import url(http://fonts.googleapis.com/css?family=PT+Sans);
-@import url(http://fonts.googleapis.com/css?family=Montserrat);
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,500);
+.draw-link:hover {
+    text-decoration: none;
+}
 
-.draw {
-    padding: 10 0 10 0;
+.draw-box {
+    min-height: 36px;
+    padding-left: 15px;
+    padding-right: 15px;
     margin-top: 5px;
     background-color: #fff;
     -moz-border-radius: 15px;
@@ -11,29 +13,36 @@
     font-size: 18px;
     color: #6f6f6f;
     border: 1px #d6d6d6 solid;
-    font-family: 'PT Sans', sans-serif;
-    /* NO font-family: 'Montserrat', sans-serif;*/
     font-family: 'Roboto', sans-serif;
 
-    /* Vertical aligning */
-    display: flex;
-    flex-direction: row;
-}
+    display: -webkit-flex;
+   display: flex;
+   -webkit-flex-direction: row;
+   flex-direction: row;
+   -webkit-justify-content: flex-start;
+   justify-content: flex-start;
+    -webkit-align-items: center;
+   align-items: center;
 
-.draw-link:hover {
-    text-decoration: none;
 }
-
-.draw > div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0px;
-}
-
-.draw img{
-    min-width: 40px;
-    max-width: 100px;
+.draw-box img {
     height: auto;
-    max-height: 70px;
+    width: 100%;
+}
+
+.draw-box .draw-label {
+    flex: auto;
+}
+
+.draw-box .draw-img {
+    flex: 0 0 34px;
+}
+
+/* md */
+@media (min-width: 992px) {
+
+    .draw-box .draw-img {
+        flex: 0 0 56px;
+    }
+
 }
