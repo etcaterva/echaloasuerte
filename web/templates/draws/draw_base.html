@@ -80,7 +80,11 @@
             {% for result in bom.results reversed %}
             {% with result.items as results%}
                 {% if results %}
-                    <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated on '%}{{result.datetime}}</small></p>
+                    <p class="h3">
+                        {%trans 'Result' %}{{results|length|pluralize}}
+                        <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
+                        <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                    </p>
                     <div >
                         {% block result %}{% endblock result %}
 
