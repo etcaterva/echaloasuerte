@@ -6,9 +6,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^admin/', include(admin.site.urls)),
 )
 
-urlpatterns += i18n_patterns('',
-    url(r'^admin/', include(admin.site.urls)),
+urlpatterns += patterns('',
     url(r'^', include('web.urls')),
         )
