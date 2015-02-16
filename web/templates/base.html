@@ -14,6 +14,9 @@
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}img/favicon.ico"/>
 
+    <!-- FontAwesome -->
+    <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+
     <!-- JQuery -->
     <script src="{% static 'js/jquery-1.11.2.js' %}"></script>
 
@@ -34,10 +37,11 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <link href="{% static 'css/fonts.css' %}" rel="stylesheet">
+    <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
     <link href="{% static 'css/eas-base.css' %}" rel="stylesheet">
     <link href="{% static 'css/eas-home.css' %}" rel="stylesheet">
     <link href="{% static 'css/eas-login.css' %}" rel="stylesheet">
-    <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
 
     {% block extra_head %}{% endblock extra_head %}
     <script>
@@ -128,14 +132,14 @@
                 {% if user.is_authenticated and not is_public%}
                     <li>
                     <a href="#" data-toggle="collapse" data-target="#favorites-panel">
-                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                        <span class="fa fa-star" aria-hidden="true"></span>
                         {% trans "Favorites" %}
                     </a>
                     </li>
                 {% endif %}
                 <li id="public-draw-dropdown" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    	<span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+                    	<span class="fa fa-globe" aria-hidden="true"></span>
                     	{% trans "Public Draw" %}<span class="caret">
                     </span></a>
 			        <ul class="dropdown-menu" role="menu">
@@ -145,7 +149,7 @@
                     </ul>
                 </li>
                 <li class="visible-xs">
-                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    <span class="fa fa-user" aria-hidden="true"></span>
                     {% if user.is_authenticated %}
                         <a href="{% url 'profile' %}">{{ user }}
                     {% else %}
@@ -158,9 +162,9 @@
                     {% if user.is_authenticated %}
                         <!-- START ACCOUNT -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-user"></span> 
+                            <span class="fa fa-user"></span> 
                             {{ user }}
-                            <span class="glyphicon glyphicon-chevron-down"></span>
+                            <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
