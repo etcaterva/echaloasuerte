@@ -38,6 +38,24 @@
     $('.change-password').click(function(){
         $('#id_password').val($('#draw-password').val());
     });
+
+    $('#fav-button').click(function(){
+       var draw_id = $(this).attr("data-id");
+       var is_fav = ($(this).attr("data-active") == "y");
+       $this = $(this);
+       if(is_fav){
+ 	       $.get('{% url 'ws_remove_favorite' %}', {draw_id: draw_id}, function(data){
+	        alert("Draw removed as favorite");
+	        $this.attr("data-active","n");
+	       });
+       } else {
+	       $.get('{% url 'ws_add_favorite' %}', {draw_id: draw_id}, function(data){
+	        alert("Draw added as favorite");
+	        $this.attr("data-active","y");
+	       });
+       }
+    });
+
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
 {% endblock extra_jq_ready %}
 {% block content %}
@@ -49,14 +67,22 @@
                     <img src="{% static "img/back_arrow.png" %}"/>
                 </a>
                 <div class="col-xs-8 visible-xs"></div>
-                {% if is_public%}
+                {% if is_public %}
                     <a data-toggle="modal" href="#modal" class="add-password col-xs-2 col-sm-2 col-sm-push-8 text-center">
                         <i class="fa fa-unlock fa-3x"></i>
                     </a>
                 {% else %}
-                    <a href="#" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center">
-                        <img src="{% static "img/favorite.png" %}"/>
-                    </a>
+                    {% if bom.results %}
+	                    <a id="fav-button"
+	                    {% if bom.pk in user.favorites %}
+	                    data-active="y"
+	                    {% else %}
+	                    data-active="n"
+	                    {% endif %}
+	                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favorites'%}" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center">
+	                        <img src="{% static "img/favorite.png" %}"/>
+	                    </a>
+                    {% endif %}
                 {% endif %}
                 <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
                     <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title|default:bom.DEFAULT_TITLE }}</textarea>

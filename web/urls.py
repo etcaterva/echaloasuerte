@@ -23,5 +23,7 @@ urlpatterns += patterns(
     url(r'^accounts/profile/$', views.profile, name='profile'),
 
     #web services
-    url(r'^draw_add_users/$', views.add_user_to_draw, name="ws_add_users_to_draw"),
+    url(r'^ws/draw_add_users/$', views.add_user_to_draw, name="ws_add_users_to_draw"),
+    url(r'^ws/favorites/add/$', views.add_favorite, name="ws_add_favorite"),
+    url(r'^ws/favorites/remove/$', views.remove_favorite, name="ws_remove_favorite"),
 )

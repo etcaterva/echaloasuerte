@@ -168,15 +168,59 @@ def add_user_to_draw(request,draw_id,new_users):
     user_list = new_users.replace(',',' ').split()
     for user in user_list:
         bom_draw.users += user
-        bom_user = mongodb.retrieve_user(user)
     invite_user(user_list, draw_id,request.user.get_email())
 
     logger.info("{0} users added to draw {1}".format(len(user_list),draw_id))
 
+    return HttpResponse()
+
+@login_required
+@time_it
+def add_favorite(request):
+    draw_id = request.GET.get('draw_id',None)
+
+    if draw_id is None:
+        return HttpResponseBadRequest()
+
+    bom_draw = mongodb.retrieve_draw(draw_id)
+    user_can_write_draw(request.user, bom_draw) #raises 500
+    user = mongodb.retrieve_user(request.user.pk)
+    if draw_id in user.favorites:
+        logger.info("Draw {0} is favorite for user {1}".format(draw_id, request.user.pk))
+        return HttpResponse()
+
+    user.favorites.append(draw_id)
+    mongodb.save_user(user)
+
+    logger.info("Draw {0} added as favorite for user {1}".format(draw_id, request.user.pk))
+    return HttpResponse()
+
+
+@login_required
+@time_it
+def remove_favorite(request):
+    draw_id = request.GET.get('draw_id',None)
+
+    if draw_id is None:
+        return HttpResponseBadRequest()
+
+    bom_draw = mongodb.retrieve_draw(draw_id)
+    user_can_write_draw(request.user, bom_draw) #raises 500
+    user = mongodb.retrieve_user(request.user.pk)
+    if draw_id not in user.favorites:
+        logger.info("Draw {0} is not favorite for user {1}".format(draw_id, request.user.pk))
+        return HttpResponse()
+
+    user.favorites.remove(draw_id)
+    mongodb.save_user(user)
+
+    logger.info("Draw {0} removed as favorite for user {1}".format(draw_id, request.user.pk))
+    return HttpResponse()
+
 @login_required
 @time_it
 def profile(request):
-    draw = []
+    draws = []
     try:
         draws = mongodb.get_user_draws(request.user._id)
     except Exception as e:

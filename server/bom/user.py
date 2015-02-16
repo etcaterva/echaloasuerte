@@ -17,12 +17,15 @@ class User(object):
     def save(self,**args):
         pass
 
-    def __init__(self, _id, password = None ):
+    def __init__(self, _id, password = None, favorites = None ):
         self._id = _id
         """Email of the user"""
 
         self.password = password
         """encripted password of the user"""
+        
+        self.favorites = favorites if favorites is not None else []
+        """List of favorites of a user"""
 
     def get_email(self):
         return self._id
