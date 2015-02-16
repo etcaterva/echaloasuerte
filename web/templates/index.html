@@ -3,7 +3,7 @@
 {% load bootstrap %}
 {% load i18n %}
 {% block extra_jq_ready %}
-	var default_help_header = $(".header-help").text();
+	/*var default_help_header = $(".header-help").text();
 	$(".draw-link").hover(
 	function(){ //in
         var help_header = $(this).attr("data-help");
@@ -12,7 +12,19 @@
 	function(){ //out
 	    $(".header-help").text(default_help_header);
 	}
-	);
+	);*/
+
+    $(function() {
+        $( ".draw-link" ).hover(
+            function() {
+              $(this).find(".draw-box-subtitle" ).stop(true,true).show( "clip", 400 );
+            },
+            function() {
+              $(this).find(".draw-box-subtitle" ).stop(true,true).hide( "clip", 400 );
+            }
+        );
+    });
+
 {% endblock extra_jq_ready %}
 {% block content %}
 	<div class="row">
@@ -35,21 +47,29 @@
                 <div class="draw-box">
                     <div class="draw-img"><img src="{% static "img/coin.gif" %}"/></div>
                     <div class="draw-label text-center">
-                        <div>{% trans "Flip a coin" %}</div>
-                        <div class="draw-link-subtitle"> Esto es una prueba de un subtitulo</div>
+                        <div class="draw-box-title">{% trans "Flip a coin" %}</div>
+                        <div class="hidden-xs hidden-sm draw-box-subtitle">That's a placeholder for a subtitle</div>
                     </div>
                 </div>
             </a>
             <a class="draw-link" href="{% url 'draw' draw_type='card' publish=is_public %}">
                 <div class="draw-box">
                     <div class="draw-img"><img src="{% static "img/cards.png" %}"/></div>
-                    <div class="draw-label text-center">{% trans "Take a card" %}</div>
+                    <div class="draw-label text-center">
+                        <div class="draw-box-title">{% trans "Take a card" %}</div>
+                        <div class="hidden-xs hidden-sm draw-box-subtitle">That's a placeholder for a subtitle</div>
+
+                    </div>
                 </div>
             </a>
             <a class="draw-link" href="{% url 'draw' draw_type='dice' publish=is_public %}">
                 <div class="draw-box">
                     <div class="draw-img"><img src="{% static "img/dice.png" %}"/></div>
-                    <div class="draw-label text-center">{% trans "Roll a dice" %}</div>
+                    <div class="draw-label text-center">
+                        <div class="draw-box-title">{% trans "Roll a dice" %}</div>
+                        <div class="hidden-xs hidden-sm draw-box-subtitle">That's a placeholder for a subtitle</div>
+
+                    </div>
                 </div>
             </a>
         </div>
@@ -57,19 +77,31 @@
             <a class="draw-link" href="{% url 'draw' draw_type='number' publish=is_public %}">
                 <div class="draw-box">
                     <div class="draw-img"><img src="{% static "img/random_number.png" %}"/></div>
-                    <div class="draw-label text-center">{% trans "Random number" %}</div>
+                    <div class="draw-label text-center">
+                        <div class="draw-box-title">{% trans "Random number" %}</div>
+                        <div class="hidden-xs hidden-sm draw-box-subtitle">That's a placeholder for a subtitle, which can be quite large. Even two full lines</div>
+
+                    </div>
                 </div>
             </a>
             <a class="draw-link" href="{% url 'draw' draw_type='item' publish=is_public %}">
                 <div class="draw-box">
                     <div class="draw-img"><img src="{% static "img/random_item.png" %}"/></div>
-                    <div class="draw-label text-center">{% trans "Pick random items from a list" %}</div>
+                    <div class="draw-label text-center">
+                        <div class="draw-box-title">{% trans "Pick random items from a list" %}</div>
+                        <div class="hidden-xs hidden-sm draw-box-subtitle">That's a placeholder for a subtitle, which can be quite large. Even two full lines</div>
+
+                    </div>
                 </div>
             </a>
             <a class="draw-link" href="{% url 'draw' draw_type='link_sets' publish=is_public %}">
                 <div class="draw-box">
                     <div class="draw-img"><img src="{% static "img/item_asociation.png" %}"/></div>
-                    <div class="draw-label text-center">{% trans "Asociate items from two lists" %}</div>
+                    <div class="draw-label text-center">
+                        <div class="draw-box-title">{% trans "Asociate items from two lists" %}</div>
+                        <div class="hidden-xs hidden-sm draw-box-subtitle">That's a placeholder for a subtitle, which can be quite large. Even two full lines</div>
+
+                    </div>
                 </div>
             </a>
         </div>
