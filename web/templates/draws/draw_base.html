@@ -33,25 +33,65 @@
         $(this).find("button[type='submit']").prop('disabled',true);
     });
     $('.accordion').accordion({collapsible: true});
+
+    dialog = $( "#dialog-form" ).dialog({
+          autoOpen: false,
+          height: 300,
+          width: 350,
+          modal: true,
+          buttons: {
+            Confirm: function() {
+              dialog.dialog( "close" );
+            },
+            Cancel: function() {
+              dialog.dialog( "close" );
+            }
+          },
+          close: function() {
+
+          }
+    });
+
+    $( "#popup-password" ).on( "click", function() {
+      dialog.dialog( "open" );
+    });
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
 {% endblock extra_jq_ready %}
 {% block content %}
     <div class="row">
         <form class="clearfix" method="post">
             <!-- Draw Heading -->
-            <div class="clearfix">
+            <div class="clearfix draw-heading">
                 <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
                     <img src="{% static "img/back_arrow.png" %}"/>
                 </a>
                 <div class="col-xs-8 visible-xs"></div>
-                <a href="#" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center">
-                    <img src="{% static "img/favorite.png" %}"/>
-                </a>
+                {% if is_public%}
+                    <a id="popup-password" data-rel="pop-up" data-position-to="window" class="add-password col-xs-2 col-sm-2 col-sm-push-8 text-center">
+                        <i class="fa fa-unlock fa-3x"></i>
+                    </a>
+
+                    <div id="dialog-form" title="Add a password">
+                        Restrict the access to you public draw by setting up a password. If you invite users, they will not need to introduce the password.
+                        Leave it in blank to remove the password.
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+
+                    </div>
+
+                {% else %}
+                    <a href="#" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center">
+                        <img src="{% static "img/favorite.png" %}"/>
+                    </a>
+                {% endif %}
                 <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
                     <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title|default:bom.DEFAULT_TITLE }}</textarea>
                 </div>
             </div>
             <!-- End Draw Heading -->
+
+
+
 
             <div class="col-sm-8 col-sm-offset-2">
                 {%block pre_draw %} {%endblock pre_draw%}

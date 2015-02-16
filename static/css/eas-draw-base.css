@@ -1,14 +1,14 @@
-
-.draw-editable-title {
+/***** DRAW HEADER *****/
+.draw-heading .draw-editable-title {
     background: transparent;
     border: none;
 }
 
-.draw-editable-title:focus {
+.draw-heading .draw-editable-title:focus {
     outline-color: #4cae4c;
 }
 
-.draw-title-area {
+.draw-heading .draw-title-area {
     /* Font */
     font-family: 'robotoregular', sans-serif;
     color: #6f6f6f;
@@ -33,7 +33,7 @@
     height: auto !important;
 }
 
-.draw-title-area:focus {
+.draw-heading .draw-title-area:focus {
   border-color: #4cae4c;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(76, 174, 76, 0.60);
@@ -52,19 +52,28 @@
     display: inline-block;
 }
 
-.back-arrow,
-.add-favorites {
+.draw-heading .back-arrow,
+.draw-heading .add-favorites {
     padding: 5px;
 }
 
-.back-arrow img,
-.add-favorites img {
+.draw-heading .back-arrow img,
+.draw-heading .add-favorites img {
     /*display: block;*/
     min-width: 30px;
     max-width: 100%;
     height: auto;
 }
 
+.draw-heading .add-password {
+    color: #6F6F6F;
+}
+
+.draw-heading .add-password:hover {
+    color: #404b6f;
+}
+
+/***** INDIVIDUAL DRAWS *****/
 /* Makes the text be inline with the checkbox */
 .checkbox_label {
    line-height: 26px;
