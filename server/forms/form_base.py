@@ -4,7 +4,8 @@ from crispy_forms.helper import FormHelper
 
 class FormBase(forms.Form):
     _id = forms.CharField(required=False, widget=forms.HiddenInput())
-    title = forms.CharField()
+    title = forms.CharField(required=False)
+    password = forms.CharField(required=False, widget=forms.HiddenInput())
 
     def __init__(self, *args, **kwargs):
         super(FormBase, self).__init__(*args, **kwargs)

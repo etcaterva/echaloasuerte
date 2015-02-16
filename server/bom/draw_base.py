@@ -20,7 +20,7 @@ class BaseDraw(object):
 
     def __init__(self, creation_time = None, owner = None, number_of_results = 1,
                   results= None, _id = None, draw_type = None, prev_draw = None,
-                  users = None, title = None):
+                  users = None, title = None, password=None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -48,6 +48,9 @@ class BaseDraw(object):
 
         self.title = title
         """Title of the concrete draw"""
+
+        self.password = password
+        """Password of the public draw"""
 
         if draw_type and draw_type != self.draw_type:
             logger.warning("A draw was built with type {0} but type {1} was passed as argument! Fix it!".format(draw_type,self.draw_type))
