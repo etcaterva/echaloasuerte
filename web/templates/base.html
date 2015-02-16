@@ -165,11 +165,12 @@
                     </ul>
                 </li>
                 <li class="visible-xs">
-                    <span class="fa fa-user" aria-hidden="true"></span>
                     {% if user.is_authenticated %}
-                        <a href="{% url 'profile' %}">{{ user }}
+                        <a href="{% url 'profile' %}">
+                            <span class="fa fa-user" aria-hidden="true"></span>{{ user }}
                     {% else %}
-                        <a href="{% url 'login' %}">{% trans "Login" %}
+                        <a href="{% url 'login' %}">
+                            <span class="fa fa-user" aria-hidden="true"></span>{% trans "Sign in" %}
                     {% endif %}
                     </a>
                 </li>
@@ -220,7 +221,9 @@
                         <!-- END ACCOUNT -->
                     {% else %}
                         <!-- START SIGN IN -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Sign in" %}<b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="fa fa-user" aria-hidden="true"></span> {% trans "Sign in" %}<b class="caret"></b>
+                        </a>
                         <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
                             <li>
                                 <div class="row">
