@@ -272,7 +272,11 @@
 {% if user.is_authenticated and not is_public%}
     <div id="favorites-panel" class="row collapse">
         <div class="col-xs-10">
-            Favorites list here
+            <ul>
+            	{% for d in user.favorites %}
+            		<a href="{% url 'retrieve_draw' draw_id=d %}"><li>{ { d.title|default:d.DEFAULT_TITLE }} | { {d.creation_time|date:" Y/m/d G:i:s "}}</li></a>
+            	{% endfor %}
+            </ul>
         </div>
     </div>
 {% endif %}
