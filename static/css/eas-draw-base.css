@@ -53,8 +53,9 @@
 }
 
 .draw-heading .back-arrow,
-.draw-heading .add-favorites {
-    padding: 5px;
+.draw-heading .add-favorites,
+.draw-heading .add-password{
+    padding: 10px 0 0 0;
 }
 
 .draw-heading .back-arrow img,
