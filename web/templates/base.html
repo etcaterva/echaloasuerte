@@ -134,7 +134,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                {% if user.is_authenticated and not is_public%}
+                {% if user.is_authenticated %}
                     <li>
                     <a href="#" data-toggle="collapse" data-target="#favorites-panel">
                         <span class="fa fa-star" aria-hidden="true"></span>
