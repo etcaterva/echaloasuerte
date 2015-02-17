@@ -66,6 +66,10 @@ body {
     padding-top: 0px;
 }
 
+.user-picture {
+    padding: 10px 0 0 15px;
+}
+
 .forgot-password {
     font-size: 12px;
 }
