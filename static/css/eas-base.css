@@ -110,6 +110,14 @@ body {
     color: #999;
 }
 
+#language-dropdown a{
+    color: #6F6F6F;
+}
+
+#language-dropdown a.selected{
+    color: #000000;
+}
+
 .language {
     padding-left: 13px;
     padding-right: 13px;
