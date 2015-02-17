@@ -103,10 +103,10 @@
                 {% crispy draw draw.helper %}
                 <div class="col-xs-12 text-center">
                     {% if is_public %}
-                        <button type="submit" name="try" class="btn btn-success ">Try it!</button>
-                        <button type="submit" name="next" class="btn btn-primary">Next</button>
+                        <button type="submit" name="try" class="btn btn-success ">{% trans 'Try it!' %}</button>
+                        <button type="submit" name="next" class="btn btn-primary">{% trans 'Next' %}</button>
                     {% else %}
-                        <button type="submit" name="toss" class="btn btn-success btn-toss">Toss</button>
+                        <button type="submit" name="toss" class="btn btn-success btn-toss">{% trans 'Toss' %}</button>
                     {% endif %}
                 </div>
             </div>
