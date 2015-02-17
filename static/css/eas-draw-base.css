@@ -1,5 +1,6 @@
 /* Remove underline when hover from icons */
-a.fa:hover {
+a.fa:hover ,
+a.fa:focus {
     text-decoration: none;
 }
 
@@ -57,8 +58,7 @@ a.fa:hover {
 .draw-heading .back-arrow img,
 .draw-heading .add-favorites img {
     /*display: block;*/
-    min-width: 30px;
-    max-width: 100%;
+    width: 40px;
     height: auto;
 }
 
