@@ -31,7 +31,7 @@
 {% block content %}
 	<div class="row">
 	{% if is_public%}
-	    <!-- Public Draw alert -->
+	    <!-- Public Draw Info -->
 	    <div class="info-public-draw">
 	        <div class="help-text">
 	            <span class="title">{%trans 'Creating a public draw' %}   </span>
@@ -39,7 +39,7 @@
 	        </div>
             <a href="{% url 'index' %}" class="cancel fa fa-times fa-2x"></a><br>
 	    </div>
-	    <!-- End Public Draw alert -->
+	    <!-- End Public Draw Info -->
 	{% endif %}
 	</div>
     <div class="container-draws row">
