@@ -75,6 +75,12 @@
 
 }
 
+.draw-box2 {
+    -webkit-align-items: flex-start;
+   align-items: flex-start;
+
+}
+
 .draw-box img {
     height: auto;
     width: 100%;
@@ -92,6 +98,39 @@
 
 /* The draw boxes are bigger in MD and LG */
 @media (min-width: 992px) {
+
+    .draw-box {
+        min-height: 36px;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-top: 5px;
+        background-color: #fff;
+        -moz-border-radius: 15px;
+        border-radius: 8px;
+        border: 1px #d6d6d6 solid;
+
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        -webkit-justify-content: flex-start;
+        justify-content: flex-start;
+        -webkit-align-items: flex-start;
+        align-items: flex-start;
+        max-height: 58px;
+
+}
+
+.draw-box-title {
+    font-family: 'robotoregular', Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    color: #6f6f6f;
+    padding-top: 15px;
+}
+
+.no-padding {
+    padding-top: 0px;
+}
 
     .draw-box .draw-img {
         flex: 0 0 56px;

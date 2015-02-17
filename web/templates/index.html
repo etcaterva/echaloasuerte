@@ -17,9 +17,11 @@
     $(function() {
         $( ".draw-link" ).hover(
             function() {
+                $(this).find(".draw-box-title" ).stop(true,true).addClass( "no-padding", 400 );
               $(this).find(".draw-box-subtitle" ).stop(true,true).show( "clip", 400 );
             },
             function() {
+                $(this).find(".draw-box-title" ).stop(true,true).removeClass( "no-padding", 400 );
               $(this).find(".draw-box-subtitle" ).stop(true,true).hide( "clip", 400 );
             }
         );
