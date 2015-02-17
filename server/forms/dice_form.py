@@ -6,7 +6,7 @@ from server.forms.form_base import FormBase
 
 
 class DiceDrawForm(FormBase):
-    number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1, max_value=20)
+    number_of_results = forms.IntegerField(label=_("Number of dice"), required=True, initial=1, max_value=20)
 
     def __init__(self, *args, **kwargs):
         super(DiceDrawForm, self).__init__(*args, **kwargs)
