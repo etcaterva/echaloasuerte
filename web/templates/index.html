@@ -30,18 +30,17 @@
 	<div class="row">
 	{% if is_public%}
 	    <!-- Public Draw alert -->
-	    <div class="row alert alert-info info-public-draw clearfix" role="alert">
-	        <div class="col-xs-8 col-md-6 col-md-offset-2 text-center info-public-draw-text header-help">
-	            {%trans 'Select the type of draw to make it public' %}
+	    <div class="info-public-draw">
+	        <div class="help-text">
+	            <span class="title">{%trans 'Creating a public draw' %}   </span>
+                <span class="subtitle">{%trans 'Select the type of draw' %}</span>
 	        </div>
-	        <div class="col-xs-4 text-right">
-	            <a href="{% url 'index' %}" type="button" class="row btn btn-danger" role="button">{%trans 'Cancel'%}</a>
-	        </div>
+            <a href="{% url 'index' %}" class="cancel fa fa-times fa-2x"></a><br>
 	    </div>
 	    <!-- End Public Draw alert -->
 	{% endif %}
 	</div>
-    <div class="row">
+    <div class="container-draws row">
         <div class="col-sm-6">
             <a class="draw-link" href="{% url 'coin' %}">
                 <div class="draw-box">

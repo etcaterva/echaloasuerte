@@ -1,3 +1,8 @@
+/* Remove underline when hover from icons */
+a.fa:hover {
+    text-decoration: none;
+}
+
 /***** DRAW HEADER *****/
 .draw-heading .draw-editable-title {
     background: transparent;
@@ -41,16 +46,7 @@
 }
 
 
-.info-public-draw {
-    /*height: 36px;*/
-    padding: 0px;
-    line-height: 33px;
-}
 
-.info-public-draw-text {
-    vertical-align: middle;
-    display: inline-block;
-}
 
 .draw-heading .back-arrow,
 .draw-heading .add-favorites,
