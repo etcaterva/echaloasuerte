@@ -30,8 +30,8 @@
 {% endblock extra_jq_ready %}
 {% block content %}
 	<div class="row">
+    <!-- Public Draw Info -->
 	{% if is_public%}
-	    <!-- Public Draw Info -->
 	    <div class="info-public-draw">
 	        <div class="help-text">
 	            <span class="title">{%trans 'Creating a public draw' %}   </span>
@@ -39,8 +39,8 @@
 	        </div>
             <a href="{% url 'index' %}" class="cancel fa fa-times fa-2x"></a><br>
 	    </div>
-	    <!-- End Public Draw Info -->
 	{% endif %}
+    <!-- End Public Draw Info -->
 	</div>
     <div class="container-draws row">
         <div class="col-sm-6">

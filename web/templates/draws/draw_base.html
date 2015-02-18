@@ -68,19 +68,38 @@
             }
         }
     });
-
+    $('.draggable').click(function(e) {
+        var pos_indicator = $('#draggable5').offset().left;
+        var dif = e.pageX - pos_indicator;
+        $('#draggable5').animate({"left": "+="+dif+"px"}, "slow");
+    });
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
 {% endblock extra_jq_ready %}
 {% block content %}
+
+        <style>
+        .draggable { width: 300px; height: 30px; padding: 0.5em; float: left; margin: 0 10px 10px 0; }
+    </style>
+    <script>
+        $(function() {
+            $( "#draggable5" ).draggable({axis: "x", containment: "parent" });
+        });
+      </script>
+    <div class="draggable ui-widget-content">
+        <span id="draggable5" class="ui-widget-header">H</span>
+    </div>
+
     <div class="row">
         <!-- Public Draw Info -->
-	    <div class="info-public-draw">
-	        <div class="help-text">
-	            <span class="title">{%trans 'Creating a public draw' %}   </span>
-                <span class="subtitle">{%trans 'Set it up' %}</span>
-	        </div>
-            <a href="{% url 'index' %}" class="cancel fa fa-times fa-2x"></a><br>
-	    </div>
+        {% if is_public%}
+            <div class="info-public-draw">
+                <div class="help-text">
+                    <span class="title">{%trans 'Creating a public draw' %}   </span>
+                    <span class="subtitle">{%trans 'Set it up' %}</span>
+                </div>
+                <a href="{% url 'index' %}" class="cancel fa fa-times fa-2x"></a><br>
+            </div>
+        {% endif %}
 	    <!-- End Public Draw Info -->
         <form class="clearfix" method="post">
             <!-- Draw Heading -->
@@ -100,7 +119,7 @@
 	                    {% else %}
 	                    data-active="n"
 	                    {% endif %}
-	                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center">
+	                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center ">
                             <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x"></span>
                             <img src="{% static "img/star-o.png" %}"/>
 	                    </a>
@@ -187,6 +206,11 @@
             <button type="button" class="btn btn-primary change-password">Save</button>
         </div>
     </div>
+
+
+
+
+
 {% endblock %}
 
 
