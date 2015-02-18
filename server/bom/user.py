@@ -3,13 +3,23 @@ from django.contrib.auth.hashers import (check_password, make_password)
 from django.utils.translation import ugettext_lazy as _
 import random
 import datetime
-#from server.mongodb.driver import *
+
+import logging
+logger = logging.getLogger("echaloasuerte")
 
 class User(object):
     """
     Main user within echaloasuerte
     """
 
+    @property
+    def favourites_list(self):
+        try:
+            rd = server.mongodb.driver.MongoDriver.instance().retrieve_draw
+            return [rd(f) for f in self.favorites]
+        except Exception as e:
+            logger.error("Error when retrieving the list of favourites for user {0}. {1}".format(self.pk,e))
+            return []
     @property
     def pk(self):
         return str(self._id)
@@ -53,3 +63,6 @@ class User(object):
 
     def __str__(self):
         return self.get_username()
+
+
+import server.mongodb.driver

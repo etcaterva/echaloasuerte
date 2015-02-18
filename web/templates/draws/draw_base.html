@@ -121,7 +121,11 @@
 	                    {% endif %}
 	                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center ">
                             <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x"></span>
+	                    {% if bom.pk in user.favorites %}
+                            <img src="{% static "img/star.png" %}"/>
+	                    {% else %}
                             <img src="{% static "img/star-o.png" %}"/>
+	                    {% endif %}
 	                    </a>
                 {% endif %}
                 <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">

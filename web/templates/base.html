@@ -260,8 +260,8 @@
     <div id="favorites-panel" class="row collapse">
         <div class="col-xs-10">
             <ul>
-            	{% for d in user.favorites %}
-            		<a href="{% url 'retrieve_draw' draw_id=d %}"><li>{ { d.title|default:d.DEFAULT_TITLE }} | { {d.creation_time|date:" Y/m/d G:i:s "}}</li></a>
+            	{% for d in user.favourites_list %}
+            		<a href="{% url 'retrieve_draw' draw_id=d.pk %}"><li>{{ d.title|default:d.DEFAULT_TITLE }} | {{d.creation_time|date:" Y/m/d G:i:s "}}</li></a>
             	{% endfor %}
             </ul>
         </div>
