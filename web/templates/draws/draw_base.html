@@ -70,33 +70,48 @@
     });
 
     //********** Start Slidebar protection public draw **************
-    move = function (){
+    $( ".slide-selector" ).draggable({axis: "x", containment: "parent"});
+    $('.slide-bar').click(function(e) {
+        $('.slide-selector').stop(true,true);
         var slide_bar_width = $('.slide-bar').width();
         var pos_slide_bar = $('.slide-bar').offset().left;
         var pos_selector = $('.slide-selector').offset().left;
-        var pos_relative = pos_selector - pos_slide_bar;
-        if (pos_relative < slide_bar_width/4){
-            move = pos_relative + 10;
+        var relative_pos_click = e.pageX - pos_slide_bar;
+        var relative_pos_selector = pos_selector - pos_slide_bar;
+
+        if (relative_pos_click < slide_bar_width/4){
+            move = relative_pos_selector + 10;
             $('.slide-selector').animate({"left": "-="+move+"px"}, "slow");
         }else{
-            if (pos_relative > 3*slide_bar_width/4){
-                var move = slide_bar_width - pos_relative - 10;
+            if (relative_pos_click > 3*slide_bar_width/4){
+                var move = slide_bar_width - relative_pos_selector - 10;
                 $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
             }else {
-                var move = slide_bar_width/2 - pos_relative - 10;
+                var move = slide_bar_width/2 - relative_pos_selector - 10;
                 $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
             }
         }
-    };
-
-    $( ".slide-selector" ).draggable({axis: "x", containment: "parent"});
-    $('.slide-bar').click(function(e) {
-        var pos_selector = $('.slide-selector').offset().left;
-        var pos_relative = e.pageX - pos_selector;
-        $('.slide-selector').animate({"left": "+="+pos_relative+"px"}, "slow", move);
-
     });
-    $('.slide-selector').mouseup(move);
+
+    $('.slide-selector').mouseup(function (){
+        $('.slide-selector').stop(true,true);
+        var slide_bar_width = $('.slide-bar').width();
+        var pos_slide_bar = $('.slide-bar').offset().left;
+        var pos_selector = $('.slide-selector').offset().left;
+        var relative_pos_selector = pos_selector - pos_slide_bar;
+        if (relative_pos_selector < slide_bar_width/4){
+            move = relative_pos_selector + 10;
+            $('.slide-selector').animate({"left": "-="+move+"px"}, "slow");
+        }else{
+            if (relative_pos_selector > 3*slide_bar_width/4){
+                var move = slide_bar_width - relative_pos_selector - 10;
+                $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
+            }else {
+                var move = slide_bar_width/2 - relative_pos_selector - 10;
+                $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
+            }
+        }
+    });
     //********** End Slidebar protection public draw **************
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
 {% endblock extra_jq_ready %}
@@ -203,13 +218,16 @@
     <div id="modal" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Set up a password</h4>
+            <h4 class="modal-title">{% trans "Restict the access to your draw" %}</h4>
             </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
                             Restrict the access to the draw by setting up a password. Leave it in blank if you don't want to use it
                             <div class="col-xs-12 text-center">
+                                <div class="col-xs-4">Everyone</div>
+                                <div class="col-xs-4">With password</div>
+                                <div class="col-xs-4">Only with invitation</div>
                                 <div class="slide-bar-container">
                                     <div class="slide-bar ui-widget-content">
                                         <div class="slider-tick" style="left: 0%"></div>
