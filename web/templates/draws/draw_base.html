@@ -69,8 +69,7 @@
         }
     });
 
-    // Manages the slider to choose the level of restriction of the public draw
-    SlideSelector.setup();
+
 
     $('#save').click(function () {
         var mode = $('.slide-bar').attr('data-selected');
@@ -170,6 +169,8 @@
     }
     //***********************************
 
+    // Manages the slider to choose the level of restriction of the public draw
+    SlideSelector.setup();
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
 
 {% endblock extra_jq_ready %}
