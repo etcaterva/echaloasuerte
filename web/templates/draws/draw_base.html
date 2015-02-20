@@ -5,6 +5,7 @@
 {% block title %}{{ bom.title|default:bom.DEFAULT_TITLE }} | {% endblock title %}
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
+    <script src="{% static 'js/slideSelector.js' %}"></script>
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
@@ -69,51 +70,25 @@
         }
     });
 
-    //********** Start Slidebar protection public draw **************
-    $( ".slide-selector" ).draggable({axis: "x", containment: "parent"});
-    $('.slide-bar').click(function(e) {
-        $('.slide-selector').stop(true,true);
-        var slide_bar_width = $('.slide-bar').width();
-        var pos_slide_bar = $('.slide-bar').offset().left;
-        var pos_selector = $('.slide-selector').offset().left;
-        var relative_pos_click = e.pageX - pos_slide_bar;
-        var relative_pos_selector = pos_selector - pos_slide_bar;
+    // Manages the slider to choose the level of restriction of the public draw
+    SlideSelector.setup();
 
-        if (relative_pos_click < slide_bar_width/4){
-            move = relative_pos_selector + 10;
-            $('.slide-selector').animate({"left": "-="+move+"px"}, "slow");
+    $('#save').click(function () {
+        var mode = $('.slide-bar').attr('data-selected');
+        if (mode == "invited"){
+
         }else{
-            if (relative_pos_click > 3*slide_bar_width/4){
-                var move = slide_bar_width - relative_pos_selector - 10;
-                $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
-            }else {
-                var move = slide_bar_width/2 - relative_pos_selector - 10;
-                $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
+            if (mode == "password"){
+                var password = $('#draw-password').val();
+                $('#id_password').val(password);
+            }else{ // Everyone
+
             }
         }
     });
 
-    $('.slide-selector').mouseup(function (){
-        $('.slide-selector').stop(true,true);
-        var slide_bar_width = $('.slide-bar').width();
-        var pos_slide_bar = $('.slide-bar').offset().left;
-        var pos_selector = $('.slide-selector').offset().left;
-        var relative_pos_selector = pos_selector - pos_slide_bar;
-        if (relative_pos_selector < slide_bar_width/4){
-            move = relative_pos_selector + 10;
-            $('.slide-selector').animate({"left": "-="+move+"px"}, "slow");
-        }else{
-            if (relative_pos_selector > 3*slide_bar_width/4){
-                var move = slide_bar_width - relative_pos_selector - 10;
-                $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
-            }else {
-                var move = slide_bar_width/2 - relative_pos_selector - 10;
-                $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
-            }
-        }
-    });
-    //********** End Slidebar protection public draw **************
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
+
 {% endblock extra_jq_ready %}
 {% block content %}
     <div class="row">
@@ -223,13 +198,15 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            Restrict the access to the draw by setting up a password. Leave it in blank if you don't want to use it
-                            <div class="col-xs-12 text-center">
-                                <div class="col-xs-4">Everyone</div>
-                                <div class="col-xs-4">With password</div>
-                                <div class="col-xs-4">Only with invitation</div>
-                                <div class="slide-bar-container">
-                                    <div class="slide-bar ui-widget-content">
+                            {% trans "Who do you want to access the draw?" %}
+                            <div class="col-sm-8 col-sm-offset-2 text-center">
+                                <div id="restriction-headings">
+                                    <div id="restriction-everyone" class="col-xs-3">{% trans "Everyone" %}</div>
+                                    <div id="restriction-password" class="col-xs-6">{% trans "With password or invitation" %}</div>
+                                    <div id="restriction-invited" class="col-xs-3">{% trans "Only with invitation" %}</div>
+                                </div>
+                                <div class="col-xs-8 col-sm-10 col-xs-offset-2 col-sm-offset-1 slide-bar-container">
+                                    <div data-selected="everyone" class="slide-bar ui-widget-content">
                                         <div class="slider-tick" style="left: 0%"></div>
                                         <div class="slider-tick" style="left: 50%"></div>
                                         <div class="slider-tick" style="left: 100%"></div>
@@ -237,16 +214,37 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input id="draw-password" type="password" class="form-control has-clear" name="password" placeholder="Password">
+                            <div id="restriction-extra" class="col-xs-12">
+                                <div id="extra-everyone" class="col-xs-12">
+                                    {% trans "Everyone will be able to access the draw." %}
+                                    <div class="alert alert-info" role="alert">
+                                        {% trans "Tip: Use this mode for informal and fast draws. Neither invitation nor password will be required!" %}
+                                    </div>
+                                </div>
+                                <div id="extra-password" class="col-xs-12">
+                                    {% trans "Only those who know the password will be able to access the draw." %}
+                                    <div class="col-xs-12 input-group">
+                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        <input id="draw-password" type="password" class="form-control has-clear" name="password" placeholder="Password">
+                                    </div>
+                                    <div class="alert alert-info" role="alert">
+                                        {% trans "Tip: You don't know exactly who is going to join the draw but still want some restriction? This is your draw!" %}
+                                    </div>
+                                </div>
+                                <div id="extra-invited" class="col-xs-12">
+                                    {% trans "You will be able to invite people by email when the draw is created." %}
+                                    <div class="alert alert-info" role="alert">
+                                        {% trans "Tip: Use this mode for small/medium groups where you know well who do you want to join the draw." %}
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             <div class="modal-footer">
             <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-            <button type="button" class="btn btn-primary change-password">Save</button>
+            <button id="save" data-dismiss="modal" type="button" class="btn btn-primary">Save</button>
         </div>
     </div>
 
