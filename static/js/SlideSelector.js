@@ -2,9 +2,9 @@ function SlideSelector () {};
 
 SlideSelector.select_everyone = function (relative_pos_selector){
     $('.slide-bar').attr("data-selected","everyone");
-    $('#restriction-everyone').stop(true,true).addClass('restriction-selected', 400);
-    $('#restriction-password').stop(true,true).removeClass('restriction-selected', 400);
-    $('#restriction-invited').stop(true,true).removeClass('restriction-selected', 400);
+    $('#restriction-everyone').stop(true,true).addClass('restriction-selected', 200);
+    $('#restriction-password').stop(true,true).removeClass('restriction-selected', 200);
+    $('#restriction-invited').stop(true,true).removeClass('restriction-selected', 200);
     var move = relative_pos_selector + 10;
     $('.slide-selector').animate({"left": "-="+move+"px"}, "slow");
     $('#extra-password').hide();
@@ -14,9 +14,9 @@ SlideSelector.select_everyone = function (relative_pos_selector){
 
 SlideSelector.select_password = function (slide_bar_width, relative_pos_selector){
     $('.slide-bar').attr("data-selected","password");
-    $('#restriction-everyone').stop(true,true).removeClass('restriction-selected', 400);
-    $('#restriction-password').stop(true,true).addClass('restriction-selected', 400);
-    $('#restriction-invited').stop(true,true).removeClass('restriction-selected', 400);
+    $('#restriction-everyone').stop(true,true).removeClass('restriction-selected', 200);
+    $('#restriction-password').stop(true,true).addClass('restriction-selected', 200);
+    $('#restriction-invited').stop(true,true).removeClass('restriction-selected', 200);
     var move = slide_bar_width/2 - relative_pos_selector - 10;
     $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
     $('#extra-everyone').hide();
@@ -27,9 +27,9 @@ SlideSelector.select_password = function (slide_bar_width, relative_pos_selector
 
 SlideSelector.select_invited = function (slide_bar_width, relative_pos_selector){
     $('.slide-bar').attr("data-selected","invited");
-    $('#restriction-everyone').stop(true,true).removeClass('restriction-selected', 400);
-    $('#restriction-password').stop(true,true).removeClass('restriction-selected', 400);
-    $('#restriction-invited').stop(true,true).addClass('restriction-selected', 400);
+    $('#restriction-everyone').stop(true,true).removeClass('restriction-selected', 200);
+    $('#restriction-password').stop(true,true).removeClass('restriction-selected', 200);
+    $('#restriction-invited').stop(true,true).addClass('restriction-selected', 200);
     var move = slide_bar_width - relative_pos_selector - 10;
     $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
     $('#extra-everyone').hide();
