@@ -56,15 +56,15 @@
                 $.get('{% url 'ws_remove_favorite' %}', {draw_id: draw_id}, function(data){
                     $this.attr("data-active","n");
                     $this.find('img').attr("src","{% static "img/star-o.png" %}");
-                    $fav_loading.hide()
-                    $fav_image.show()
+                    $fav_loading.hide();
+                    $fav_image.show();
                 });
             } else {
                 $.get('{% url 'ws_add_favorite' %}', {draw_id: draw_id}, function(data){
                     $this.attr("data-active","y");
                     $this.find('img').attr("src","{% static "img/star.png" %}");
-                    $fav_loading.hide()
-                    $fav_image.show()
+                    $fav_loading.hide();
+                    $fav_image.show();
                });
             }
         }
@@ -72,19 +72,26 @@
 
 
 
-    $('#save').click(function () {
-        var mode = $('.slide-bar').attr('data-selected');
-        if (mode == "invited"){
-
-        }else{
-            if (mode == "password"){
-                var password = $('#draw-password').val();
-                $('#id_password').val(password);
-            }else{ // Everyone
-
-            }
-        }
-    });
+    {% if is_public%}
+	    var shared_type_field = $('input[name=shared_type]');
+    	//default is None, set to Public by default is is a public draw
+    	shared_type_field.attr('value','Public');
+    
+	    $('#save').click(function () {
+	        var mode = $('.slide-bar').attr('data-selected');
+	        if (mode == "invited"){
+				$('#id_password').val("");
+				shared_type_field.attr('value','Invite');
+	        }else if (mode == "password"){
+	            var password = $('#draw-password').val();
+	            $('#id_password').val(password);
+	            shared_type_field.attr('value','Public');
+	        }else{ // Everyone
+	        	$('#id_password').val("");
+				shared_type_field.attr('value','Public');
+	        }
+	    });
+    {% endif %}
 
     // Manages the slider to choose the level of restriction of the public draw
     SlideSelector.setup();
