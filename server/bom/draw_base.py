@@ -85,8 +85,8 @@ class BaseDraw(object):
                     return True
 
             #If password base, check password
-            if self.password is not None and self.password == password:
-                return True
+            if self.password:
+                return self.password == password
 
             #All check failed, lets check if public
             return self.shared_type == 'Public'
