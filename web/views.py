@@ -80,14 +80,12 @@ def find_previous_version(curr_draw):
 
 
 def user_can_read_draw(user,draw):
-    if user.is_anonymous():
+    '''Validates that user can read draw. Throws unauth otherwise'''
+    if not draw.user_can_read(user):
         raise PermissionDenied()
-    if user._id != draw.owner:
-        if user not in draw.users:
-            raise PermissionDenied()
 
 def user_can_write_draw(user,draw):
-    if user._id != draw.owner:
+    if not draw.user_can_write(user):
         raise PermissionDenied()
 
 def set_owner(draw, request):
@@ -276,15 +274,18 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
     form_name = model_name + "Form"
     bom_draw = globals()[model_name]()                                                               # FORM NAME
     context = {'errors': []}
+    context['can_write'] = True
     if publish:
         context['is_public'] = 'publish'
     if request.method == 'POST':
+        #create/update draw
         logger.debug("Received post data: {0}".format(request.POST))
         draw_form = globals()[form_name](request.POST)                                              # FORM NAME
         if draw_form.is_valid():
             raw_draw = draw_form.cleaned_data
             logger.debug("Form cleaned data: {0}".format(raw_draw))
             bom_draw = globals()[model_name](**raw_draw)                                            # MODEL NAME
+            user_can_write_draw(request.user, bom_draw)
             set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
@@ -304,7 +305,9 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
+            #retrieve draw
             bom_draw = mongodb.retrieve_draw(draw_id)
+            context['can_write'] = bom_draw.user_can_write(request.user)
             user_can_read_draw(request.user, bom_draw)
             logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
             if bom_draw.draw_type == model_name:                                                    # MODEL NAME
@@ -313,6 +316,7 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
                 logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
                 raise Http404
         else:
+            #Serve to create Draw
             draw_form = globals()[form_name]()                                                      # FORM NAME
 
     context['draw'] = draw_form

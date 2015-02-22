@@ -33,7 +33,7 @@ class User(object):
 
         self.password = password
         """encripted password of the user"""
-        
+
         self.favorites = favorites if favorites is not None else []
         """List of favorites of a user"""
 

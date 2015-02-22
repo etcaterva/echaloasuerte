@@ -20,7 +20,7 @@ class BaseDraw(object):
 
     def __init__(self, creation_time = None, owner = None, number_of_results = 1,
                   results= None, _id = None, draw_type = None, prev_draw = None,
-                  users = None, title = None, password=None):
+                  users = None, title = None, password=None, shared_type = 'None'):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -57,6 +57,45 @@ class BaseDraw(object):
 
         #if self.title is None:
         #    logger.warning("Draw with id {0} and type {1} have no title".format(self._id,str(type(self).__name__)))
+
+        self.shared_type = shared_type
+        '''Type of shared type. None, Public, Invite'''
+
+        '''
+        shared_type  password   Descr:
+        -------------------------------
+        None         N/A        Single user draw
+        Public       N          Anybody can access
+        Public       Y          Only users with password can access
+        Invite       N          Only invited users can access
+        Invite       Y          Either users or password
+        '''
+
+    def user_can_read(self, user, password = None):
+        '''Checks for read access'''
+        if self.shared_type == 'None':
+            #Only owner can access
+            return self.user_can_write(user)
+        else:
+            #Listed users/owner can access
+            if user.is_authenticated():
+                if user.pk == self.owner:
+                    return True
+                if user.pk in self.users:
+                    return True
+
+            #If password base, check password
+            if self.password is not None and self.password == password:
+                return True
+
+            #All check failed, lets check if public
+            return self.shared_type == 'Public'
+
+    def user_can_write(self, user):
+        '''Checks whether user can write'''
+        if self.owner is None:
+            return True
+        return user.pk == self.owner
 
     def is_feasible(self):
         return self.number_of_results > 0
