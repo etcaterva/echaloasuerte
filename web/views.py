@@ -57,16 +57,17 @@ def find_previous_version(curr_draw):
     Otherwise it will clean the draw id (so mongo will assign a new one to it later). A link to the older version of the
     draw is added.
     """
+    IGNORED_FIELDS = ('creation_time', 'owner', 'number_of_results',
+                  'results', '_id', 'draw_type', 'prev_draw',
+                  'users', 'title', 'password', 'shared_type')
     if curr_draw._id == '':
         curr_draw._id = None
         logger.info("There is not a previous version of this draw in the DB")
         return curr_draw
     logger.info("ID current draw: {0}".format(curr_draw._id))
     prev_draw = mongodb.retrieve_draw(curr_draw.pk)
-    if prev_draw.owner != curr_draw.owner: #security check
-        raise PermissionDenied()
     for k, v in curr_draw.__dict__.items():
-        if k not in ["creation_time", "results", "_id", "prev_draw" ] and (
+        if k not in IGNORED_FIELDS and (
                 k not in prev_draw.__dict__.keys() or v != prev_draw.__dict__[k]):
             # Data have changed
             logger.info("Old draw with id {0} changed on key {1}. Old '{2}', new '{3}'".format(prev_draw._id, k,v,prev_draw.__dict__.get(k,"Empty")))
