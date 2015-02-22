@@ -182,7 +182,7 @@
                 <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated before '%}</small></p>
                 <div >
                    {%trans 'The configuration of the draw was changed.'%}<br/>
-                   {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.title|default:bom.DEFAULT_TITLE }}</a>
+                   {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ default:bom.DEFAULT_TITLE }}</a>
 
                 </div>
             {% endif %}
