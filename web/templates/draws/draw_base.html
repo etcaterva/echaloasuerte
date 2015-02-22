@@ -74,9 +74,12 @@
 
     {% if is_public%}
 	    var shared_type_field = $('input[name=shared_type]');
-    	//default is None, set to Public by default is is a public draw
-    	shared_type_field.attr('value','Public');
-    
+
+        {%if not bom %}
+    	    //default is None, set to Public by default if it is a new public draw
+    	    shared_type_field.attr('value','Public');
+        {% endif %}
+
 	    $('#save').click(function () {
 	        var mode = $('.slide-bar').attr('data-selected');
 	        if (mode == "invited"){
