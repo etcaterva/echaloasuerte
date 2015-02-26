@@ -92,7 +92,7 @@ def user_can_write_draw(user,draw):
 def set_owner(draw, request):
     """Best effort to set the owner given a request"""
     try:
-        draw.owner = request.user._id
+        draw.owner = request.user.pk
     except:
         pass
 
@@ -166,7 +166,7 @@ def add_user_to_draw(request,draw_id,new_users):
 
     user_list = new_users.replace(',',' ').split()
     for user in user_list:
-        bom_draw.users += user
+        bom_draw.users.append(user.pk)
     invite_user(user_list, draw_id,request.user.get_email())
 
     logger.info("{0} users added to draw {1}".format(len(user_list),draw_id))
