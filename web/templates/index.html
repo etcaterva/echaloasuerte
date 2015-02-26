@@ -44,7 +44,7 @@
 	</div>
     <div class="container-draws row">
         <div class="col-sm-6">
-            <a class="draw-link" href="{% url 'coin' %}">
+            <a class="draw-link" href="{% url 'draw' draw_type='coin' publish=is_public %}">
                 <div class="draw-box">
                     <div class="draw-img"><img src="{% static "img/coin.gif" %}"/></div>
                     <div class="draw-label text-center">
