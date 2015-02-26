@@ -316,7 +316,6 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
         if draw_id:
             #retrieve draw
             bom_draw = mongodb.retrieve_draw(draw_id)
-            context['can_write'] = bom_draw.user_can_write(request.user)
             user_can_read_draw(request.user, bom_draw)
             logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
             if bom_draw.draw_type == model_name:                                                    # MODEL NAME
@@ -328,6 +327,7 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             #Serve to create Draw
             draw_form = globals()[form_name]()                                                      # FORM NAME
 
+    context['can_write'] = bom_draw.user_can_write(request.user)
     context['draw'] = draw_form
     context["bom"] = bom_draw
     template_path = 'draws/{0}.html'.format(model_name)                                             # MODEL NAME
