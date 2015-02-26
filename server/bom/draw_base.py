@@ -65,10 +65,9 @@ class BaseDraw(object):
         shared_type  password   Descr:
         -------------------------------
         None         N/A        Single user draw
+        Invite       N/A        Only invited users can access
         Public       N          Anybody can access
-        Public       Y          Only users with password can access
-        Invite       N          Only invited users can access
-        Invite       Y          Either users or password
+        Public       Y          Either users or password
         '''
 
     def user_can_read(self, user, password = None):
