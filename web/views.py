@@ -70,7 +70,7 @@ def find_previous_version(curr_draw):
         if k not in IGNORED_FIELDS and (
                 k not in prev_draw.__dict__.keys() or v != prev_draw.__dict__[k]):
             # Data have changed
-            logger.info("Old draw with id {0} changed on key {1}. Old '{2}', new '{3}'".format(prev_draw._id, k,v,prev_draw.__dict__.get(k,"Empty")))
+            logger.info("Old draw with id {0} changed on key {1}. Old '{2}', new '{3}'".format(prev_draw._id, k,prev_draw.__dict__.get(k,"Empty"),v))
             curr_draw.prev_draw = prev_draw._id
             # Clean the current's draw id, so a new one will be assigned to it
             curr_draw._id = None
