@@ -9,7 +9,6 @@
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
-    // TODO This is overwritten in random_item.html (and others). Fix it
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
       $(this).select();
@@ -72,7 +71,7 @@
 
 
 
-    {% if is_public%}
+    {% if is_public  or bom.shared_type != "None" %}
 	    var shared_type_field = $('input[name=shared_type]');
 
     	//default is None, set to Public by default if it is a new public draw
@@ -106,7 +105,7 @@
 {% block content %}
     <div class="row">
         <!-- Public Draw Info -->
-        {% if is_public%}
+        {% if is_public %}
             <div class="info-public-draw">
                 <div class="help-text">
                     <span class="title">{%trans 'Creating a public draw' %}   </span>
@@ -123,7 +122,7 @@
                     <img src="{% static "img/back_arrow.png" %}"/>
                 </a>
                 <div class="col-xs-8 visible-xs"></div>
-                {% if is_public %}
+                {% if is_public or bom.shared_type != "None" %}
                     <a data-toggle="modal" href="#modal" class="add-password col-xs-2 col-sm-2 col-sm-push-8 text-center">
                         <i class="fa fa-unlock fa-3x"></i>
                     </a>
