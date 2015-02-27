@@ -9,7 +9,6 @@
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
-    // TODO This is overwritten in random_item.html (and others). Fix it
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
       $(this).select();
@@ -70,15 +69,15 @@
         }
     });
 
-
-
-    {% if is_public%}
+    {% if is_public  or bom.shared_type != "None" %}
 	    var shared_type_field = $('input[name=shared_type]');
 
-        {%if not bom.pk %}
-    	    //default is None, set to Public by default if it is a new public draw
-    	    shared_type_field.attr('value','Public');
-        {% endif %}
+    	//default is None, set to Public by default if it is a new public draw
+        shared_type_field.attr('value','{{bom.shared_type}}');
+        if(shared_type_field.attr('value') == 'None') {
+            shared_type_field.attr('value','Public');
+        }
+
 
 	    $('#save').click(function () {
 	        var mode = $('.slide-bar').attr('data-selected');
@@ -88,7 +87,7 @@
 	        }else if (mode == "password"){
 	            var password = $('#draw-password').val();
 	            $('#id_password').val(password);
-	            shared_type_field.attr('value','Public');
+	            shared_type_field.attr('value','Invite');
 	        }else{ // Everyone
 	        	$('#id_password').val("");
 				shared_type_field.attr('value','Public');
@@ -104,7 +103,7 @@
 {% block content %}
     <div class="row">
         <!-- Public Draw Info -->
-        {% if is_public%}
+        {% if is_public %}
             <div class="info-public-draw">
                 <div class="help-text">
                     <span class="title">{%trans 'Creating a public draw' %}   </span>
@@ -121,7 +120,7 @@
                     <img src="{% static "img/back_arrow.png" %}"/>
                 </a>
                 <div class="col-xs-8 visible-xs"></div>
-                {% if is_public %}
+                {% if is_public or bom.shared_type != "None" %}
                     <a data-toggle="modal" href="#modal" class="add-password col-xs-2 col-sm-2 col-sm-push-8 text-center">
                         <i class="fa fa-unlock fa-3x"></i>
                     </a>
@@ -157,17 +156,22 @@
                     </div>
                 {% endfor  %}
                 <!-- Input Form -->
-                {% block input_form %}
-                    {% crispy draw draw.helper %}
-                        <div class="col-xs-12 text-center">
-                        {% if is_public %}
-                            <button type="submit" name="try" class="btn btn-success btn-try">{% trans 'Try it!' %}</button>
-                            <button type="submit" name="next" class="btn btn-primary btn-next">{% trans 'Next' %}</button>
-                        {% else %}
-                            <button type="submit" name="toss" class="btn btn-success btn-toss">{% trans 'Toss' %}</button>
-                        {% endif %}
-                    </div>
-                {% endblock input_form %}
+                {% crispy draw draw.helper %}
+                <div class="col-xs-12 text-center">
+                    {% if is_public %}
+                        <button type="submit" name="try" class="btn btn-success btn-try">{% trans 'Try it!' %}</button>
+                        <button type="submit" name="next" class="btn btn-primary btn-next">{% trans 'Next' %}</button>
+                    {% else %}
+                        <button type="submit" name="toss" class="btn btn-success btn-toss"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
+                        {%if not can_write and bom.owner%}
+                        <div class="alert alert-warning alert-dismissible" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
+                        </div>
+                        {%endif%}
+
+                    {% endif %}
+                </div>
             </div>
         </form>
         <!-- End Input Form -->

@@ -57,9 +57,9 @@ def find_previous_version(curr_draw):
     Otherwise it will clean the draw id (so mongo will assign a new one to it later). A link to the older version of the
     draw is added.
     """
-    IGNORED_FIELDS = ('creation_time', 'owner', 'number_of_results',
+    IGNORED_FIELDS = ('creation_time', 'number_of_results',
                   'results', '_id', 'draw_type', 'prev_draw',
-                  'users', 'title', 'password', 'shared_type')
+                  'users', 'password', 'title', 'shared_type')  # 'owner',
     if curr_draw._id == '':
         curr_draw._id = None
         logger.info("There is not a previous version of this draw in the DB")
@@ -70,29 +70,37 @@ def find_previous_version(curr_draw):
         if k not in IGNORED_FIELDS and (
                 k not in prev_draw.__dict__.keys() or v != prev_draw.__dict__[k]):
             # Data have changed
-            logger.info("Old draw with id {0} changed on key {1}. Old '{2}', new '{3}'".format(prev_draw._id, k,v,prev_draw.__dict__.get(k,"Empty")))
+            logger.info("Old draw with id {0} changed on key {1}. Old '{2}', new '{3}'".format(prev_draw._id, k,prev_draw.__dict__.get(k,"Empty"),v))
             curr_draw.prev_draw = prev_draw._id
             # Clean the current's draw id, so a new one will be assigned to it
             curr_draw._id = None
             return curr_draw
     # Data haven't changed so return previous draw to work on it
     logger.info("There is a previous version of this draw in the DB {0}".format(prev_draw._id, k))
+
+    #updatable fields of prev draw
+    for k in ('password', 'shared_type', 'title'):
+        prev_draw.__dict__[k] = curr_draw.__dict__[k]
     return prev_draw
 
 
 def user_can_read_draw(user,draw):
     '''Validates that user can read draw. Throws unauth otherwise'''
     if not draw.user_can_read(user):
+        logger.info("User {0} not allowed to read draw {1}. Type: {2}, Password? {3}, Owner:{4}, Users: {5}"
+                .format(user.pk, draw.pk, draw.shared_type, 'Y' if draw.password else 'N', draw.owner, draw.users))
         raise PermissionDenied()
 
 def user_can_write_draw(user,draw):
     if not draw.user_can_write(user):
+        logger.info("User {0} not allowed to write draw {1}. Type: {2}, Password? {3}, Owner:{4}"
+                .format(user.pk, draw.pk, draw.shared_type, 'Y' if draw.password else 'N', draw.owner))
         raise PermissionDenied()
 
 def set_owner(draw, request):
     """Best effort to set the owner given a request"""
     try:
-        draw.owner = request.user._id
+        draw.owner = request.user.pk
     except:
         pass
 
@@ -166,7 +174,7 @@ def add_user_to_draw(request,draw_id,new_users):
 
     user_list = new_users.replace(',',' ').split()
     for user in user_list:
-        bom_draw.users += user
+        bom_draw.users.append(user.pk)
     invite_user(user_list, draw_id,request.user.get_email())
 
     logger.info("{0} users added to draw {1}".format(len(user_list),draw_id))
@@ -309,7 +317,6 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
         if draw_id:
             #retrieve draw
             bom_draw = mongodb.retrieve_draw(draw_id)
-            context['can_write'] = bom_draw.user_can_write(request.user)
             user_can_read_draw(request.user, bom_draw)
             logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
             if bom_draw.draw_type == model_name:                                                    # MODEL NAME
@@ -321,6 +328,7 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             #Serve to create Draw
             draw_form = globals()[form_name]()                                                      # FORM NAME
 
+    context['can_write'] = bom_draw.user_can_write(request.user)
     context['draw'] = draw_form
     context["bom"] = bom_draw
     template_path = 'draws/{0}.html'.format(model_name)                                             # MODEL NAME
