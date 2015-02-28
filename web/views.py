@@ -263,6 +263,7 @@ def coin_draw(request):
 
 
 URL_TO_DRAW_MAP = {
+    'coin': 'CoinDraw',
     'dice': 'DiceDraw',
     'card': 'CardDraw',
     'number': 'RandomNumberDraw',
