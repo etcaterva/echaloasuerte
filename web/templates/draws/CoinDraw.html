@@ -19,7 +19,7 @@
             <p>{% trans "Tap the coin to flip it." %}</p>
             {% if result %}
                 <script>
-                    coin.flip("{{ result }}");
+                    coin.flip("{{ result.0.0 }}");
                 </script>
             {% endif %}
         </div>
@@ -29,8 +29,15 @@
 {% block result %}
     {% if forloop.counter == 1 %}
         <script>
-            coin.flip("{{ result }}");
+            coin.flip("{{ results.0 }}");
         </script>
-    {% else %}
     {% endif %}
+    {% if results.0 == 'tail'%}
+        {% trans 'tail' %}
+    {% elif results.0 == 'head'%}
+        {% trans 'head' %}
+    {% else %}
+        {{results.0}}
+    {% endif %}
+
 {% endblock result %}
