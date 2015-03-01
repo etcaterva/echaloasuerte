@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load i18n %}
+{% block extra_jq_ready %}
+    $('.data-table').DataTable(
+        {
+            "language" : {
+                "emptyTable":     "{% trans 'No data available in table'%}",
+                "info":           "{% trans 'Showing _START_ to _END_ of _TOTAL_ entries'%}",
+                "infoEmpty":      "{% trans 'Showing 0 to 0 of 0 entries'%}",
+                "infoFiltered":   "{% trans '(filtered from _MAX_ total entries)'%}",
+                "thousands":      "{% trans ','%}",
+                "lengthMenu":     "{% trans 'Show _MENU_ entries'%}",
+                "loadingRecords": "{% trans 'Loading...'%}",
+                "processing":     "{% trans 'Processing...'%}",
+                "search":         "{% trans 'Search:'%}",
+                "zeroRecords":    "{% trans 'No matching records found'%}",
+                "paginate": {
+                    "first":      "{% trans 'First'%}",
+                    "last":       "{% trans 'Last'%}",
+                    "next":       "{% trans 'Next'%}",
+                    "previous":   "{% trans 'Previous'%}"
+                },
+                "aria": {
+                    "sortAscending":  "{% trans ': activate to sort column ascending'%}",
+                    "sortDescending": "{% trans ': activate to sort column descending'%}"
+                }
+            },
+            "order": [[ 2, "desc" ]],
+            "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "{%trans 'All' %}"]]
+        }
+    );
+
+    $('.data-table').on( 'click', 'tr', function () {
+        if(!($(this).attr('alt')))
+            return true;
+
+        window.location = $(this).attr('alt');
+    } );
+
+{% endblock extra_jq_ready %}
+
+{% block content %}
+    <div>
+        {%if user_draws %}<h3>{% trans "Your Draws" %}:</h3>
+        <table class="data-table" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>{%trans 'Draw Name' %}</th>
+                    <th>{%trans 'Owner' %}</th>
+                    <th>{%trans 'Created on' %}</th>
+                    <th>{%trans '# users' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for d in user_draws %}
+                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" style="cursor: pointer;">
+                    <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
+                    <td>{{ d.owner|default:"" }}</td>
+                    <td>{{ d.creation_time|date:" Y/m/d G:i:s "}}</td>
+                    <td>{{ d.users|length }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <hr/>
+        {% endif %}
+        {%if public_draws %}<h3>{% trans "Public Draws" %}:</h3>
+        <table class="data-table" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>{%trans 'Draw Name' %}</th>
+                    <th>{%trans 'Owner' %}</th>
+                    <th>{%trans 'Created on' %}</th>
+                    <th>{%trans 'Password?' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for d in public_draws %}
+                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" style="cursor: pointer;">
+                    <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
+                    <td>{{ d.owner|default:"" }}</td>
+                    <td>{{ d.creation_time|date:" Y/m/d G:i:s "}}</td>
+                    <td>{% if d.password %}{%trans 'Y' %}{%else%}{%trans 'N'%}{%endif%}</td> {# better to use ifelse than yesno, we can use icons  #}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <hr/>
+        {% endif %}
+    </div>
+{% endblock %}

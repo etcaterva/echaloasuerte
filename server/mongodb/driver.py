@@ -71,6 +71,12 @@ class MongoDriver(object):
         logger.debug("Retrieved documment: {0} using id {1}".format(doc,user_id))
         return User(**doc)
 
+    def get_draws_with_filter(self, d_filter, num_results = 100):
+        res_draws = [build_draw(x) for x in self._draws.find(d_filter).sort("creation_time",pymongo.DESCENDING).limit(num_results)]
+        res_draws = [x for x in res_draws if x is not None]
+        logger.debug("Found {0} draws with filter {1}".format(len(res_draws ),d_filter))
+        return res_draws
+
     def get_user_draws(self, user_id, num_results = 50):
         owner_draws = [build_draw(x) for x in self._draws.find({"owner":user_id}).sort("creation_time",pymongo.DESCENDING).limit(num_results)]
         owner_draws = [x for x in owner_draws if x is not None]
@@ -114,7 +120,7 @@ class MongoDriver(object):
                     logger.warning("Imposible to connect to mongo DB using parameters {0}, exception: {1}".format(cnx_param,e))
                 else:
                     logger.info("Connected to to mongo using parameter {0}".format(cnx_param))
-                
+
                 if MongoDriver._instance: break
 
         assert(MongoDriver._instance is not None)

@@ -12,7 +12,7 @@ urlpatterns += patterns(
     url(r'^draw/(?P<draw_type>[a-zA-Z_]+)/(?P<draw_id>[0-9a-g]+)?$', views.draw, name="draw"),
 
     url(r'^publish_draw.html$', views.index, {'is_public': True}, name="publish_draw"),
-    url(r'^join_public_draw.html$', views.under_construction, name="join_public_draw"),
+    url(r'^join_draw.html$', views.join_draw, name="join_public_draw"),
 
     url(r'^about.html$', views.under_construction, name="about"),
     url(r'^draw/(?P<draw_id>[0-9a-g]+)/$', views.retrieve_draw, name="retrieve_draw"),
