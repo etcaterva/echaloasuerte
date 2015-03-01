@@ -236,7 +236,6 @@ def profile(request):
     context = {'draws': draws}
     return render(request, 'profile.html', context)
 
-@login_required
 @time_it
 def join_draw(request):
     """view to show the list of draws a user can join"""
@@ -248,7 +247,7 @@ def join_draw(request):
             })
     except Exception as e:
         logger.error("There was an issue when retrieving public draws. {0}".format(e))
-    if request.user.is_authenticated:
+    if request.user.is_authenticated():
         try:
             user_draws = mongodb.get_draws_with_filter({
                 "$and" : [
