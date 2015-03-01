@@ -258,49 +258,49 @@
         </div>
     </div>
 {% endif %}
-
 {% block content %}
     <p>Page to be filled.</p>
 {% endblock content %}
 
-<!-- Footer -->
-<div class="row footer">
-    <div class="col-xs-7 col-sm-4 col-md-5 text-left">
-        © 2015 EchaloASuerte
-    </div>
-    <div class="hidden-xs col-sm-3 col-md-2">
-        <a href="{% url 'about' %}">{% trans "About us" %}</a>
-    </div>
-    <!-- Language dropdown menu for SM, MD and LG -->
-    <div class="hidden-xs col-sm-5 language text-right">
-        {%trans 'Choose language'%}:
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-            <span class="fa fa-flag"></span>
-            {{ LANGUAGE_CODE|language_name }} ▾
-        </a>
-        <ul class="dropdown-menu pull-right drop-up" id="language-dropdown" role="menu">
-            {% for language in languages %}
-                <li><a href="#" {% if language.code == LANGUAGE_CODE %} class="selected"{% endif %} title="{{ language.code }}">
-                    {{ language.name_local }} ({{ language.code }})</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-    <!-- Language dropdown menu for XS -->
-    <div class="visible-xs col-xs-5 text-right">
-    <form action="{% url 'set_language' %}" method="post">
-        {% csrf_token %}
-        <input name="next" type="hidden" value="/"/> <!--check below to know why / -->
-        <select id="language-selector" name="language" onchange="this.form.submit()">
-            {% for language in languages %}
-            <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}
-            selected="selected"{% endif %}>{{ language.name_local }}
-                </option>
-            {% endfor %}
-        </select>
-    </form>
+    <!-- Footer -->
+    <div class="row footer">
+        <div class="col-xs-7 col-sm-4 col-md-5 text-left">
+            © 2015 EchaloASuerte
+        </div>
+        <div class="hidden-xs col-sm-3 col-md-2">
+            <a href="{% url 'about' %}">{% trans "About us" %}</a>
+        </div>
+        <!-- Language dropdown menu for SM, MD and LG -->
+        <div class="hidden-xs col-sm-5 language text-right">
+            {%trans 'Choose language'%}:
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <span class="fa fa-flag"></span>
+                {{ LANGUAGE_CODE|language_name }} ▾
+            </a>
+            <ul class="dropdown-menu pull-right drop-up" id="language-dropdown" role="menu">
+                {% for language in languages %}
+                    <li><a href="#" {% if language.code == LANGUAGE_CODE %} class="selected"{% endif %} title="{{ language.code }}">
+                        {{ language.name_local }} ({{ language.code }})</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- Language dropdown menu for XS -->
+        <div class="visible-xs col-xs-5 text-right">
+        <form action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="/"/> <!--check below to know why / -->
+            <select id="language-selector" name="language" onchange="this.form.submit()">
+                {% for language in languages %}
+                <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}
+                selected="selected"{% endif %}>{{ language.name_local }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+        </div>
     </div>
 </div>
-</div>
+</div><!-- TODO, I have no idea what this closing tag closes lol -->
 <!-- container -->
 
 <!-- hidden form to change language -->
