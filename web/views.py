@@ -84,9 +84,9 @@ def find_previous_version(curr_draw):
     return prev_draw
 
 
-def user_can_read_draw(user,draw):
+def user_can_read_draw(user,draw,password = None):
     '''Validates that user can read draw. Throws unauth otherwise'''
-    if not draw.user_can_read(user):
+    if not draw.user_can_read(user,password):
         logger.info("User {0} not allowed to read draw {1}. Type: {2}, Password? {3}, Owner:{4}, Users: {5}"
                 .format(user.pk, draw.pk, draw.shared_type, 'Y' if draw.password else 'N', draw.owner, draw.users))
         raise PermissionDenied()
@@ -324,7 +324,7 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
         if draw_id:
             #retrieve draw
             bom_draw = mongodb.retrieve_draw(draw_id)
-            user_can_read_draw(request.user, bom_draw)
+            user_can_read_draw(request.user, bom_draw,request.GET.get("password", default=None))
             logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
             if bom_draw.draw_type == model_name:                                                    # MODEL NAME
                 draw_form = globals()[form_name](initial=bom_draw.__dict__)                         # FORM NAME
