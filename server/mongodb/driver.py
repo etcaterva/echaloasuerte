@@ -10,6 +10,15 @@ from server.bom.random_item import *
 from server.bom.user import User
 from bson.objectid import ObjectId
 
+def safe_connection(func):
+    """decorator to restart the connection if needed"""
+    def _(*args,**kwargs):
+        try:
+            return func(*args,**kwargs)
+        except (pymongo.errors.AutoReconnect, pymongo.errors.ConnectionFailure) as e:
+            logger.error("PymongoError: {0} resetting mongo connection... ".format(e))
+            MongoDriver._instance = None
+    return _
 
 def build_draw(doc):
     """Given a python dict that represnets a draw, builds it"""
@@ -50,6 +59,8 @@ class MongoDriver(object):
         self._users = self._db.users
         self._draws = self._db.draws
 
+
+    @safe_connection
     def create_user(self,user):
         if self._users.find({"_id":user._id}).count() == 0:
             self.save_user(user)
@@ -57,6 +68,7 @@ class MongoDriver(object):
             logger.debug("User {0} already exists".format(user._id))
             raise Exception("User already exists")
 
+    @safe_connection
     def save_user(self,user):
         """Given a user, saves it, returns the _id"""
         doc = user.__dict__
@@ -64,6 +76,7 @@ class MongoDriver(object):
         logger.debug("Saved documment: {0}".format(doc))
         return doc["_id"]
 
+    @safe_connection
     def retrieve_user(self,user_id):
         doc = self._users.find_one({"_id":user_id})
         if doc is None:
@@ -71,12 +84,14 @@ class MongoDriver(object):
         logger.debug("Retrieved documment: {0} using id {1}".format(doc,user_id))
         return User(**doc)
 
+    @safe_connection
     def get_draws_with_filter(self, d_filter, num_results = 100):
         res_draws = [build_draw(x) for x in self._draws.find(d_filter).sort("creation_time",pymongo.DESCENDING).limit(num_results)]
         res_draws = [x for x in res_draws if x is not None]
         logger.debug("Found {0} draws with filter {1}".format(len(res_draws ),d_filter))
         return res_draws
 
+    @safe_connection
     def get_user_draws(self, user_id, num_results = 50):
         owner_draws = [build_draw(x) for x in self._draws.find({"owner":user_id}).sort("creation_time",pymongo.DESCENDING).limit(num_results)]
         owner_draws = [x for x in owner_draws if x is not None]
@@ -84,6 +99,7 @@ class MongoDriver(object):
         logger.debug("Found {0} draws of which {1} is owner".format(len(owner_draws),user_id))
         return {"user_id":user_id,"owner":owner_draws}
 
+    @safe_connection
     def save_draw(self,draw):
         """Given a draw, saves it, update its ID if not set and returns the _id"""
         doc = draw.__dict__
@@ -94,6 +110,7 @@ class MongoDriver(object):
         logger.debug("Saved documment: {0}".format(doc))
         return doc["_id"]
 
+    @safe_connection
     def retrieve_draw(self,draw_id):
         """
         Retrieves a draw from mongo.
