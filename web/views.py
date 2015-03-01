@@ -244,24 +244,6 @@ def index(request, is_public=None):
         context['is_public'] = 'publish'
     return render(request, 'index.html', context)
 
-
-@time_it
-def coin_draw(request):
-    context = {'errors': []}
-    bom_draw = CoinDraw()
-    if request.method == 'POST':
-        logger.debug("Information posted. {0}".format(request.POST))
-        set_owner(bom_draw, request)
-        result = bom_draw.toss()
-        mongodb.save_draw(bom_draw)
-        res = result["items"][0]
-        context['result'] = res
-        logger.info("New result generated for draw {0}".format(bom_draw._id))
-        logger.debug("Generated draw: {0}".format(bom_draw))
-    context["bom"] = bom_draw
-    return render(request, 'draws/coin.html', context)
-
-
 URL_TO_DRAW_MAP = {
     'coin': 'CoinDraw',
     'dice': 'DiceDraw',

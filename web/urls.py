@@ -11,7 +11,6 @@ urlpatterns += patterns(
     url(r'^draw/(?P<draw_type>[a-zA-Z_]+)/(?P<publish>publish)?$', views.draw, name="draw"),
     url(r'^draw/(?P<draw_type>[a-zA-Z_]+)/(?P<draw_id>[0-9a-g]+)?$', views.draw, name="draw"),
 
-    url(r'^coin.html$', views.coin_draw, name="coin"),
     url(r'^publish_draw.html$', views.index, {'is_public': True}, name="publish_draw"),
     url(r'^join_public_draw.html$', views.under_construction, name="join_public_draw"),
 
