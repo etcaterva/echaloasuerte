@@ -305,13 +305,25 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
-                bom_draw.toss()
+                #check type of submit
+                submit_type = request.POST.get("submit-type","EMPTY").lower()
+                if submit_type == "try":
+                    bom_draw.toss()
+                    logger.info("Generating test result for draw {0}".format(bom_draw.pk))
+                elif submit_type == "next":
+                    #User published the draw!
+                    bom_draw.results = []
+                    context['is_public'] = None
+                    logger.info("Created public draw {0}. Cleaned up results.".format(bom_draw.pk))
+                elif submit_type == "toss":
+                    bom_draw.toss()
+                    logger.info("Generating result for draw {0}".format(bom_draw.pk))
+                else:
+                    logger.error("Invalid submit type: {0}. It will be considered as toss".format(submit_type))
+                    bom_draw.toss()
                 mongodb.save_draw(bom_draw)
                 draw_form.data = draw_form.data.copy()
                 draw_form.data['_id'] = bom_draw.pk
-                if 'next' in request.POST:
-                    logger.info("The draw is being published")
-                logger.info("New result generated for draw {0}".format(bom_draw.pk))
                 logger.debug("Generated draw: {0}".format(bom_draw))
             else:
                 logger.info("Draw {0} is not feasible".format(bom_draw))
