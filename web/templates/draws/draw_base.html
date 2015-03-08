@@ -31,7 +31,16 @@
     // Disable submit button after submitting
     $('form').submit(function() {
         $(this).find("button[type='submit']").prop('disabled',true);
+        return true;
     });
+
+    // set type of submit
+    $('button[type=submit]').click(function() {
+        $("input[name=submit-type]").val($(this).attr("name"));
+        return true;
+    });
+
+
     $('.accordion').accordion({collapsible: true});
 
     // Update draw's password
@@ -174,6 +183,7 @@
                     </div>
                 {% endblock input_form %}
             </div>
+            <input class="hidden" name="submit-type" />
         </form>
         <!-- End Input Form -->
         <!-- Results -->
