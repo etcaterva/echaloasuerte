@@ -253,6 +253,8 @@
             <ul>
             	{% for d in user.favourites_list %}
             		<a href="{% url 'retrieve_draw' draw_id=d.pk %}"><li>{{ d.title|default:d.DEFAULT_TITLE }} | {{d.creation_time|date:" Y/m/d G:i:s "}}</li></a>
+                    {% empty %}
+                       {% trans "You don't have favourite draws" %}
             	{% endfor %}
             </ul>
         </div>
