@@ -121,7 +121,7 @@ msgid "Range is too small, may be you want to allow repeated numbers?"
 msgstr "El rango es demasiado amplio. No deseas permitir numeros aleatorios?"
 
 #: web/templates/base.html:133
-msgid "Favorites"
+msgid "favourites"
 msgstr "Favoritos"
 
 #: web/templates/base.html:138

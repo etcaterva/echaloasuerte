@@ -50,13 +50,13 @@ a.fa:focus {
 
 
 .draw-heading .back-arrow,
-.draw-heading .add-favorites,
+.draw-heading .add-favourites,
 .draw-heading .add-password{
     padding: 10px 0 0 0;
 }
 
 .draw-heading .back-arrow img,
-.draw-heading .add-favorites img {
+.draw-heading .add-favourites img {
     /*display: block;*/
     width: 40px;
     height: auto;

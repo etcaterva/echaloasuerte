@@ -50,32 +50,36 @@
 
     $(this).find('#fav-loading').hide();
     $('#fav-button').click(function(){
-        var draw_id = $(this).attr("data-id");
-        if (draw_id == 'None'){
-            alert("try first");
-        }else{
-            var is_fav = ($(this).attr("data-active") == "y");
-            $this = $(this);
-            var $fav_image = $this.find('img');
-            var $fav_loading = $this.find('#fav-loading');
-            $fav_image.hide();
-            $fav_loading.show();
-            if(is_fav){
-                $.get('{% url 'ws_remove_favorite' %}', {draw_id: draw_id}, function(data){
-                    $this.attr("data-active","n");
-                    $this.find('img').attr("src","{% static "img/star-o.png" %}");
-                    $fav_loading.hide();
-                    $fav_image.show();
-                });
-            } else {
-                $.get('{% url 'ws_add_favorite' %}', {draw_id: draw_id}, function(data){
-                    $this.attr("data-active","y");
-                    $this.find('img').attr("src","{% static "img/star.png" %}");
-                    $fav_loading.hide();
-                    $fav_image.show();
-               });
+        if ('{{ user.is_authenticated }}' == 'False'){
+            alert("You need an account to save your favourite draws");
+        } else{
+            var draw_id = $(this).attr("data-id");
+            if (draw_id == 'None'){
+                alert("Click on the 'Toss' button to try the draw first");
+            }else{
+                var is_fav = ($(this).attr("data-active") == "y");
+                $this = $(this);
+                var $fav_image = $this.find('img');
+                var $fav_loading = $this.find('#fav-loading');
+                $fav_image.hide();
+                $fav_loading.show();
+                if(is_fav){
+                    $.get('{% url 'ws_remove_favorite' %}', {draw_id: draw_id}, function(data){
+                        $this.attr("data-active","n");
+                        $this.find('img').attr("src","{% static "img/star-o.png" %}");
+                        $fav_loading.hide();
+                        $fav_image.show();
+                    });
+                } else {
+                    $.get('{% url 'ws_add_favorite' %}', {draw_id: draw_id}, function(data){
+                        $this.attr("data-active","y");
+                        $this.find('img').attr("src","{% static "img/star.png" %}");
+                        $fav_loading.hide();
+                        $fav_image.show();
+                   });
+                }
             }
-        }
+         }
     });
 
     {% if is_public  or bom.shared_type != "None" %}
@@ -135,14 +139,14 @@
                     </a>
                 {% else %}
 	                    <a id="fav-button"
-	                    {% if bom.pk in user.favorites %}
+	                    {% if bom.pk in user.favourites %}
 	                    data-active="y"
 	                    {% else %}
 	                    data-active="n"
 	                    {% endif %}
-	                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center ">
+	                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favourites col-xs-2 col-sm-2 col-sm-push-8 text-center ">
                             <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x"></span>
-	                    {% if bom.pk in user.favorites %}
+	                    {% if bom.pk in user.favourites %}
                             <img src="{% static "img/star.png" %}"/>
 	                    {% else %}
                             <img src="{% static "img/star-o.png" %}"/>

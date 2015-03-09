@@ -192,11 +192,11 @@ def add_favorite(request):
     bom_draw = mongodb.retrieve_draw(draw_id)
     user_can_write_draw(request.user, bom_draw) #raises 500
     user = mongodb.retrieve_user(request.user.pk)
-    if draw_id in user.favorites:
+    if draw_id in user.favourites:
         logger.info("Draw {0} is favorite for user {1}".format(draw_id, request.user.pk))
         return HttpResponse()
 
-    user.favorites.append(draw_id)
+    user.favourites.append(draw_id)
     mongodb.save_user(user)
 
     logger.info("Draw {0} added as favorite for user {1}".format(draw_id, request.user.pk))
@@ -214,11 +214,11 @@ def remove_favorite(request):
     bom_draw = mongodb.retrieve_draw(draw_id)
     user_can_write_draw(request.user, bom_draw) #raises 500
     user = mongodb.retrieve_user(request.user.pk)
-    if draw_id not in user.favorites:
+    if draw_id not in user.favourites:
         logger.info("Draw {0} is not favorite for user {1}".format(draw_id, request.user.pk))
         return HttpResponse()
 
-    user.favorites.remove(draw_id)
+    user.favourites.remove(draw_id)
     mongodb.save_user(user)
 
     logger.info("Draw {0} removed as favorite for user {1}".format(draw_id, request.user.pk))
