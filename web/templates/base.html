@@ -125,9 +125,9 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                     <li>
-                    <a href="#" data-toggle="collapse" data-target="#favorites-panel">
+                    <a href="#" data-toggle="collapse" data-target="#favourites-panel">
                         <span class="fa fa-star" aria-hidden="true"></span>
-                        {% trans "Favorites" %}
+                        {% trans "favourites" %}
                     </a>
                     </li>
                 {% endif %}
@@ -248,7 +248,7 @@
 </div>
 
 {% if user.is_authenticated and not is_public%}
-    <div id="favorites-panel" class="row collapse">
+    <div id="favourites-panel" class="row collapse">
         <div class="col-xs-10">
             <ul>
             	{% for d in user.favourites_list %}

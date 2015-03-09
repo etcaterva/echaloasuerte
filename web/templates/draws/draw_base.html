@@ -135,14 +135,14 @@
                     </a>
                 {% else %}
 	                    <a id="fav-button"
-	                    {% if bom.pk in user.favorites %}
+	                    {% if bom.pk in user.favourites %}
 	                    data-active="y"
 	                    {% else %}
 	                    data-active="n"
 	                    {% endif %}
-	                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favorites col-xs-2 col-sm-2 col-sm-push-8 text-center ">
+	                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favourites col-xs-2 col-sm-2 col-sm-push-8 text-center ">
                             <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x"></span>
-	                    {% if bom.pk in user.favorites %}
+	                    {% if bom.pk in user.favourites %}
                             <img src="{% static "img/star.png" %}"/>
 	                    {% else %}
                             <img src="{% static "img/star-o.png" %}"/>
