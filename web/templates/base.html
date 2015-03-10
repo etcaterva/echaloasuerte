@@ -123,6 +123,20 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li class="visible-xs">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}">
+                            <span class="fa fa-user" aria-hidden="true"></span>
+                            {{ user }}
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}">
+                            <span class="fa fa-user"></span>
+                            {% trans "Sign in" %}
+                        </a>
+                    {% endif %}
+                </li>
+
                 {% if user.is_authenticated %}
                     <li>
                     <a href="#" data-toggle="collapse" data-target="#favourites-panel">
@@ -131,7 +145,11 @@
                     </a>
                     </li>
                 {% endif %}
-                <li id="public-draw-dropdown" class="dropdown">
+
+                <!-- Public draw options -->
+                <li class="visible-xs"><a href="{% url 'join_public_draw' %}">{% trans "Join public draw" %}</a></li>
+                <li class="visible-xs"><a href="{% url 'publish_draw' %}">{% trans "Create public draw" %}</a></li>
+                <li id="public-draw-dropdown" class="hidden-xs dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     	<span class="fa fa-globe" aria-hidden="true"></span>
                     	{% trans "Public Draw" %}<span class="caret">
@@ -142,20 +160,10 @@
                         <li><a href="{% url 'publish_draw' %}">{% trans "Create public draw" %}</a></li>
                     </ul>
                 </li>
-                <li class="visible-xs">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'profile' %}">
-                            <span class="fa fa-user" aria-hidden="true"></span>{{ user }}
-                    {% else %}
-                        <a href="{% url 'login' %}">
-                            <span class="fa fa-user" aria-hidden="true"></span>{% trans "Sign in" %}
-                    {% endif %}
-                    </a>
-                </li>
 
+                <!-- Login panel -->
                 <li id="login-dropdown" class="hidden-xs dropdown">
                     {% if user.is_authenticated %}
-                        <!-- START ACCOUNT -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <span class="fa fa-user"></span> 
                             {{ user }}
