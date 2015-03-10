@@ -20,6 +20,46 @@ body {
 
 
 /* ---------------- HEADING --------------------- */
+    @media screen and (max-width: 768px) {
+        .side-collapse-container{
+            width:100%;
+            position:relative;
+            left:0;
+            transition:left .4s;
+        }
+        .side-collapse-container.out{
+            left:200px;
+        }
+        .side-collapse {
+            background-color: #E5E5E5 !important;
+            white-space: nowrap;  /* One line text */
+            top:62px;
+            right:16px;
+            width:200px;
+            position:fixed;
+            overflow:hidden;
+            transition:width .4s;
+        }
+        .side-collapse.in {
+            width:0;
+        }
+
+        .navbar-collapse {
+            margin: 2px;
+            background-color: white;
+        }
+      }
+
+.side-collapse .nav-divider {
+    margin: 0 0 0;
+}
+
+ul.nav.navbar-nav {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
 /* To avoid the separation with the favourites panel */
 .navbar-brand{
     padding: 5px;
@@ -44,6 +84,7 @@ body {
     margin-bottom: 0px;
     background-color: #ffffff;
     border-radius: 0px;
+    z-index: 1030;
 }
 
 .navbar-default .navbar-nav > li > a {
@@ -91,11 +132,13 @@ body {
 }
 
 /* ---------------- BODY --------------------- */
-.content {
+#site-frame {
     margin-top: 10px;
   background: url('../img/background_pattern.png');
   border: 1px #d6d6d6 solid;
   outline: 5px #e9e9e9 solid;
+
+
 }
 
 
