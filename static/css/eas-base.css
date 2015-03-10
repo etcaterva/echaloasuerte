@@ -31,10 +31,10 @@ body {
             left:200px;
         }
         .side-collapse {
+            background-color: #E5E5E5 !important;
             white-space: nowrap;  /* One line text */
             top:62px;
-
-            right:18px;
+            right:16px;
             width:200px;
             position:fixed;
             overflow:hidden;
@@ -43,7 +43,21 @@ body {
         .side-collapse.in {
             width:0;
         }
+
+        .navbar-collapse {
+            margin: 2px;
+            background-color: white;
+        }
       }
+
+.side-collapse .nav-divider {
+    margin: 0 0 0;
+}
+
+ul.nav.navbar-nav {
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
 
 /* To avoid the separation with the favourites panel */
