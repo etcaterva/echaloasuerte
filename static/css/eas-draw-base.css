@@ -182,9 +182,7 @@ a.fa:focus {
    line-height: 26px;
 }
 
-.btn-toss,
-.btn-try,
-.btn-next {
+.btn-row {
     margin-top: 13px;
     margin-bottom: 13px;
 }
