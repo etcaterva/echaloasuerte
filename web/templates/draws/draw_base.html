@@ -83,6 +83,12 @@
     });
 
     {% if is_public  or bom.shared_type != "None" %}
+        // Showing status of the public draw configuration
+        $('.info-public-draw #choose').removeClass('focus');
+        $('.info-public-draw #choose').addClass('done');
+        $('.info-public-draw #configure').removeClass('done');
+        $('.info-public-draw #configure').addClass('focus');
+
 	    var shared_type_field = $('input[name=shared_type]');
 
     	//default is None, set to Public by default if it is a new public draw
