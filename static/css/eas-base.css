@@ -153,7 +153,7 @@ ul.nav.navbar-nav {
     align-items: center;
     height: 80px;
     background-color: #F0F8F1;
-    padding: 0 15px 0 15px;
+    padding: 0 0 0 0;
     border-bottom: 1px #E7E7E7 solid;
 }
 
@@ -184,6 +184,7 @@ ul.nav.navbar-nav {
 }
 
 .info-public-draw .subtitle.focus {
+    font-size: 17px;
     font-weight: bold;
     color: #4cae4c;
 }
