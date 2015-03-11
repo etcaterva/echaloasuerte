@@ -21,7 +21,7 @@
         $("textarea.autogrow").autoGrowInput({title:'{{ bom.title|default:bom.DEFAULT_TITLE }}',maxWidth: max_width,minWidth:30,comfortZone:30});
     };
 
-    // Autosize the first time
+    // Autosize the title box the first time
     autosize();
     $( window ).resize(function() {
         // Autosize when the window is resized
@@ -48,6 +48,7 @@
         $('#id_password').val($('#draw-password').val());
     });
 
+    // Setting up "Add to favourite" button
     $(this).find('#fav-loading').hide();
     $('#fav-button').click(function(){
         if ('{{ user.is_authenticated }}' == 'False'){
@@ -97,7 +98,7 @@
             shared_type_field.attr('value','Public');
         }
 
-
+        // Storing the level of restiction for the draw
 	    $('#save').click(function () {
 	        var mode = $('.slide-bar').attr('data-selected');
 	        if (mode == "invited"){
@@ -112,6 +113,21 @@
 				shared_type_field.attr('value','Public');
 	        }
 	    });
+
+        // By default, divs for "Spread" step are hidden
+        $('.step-spread').hide();
+
+        // Setting up button "Next"
+        $('#next').click(function() {
+            $('.step-configure').hide();
+            $('.step-spread').show();
+
+            // Showing status of the public draw configuration
+            $('.info-public-draw #configure').removeClass('focus');
+            $('.info-public-draw #configure').addClass('done');
+            $('.info-public-draw #spread').removeClass('done');
+            $('.info-public-draw #spread').addClass('focus');
+        });
     {% endif %}
 
     // Manages the slider to choose the level of restriction of the public draw
@@ -165,20 +181,28 @@
                 {% endfor  %}
                 <!-- Input Form -->
                 {% block input_form %}
-                {% crispy draw draw.helper %}
-                    <div class="col-xs-12 text-center">
-                        {% if is_public %}
-                            <div class="row btn-row">
-                                <button type="submit" name="try" class="btn btn-success btn-try">{% trans 'Try it!' %}</button>
+                    <div class="step-configure">
+                        {% crispy draw draw.helper %}
+                    </div>
+                    <div class="step-spread">
+                        <div class="public-draw-restriction col-xs-12 col-md-8 col-md-offset-2">
+                            <div class="col-xs-6">
+                                Who can access your draw?
                             </div>
-                            <div class="col-sm-8 col-sm-offset-2 btn-row">
-
-                                <a href="{% url 'index' %}" class="col-xs-6 btn btn-default btn-cancel">{% trans 'Cancel' %}</a>
-                                <button type="submit" name="next" class="col-xs-6 btn btn-primary btn-next">{% trans 'Next step' %}</button>
+                            <div class="col-xs-6">
+                                Everyone
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 text-center">
+                        <!-- Buttons for 'Toss' or 'Try it!' -->
+                        {% if is_public %}
+                            <div class="row btn-row step-configure">
+                                <button type="submit" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
                             </div>
                         {% else %}
                             <div class="row btn-row">
-                                <button type="submit" name="toss" class="btn btn-success btn-toss"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
+                                <button type="submit" name="toss" class="btn btn-success"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
                             </div>
                             {%if not can_write and bom.owner%}
                                 <div class="alert alert-warning alert-dismissible" role="alert">
@@ -187,6 +211,15 @@
                                 </div>
                             {%endif%}
                         {% endif %}
+
+                        <!-- Buttons for 'Next step' and 'Cancel' public draw creation -->
+                        {% if is_public %}
+                            <div class="col-sm-8 col-sm-offset-2 btn-row">
+                                <a href="{% url 'index' %}" class="col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
+                                <a id="next" name="next" class="col-xs-6 btn btn-primary step-configure">{% trans 'Next step' %}</a>
+                                <button type="submit" name="next" class="col-xs-6 btn btn-primary step-spread">{% trans 'Publish it' %}</button>
+                            </div>
+                        {% endif %}
                     </div>
                 {% endblock input_form %}
             </div>
@@ -194,7 +227,7 @@
         </form>
         <!-- End Input Form -->
         <!-- Results -->
-        <div class="col-sm-8 col-sm-offset-2">
+        <div class="col-sm-8 col-sm-offset-2 step-configure">
             <div class="row text-center accordion">
             {% for result in bom.results reversed %}
             {% with result.items as results%}
