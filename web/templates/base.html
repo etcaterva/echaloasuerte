@@ -280,6 +280,23 @@
                     </div>
                 {% endif %}
 
+                <!-- Public Draw Info -->
+                <div class="row">
+                    {% if is_public%}
+                        <div class="info-public-draw">
+                            <div class="help-text">
+                                <span class="col-xs-10 col-xs-offset-1 title">{%trans 'Creating a public draw' %}   </span>
+                                <div role="presentation" class="divider"></div>
+                                <span id="choose" class="col-xs-4 subtitle done">1. {%trans 'Choose' %}</span>
+                                <span id="configure" class="col-xs-4 subtitle focus">2. {%trans 'Configure' %}</span>
+                                <span id="spread" class="col-xs-4 subtitle">3. {%trans 'Spread' %}</span>
+                            </div>
+                            <!--<a href="{% url 'index' %}" class="cancel fa fa-times fa-2x"></a><br>-->
+                        </div>
+                    {% endif %}
+                </div>
+                <!-- End Public Draw Info -->
+
                 {% block content %}
                     <p>Page to be filled.</p>
                 {% endblock content %}
