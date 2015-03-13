@@ -128,6 +128,8 @@
             $('.info-public-draw #spread').removeClass('done');
             $('.info-public-draw #spread').addClass('focus');
         });
+
+        $('#public-draw-invite #emails').tokenfield({createTokensOnBlur:true, delimiter: ' '});
     {% endif %}
 
     // Manages the slider to choose the level of restriction of the public draw
@@ -170,6 +172,29 @@
             </div>
             <!-- End Draw Heading -->
 
+            {% if is_public %}
+                <div class="step-spread">
+                    <div class="public-draw-restriction col-xs-12 col-md-8 col-md-offset-2">
+                        <div class="col-xs-6">
+                            <p class="h4">Who can access your draw? </p>
+                        </div>
+                        <div class="col-xs-6">
+                            Everyone
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <input type="checkbox">
+                            Shown in the list "Recently created". <!--(This will may help your friends to find your draw faster.)-->
+                        </div>
+                    </div>
+                    <div id="public-draw-invite" class="col-xs-12">
+                        Invite people:
+
+                        <input type="text" id="emails" class="form-control" placeholder="Type the emails here...">
+                    </div>
+
+                </div>
+            {% endif %}
+
             <div class="col-sm-8 col-sm-offset-2">
                 {%block pre_draw %} {%endblock pre_draw%}
                 <!-- Errors -->
@@ -183,16 +208,6 @@
                 {% block input_form %}
                     <div class="step-configure">
                         {% crispy draw draw.helper %}
-                    </div>
-                    <div class="step-spread">
-                        <div class="public-draw-restriction col-xs-12 col-md-8 col-md-offset-2">
-                            <div class="col-xs-6">
-                                Who can access your draw?
-                            </div>
-                            <div class="col-xs-6">
-                                Everyone
-                            </div>
-                        </div>
                     </div>
                     <div class="col-xs-12 text-center">
                         <!-- Buttons for 'Toss' or 'Try it!' -->
