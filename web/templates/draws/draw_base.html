@@ -84,7 +84,7 @@
     });
 
     {% if is_public  or bom.shared_type != "None" %}
-        // Showing status of the public draw configuration
+        // Udate the breadcrum
         $('.info-public-draw #choose').removeClass('focus');
         $('.info-public-draw #choose').addClass('done');
         $('.info-public-draw #configure').removeClass('done');
@@ -98,7 +98,7 @@
             shared_type_field.attr('value','Public');
         }
 
-        // Storing the level of restiction for the draw
+        // Store the level of restiction for the draw
 	    $('#save').click(function () {
 	        var mode = $('.slide-bar').attr('data-selected');
 	        if (mode == "invited"){
@@ -122,7 +122,7 @@
             $('.step-configure').hide();
             $('.step-spread').show();
 
-            // Showing status of the public draw configuration
+            // Udate the breadcrum
             $('.info-public-draw #configure').removeClass('focus');
             $('.info-public-draw #configure').addClass('done');
             $('.info-public-draw #spread').removeClass('done');
@@ -140,11 +140,6 @@
 
 {% endblock extra_jq_ready %}
 {% block content %}
-  <script>
-  $(function() {
-    $( document ).tooltip();
-  });
-  </script>
     <div class="row">
         <form class="clearfix" method="post">
             <!-- Draw Heading -->

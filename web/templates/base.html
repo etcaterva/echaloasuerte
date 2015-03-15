@@ -53,6 +53,9 @@
     {% block extra_head %}{% endblock extra_head %}
     <script>
         {% block extra_js %}{% endblock extra_js %}
+        $(document).tooltip();
+        $(document).hide();
+
         $(document).ready(function () {
            $('#language-dropdown li a').click(function () {
                 var lang_code = $(this).attr('title');
@@ -280,7 +283,7 @@
                     </div>
                 {% endif %}
 
-                <!-- Public Draw Info -->
+                <!-- Breadcrum for creating Public Draw -->
                 <div class="row">
                     {% if is_public%}
                         <div class="info-public-draw">
@@ -295,7 +298,7 @@
                         </div>
                     {% endif %}
                 </div>
-                <!-- End Public Draw Info -->
+                <!-- End Breadcrum Public Draw -->
 
                 {% block content %}
                     <p>Page to be filled.</p>
