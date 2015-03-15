@@ -130,8 +130,8 @@
         });
 
         $('#public-draw-invite #emails').tokenfield({createTokensOnBlur:true, delimiter: ' ', minWidth: 100});
-        $('[data-toggle="tooltip"]').popover({trigger: 'hover','placement': 'top'});
-        //$('#asdasd').tooltip('open');
+        //$('[data-toggle="tooltip"]').popover({trigger: 'hover','placement': 'top'});
+        //$('[data-toggle="tooltip"]').popover('open');
     {% endif %}
 
     // Manages the slider to choose the level of restriction of the public draw
@@ -140,6 +140,11 @@
 
 {% endblock extra_jq_ready %}
 {% block content %}
+  <script>
+  $(function() {
+    $( document ).tooltip();
+  });
+  </script>
     <div class="row">
         <form class="clearfix" method="post">
             <!-- Draw Heading -->
@@ -173,26 +178,33 @@
             <!-- End Draw Heading -->
             {% if is_public %}
                 <div class="step-spread">
-                    <div class="public-draw-restriction col-xs-12 col-md-8 col-md-offset-2">
-                        <div class="col-xs-6">
-                            <p class="h4">Who can access your draw? </p>
-                        </div>
-                        <div class="col-xs-6 text-center">
-                            <a data-toggle="modal" href="#modal" class="add-password">
-                                <i class="fa fa-unlock fa-2x"></i> Everyone
+                    <div class="row">
+                        <div class="public-draw-restriction col-xs-12 col-md-8 col-md-offset-2">
+                            <div class="col-xs-6">
+                                <p class="h4">Who can access your draw? </p>
+                            </div>
+                            <div class="col-xs-6 text-center">
+                                <a data-toggle="modal" href="#modal" class="add-password">
+                                    <span class="fa fa-unlock fa-2x"></span> <div id="public-mode-selected"> Everyone </div>
 
-                            </a>
+                                </a>
 
-                        </div>
-                        <div class="col-xs-12 form-group">
-
-                            <p data-toggle="tooltip" data-placement="top" title="This will may help your friends to find your draw faster"> <input type="checkbox"> Shown in the list "Recently created".</p>
+                            </div>
+                            <div id="recently-created" class="col-xs-12 form-group">
+                                <p data-toggle="tooltip" data-placement="top" title="It will help your friends to find your draw faster"> <input type="checkbox"> Show the draw in the list "Recently created".</p>
+                            </div>
                         </div>
                     </div>
-                    <div id="public-draw-invite" class="col-xs-12 col-md-8 col-md-offset-2">
-                        <p class="h4"> Invite people: </p>
-                        <input type="text" id="emails" class="form-control" placeholder="Type the emails here...">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-8 col-md-offset-2">
+                            <p class="h4"> Invite people: </p>
+                            <div id="public-draw-invite">
+
+                                <input type="text" id="emails" class="form-control" placeholder="Type the emails here...">
+                            </div>
+                        </div>
                     </div>
+
 
                 </div>
             {% endif %}

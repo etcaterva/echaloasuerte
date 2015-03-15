@@ -76,6 +76,16 @@ a.fa:focus {
     border-radius: 5px;
 }
 
+.public-draw-restriction #recently-created {
+    border-top: 1px #D7D7D7 solid;
+    padding-top: 10px;
+}
+
+#public-draw-invite {
+    border: 1px #D7D7D7 solid;
+    border-radius: 5px;
+}
+
 #public-draw-invite #emails {
     min-width: 60px;
     width: 450px;
