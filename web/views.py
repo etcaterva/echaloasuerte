@@ -79,7 +79,8 @@ def find_previous_version(curr_draw):
     logger.info("There is a previous version of this draw in the DB {0}".format(prev_draw._id, k))
 
     #updatable fields of prev draw
-    for k in ('password', 'shared_type', 'title'):
+    UPDATE_FIELDS=('password', 'shared_type', 'title', 'users', 'number_of_results')
+    for k in UPDATE_FIELDS:
         prev_draw.__dict__[k] = curr_draw.__dict__[k]
     return prev_draw
 
