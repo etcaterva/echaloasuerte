@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from web import views
 
@@ -14,7 +14,7 @@ urlpatterns += patterns(
     url(r'^publish_draw.html$', views.index, {'is_public': True}, name="publish_draw"),
     url(r'^join_draw.html$', views.join_draw, name="join_public_draw"),
 
-    url(r'^about.html$', views.under_construction, name="about"),
+    url(r'^about.html$', TemplateView.as_view(template_name='about.html'), name="about"),
     url(r'^draw/(?P<draw_id>[0-9a-g]+)/$', views.retrieve_draw, name="retrieve_draw"),
     url(r'^accounts/register/$', views.register, name='register'),
     url(r'^accounts/forgot_password/$', views.under_construction, name='forgot_password'),
