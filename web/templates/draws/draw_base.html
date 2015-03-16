@@ -35,10 +35,10 @@
     });
 
     // set type of submit
-    $('button[type=submit]').click(function() {
+    /*$('button[type=submit]').click(function() {
         $("input[name=submit-type]").val($(this).attr("name"));
         return true;
-    });
+    });*/
 
 
     $('.accordion').accordion({collapsible: true});
@@ -84,6 +84,20 @@
     });
 
     {% if is_public  or bom.shared_type != "None" %}
+        {% if public_draw_step == "spread" %}
+            $('.step-configure').hide();
+        {% elif public_draw_step == "configure" %}
+            $('.step-spread').hide();
+        {% endif %}
+        // Store the step of the creating of a public draw we are in
+        $("input[name=submit-type]").val("{{ public_draw_step }}");
+
+        // If "Try" button is clicked, the type of submition changes
+        $('#try').click(function() {
+            $("input[name=submit-type]").val("try");
+            return true;
+        });
+
         // Udate the breadcrum
         $('.info-public-draw #choose').removeClass('focus');
         $('.info-public-draw #choose').addClass('done');
@@ -115,10 +129,10 @@
 	    });
 
         // By default, divs for "Spread" step are hidden
-        $('.step-spread').hide();
+
 
         // Setting up button "Next"
-        $('#next').click(function() {
+        /*$('#next').click(function() {
             $('.step-configure').hide();
             $('.step-spread').show();
 
@@ -127,7 +141,7 @@
             $('.info-public-draw #configure').addClass('done');
             $('.info-public-draw #spread').removeClass('done');
             $('.info-public-draw #spread').addClass('focus');
-        });
+        });*/
 
         $('#public-draw-invite #emails').tokenfield({createTokensOnBlur:true, delimiter: ' ', minWidth: 100});
         //$('[data-toggle="tooltip"]').popover({trigger: 'hover','placement': 'top'});
@@ -172,38 +186,37 @@
             </div>
             <!-- End Draw Heading -->
             {% if is_public %}
-                <div class="step-spread">
-                    <div class="row">
-                        <div class="public-draw-restriction col-xs-12 col-md-8 col-md-offset-2">
-                            <div class="col-xs-6">
-                                <p class="h4">Who can access your draw? </p>
-                            </div>
-                            <div class="col-xs-6 text-center">
-                                <a data-toggle="modal" href="#modal" class="add-password">
-                                    <span class="fa fa-unlock fa-2x"></span> <div id="public-mode-selected"> Everyone </div>
+                {% if public_draw_step == "configure" or public_draw_step == "spread" %}
+                    <!-- Inputs to configure the public draw, only rendered for configure and spread steps -->
+                    <div class="step-spread">
+                        <div class="row">
+                            <div class="public-draw-restriction col-xs-12 col-md-8 col-md-offset-2">
+                                <div class="col-xs-6">
+                                    <p class="h4">Who can access your draw? </p>
+                                </div>
+                                <div class="col-xs-6 text-center">
+                                    <a data-toggle="modal" href="#modal" class="add-password">
+                                        <span class="fa fa-unlock fa-2x"></span> <div id="public-mode-selected"> Everyone </div>
 
-                                </a>
+                                    </a>
 
+                                </div>
+                                <div id="recently-created" class="col-xs-12 form-group">
+                                    <p data-toggle="tooltip" data-placement="top" title="It will help your friends to find your draw faster"> <input type="checkbox"> Show the draw in the list "Recently created".</p>
+                                </div>
                             </div>
-                            <div id="recently-created" class="col-xs-12 form-group">
-                                <p data-toggle="tooltip" data-placement="top" title="It will help your friends to find your draw faster"> <input type="checkbox"> Show the draw in the list "Recently created".</p>
+                        </div>
+                        <div class="row">
+                            <div id="public-draw-invite" class="col-xs-12 col-md-8 col-md-offset-2">
+                                <p class="h4"> Invite people: </p>
+                                    <p>An invitation will arrive to the emails you introduce below</p>
+                                    <input type="text" id="emails" class="form-control" placeholder="Type the emails here...">
+                                    <p>OR</p>
+                                <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">Share the link to the draw: <a><strike>http://127.0.0.1:8000/draw/5504d71b78332720c439f120</strike></a></p>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div id="public-draw-invite" class="col-xs-12 col-md-8 col-md-offset-2">
-                            <p class="h4"> Invite people: </p>
-                                <p>An invitation will arrive to the emails you introduce below</p>
-                                <input type="text" id="emails" class="form-control" placeholder="Type the emails here...">
-                                <p>OR</p>
-                            <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">Share the link to the draw: <a><strike>http://127.0.0.1:8000/draw/5504d71b78332720c439f120</strike></a></p>
-
-
-                        </div>
-                    </div>
-
-
-                </div>
+                {% endif %}
             {% endif %}
 
             <div class="col-sm-8 col-sm-offset-2">
@@ -222,66 +235,77 @@
                     </div>
                     <div class="col-xs-12 text-center">
                         <!-- Buttons for 'Toss' or 'Try it!' -->
-                        {% if is_public %}
-                            <div class="row btn-row step-configure">
-                                <button type="submit" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
-                            </div>
-                        {% else %}
-                            <div class="row btn-row">
-                                <button type="submit" name="toss" class="btn btn-success"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
-                            </div>
-                            {%if not can_write and bom.owner%}
-                                <div class="alert alert-warning alert-dismissible" role="alert">
-                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                  {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
-                                </div>
-                            {%endif%}
-                        {% endif %}
+                        <div class="row btn-row">
+                            {% if is_public %}
+                                    {% if public_draw_step == "configure" %}
+                                        <!-- Button to try a draw when creating a public one -->
+                                        <button id="try" type="submit" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
+                                    {% elif public_draw_step == "published" %}
+                                        <button type="submit" name="toss" class="btn btn-success"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
+                                        {%if not can_write and bom.owner%}
+                                            <div class="alert alert-warning alert-dismissible" role="alert">
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                              {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
+                                            </div>
+                                        {%endif%}
+                                    {% endif %}
+                            {% else %}
+                                <button type="submit" name="toss" class="btn btn-success">{% trans 'Toss' %}</button>
+                            {% endif %}
+                        </div>
 
                         <!-- Buttons for 'Next step' and 'Cancel' public draw creation -->
                         {% if is_public %}
-                            <div class="col-sm-8 col-sm-offset-2 btn-row">
-                                <a href="{% url 'index' %}" class="col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
-                                <a id="next" name="next" class="col-xs-6 btn btn-primary step-configure">{% trans 'Next step' %}</a>
-                                <button type="submit" name="next" class="col-xs-6 btn btn-primary step-spread">{% trans 'Publish it' %}</button>
-                            </div>
+                            {% if public_draw_step == "configure" or public_draw_step == "spread" %}
+                                <div class="col-sm-8 col-sm-offset-2 btn-row">
+                                    <a href="{% url 'index' %}" class="col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
+                                    {% if public_draw_step == "configure" %}
+                                        <button type="submit" id="next" name="next" class="col-xs-6 btn btn-primary">{% trans 'Next step' %}</button>
+                                    {% elif public_draw_step == "spread" %}
+                                        <button type="submit" name="next" class="col-xs-6 btn btn-primary">{% trans 'Publish it' %}</button>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
                         {% endif %}
                     </div>
                 {% endblock input_form %}
             </div>
-            <input class="hidden" name="submit-type" />
+            <input class="hidden" name="submit-type" value="toss"/>
+            <input class="hidden" name="public-draw-step" />
         </form>
         <!-- End Input Form -->
         <!-- Results -->
-        <div class="col-sm-8 col-sm-offset-2 step-configure">
-            <div class="row text-center accordion">
-            {% for result in bom.results reversed %}
-            {% with result.items as results%}
-                {% if results %}
-                    <p class="h3">
-                        {%trans 'Result' %}{{results|length|pluralize}}
-                        <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
-                        <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
-                    </p>
-                    <div >
-                        {% block result %}{% endblock result %}
+        {% if not is_public or public_draw_step == "configure" %}
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="row text-center accordion">
+                    {% for result in bom.results reversed %}
+                    {% with result.items as results%}
+                        {% if results %}
+                            <p class="h3">
+                                {%trans 'Result' %}{{results|length|pluralize}}
+                                <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
+                                <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                            </p>
+                            <div >
+                                {% block result %}{% endblock result %}
 
-                    </div>
-                {% endif %}
-            {% endwith %}
-            {% endfor %}
-            <!-- Previous draw -->
-            {% if bom.prev_draw %}
-                <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated before '%}</small></p>
-                <div >
-                   {%trans 'The configuration of the draw was changed.'%}<br/>
-                   {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    {% endfor %}
+                    <!-- Previous draw -->
+                    {% if bom.prev_draw %}
+                        <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated before '%}</small></p>
+                        <div >
+                           {%trans 'The configuration of the draw was changed.'%}<br/>
+                           {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
 
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
             </div>
-            <!-- End Results -->
-        </div>
+        {% endif %}
+        <!-- End Results -->
     </div>
 
     <div id="modal" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">

@@ -293,6 +293,7 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
     context['can_write'] = True
     if publish:
         context['is_public'] = 'publish'
+        context['public_draw_step'] = 'configure'
     if request.method == 'POST':
         #create/update draw
         logger.debug("Received post data: {0}".format(request.POST))
@@ -307,6 +308,15 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             if bom_draw.is_feasible():
                 #check type of submit
                 submit_type = request.POST.get("submit-type","EMPTY").lower()
+                if submit_type == "configure":
+                    # Configuration has been done. Next step is spread
+                    # return the draw's id
+                    context['public_draw_step'] = 'spread'
+                    pass
+                if submit_type == "spread":
+                    # Spread has been done.
+                    context['public_draw_step'] = 'published'
+
                 if submit_type == "try":
                     bom_draw.toss()
                     logger.info("Generating test result for draw {0}".format(bom_draw.pk))
