@@ -90,7 +90,21 @@
             $('.step-spread').hide();
         {% endif %}
         // Store the step of the creating of a public draw we are in
-        $("input[name=submit-type]").val("{{ public_draw_step }}");
+        var current_step = "{{ public_draw_step }}";
+        console.log(current_step);
+        var submit_type = "toss"; //TODO Initialize this ------------------------------------------------------------------------------------------------------------------
+        if (current_step == "configure"){
+            submit_type = "go_to_spread";
+        } else {
+            if (current_step == "spread"){
+                submit_type = "publish";
+            } else {
+                if (current_step == "published"){
+                    submit_type = "public_toss";
+                }
+            }
+        }
+        $("input[name=submit-type]").val(submit_type);
 
         // If "Try" button is clicked, the type of submition changes
         $('#try').click(function() {
@@ -275,7 +289,7 @@
         </form>
         <!-- End Input Form -->
         <!-- Results -->
-        {% if not is_public or public_draw_step == "configure" %}
+        {% if not is_public or public_draw_step == "configure" or public_draw_step == "published"%}
             <div class="col-sm-8 col-sm-offset-2">
                 <div class="row text-center accordion">
                     {% for result in bom.results reversed %}

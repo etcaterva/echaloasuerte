@@ -294,6 +294,8 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
     if publish:
         context['is_public'] = 'publish'
         context['public_draw_step'] = 'configure'
+        logger.info("Creating public draw. Step finished: Choose type of draw")
+
     if request.method == 'POST':
         #create/update draw
         logger.debug("Received post data: {0}".format(request.POST))
@@ -308,29 +310,38 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             if bom_draw.is_feasible():
                 #check type of submit
                 submit_type = request.POST.get("submit-type","EMPTY").lower()
-                if submit_type == "configure":
-                    # Configuration has been done. Next step is spread
-                    # return the draw's id
-                    context['public_draw_step'] = 'spread'
-                    pass
-                if submit_type == "spread":
-                    # Spread has been done.
-                    context['public_draw_step'] = 'published'
-
-                if submit_type == "try":
-                    bom_draw.toss()
-                    logger.info("Generating test result for draw {0}".format(bom_draw.pk))
-                elif submit_type == "next":
-                    #User published the draw!
-                    bom_draw.results = []
-                    context['is_public'] = None
-                    logger.info("Created public draw {0}. Cleaned up results.".format(bom_draw.pk))
-                elif submit_type == "toss":
+                if submit_type == "toss":
+                    # Tossing a normal draw
                     bom_draw.toss()
                     logger.info("Generating result for draw {0}".format(bom_draw.pk))
+
+                elif submit_type == "go_to_spread":
+                    # Configuration has been done. Next step is spread
+                    # TODO return the draw's id
+                    context['public_draw_step'] = 'spread'
+                    logger.info("Creating public draw {0}. Step finished: Configure".format(bom_draw.pk))
+
+                elif submit_type == "publish":
+                    # The draw is configured. Make it public
+                    bom_draw.results = []
+                    context['public_draw_step'] = 'published'
+                    logger.info("Created public draw {0}. Cleaned up trial results.".format(bom_draw.pk))
+
+                elif submit_type == "public_toss":
+                    # It's a public draw and the button Toss has been clicked
+                    bom_draw.toss()
+                    context['public_draw_step'] = 'published'
+                    logger.info("Generated result for public draw {0}.".format(bom_draw.pk))
+
+                elif submit_type == "try":
+                    # While configuring a public draw, "Try" button has been clicked
+                    bom_draw.toss()
+                    logger.info("Generating test result for draw {0}".format(bom_draw.pk))
+
                 else:
                     logger.error("Invalid submit type: {0}. It will be considered as toss".format(submit_type))
                     bom_draw.toss()
+
                 mongodb.save_draw(bom_draw)
                 draw_form.data = draw_form.data.copy()
                 draw_form.data['_id'] = bom_draw.pk
@@ -348,6 +359,9 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             user_can_read_draw(request.user, bom_draw,request.GET.get("password", default=None))
             logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
             if bom_draw.draw_type == model_name:                                                    # MODEL NAME
+                if bom_draw.shared_type != None:
+                    context['is_public'] = 'publish'
+                    context['public_draw_step'] = 'published'
                 draw_form = globals()[form_name](initial=bom_draw.__dict__)                         # FORM NAME
             else:
                 logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
