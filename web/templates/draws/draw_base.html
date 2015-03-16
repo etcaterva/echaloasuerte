@@ -88,8 +88,20 @@
         // information, making easier the step backwards in the breadcrum
         {% if public_draw_step == "spread" %}
             $('.step-configure').hide();
+            // Udate the breadcrum
+            $('.info-public-draw #choose').removeClass('focus');
+            $('.info-public-draw #choose').addClass('done');
+            $('.info-public-draw #configure').addClass('done');
+            $('.info-public-draw #spread').addClass('focus');
+
         {% elif public_draw_step == "configure" %}
             $('.step-spread').hide();
+
+            // Udate the breadcrum
+            $('.info-public-draw #choose').removeClass('focus');
+            $('.info-public-draw #choose').addClass('done');
+            $('.info-public-draw #configure').addClass('focus');
+
         {% endif %}
 
         // Store the step we are in (when creating a public draw) to send it in the POST
@@ -114,20 +126,6 @@
             return true;
         });
 
-        // Udate the breadcrum
-        $('.info-public-draw #choose').removeClass('focus');
-        $('.info-public-draw #choose').addClass('done');
-        $('.info-public-draw #configure').removeClass('done');
-        $('.info-public-draw #configure').addClass('focus');
-
-	    var shared_type_field = $('input[name=shared_type]');
-
-    	//default is None, set to Public by default if it is a new public draw
-        shared_type_field.attr('value','{{bom.shared_type}}');
-        if(shared_type_field.attr('value') == 'None') {
-            shared_type_field.attr('value','Public');
-        }
-
         // Store the level of restiction for the draw
 	    $('#save').click(function () {
 	        var mode = $('.slide-bar').attr('data-selected');
@@ -144,24 +142,8 @@
 	        }
 	    });
 
-        // By default, divs for "Spread" step are hidden
-
-
-        // Setting up button "Next"
-        /*$('#next').click(function() {
-            $('.step-configure').hide();
-            $('.step-spread').show();
-
-            // Udate the breadcrum
-            $('.info-public-draw #configure').removeClass('focus');
-            $('.info-public-draw #configure').addClass('done');
-            $('.info-public-draw #spread').removeClass('done');
-            $('.info-public-draw #spread').addClass('focus');
-        });*/
-
+        // Initialize tokenField input to submit emails
         $('#public-draw-invite #emails').tokenfield({createTokensOnBlur:true, delimiter: ' ', minWidth: 100});
-        //$('[data-toggle="tooltip"]').popover({trigger: 'hover','placement': 'top'});
-        //$('[data-toggle="tooltip"]').popover('open');
     {% endif %}
 
     // Manages the slider to choose the level of restriction of the public draw
