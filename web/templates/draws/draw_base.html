@@ -84,15 +84,17 @@
     });
 
     {% if is_public  or bom.shared_type != "None" %}
+        // Spread and configure are both part of the draw's form. They are rendered (and hidden) because they still store
+        // information, making easier the step backwards in the breadcrum
         {% if public_draw_step == "spread" %}
             $('.step-configure').hide();
         {% elif public_draw_step == "configure" %}
             $('.step-spread').hide();
         {% endif %}
-        // Store the step of the creating of a public draw we are in
+
+        // Store the step we are in (when creating a public draw) to send it in the POST
         var current_step = "{{ public_draw_step }}";
-        console.log(current_step);
-        var submit_type = "toss"; //TODO Initialize this ------------------------------------------------------------------------------------------------------------------
+        var submit_type = "toss";
         if (current_step == "configure"){
             submit_type = "go_to_spread";
         } else {
@@ -370,7 +372,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -379,11 +380,6 @@
             <button id="save" data-dismiss="modal" type="button" class="btn btn-primary">Save</button>
         </div>
     </div>
-
-
-
-
-
 {% endblock %}
 
 
