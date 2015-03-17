@@ -42,6 +42,11 @@ public_draw_manager.prepare_privacy_selection = function (){
     // Initialize the UI (slider) to choose the level of restriction of the public draw
     SlideSelector.setup();
 
+    var shared_type_field = $('input[name=shared_type]');
+
+    // A public draw by default if accesible by everyone
+    shared_type_field.attr('value','Public');
+
     // Initialize button "Save changes". It stores the selection in the form input //TODO FIX
     $('#save').click(function () {
         var mode = $('.slide-bar').attr('data-selected');

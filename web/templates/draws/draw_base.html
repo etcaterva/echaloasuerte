@@ -10,6 +10,10 @@
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
+    // A singel user draw has shared_type "None"
+    var shared_type_field = $('input[name=shared_type]');
+    shared_type_field.attr('value','None');
+
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
       $(this).select();
