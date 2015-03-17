@@ -6,6 +6,7 @@
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/slideSelector.js' %}"></script>
+    {% if is_public %}<script src="{% static 'js/public_draw_manager.js' %}"></script>{% endif %}
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
@@ -83,71 +84,10 @@
          }
     });
 
-    {% if is_public  or bom.shared_type != "None" %}
-        // Spread and configure are both part of the draw's form. They are rendered (and hidden) because they still store
-        // information, making easier the step backwards in the breadcrum
-        {% if public_draw_step == "spread" %}
-            $('.step-configure').hide();
-            // Udate the breadcrum
-            $('.info-public-draw #choose').removeClass('focus');
-            $('.info-public-draw #choose').addClass('done');
-            $('.info-public-draw #configure').addClass('done');
-            $('.info-public-draw #spread').addClass('focus');
-
-        {% elif public_draw_step == "configure" %}
-            $('.step-spread').hide();
-
-            // Udate the breadcrum
-            $('.info-public-draw #choose').removeClass('focus');
-            $('.info-public-draw #choose').addClass('done');
-            $('.info-public-draw #configure').addClass('focus');
-
-        {% endif %}
-
-        // Store the step we are in (when creating a public draw) to send it in the POST
-        var current_step = "{{ public_draw_step }}";
-        var submit_type = "toss";
-        if (current_step == "configure"){
-            submit_type = "go_to_spread";
-        } else {
-            if (current_step == "spread"){
-                submit_type = "publish";
-            } else {
-                if (current_step == "published"){
-                    submit_type = "public_toss";
-                }
-            }
-        }
-        $("input[name=submit-type]").val(submit_type);
-
-        // If "Try" button is clicked, the type of submition changes
-        $('#try').click(function() {
-            $("input[name=submit-type]").val("try");
-            return true;
-        });
-
-        // Store the level of restiction for the draw
-	    $('#save').click(function () {
-	        var mode = $('.slide-bar').attr('data-selected');
-	        if (mode == "invited"){
-				$('#id_password').val("");
-				shared_type_field.attr('value','Invite');
-	        }else if (mode == "password"){
-	            var password = $('#draw-password').val();
-	            $('#id_password').val(password);
-	            shared_type_field.attr('value','Public');
-	        }else{ // Everyone
-	        	$('#id_password').val("");
-				shared_type_field.attr('value','Public');
-	        }
-	    });
-
-        // Initialize tokenField input to submit emails
-        $('#public-draw-invite #emails').tokenfield({createTokensOnBlur:true, delimiter: ' ', minWidth: 100});
+    {% if is_public %}
+        public_draw_manager.setup("{{ public_draw_step }}");
     {% endif %}
 
-    // Manages the slider to choose the level of restriction of the public draw
-    SlideSelector.setup();
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
 
 {% endblock extra_jq_ready %}
@@ -160,8 +100,14 @@
                     <img src="{% static "img/back_arrow.png" %}"/>
                 </a>
                 <div class="col-xs-8 visible-xs"></div>
-                {% if is_public or bom.shared_type != "None" %}
-                    <div class="hidden-xs col-xs-2 col-sm-2 col-sm-push-8"></div>
+                {% if is_public %}
+                    {%  if public_draw_step == "published" %}
+                        <a id="fav-button" href="#" title="{%trans 'Public draw settings'%}" class="public-draw-settings col-xs-2 col-sm-2 col-sm-push-8 text-center ">
+                            <span id="public-draw-options" class="fa fa-gear fa-2x"></span>
+                        </a>
+                    {% else %}
+                        <div class="hidden-xs col-xs-2 col-sm-2 col-sm-push-8"></div>
+                    {% endif %}
                 {% else %}
 	                    <a id="fav-button"
 	                    {% if bom.pk in user.favourites %}
