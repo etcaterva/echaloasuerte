@@ -53,8 +53,8 @@
     {% block extra_head %}{% endblock extra_head %}
     <script>
         {% block extra_js %}{% endblock extra_js %}
+        // Replaced default tooltip by the one from JQueryUI
         $(document).tooltip();
-        $(document).hide();
 
         $(document).ready(function () {
            $('#language-dropdown li a').click(function () {
