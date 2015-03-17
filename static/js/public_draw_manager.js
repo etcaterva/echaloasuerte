@@ -69,7 +69,7 @@ public_draw_manager.show_spread = function () {
     public_draw_manager.prepare_privacy_selection();
 
     // Initialize input to submit emails to be shown as a tokenField
-    $('#public-draw-invite #emails').tokenfield({createTokensOnBlur:true, delimiter: ' ', minWidth: 100});
+    $('#public-draw-invite #emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], minWidth: 100});
 }
 
 // Initialize the interface for the step "Configure"
