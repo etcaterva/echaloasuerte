@@ -2,7 +2,7 @@ function public_draw_manager () {};
 
 // Updates the breadcrum to show the steps that have been already done
 public_draw_manager.update_breadcrum = function (current_step){
-    // However we reached here, the step choose it has already been done
+    // However we reached here, the step "choose it" has already been done
     $('.info-public-draw #choose').addClass('done');
     if (current_step == "spread"){
         $('.info-public-draw #configure').addClass('done');
@@ -19,14 +19,10 @@ public_draw_manager.set_submition_type = function (current_step){
     var submit_type = "toss";
     if (current_step == "configure"){
         submit_type = "go_to_spread";
-    } else {
-        if (current_step == "spread"){
-            submit_type = "publish";
-        } else {
-            if (current_step == "published"){
-                submit_type = "public_toss";
-            }
-        }
+    } else if (current_step == "spread"){
+        submit_type = "publish";
+    } else if (current_step == "published"){
+        submit_type = "public_toss";
     }
     $("input[name=submit-type]").val(submit_type);
 
@@ -44,7 +40,7 @@ public_draw_manager.prepare_privacy_selection = function (){
 
     var shared_type_field = $('input[name=shared_type]');
 
-    // A public draw by default if accesible by everyone
+    // A public draw by default is accesible by everyone
     shared_type_field.attr('value','Public');
 
     // Initialize button "Save changes". It stores the selection in the form input //TODO FIX
