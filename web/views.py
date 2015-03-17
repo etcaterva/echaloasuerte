@@ -266,6 +266,7 @@ def index(request, is_public=None):
     context = {}
     if is_public:
         context['is_public'] = 'publish'
+        context['public_draw_step'] = 'choose'
     return render(request, 'index.html', context)
 
 URL_TO_DRAW_MAP = {
