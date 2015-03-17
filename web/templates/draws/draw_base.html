@@ -96,6 +96,8 @@
 
 {% endblock extra_jq_ready %}
 {% block content %}
+    {# breadcrumb to assist the creation of a public draw #}
+    {% include "breadcrumb.html" %}
     <div class="row">
         <form class="clearfix" method="post">
             <!-- Draw Heading -->
