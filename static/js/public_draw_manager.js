@@ -1,7 +1,7 @@
 function public_draw_manager () {};
 
-// Updates the breadcrum to show the steps that have been already done
-public_draw_manager.update_breadcrum = function (current_step){
+// Updates the breadcrumb to show the steps that have been already done
+public_draw_manager.update_breadcrumb = function (current_step){
     // However we reached here, the step "choose it" has already been done
     $('.info-public-draw #choose').addClass('done');
     if (current_step == "spread"){
@@ -80,7 +80,7 @@ public_draw_manager.show_configure = function () {
 // Initialize the interface for a public draw
 public_draw_manager.setup = function(current_step){
 
-    public_draw_manager.update_breadcrum(current_step);
+    public_draw_manager.update_breadcrumb(current_step);
     public_draw_manager.set_submition_type(current_step);
 
     if (current_step == "spread"){
