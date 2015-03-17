@@ -51,7 +51,7 @@ a.fa:focus {
 
 .draw-heading .back-arrow,
 .draw-heading .add-favourites,
-.draw-heading .add-password{
+.draw-heading .public-draw-settings {
     padding: 10px 0 0 0;
 }
 
@@ -68,6 +68,26 @@ a.fa:focus {
 
 .draw-heading .add-password:hover {
     color: #404b6f;
+}
+
+/* Box containing the selected level of restriction when creating a public draw */
+.public-draw-restriction,
+#public-draw-invite {
+    background-color: #FCFCFC;
+    border: 1px #D7D7D7 solid;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.public-draw-restriction #recently-created {
+    border-top: 1px #D7D7D7 solid;
+    padding-top: 10px;
+}
+
+
+#public-draw-invite #emails {
+    min-width: 60px;
+    width: 450px;
 }
 
 /* Slidebar to choose the level of access to public draws */
@@ -182,9 +202,7 @@ a.fa:focus {
    line-height: 26px;
 }
 
-.btn-toss,
-.btn-try,
-.btn-next {
+.btn-row {
     margin-top: 13px;
     margin-bottom: 13px;
 }
