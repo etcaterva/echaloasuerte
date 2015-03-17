@@ -50,7 +50,8 @@ a.fa:focus {
 
 
 .draw-heading .back-arrow,
-.draw-heading .add-favourites{
+.draw-heading .add-favourites,
+.draw-heading .public-draw-settings {
     padding: 10px 0 0 0;
 }
 
