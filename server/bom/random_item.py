@@ -10,10 +10,10 @@ class RandomItemDraw(BaseDraw):
     """
     DEFAULT_TITLE= _("""Random Item""")
 
-    def __init__(self, items= [], allow_repeat=False, **kwargs):
+    def __init__(self, items = None, allow_repeat=False, **kwargs):
         super(RandomItemDraw, self).__init__(**kwargs)
 
-        self.items = items
+        self.items = items if items else []
         """Source items of the draw"""
 
         self.allow_repeat = allow_repeat
@@ -33,4 +33,3 @@ class RandomItemDraw(BaseDraw):
                     result.append(random_value)
                     break
         return result
-
