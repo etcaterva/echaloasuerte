@@ -293,6 +293,7 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
     context = {'errors': []}
     context['can_write'] = True
     if publish:
+        # The variable is_public will be used decide whether to render the single user draw or the public draw interface
         context['is_public'] = 'publish'
         context['public_draw_step'] = 'configure'
         logger.info("Creating public draw. Step finished: Choose type of draw")
@@ -305,6 +306,8 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             raw_draw = draw_form.cleaned_data
             logger.debug("Form cleaned data: {0}".format(raw_draw))
             bom_draw = globals()[model_name](**raw_draw)                                            # MODEL NAME
+            if bom_draw.shared_type != "None":
+                context['is_public'] = 'publish'
             user_can_write_draw(request.user, bom_draw)
             set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
@@ -328,7 +331,7 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
                     #context['public_draw_step'] = 'published'
                     logger.info("Created public draw {0}. Cleaned up trial results.".format(bom_draw.pk))
                     mongodb.save_draw(bom_draw)
-                    return redirect('draw', draw_type=draw_type, draw_id=bom_draw.pk )
+                    return redirect('draw', draw_type=draw_type, draw_id=bom_draw.pk)
                     #return draw(request, DRAW_TO_URL_MAP[bom_draw.draw_type], bom_draw.pk)
 
                 elif submit_type == "public_toss":
@@ -365,7 +368,6 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             if bom_draw.draw_type == model_name:                                                    # MODEL NAME
                 if bom_draw.shared_type != None:
                     context['is_public'] = 'publish'
-                    #context['public_draw_step'] = 'published'
                 draw_form = globals()[form_name](initial=bom_draw.__dict__)                         # FORM NAME
             else:
                 logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
