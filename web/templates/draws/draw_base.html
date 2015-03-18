@@ -10,10 +10,6 @@
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
-    // A single user draw has shared_type "None"
-    var shared_type_field = $('input[name=shared_type]');
-    shared_type_field.attr('value','None');
-
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
       $(this).select();
@@ -80,15 +76,7 @@
             }
          }
     });
-
-    //TODO remove
-    console.log("type: {{ bom.shared_type }}");
-
-    // By default, a draw is for a single user so the the type of submition is "toss"
-    $("input[name=submit-type]").val("toss");
-
     {% if is_public %}
-
         public_draw_manager.setup("{{ public_draw_step }}");
     {% endif %}
 
@@ -224,7 +212,11 @@
                     </div>
                 {% endblock input_form %}
             </div>
-            <input class="hidden" name="submit-type" value="toss"/>
+            {# shared-type: It's part of "FormBase". Can be "None", "Public" or "Invite" #}
+            <input class="hidden" name="shared_type" value="{% if is_public %}Public{% else %}None{% endif %}"/>
+            {# submit-type: Determine the type of submition, by default it's a toss (normal or public) #}
+            <input class="hidden" name="submit-type" value="{% if is_public %}public_toss{% else %}toss{% endif %}"/>
+            {# public-draw-step: Can be "Choose", "Confifure" or "Spread" #}
             <input class="hidden" name="public-draw-step" />
         </form>
         <!-- End Input Form -->
