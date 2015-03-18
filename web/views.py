@@ -325,13 +325,16 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
                 elif submit_type == "publish":
                     # The draw is configured. Make it public
                     bom_draw.results = []
-                    context['public_draw_step'] = 'published'
+                    #context['public_draw_step'] = 'published'
                     logger.info("Created public draw {0}. Cleaned up trial results.".format(bom_draw.pk))
+                    mongodb.save_draw(bom_draw)
+                    return redirect('draw', draw_type=draw_type, draw_id=bom_draw.pk )
+                    #return draw(request, DRAW_TO_URL_MAP[bom_draw.draw_type], bom_draw.pk)
 
                 elif submit_type == "public_toss":
                     # It's a public draw and the button Toss has been clicked
                     bom_draw.toss()
-                    context['public_draw_step'] = 'published'
+                    #context['public_draw_step'] = 'published'
                     logger.info("Generated result for public draw {0}.".format(bom_draw.pk))
 
                 elif submit_type == "try":
@@ -362,7 +365,7 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             if bom_draw.draw_type == model_name:                                                    # MODEL NAME
                 if bom_draw.shared_type != None:
                     context['is_public'] = 'publish'
-                    context['public_draw_step'] = 'published'
+                    #context['public_draw_step'] = 'published'
                 draw_form = globals()[form_name](initial=bom_draw.__dict__)                         # FORM NAME
             else:
                 logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))

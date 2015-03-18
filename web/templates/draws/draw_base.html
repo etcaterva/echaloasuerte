@@ -81,7 +81,14 @@
          }
     });
 
+    //TODO remove
+    console.log("type: {{ bom.shared_type }}");
+
+    // By default, a draw is for a single user so the the type of submition is "toss"
+    $("input[name=submit-type]").val("toss");
+
     {% if is_public %}
+
         public_draw_manager.setup("{{ public_draw_step }}");
     {% endif %}
 
@@ -100,7 +107,7 @@
                 </a>
                 <div class="col-xs-8 visible-xs"></div>
                 {% if is_public %}
-                    {%  if public_draw_step == "published" %}
+                    {% if not public_draw_step %}
                         <a id="settings-button" href="#" title="{%trans 'Public draw settings'%}" class="public-draw-settings col-xs-2 col-sm-2 col-sm-push-8 text-center ">
                             <span id="public-draw-options" class="fa fa-gear fa-2x"></span>
                         </a>
@@ -187,7 +194,7 @@
                                     {% if public_draw_step == "configure" %}
                                         <!-- Button to try a draw when creating a public one -->
                                         <button id="try" type="submit" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
-                                    {% elif public_draw_step == "published" %}
+                                    {% elif not public_draw_step %}
                                         <button type="submit" name="toss" class="btn btn-success"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
                                         {%if not can_write and bom.owner%}
                                             <div class="alert alert-warning alert-dismissible" role="alert">
@@ -222,7 +229,7 @@
         </form>
         <!-- End Input Form -->
         <!-- Results -->
-        {% if not is_public or public_draw_step == "configure" or public_draw_step == "published"%}
+        {% if not is_public or public_draw_step == "configure" or not public_draw_step %}
             <div class="col-sm-8 col-sm-offset-2">
                 <div class="row text-center accordion">
                     {% for result in bom.results reversed %}
