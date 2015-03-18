@@ -36,7 +36,7 @@ public_draw_manager.prepare_privacy_selection = function (){
     // Initialize the UI (slider) to choose the level of restriction of the public draw
     SlideSelector.setup();
 
-
+    var shared_type_field = $('input[name=shared_type]');
 
     // Initialize button "Save changes". It stores the selection in the form input //TODO FIX
     $('#save').click(function () {
@@ -74,10 +74,6 @@ public_draw_manager.show_configure = function () {
 
 // Initialize the interface for a public draw
 public_draw_manager.setup = function(current_step){
-
-    // A public draw by default is accesible by everyone
-    var shared_type_field = $('input[name=shared_type]');
-    shared_type_field.attr('value','Public');
 
     public_draw_manager.update_breadcrumb(current_step);
     public_draw_manager.set_submition_type(current_step);
