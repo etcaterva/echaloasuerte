@@ -1,4 +1,4 @@
-function SlideSelector () {};
+var SlideSelector = {};
 
 SlideSelector.select_everyone = function (relative_pos_selector){
     $('.slide-bar').attr("data-selected","everyone");

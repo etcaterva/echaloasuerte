@@ -1,4 +1,4 @@
-function public_draw_manager () {};
+var public_draw_manager = {};
 
 // Updates the breadcrumb to show the steps that have been already done
 public_draw_manager.update_breadcrumb = function (current_step){
