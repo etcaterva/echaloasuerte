@@ -267,6 +267,7 @@ def index(request, is_public=None):
     context = {}
     if is_public:
         context['is_public'] = 'publish'
+        context['public_draw_step'] = 'choose'
     return render(request, 'index.html', context)
 
 URL_TO_DRAW_MAP = {
@@ -287,42 +288,80 @@ def retrieve_draw(request, draw_id):
 
 @time_it
 def draw(request, draw_type=None,  draw_id=None, publish=None):
+    # Based on "draw_type" parameter, get the name of it's model
     model_name = URL_TO_DRAW_MAP[draw_type]
+    # Based on the model's name, get the name of the form
     form_name = model_name + "Form"
-    bom_draw = globals()[model_name]()                                                               # FORM NAME
-    context = {'errors': []}
-    context['can_write'] = True
+    # Create an empty draw object (based on the parameter "draw_type")
+    bom_draw = globals()[model_name]()
+    context = {'errors': [], 'can_write': True}
     if publish:
+        # The variable is_public is used decide whether to render the single user draw or the public draw interface
+        # It's only declared if the draw is public.
         context['is_public'] = 'publish'
+        # The variable "public_draw_step" is used to decide which step has to be rendered while creating a public draw
+        # It's only declared during the process of creation (does not exists when the draw is published)
+        # It's set to configure since the step "choose" has already been done in the view "index"
+        context['public_draw_step'] = 'configure'
+        logger.info("Creating public draw. Step finished: Choose type of draw")
+
     if request.method == 'POST':
-        #create/update draw
+        # The ways to reach here is either by performing a toss or being in the process of configuring a public draw
         logger.debug("Received post data: {0}".format(request.POST))
-        draw_form = globals()[form_name](request.POST)                                              # FORM NAME
+        # Create a form (based on the parameter "draw_type") and load in it the data coming in the POST
+        draw_form = globals()[form_name](request.POST)
         if draw_form.is_valid():
+            # Obtain the data from the form
             raw_draw = draw_form.cleaned_data
             logger.debug("Form cleaned data: {0}".format(raw_draw))
-            bom_draw = globals()[model_name](**raw_draw)                                            # MODEL NAME
+            # Create a draw object with the data coming in the POST
+            bom_draw = globals()[model_name](**raw_draw)
+            # When the draw is public, the variable "is_public" will be send to the template
+            if bom_draw.shared_type != "None":
+                context['is_public'] = 'publish'
             user_can_write_draw(request.user, bom_draw)
             set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
                 #check type of submit
                 submit_type = request.POST.get("submit-type","EMPTY").lower()
-                if submit_type == "try":
-                    bom_draw.toss()
-                    logger.info("Generating test result for draw {0}".format(bom_draw.pk))
-                elif submit_type == "next":
-                    #User published the draw!
-                    bom_draw.results = []
-                    context['is_public'] = None
-                    logger.info("Created public draw {0}. Cleaned up results.".format(bom_draw.pk))
-                elif submit_type == "toss":
+                if submit_type == "toss":
+                    # Tossing a normal draw
                     bom_draw.toss()
                     logger.info("Generating result for draw {0}".format(bom_draw.pk))
+
+                elif submit_type == "go_to_spread":
+                    # Configuration has been done. Next step is spread
+                    # TODO return the draw's id
+                    context['public_draw_step'] = 'spread'
+                    logger.info("Creating public draw {0}. Step finished: Configure".format(bom_draw.pk))
+
+                elif submit_type == "publish":
+                    # The draw is configured. Make it public
+                    bom_draw.results = []
+                    logger.info("Created public draw {0}. Cleaned up trial results.".format(bom_draw.pk))
+                    mongodb.save_draw(bom_draw)
+                    # The user is redirected to the draw he has created
+                    return redirect('draw', draw_type=draw_type, draw_id=bom_draw.pk)
+
+                elif submit_type == "public_toss":
+                    # It's a public draw and the button Toss has been clicked
+                    bom_draw.toss()
+                    logger.info("Generated result for public draw {0}.".format(bom_draw.pk))
+
+                elif submit_type == "try":
+                    # While configuring a public draw, "Try" button has been clicked
+                    bom_draw.toss()
+                    logger.info("Generating test result for draw {0}".format(bom_draw.pk))
+
                 else:
                     logger.error("Invalid submit type: {0}. It will be considered as toss".format(submit_type))
                     bom_draw.toss()
+
                 mongodb.save_draw(bom_draw)
+                # Update the draw's id in the form
+                # The configuration may be changed by the user. If so, a new draw is generated so the id needs to be updated.
+                # The dictionary "data" needs to be copied since the POST variable is immutable
                 draw_form.data = draw_form.data.copy()
                 draw_form.data['_id'] = bom_draw.pk
                 logger.debug("Generated draw: {0}".format(bom_draw))
@@ -334,23 +373,26 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             logger.debug("Errors in the form: {0}".format(draw_form.errors))
     else:
         if draw_id:
-            #retrieve draw
+            # The user is retrieving a draw (it can be public or for a single user)
             bom_draw = mongodb.retrieve_draw(draw_id)
             user_can_read_draw(request.user, bom_draw,request.GET.get("password", default=None))
             logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
-            if bom_draw.draw_type == model_name:                                                    # MODEL NAME
-                draw_form = globals()[form_name](initial=bom_draw.__dict__)                         # FORM NAME
+            if bom_draw.draw_type == model_name:
+                # If the draw is public, the variable is_public is send to the template
+                if not bom_draw.shared_type is None:
+                    context['is_public'] = 'publish'
+                draw_form = globals()[form_name](initial=bom_draw.__dict__)
             else:
                 logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
                 raise Http404
         else:
             #Serve to create Draw
-            draw_form = globals()[form_name]()                                                      # FORM NAME
+            draw_form = globals()[form_name]()
 
     context['can_write'] = bom_draw.user_can_write(request.user)
     context['draw'] = draw_form
     context["bom"] = bom_draw
-    template_path = 'draws/{0}.html'.format(model_name)                                             # MODEL NAME
+    template_path = 'draws/{0}.html'.format(model_name)
     return render(request, template_path, context)
 
 

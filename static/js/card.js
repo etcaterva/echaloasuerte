@@ -1,5 +1,5 @@
 
-function Card() {}
+var Card = {};
 
 /* Pre: the baseUrl has to point to the folder with the images through static files*/
 Card.baseUrl = "";
