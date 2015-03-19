@@ -3,17 +3,6 @@
 {% load bootstrap %}
 {% load i18n %}
 {% block extra_jq_ready %}
-	/*var default_help_header = $(".header-help").text();
-	$(".draw-link").hover(
-	function(){ //in
-        var help_header = $(this).attr("data-help");
-	    $(".header-help").text(help_header);
-	},
-	function(){ //out
-	    $(".header-help").text(default_help_header);
-	}
-	);*/
-
     $(function() {
         $( ".draw-link" ).hover(
             function() {
@@ -26,7 +15,6 @@
             }
         );
     });
-
 {% endblock extra_jq_ready %}
 {% block content %}
 	<div class="row">
