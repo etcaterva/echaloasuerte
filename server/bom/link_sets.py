@@ -26,10 +26,10 @@ class LinkSetsDraw(BaseDraw):
     """
     DEFAULT_TITLE = _("""Link sets""")
 
-    def __init__(self, sets=[], **kwargs):
+    def __init__(self, sets = None, **kwargs):
         super(LinkSetsDraw, self).__init__(**kwargs)
 
-        self.sets = sets
+        self.sets = sets if sets else []
         """List of sets of items to asociate"""
 
         self.number_of_results = None #Override as meaningless
