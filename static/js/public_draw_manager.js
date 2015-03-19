@@ -10,6 +10,7 @@ public_draw_manager.update_breadcrumb = function (current_step){
     else{
         if (current_step == "configure"){
             // If the step "spread" has already been done, add the CSS class "done"
+            // This part will be filled when the step backward is implemented
         }
     }
 }
