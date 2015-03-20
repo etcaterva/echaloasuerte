@@ -225,6 +225,16 @@ def remove_favorite(request):
     logger.info("Draw {0} removed as favorite for user {1}".format(draw_id, request.user.pk))
     return HttpResponse()
 
+@time_it
+def check_access_to_draw(request):
+    draw_id  = request.GET.get('draw_id')
+    password = request.GET.get('draw_pass')
+    user_id  = request.user.pk if request.user.is_authenticated() else None
+    draw = mongodb.retrieve_draw(draw_id)
+
+    user_can_read_draw(request.user,draw,password)
+    return HttpResponse()
+
 @login_required
 @time_it
 def profile(request):
