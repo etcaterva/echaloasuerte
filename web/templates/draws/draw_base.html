@@ -6,6 +6,8 @@
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/slideSelector.js' %}"></script>
+    <script src="{% static 'js/chat.js' %}"></script>
+    <link href="{% static 'css/chat.css' %}" rel="stylesheet" />
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
@@ -91,7 +93,6 @@
             shared_type_field.attr('value','Public');
         }
 
-
 	    $('#save').click(function () {
 	        var mode = $('.slide-bar').attr('data-selected');
 	        if (mode == "invited"){
@@ -106,6 +107,67 @@
 				shared_type_field.attr('value','Public');
 	        }
 	    });
+
+    {% if not is_public %}
+    $("#chat-row").removeClass("hidden");
+
+    //Chat js
+    $(".panel-heading").click( function() {
+        $(this).parent().find(".panel-body").toggle(150);
+    });
+
+    var chat = $(".panel-body .chat");
+    /**
+    * Code to handle a user hitting submit in the chat input
+    */
+    function chatInputSubmitted(){
+        var new_content = $("#btn-input-chat").val();
+        $("#btn-input-chat").val("");
+
+        //check empty string
+        if(!new_content || /^\s*$/.test(new_content)){
+            return;
+        }
+
+        $.ajax({
+            url : "{% url 'chat_add_message' %}",
+            method : "GET",
+            data: {
+                draw_id : "{{ bom.pk }}",
+                message : new_content
+            }
+        });
+
+        updateChat();
+    }
+    $("#btn-chat").click(chatInputSubmitted);
+    $("#btn-input-chat").keyup(function (e) {
+       if(e.keyCode == 13) chatInputSubmitted();
+    });
+
+    //load chat
+    var timeout = false;
+    function updateChat(){
+        timeout && clearTimeout(timeout);
+        $.ajax({
+            url : "{% url 'chat_get_messages' %}",
+            method : "GET",
+            data: { draw_id : "{{ bom.pk }}"},
+            success : function(data){
+                chat.html("");
+                var arr = data.messages;
+                for (var i = 0, length = arr.length; i < length; i++) {
+                  var element = arr[i];
+                  var entry = formatChatEntry(element);
+                  chat.append(entry);
+                }
+            }
+        });
+        timeout = setTimeout(updateChat, 5000);
+    }; //auto update
+    updateChat();
+    {% endif %}
+
     {% endif %}
 
     // Manages the slider to choose the level of restriction of the public draw
@@ -190,6 +252,37 @@
             <input class="hidden" name="submit-type" />
         </form>
         <!-- End Input Form -->
+
+        <!-- Chat -->
+        {% if is_public  or bom.shared_type != "None" %}
+
+    <div id="chat-row" class="row hidden">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span> Chat
+                </div>
+                <div class="panel-body">
+                    <ul class="chat">
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="btn-input-chat"{%if user.is_anonymous%} disabled="disabled" {%endif%} type="text" class="form-control input-sm" placeholder="{% trans 'Type your message here...' %}" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning btn-sm" id="btn-chat" {%if user.is_anonymous%} title="{% trans 'Please, register to be able to use the chat'%}" {%endif%}>
+                                {% trans 'Send' %}</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        {% endif %}
+        <!-- End Chat -->
+
         <!-- Results -->
         <div class="col-sm-8 col-sm-offset-2">
             <div class="row text-center accordion">

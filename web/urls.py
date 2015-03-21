@@ -26,4 +26,6 @@ urlpatterns += patterns(
     url(r'^ws/favourites/add/$', views.add_favorite, name="ws_add_favorite"),
     url(r'^ws/favourites/remove/$', views.remove_favorite, name="ws_remove_favorite"),
     url(r'^ws/check_access_to_draw/$', views.check_access_to_draw, name="check_access_to_draw"),
+    url(r'^ws/chat/add/$', views.add_message_to_chat, name="chat_add_message"),
+    url(r'^ws/chat/get/$', views.get_chat_messages, name="chat_get_messages"),
 )
