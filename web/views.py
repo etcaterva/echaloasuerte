@@ -229,10 +229,9 @@ def remove_favorite(request):
 def check_access_to_draw(request):
     draw_id  = request.GET.get('draw_id')
     password = request.GET.get('draw_pass')
-    user_id  = request.user.pk if request.user.is_authenticated() else None
     draw = mongodb.retrieve_draw(draw_id)
 
-    user_can_read_draw(request.user,draw,password)
+    user_can_read_draw(request.user, draw, password)
     return HttpResponse()
 
 @login_required
