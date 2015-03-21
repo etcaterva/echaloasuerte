@@ -234,6 +234,24 @@ def check_access_to_draw(request):
     user_can_read_draw(request.user, draw, password)
     return HttpResponse()
 
+def add_message_to_chat(request):
+    draw_id  = request.GET.get('draw_id')
+    message  = request.GET.get('message')
+    user     = request.user.pk
+    mongodb.add_chat_message(draw_id, message, user)
+    return HttpResponse()
+
+def get_chat_messages(request):
+    draw_id  = request.GET.get('draw_id')
+    try:
+        messages = mongodb.retrieve_chat_messages(draw_id)
+    except MongoDriver.NotFoundError:
+        messages = []
+
+    return JsonResponse({
+        "messages" : messages
+        })
+
 @login_required
 @time_it
 def profile(request):
