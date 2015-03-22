@@ -86,8 +86,7 @@ a.fa:focus {
 
 
 #public-draw-invite #emails {
-    min-width: 60px;
-    width: 450px;
+    width: 100%;
 }
 
 /* Slidebar to choose the level of access to public draws */
