@@ -73,13 +73,23 @@ public_draw_manager.show_configure = function () {
     $('.step-spread').hide();
 }
 
+public_draw_manager.settings = function () {
+
+    $('#edit-draw').click(function() {
+        // Do something
+    });
+
+}
 // Initialize the interface for a public draw
 public_draw_manager.setup = function(current_step){
 
     public_draw_manager.update_breadcrumb(current_step);
     public_draw_manager.set_submition_type(current_step);
 
-    if (current_step == "spread"){
+    if (current_step == ""){
+        // If the draw has already been published
+        public_draw_manager.settings();
+    } else if (current_step == "spread"){
         public_draw_manager.show_spread();
     } else if (current_step == "configure"){
         public_draw_manager.show_configure();
