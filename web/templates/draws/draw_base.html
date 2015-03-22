@@ -285,13 +285,14 @@
         </div>
 
         {# Hover panel to show the settings of the public draw (when it is published) #}
-        <div id="public-draw-settings" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
+        <div id="public-draw-settings" class="modal fade" tabindex="-1" style="display: none;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">{% trans "Public draw settings" %}</h4>
             </div>
-            <div class="modal-body">
-                <!-- To be filled -->
+            <div class="modal-body row">
+                {% include "public-draw-access.html" %}
+                {% include "public-draw-invite.html" %}
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
