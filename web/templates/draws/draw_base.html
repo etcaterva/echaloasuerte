@@ -258,54 +258,54 @@
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title">{% trans "Restict the access to your draw" %}</h4>
-            </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            {% trans "Who do you want to access the draw?" %}
-                            <div class="col-sm-8 col-sm-offset-2 text-center">
-                                <div id="restriction-headings">
-                                    <div id="restriction-everyone" class="col-xs-3">{% trans "Everyone" %}</div>
-                                    <div id="restriction-password" class="col-xs-6">{% trans "With password or invitation" %}</div>
-                                    <div id="restriction-invited" class="col-xs-3">{% trans "Only with invitation" %}</div>
-                                </div>
-                                <div class="col-xs-8 col-sm-10 col-xs-offset-2 col-sm-offset-1 slide-bar-container">
-                                    <div data-selected="everyone" class="slide-bar ui-widget-content">
-                                        <div class="slider-tick" style="left: 0%"></div>
-                                        <div class="slider-tick" style="left: 50%"></div>
-                                        <div class="slider-tick" style="left: 100%"></div>
-                                        <div class="slide-selector" ></div>
-                                    </div>
-                                </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    {% trans "Who do you want to access the draw?" %}
+                    <div class="col-sm-8 col-sm-offset-2 text-center">
+                        <div id="restriction-headings">
+                            <div id="restriction-everyone" class="col-xs-3">{% trans "Everyone" %}</div>
+                            <div id="restriction-password" class="col-xs-6">{% trans "With password or invitation" %}</div>
+                            <div id="restriction-invited" class="col-xs-3">{% trans "Only with invitation" %}</div>
+                        </div>
+                        <div class="col-xs-8 col-sm-10 col-xs-offset-2 col-sm-offset-1 slide-bar-container">
+                            <div data-selected="everyone" class="slide-bar ui-widget-content">
+                                <div class="slider-tick" style="left: 0%"></div>
+                                <div class="slider-tick" style="left: 50%"></div>
+                                <div class="slider-tick" style="left: 100%"></div>
+                                <div class="slide-selector" ></div>
                             </div>
-                            <div id="restriction-extra" class="col-xs-12">
-                                <div id="extra-everyone" class="col-xs-12">
-                                    {% trans "Everyone will be able to access the draw." %}
-                                    <div class="alert alert-info" role="alert">
-                                        {% trans "Tip: Use this mode for informal and fast draws. Neither invitation nor password will be required!" %}
-                                    </div>
-                                </div>
-                                <div id="extra-password" class="col-xs-12">
-                                    {% trans "Only those who know the password will be able to access the draw." %}
-                                    <div class="col-xs-12 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="draw-password" type="password" class="form-control has-clear" name="password" placeholder="Password">
-                                    </div>
-                                    <div class="alert alert-info" role="alert">
-                                        {% trans "Tip: You don't know exactly who is going to join the draw but still want some restriction? This is your draw!" %}
-                                    </div>
-                                </div>
-                                <div id="extra-invited" class="col-xs-12">
-                                    {% trans "You will be able to invite people by email when the draw is created." %}
-                                    <div class="alert alert-info" role="alert">
-                                        {% trans "Tip: Use this mode for small/medium groups where you know well who do you want to join the draw." %}
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <div id="restriction-extra" class="col-xs-12">
+                        <div id="extra-everyone" class="col-xs-12">
+                            {% trans "Everyone will be able to access the draw." %}
+                            <div class="alert alert-info" role="alert">
+                                {% trans "Tip: Use this mode for informal and fast draws. Neither invitation nor password will be required!" %}
+                            </div>
+                        </div>
+                        <div id="extra-password" class="col-xs-12">
+                            {% trans "Only those who know the password will be able to access the draw." %}
+                            <div class="col-xs-12 input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                <input id="draw-password" type="password" class="form-control has-clear" name="password" placeholder="Password">
+                            </div>
+                            <div class="alert alert-info" role="alert">
+                                {% trans "Tip: You don't know exactly who is going to join the draw but still want some restriction? This is your draw!" %}
+                            </div>
+                        </div>
+                        <div id="extra-invited" class="col-xs-12">
+                            {% trans "You will be able to invite people by email when the draw is created." %}
+                            <div class="alert alert-info" role="alert">
+                                {% trans "Tip: Use this mode for small/medium groups where you know well who do you want to join the draw." %}
                             </div>
                         </div>
                     </div>
                 </div>
-            <div class="modal-footer">
+            </div>
+        </div>
+        <div class="modal-footer">
             <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
             <button id="save" data-dismiss="modal" type="button" class="btn btn-primary">Save</button>
         </div>
