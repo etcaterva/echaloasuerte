@@ -80,6 +80,11 @@ public_draw_manager.settings = function () {
         $('#settings-edit-draw').removeClass("hide");
     });
 
+    $('.btn-settings-back').click(function() {
+        $('#settings-general').removeClass("hide");
+        $('.settings-submenu').addClass("hide");
+    });
+
 }
 // Initialize the interface for a public draw
 public_draw_manager.setup = function(current_step){
