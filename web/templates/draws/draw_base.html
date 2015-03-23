@@ -323,6 +323,20 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
                 </div>
             </div>
+
+            <div id="settings-privacy" class="settings-submenu hide">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">{% trans "Restrict the access to your draw" %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% include "public-draw-privacy.html" %}
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-default btn-settings-back">Back</a>
+                    <a id="save" data-dismiss="modal" class="btn btn-primary">Save</a>
+                </div>
+            </div>
         </div>
     {% endif %}
 {% endblock %}
