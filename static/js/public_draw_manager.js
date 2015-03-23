@@ -76,7 +76,8 @@ public_draw_manager.show_configure = function () {
 public_draw_manager.settings = function () {
 
     $('#edit-draw').click(function() {
-        // Do something
+        $('#settings-general').addClass("hide");
+        $('#settings-edit-draw').removeClass("hide");
     });
 
 }
