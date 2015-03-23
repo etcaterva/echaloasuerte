@@ -255,89 +255,91 @@
     </div>
 
     {% if is_public %}
-        {# Hover panel to change the lever of restriction of the public draw (when setting it up) #}
-        <div id="access-level" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{% trans "Restict the access to your draw" %}</h4>
-            </div>
-            <div class="modal-body">
-                {% include "public-draw-privacy.html" %}
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-                <button id="save" data-dismiss="modal" type="button" class="btn btn-primary">Save</button>
-            </div>
-        </div>
-
-        {# Hover panel to show the settings of the public draw (when it is published) #}
-        <div id="public-draw-settings" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
-            <div id="settings-general">
+        {% if public_draw_step %} {# If user is creating the draw #}
+            {# Hover panel to change the lever of restriction of the public draw (when setting it up) #}
+            <div id="access-level" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">{% trans "Public draw settings" %}</h4>
+                    <h4 class="modal-title">{% trans "Restict the access to your draw" %}</h4>
                 </div>
                 <div class="modal-body">
-                    <ul id="" class="list-group">
-                        <li id="edit-draw" class="list-group-item">Edit draw configuration</li>
-                        <li id="invite" class="list-group-item">Invite people</li>
-                        <li class="list-group-item">Who can access your draw</li>
-                        <li class="list-group-item"><input type="checkbox"> Show the draw in "Recently created"</li>
-                        <li class="list-group-item"><input type="checkbox"> Enable chat</li>
-                    </ul>
+                    {% include "public-draw-privacy.html" %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
                     <button id="save" data-dismiss="modal" type="button" class="btn btn-primary">Save</button>
                 </div>
             </div>
-            <div id="settings-edit-draw" class="settings-submenu hide">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">{% trans "Edit draw configuration" %}</h4>
+        {% else%}{# If the draw is already published #}
+            {# Hover panel to show the settings of the public draw (when it is published) #}
+            <div id="public-draw-settings" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
+                <div id="settings-general">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">{% trans "Public draw settings" %}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul id="" class="list-group">
+                            <li id="edit-draw" class="list-group-item">Edit draw configuration</li>
+                            <li id="invite" class="list-group-item">Invite people</li>
+                            <li id="privacy" class="list-group-item">Who can access your draw</li>
+                            <li class="list-group-item"><input type="checkbox"> Show the draw in "Recently created"</li>
+                            <li class="list-group-item"><input type="checkbox"> Enable chat</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                        <button id="save" data-dismiss="modal" type="button" class="btn btn-primary">Save</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    If you modify the draw's configuration the spectator will be notified about these changes. Are you sure you want to continue?
+                <div id="settings-edit-draw" class="settings-submenu hide">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">{% trans "Edit draw configuration" %}</h4>
+                    </div>
+                    <div class="modal-body">
+                        If you modify the draw's configuration the spectator will be notified about these changes. Are you sure you want to continue?
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-default btn-settings-back">Back</a>
+                        <a id="btn-edit-draw" class="btn btn-warning">Edit draw</a>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <a class="btn btn-default btn-settings-back">Back</a>
-                    <a id="btn-edit-draw" class="btn btn-warning">Edit draw</a>
+                <div id="settings-invite" class="settings-submenu hide">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">{% trans "Invite people" %}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>An invitation will arrive to the emails you introduce below</p>
+                        <input type="text" id="emails" name="invite-emails" class="form-control" placeholder="Type the emails here...">
+                        <a class="btn btn-info send-emails">Send emails</a>
+                        <p>OR</p>
+                        <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">Share the link to the draw:
+                            <a><strike>http://127.0.0.1:8000/draw/5504d71b78332720c439f120</strike></a>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-default btn-settings-back">Back</a>
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                    </div>
                 </div>
-            </div>
-            <div id="settings-invite" class="settings-submenu hide">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">{% trans "Invite people" %}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>An invitation will arrive to the emails you introduce below</p>
-                    <input type="text" id="emails" name="invite-emails" class="form-control" placeholder="Type the emails here...">
-                    <a class="btn btn-info send-emails">Send emails</a>
-                    <p>OR</p>
-                    <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">Share the link to the draw:
-                        <a><strike>http://127.0.0.1:8000/draw/5504d71b78332720c439f120</strike></a>
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <a class="btn btn-default btn-settings-back">Back</a>
-                    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-                </div>
-            </div>
 
-            <div id="settings-privacy" class="settings-submenu hide">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">{% trans "Restrict the access to your draw" %}</h4>
-                </div>
-                <div class="modal-body">
-                    {% include "public-draw-privacy.html" %}
-                </div>
-                <div class="modal-footer">
-                    <a class="btn btn-default btn-settings-back">Back</a>
-                    <a id="save" data-dismiss="modal" class="btn btn-primary">Save</a>
+                <div id="settings-privacy" class="settings-submenu hide">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">{% trans "Restrict the access to your draw" %}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {% include "public-draw-privacy.html" %}
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-default btn-settings-back">Back</a>
+                        <a id="save" data-dismiss="modal" class="btn btn-primary">Save</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     {% endif %}
 {% endblock %}
 
