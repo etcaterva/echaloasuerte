@@ -85,7 +85,9 @@ public_draw_manager.settings = function () {
     // When the user is editing a public draw, the buttons "Cancel edition" and "Save changes" are presented.
     // That's the first cancel button
     $('a#edit-draw-cancel').click(function() {
-        // TODO Reload page (without form summition). It's the best way to ensure that possible changes are removed
+        // using replace instead on reload to avoid unintentional form submissions
+        var url = window.location.href;
+        window.location.replace(url);
     });
 
     // When the user is editing a public draw, the buttons "Cancel edition" and "Save changes" are presented.
