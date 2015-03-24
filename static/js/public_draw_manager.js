@@ -64,7 +64,7 @@ public_draw_manager.settings = function () {
     };
 
     function close_settings () {
-        $('.modal').hide();
+        $('#public-draw-settings').modal('hide');
         main_screen_settings();
     };
 
