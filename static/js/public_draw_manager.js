@@ -58,10 +58,27 @@ public_draw_manager.prepare_privacy_selection = function (){
 
 public_draw_manager.settings = function () {
 
+    function main_screen_settings () {
+        $('#settings-general').removeClass("hide");
+        $('.settings-submenu').addClass("hide");
+    };
+
+    function close_settings () {
+        $('.modal').hide();
+        main_screen_settings();
+    };
+
     $('li#edit-draw').click(function() {
         $('#settings-general').addClass("hide");
         $('#settings-edit-draw').removeClass("hide");
     });
+
+    // Unlock the fields of the draw
+    $('a#btn-edit-draw').click(function() {
+        public_draw_manager.unlock_fields();
+        close_settings();
+    });
+
 
     $('li#invite').click(function() {
         $('#settings-general').addClass("hide");
@@ -74,9 +91,10 @@ public_draw_manager.settings = function () {
     });
 
     $('.btn-settings-back').click(function() {
-        $('#settings-general').removeClass("hide");
-        $('.settings-submenu').addClass("hide");
+        main_screen_settings();
     });
+
+
 
 }
 
@@ -87,6 +105,15 @@ public_draw_manager.lock_fields = function () {
     // Add read-only property to inputs with tokenField
     $('.protected').tokenfield('readonly');
     $('.protected').parent('.tokenfield').attr('readonly', "true");
+}
+
+public_draw_manager.unlock_fields = function () {
+    // Add read-only property to the inputs of the draw
+    $('.protected').removeProp('readonly');
+
+    // Add read-only property to inputs with tokenField
+    $('.protected').tokenfield('writeable');
+    $('.protected').parent('.tokenfield').removeAttr('readonly');
 }
 
 // Initialize the interface for a public draw
