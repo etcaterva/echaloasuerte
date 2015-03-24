@@ -79,6 +79,16 @@ public_draw_manager.settings = function () {
     });
 
 }
+
+public_draw_manager.lock_fields = function () {
+    // Add read-only property to the inputs of the draw
+    $('.protected').prop('readonly', true);
+
+    // Add read-only property to inputs with tokenField
+    $('.protected').tokenfield('readonly');
+    $('.protected').parent('.tokenfield').attr('readonly', "true");
+}
+
 // Initialize the interface for a public draw
 public_draw_manager.setup = function(current_step){
     public_draw_manager.set_submition_type(current_step);
@@ -90,6 +100,7 @@ public_draw_manager.setup = function(current_step){
     if (current_step == ""){
         // If the draw has already been published
         public_draw_manager.settings();
+        public_draw_manager.lock_fields();
     } else{
         // If the the user is creating the draw
         public_draw_manager.update_breadcrumb(current_step);
