@@ -62,7 +62,7 @@ a.fa:focus {
     height: auto;
 }
 
-.draw-heading .add-password {
+.draw-heading .access-level {
     color: #6F6F6F;
 }
 
@@ -193,7 +193,9 @@ a.fa:focus {
     text-align: right;
 }
 
-
+.settings-option {
+    cursor: pointer;
+}
 
 /***** INDIVIDUAL DRAWS *****/
 /* Makes the text be inline with the checkbox */

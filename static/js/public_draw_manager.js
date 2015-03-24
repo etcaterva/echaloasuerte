@@ -56,32 +56,47 @@ public_draw_manager.prepare_privacy_selection = function (){
     });
 }
 
-// Initialize the interface for the step "Spread"
-public_draw_manager.show_spread = function () {
-    // Hide the part of the form related with configuration (it contains information)
-    $('.step-configure').hide();
+public_draw_manager.settings = function () {
 
-    //Initialize the UI to select the level of privacy for the draw
-    public_draw_manager.prepare_privacy_selection();
+    $('li#edit-draw').click(function() {
+        $('#settings-general').addClass("hide");
+        $('#settings-edit-draw').removeClass("hide");
+    });
 
-    // Initialize input to submit emails to be shown as a tokenField
-    $('#public-draw-invite #emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], minWidth: 100});
+    $('li#invite').click(function() {
+        $('#settings-general').addClass("hide");
+        $('#settings-invite').removeClass("hide");
+    });
+
+    $('li#privacy').click(function() {
+        $('#settings-general').addClass("hide");
+        $('#settings-privacy').removeClass("hide");
+    });
+
+    $('.btn-settings-back').click(function() {
+        $('#settings-general').removeClass("hide");
+        $('.settings-submenu').addClass("hide");
+    });
+
 }
-
-// Initialize the interface for the step "Configure"
-public_draw_manager.show_configure = function () {
-    $('.step-spread').hide();
-}
-
 // Initialize the interface for a public draw
 public_draw_manager.setup = function(current_step){
-
-    public_draw_manager.update_breadcrumb(current_step);
     public_draw_manager.set_submition_type(current_step);
+    //Initialize the UI to select the level of privacy for the draw
+    public_draw_manager.prepare_privacy_selection();
+    // Initialize input to submit emails to be shown as a tokenField
+    $('#public-draw-invite #emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], minWidth: 100});
 
-    if (current_step == "spread"){
-        public_draw_manager.show_spread();
-    } else if (current_step == "configure"){
-        public_draw_manager.show_configure();
+    if (current_step == ""){
+        // If the draw has already been published
+        public_draw_manager.settings();
+    } else{
+        // If the the user is creating the draw
+        public_draw_manager.update_breadcrumb(current_step);
+        if (current_step == "spread"){
+            $('.step-configure').hide();
+        } else if (current_step == "configure"){
+            $('.step-spread').hide();
+        }
     }
 }
