@@ -194,7 +194,9 @@ a.fa:focus {
     text-align: right;
 }
 
-
+.settings-option {
+    cursor: pointer;
+}
 
 /***** INDIVIDUAL DRAWS *****/
 /* Makes the text be inline with the checkbox */
