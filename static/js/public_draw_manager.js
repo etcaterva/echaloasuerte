@@ -73,11 +73,29 @@ public_draw_manager.settings = function () {
         $('#settings-edit-draw').removeClass("hide");
     });
 
-    // Unlock the fields of the draw
+    // Set up the UI to edit a public draw (already published)
+    // Unlock the fields, hide toss button and present buttons to save changes and cancel the edition
     $('a#btn-edit-draw').click(function() {
         public_draw_manager.unlock_fields();
+        $('button#public-toss').addClass('hide');
+        $('div#edit-draw-save-changes').removeClass('hide');
         close_settings();
     });
+
+    // When the user is editing a public draw, the buttons "Cancel edition" and "Save changes" are presented.
+    // That's the first cancel button
+    $('a#edit-draw-cancel').click(function() {
+        // TODO Reload page (without form summition). It's the best way to ensure that possible changes are removed
+    });
+
+    // When the user is editing a public draw, the buttons "Cancel edition" and "Save changes" are presented.
+    // That's the first "Save changes" button
+    $('button#edit-draw-save').click(function() {
+        $("input[name=submit-type]").val("edit_public_draw");
+        return true;
+    });
+
+
 
 
     $('li#invite').click(function() {

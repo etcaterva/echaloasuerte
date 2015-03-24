@@ -344,6 +344,16 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
                     # The user is redirected to the draw he has created
                     return redirect('draw', draw_type=draw_type, draw_id=bom_draw.pk)
 
+                elif submit_type == "edit_public_draw":
+                    # The user has edited a public draw.
+                    # Check whether it differ from the old version
+                    if draw_form.data['_id'] != bom_draw.pk:
+                        bom_draw.results = []
+                        logger.info("The configuration of the public draw {0} has changed. Created new one {1}.".format(draw_form.data['_id'], bom_draw.pk))
+                        mongodb.save_draw(bom_draw)
+                        # The user is redirected to the draw he has created
+                        return redirect('draw', draw_type=draw_type, draw_id=bom_draw.pk)
+
                 elif submit_type == "public_toss":
                     # It's a public draw and the button Toss has been clicked
                     bom_draw.toss()
