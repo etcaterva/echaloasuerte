@@ -10,6 +10,8 @@
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
+    {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
+
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
       $(this).select();
@@ -79,9 +81,6 @@
     {% if is_public %}
         public_draw_manager.setup("{{ public_draw_step }}");
     {% endif %}
-
-    {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
-
 {% endblock extra_jq_ready %}
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
