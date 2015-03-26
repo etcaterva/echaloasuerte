@@ -178,3 +178,17 @@ ul.nav.navbar-nav {
     top: auto;
     bottom: 100% !important;
 }
+
+
+/* ---------------- ABOUT PAGE --------------------- */
+.team-member {
+    margin-bottom: 10px;
+}
+
+.team-member img{
+    width: 150px;height:150px;
+}
+
+.team-member hr {
+    margin: 8px 0 8px 0;
+}
