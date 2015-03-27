@@ -10,6 +10,8 @@
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
+    {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
+
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
       $(this).select();
@@ -79,9 +81,6 @@
     {% if is_public %}
         public_draw_manager.setup("{{ public_draw_step }}");
     {% endif %}
-
-    {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
-
 {% endblock extra_jq_ready %}
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
@@ -183,13 +182,19 @@
                                         <!-- Button to try a draw when creating a public one -->
                                         <button id="try" type="submit" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
                                     {% elif not public_draw_step %}
-                                        <button type="submit" name="toss" class="btn btn-success"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
+                                        <button id="public-toss" type="submit" name="toss" class="btn btn-success"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
                                         {%if not can_write and bom.owner%}
                                             <div class="alert alert-warning alert-dismissible" role="alert">
                                               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                               {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
                                             </div>
-                                        {%endif%}
+                                        {%else%}
+                                            {# Buttons to save changes when editing an already published public draw #}
+                                            <div id="edit-draw-save-changes" class="hide">
+                                                <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
+                                                <button type="submit" id="edit-draw-save" class="col-xs-6 btn btn-primary">{% trans 'Save changes' %}</button>
+                                            </div>
+                                        {% endif %}
                                     {% endif %}
                             {% else %}
                                 <button type="submit" name="toss" class="btn btn-success">{% trans 'Toss' %}</button>

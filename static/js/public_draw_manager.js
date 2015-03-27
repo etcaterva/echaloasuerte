@@ -58,10 +58,47 @@ public_draw_manager.prepare_privacy_selection = function (){
 
 public_draw_manager.settings = function () {
 
+    function main_screen_settings () {
+        $('#settings-general').removeClass("hide");
+        $('.settings-submenu').addClass("hide");
+    };
+
+    function close_settings () {
+        $('#public-draw-settings').modal('hide');
+        main_screen_settings();
+    };
+
     $('li#edit-draw').click(function() {
         $('#settings-general').addClass("hide");
         $('#settings-edit-draw').removeClass("hide");
     });
+
+    // Set up the UI to edit a public draw (already published)
+    // Unlock the fields, hide toss button and present buttons to save changes and cancel the edition
+    $('a#btn-edit-draw').click(function() {
+        public_draw_manager.unlock_fields();
+        $('button#public-toss').addClass('hide');
+        $('div#edit-draw-save-changes').removeClass('hide');
+        close_settings();
+    });
+
+    // When the user is editing a public draw, the buttons "Cancel edition" and "Save changes" are presented.
+    // That's the first cancel button
+    $('a#edit-draw-cancel').click(function() {
+        // using replace instead on reload to avoid unintentional form submissions
+        var url = window.location.href;
+        window.location.replace(url);
+    });
+
+    // When the user is editing a public draw, the buttons "Cancel edition" and "Save changes" are presented.
+    // That's the first "Save changes" button
+    $('button#edit-draw-save').click(function() {
+        $("input[name=submit-type]").val("edit_public_draw");
+        return true;
+    });
+
+
+
 
     $('li#invite').click(function() {
         $('#settings-general').addClass("hide");
@@ -74,11 +111,31 @@ public_draw_manager.settings = function () {
     });
 
     $('.btn-settings-back').click(function() {
-        $('#settings-general').removeClass("hide");
-        $('.settings-submenu').addClass("hide");
+        main_screen_settings();
     });
 
+
+
 }
+
+public_draw_manager.lock_fields = function () {
+    // Add read-only property to the inputs of the draw
+    $('.protected').prop('readonly', true);
+
+    // Add read-only property to inputs with tokenField
+    $('.protected').tokenfield('readonly');
+    $('.protected').parent('.tokenfield').attr('readonly', "true");
+}
+
+public_draw_manager.unlock_fields = function () {
+    // Add read-only property to the inputs of the draw
+    $('.protected').removeProp('readonly');
+
+    // Add read-only property to inputs with tokenField
+    $('.protected').tokenfield('writeable');
+    $('.protected').parent('.tokenfield').removeAttr('readonly');
+}
+
 // Initialize the interface for a public draw
 public_draw_manager.setup = function(current_step){
     public_draw_manager.set_submition_type(current_step);
@@ -90,6 +147,7 @@ public_draw_manager.setup = function(current_step){
     if (current_step == ""){
         // If the draw has already been published
         public_draw_manager.settings();
+        public_draw_manager.lock_fields();
     } else{
         // If the the user is creating the draw
         public_draw_manager.update_breadcrumb(current_step);
