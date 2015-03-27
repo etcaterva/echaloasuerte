@@ -1,4 +1,6 @@
 language: python
+services:
+  - mongodb
 python:
   - "2.7"
   - "3.4"
@@ -8,5 +10,5 @@ install:
   - "python manage.py syncdb --noinput"
 # command to run tests
 script:
-  - export DJANGO_SETTINGS_MODULE="echaloasuerte.settings.develop"
+  - export DJANGO_SETTINGS_MODULE="echaloasuerte.settings.test"
   - nosetests test_init.py . -v
