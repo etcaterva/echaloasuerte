@@ -17,6 +17,8 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.core.mail import send_mail
 from contextlib import contextmanager
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 import logging
 import time
 
@@ -161,26 +163,35 @@ def invite_user(user_emails,draw_id,owner_user):
 
 @login_required
 @time_it
-def add_user_to_draw(request,draw_id,new_users):
-    draw_id = request.POST.get('draw_id',None)
-    new_users = request.POST.get('new_users',[])
+def add_user_to_draw(request):
+    draw_id = request.GET.get('draw_id', None)
+    users_to_add = request.GET.get('emails', [])
 
     if draw_id is None:
-        return HttpResponseBadRequest()
+        return HttpResponse("KO")
 
-    logger.info("Adding {0} to draw {1}".format(new_users,draw_id))
+    logger.info("Adding {0} to draw {1}".format(users_to_add, draw_id))
     bom_draw = mongodb.retrieve_draw(draw_id)
 
-    user_can_write_draw(request.user, bom_draw) #raises 500
+    user_can_write_draw(request.user, bom_draw) # Raises 500
 
-    user_list = new_users.replace(',',' ').split()
-    for user in user_list:
-        bom_draw.users.append(user.pk)
-    invite_user(user_list, draw_id,request.user.get_email())
+    new_users = users_to_add.replace(',', ' ').split()
 
-    logger.info("{0} users added to draw {1}".format(len(user_list),draw_id))
+    try:
+        bom_draw.add_observers(new_users)
+    except ValidationError:
+        logger.info("One or more emails are not correct")
+        return HttpResponse("KO")
 
-    return HttpResponse()
+    bom_draw.users += new_users
+
+    # TODO send emails to the users in the list "new_users"
+    # invite_user(new_users, draw_id, request.user.get_email())
+
+    logger.info("{0} users added to draw {1}".format(len(new_users), draw_id))
+
+    return HttpResponse("OK")
+
 
 @login_required
 @time_it

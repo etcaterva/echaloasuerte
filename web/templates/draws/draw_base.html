@@ -79,6 +79,7 @@
          }
     });
     {% if is_public %}
+        public_draw_manager.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
         public_draw_manager.setup("{{ public_draw_step }}");
     {% endif %}
 {% endblock extra_jq_ready %}
@@ -149,7 +150,7 @@
                             <div id="public-draw-invite" class="col-xs-12 col-md-8 col-md-offset-2">
                                 <p class="h4"> Invite people: </p>
                                     <p>An invitation will arrive to the emails you introduce below</p>
-                                    <input type="text" id="emails" name="invite-emails" class="form-control" placeholder="Type the emails here...">
+                                    <input type="email" id="emails" name="invite-emails" class="form-control" placeholder="Type the emails here...">
                                     <p>OR</p>
                                 <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">Share the link to the draw:
                                     <a><strike>http://127.0.0.1:8000/draw/5504d71b78332720c439f120</strike></a>
@@ -319,7 +320,7 @@
                         <div class="modal-body">
                             <p>{% trans "An invitation will arrive to the emails you introduce below" %}</p>
                             <input type="text" id="emails" name="invite-emails" class="form-control" placeholder="Type the emails here...">
-                            <a class="btn btn-info send-emails">{% trans "Send emails" %}</a>
+                            <a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a>
                             <p>{% trans "OR" %}</p>
                             <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">{% trans "Share the link to the draw:" %}
                                 <a><strike>http://127.0.0.1:8000/draw/5504d71b78332720c439f120</strike></a>
