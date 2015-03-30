@@ -319,8 +319,14 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             # When the draw is public, the variable "is_public" will be send to the template
             if bom_draw.shared_type != "None":
                 context['is_public'] = 'publish'
+            # If bom_draw.id == '' the user has filled the fields manually so the draw will be consider as a new one
+            # and the user who is doing the POST will own it.
+            if bom_draw.pk == '':
+                set_owner(bom_draw, request)
+
+            # If the user has not writing right on the draw, a exception will rise (as he can not POST on it)
             user_can_write_draw(request.user, bom_draw)
-            set_owner(bom_draw, request)
+
             bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
                 #check type of submit
