@@ -225,6 +225,28 @@ def remove_favorite(request):
     logger.info("Draw {0} removed as favorite for user {1}".format(draw_id, request.user.pk))
     return HttpResponse()
 
+
+@login_required
+@time_it
+def change_privacy_draw(request):
+    draw_id = request.GET.get('draw_id', None)
+    shared_type = request.GET.get('shared_type', None)
+    password = request.GET.get('password', None)
+
+    if draw_id is None:
+        return HttpResponseBadRequest()
+
+    bom_draw = mongodb.retrieve_draw(draw_id)
+
+    if shared_type == "Public" or shared_type == "Invite":
+        bom_draw.shared_type = shared_type
+        if password:
+            bom_draw.password = password
+    else:
+        logger.warning("Wrong type of public draw: {0}".format(shared_type))
+        return HttpResponse("KO")
+
+
 @login_required
 @time_it
 def profile(request):
