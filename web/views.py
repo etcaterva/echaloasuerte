@@ -228,7 +228,7 @@ def remove_favorite(request):
 
 @login_required
 @time_it
-def change_privacy_draw(request):
+def change_privacy_public_draw(request):
     draw_id = request.GET.get('draw_id', None)
     shared_type = request.GET.get('shared_type', None)
     password = request.GET.get('password', None)
