@@ -79,6 +79,7 @@
          }
     });
     {% if is_public %}
+        public_draw_manager.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
         public_draw_manager.setup("{{ public_draw_step }}");
     {% endif %}
 {% endblock extra_jq_ready %}
@@ -218,7 +219,7 @@
                 {% endblock input_form %}
             </div>
             {# shared-type: It's part of "FormBase". Can be "None", "Public" or "Invite" #}
-            <input class="hidden" name="shared_type" value="{% if is_public %}Public{% else %}None{% endif %}"/>
+            <input id="shared-type" class="hidden" name="shared_type" value="{% if is_public %}Public{% else %}None{% endif %}"/>
             {# submit-type: Determine the type of submition, by default it's a toss (normal or public) #}
             <input class="hidden" name="submit-type" value="{% if is_public %}public_toss{% else %}toss{% endif %}"/>
             {# public-draw-step: Can be "Choose", "Confifure" or "Spread" #}
@@ -341,7 +342,7 @@
                         </div>
                         <div class="modal-footer">
                             <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
-                            <a id="save" data-dismiss="modal" class="btn btn-primary">{% trans "Save" %}</a>
+                            <a id="save-change-privacy" data-id="{{ bom.pk }}" data-dismiss="modal" class="btn btn-primary">{% trans "Save" %}</a>
                         </div>
                     </div>
                 </div>

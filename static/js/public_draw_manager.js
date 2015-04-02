@@ -32,27 +32,32 @@ public_draw_manager.set_submition_type = function (current_step){
     });
 }
 
+// Thi function runs when the user make changes in the privacy of a public draw and click "Save" button
+// It store the corresponding values in the input field which will be POSTed
+public_draw_manager.update_privacy_fields = function (){
+    var shared_type_field = $('input#shared-type');
+    var mode = $('.slide-bar').attr('data-selected');
+    if (mode == "invited"){
+        $('#id_password').val("");
+        shared_type_field.attr('value','Invite');
+    }else if (mode == "password"){
+        var password = $('#draw-password').val();
+        $('#id_password').val(password);
+        shared_type_field.attr('value','Public');
+    }else{ // Everyone
+        $('#id_password').val("");
+        shared_type_field.attr('value','Public');
+    }
+}
+
 //Initialize the UI to select the level of privacy for the draw
 public_draw_manager.prepare_privacy_selection = function (){
     // Initialize the UI (slider) to choose the level of restriction of the public draw
     SlideSelector.setup();
 
-    var shared_type_field = $('input[name=shared_type]');
-
-    // Initialize button "Save changes". It stores the selection in the form input //TODO FIX
-    $('#save').click(function () {
-        var mode = $('.slide-bar').attr('data-selected');
-        if (mode == "invited"){
-            $('#id_password').val("");
-            shared_type_field.attr('value','Invite');
-        }else if (mode == "password"){
-            var password = $('#draw-password').val();
-            $('#id_password').val(password);
-            shared_type_field.attr('value','Public');
-        }else{ // Everyone
-            $('#id_password').val("");
-            shared_type_field.attr('value','Public');
-        }
+    // Initialize button "Save changes". It stores the selection in the form input
+    $('a#save-change-privacy').click(function () {
+        public_draw_manager.update_privacy_fields();
     });
 }
 
@@ -115,6 +120,19 @@ public_draw_manager.settings = function () {
     });
 
 
+
+    $('a#save-change-privacy').click(function() {
+        public_draw_manager.update_privacy_fields();
+        var draw_id = $(this).attr("data-id");
+        var shared_type = $('input#shared-type').val();
+        var password = $('input#id_password').val();
+        $.get(public_draw_manager.url_draw_privacy, {draw_id: draw_id, shared_type: shared_type, password: password}, function(data){
+            if (data == "OK")
+                alert("Privacy Changed");
+            else
+                alert("Privacy could not be changed");
+        });
+    });
 
 }
 
