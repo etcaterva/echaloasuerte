@@ -242,6 +242,9 @@ def change_privacy_public_draw(request):
         bom_draw.shared_type = shared_type
         if password:
             bom_draw.password = password
+        mongodb.save_draw(bom_draw)
+        logger.warning("The type of the public draw {0} has changed to {1}".format(draw_id, shared_type))
+        return HttpResponse("OK")
     else:
         logger.warning("Wrong type of public draw: {0}".format(shared_type))
         return HttpResponse("KO")
