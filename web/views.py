@@ -167,7 +167,7 @@ def add_user_to_draw(request):
     users_to_add = request.GET.get('emails', [])
 
     if draw_id is None:
-        return HttpResponse("KO")
+        return HttpResponseBadRequest()
 
     logger.info("Adding {0} to draw {1}".format(users_to_add, draw_id))
     bom_draw = mongodb.retrieve_draw(draw_id)
@@ -256,7 +256,7 @@ def change_privacy_public_draw(request):
         return HttpResponse("OK")
     else:
         logger.warning("Wrong type of public draw: {0}".format(shared_type))
-        return HttpResponse("KO")
+        return HttpResponseBadRequest()
 
 
 @login_required
