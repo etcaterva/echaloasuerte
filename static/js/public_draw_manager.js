@@ -119,7 +119,16 @@ public_draw_manager.settings = function () {
         main_screen_settings();
     });
 
-
+    $('a#send-emails').click(function() {
+        var draw_id = $(this).attr("data-id");
+        var users = $('input#emails').val();
+        $.get(public_draw_manager.url_invite_users, {draw_id: draw_id, emails: users}, function(data){
+            if (data == "OK")
+                alert("Users invited");
+            else
+                alert("One or more emails contains errors");
+        });
+    });
 
     $('a#save-change-privacy').click(function() {
         public_draw_manager.update_privacy_fields();
@@ -160,7 +169,7 @@ public_draw_manager.setup = function(current_step){
     //Initialize the UI to select the level of privacy for the draw
     public_draw_manager.prepare_privacy_selection();
     // Initialize input to submit emails to be shown as a tokenField
-    $('#public-draw-invite #emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], minWidth: 100});
+    $('input#emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
 
     if (current_step == ""){
         // If the draw has already been published
