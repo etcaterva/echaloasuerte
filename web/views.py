@@ -17,7 +17,6 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.core.mail import send_mail
 from contextlib import contextmanager
-from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 import logging
 import time
