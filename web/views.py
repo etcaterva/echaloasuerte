@@ -183,7 +183,7 @@ def add_user_to_draw(request):
         logger.info("One or more emails are not correct")
         return HttpResponse("KO")
 
-    bom_draw.users += new_users
+    mongodb.save_draw(bom_draw)
 
     # TODO send emails to the users in the list "new_users"
     # invite_user(new_users, draw_id, request.user.get_email())
