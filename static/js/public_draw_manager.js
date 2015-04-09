@@ -117,16 +117,19 @@ public_draw_manager.settings = function () {
 
     $('.btn-settings-back').click(function() {
         main_screen_settings();
+        // Hide the alters which are showing a response from the server
+        $('div#public-draw-settings div.feedback').addClass('hide');
     });
 
     $('a#send-emails').click(function() {
+        $('div#settings-invite div.feedback').addClass('hide');
         var draw_id = $(this).attr("data-id");
         var users = $('input#emails').val();
         $.get(public_draw_manager.url_invite_users, {draw_id: draw_id, emails: users}, function(data){
-            if (data == "OK")
-                alert("Users invited");
-            else
-                alert("One or more emails contains errors");
+            $('div#alert-invitation-success').removeClass('hide');
+        })
+        .fail(function() {
+            $('div#alert-invitation-failed').removeClass('hide');
         });
     });
 

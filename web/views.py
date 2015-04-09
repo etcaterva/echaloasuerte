@@ -180,7 +180,7 @@ def add_user_to_draw(request):
         bom_draw.add_observers(new_users)
     except ValidationError:
         logger.info("One or more emails are not correct")
-        return HttpResponse("KO")
+        return HttpResponseBadRequest()
 
     mongodb.save_draw(bom_draw)
 
@@ -189,7 +189,7 @@ def add_user_to_draw(request):
 
     logger.info("{0} users added to draw {1}".format(len(new_users), draw_id))
 
-    return HttpResponse("OK")
+    return HttpResponse()
 
 
 @login_required
