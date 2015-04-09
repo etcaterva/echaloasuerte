@@ -192,3 +192,11 @@ ul.nav.navbar-nav {
 .team-member hr {
     margin: 8px 0 8px 0;
 }
+
+
+
+/* ------------ Datatables -----------------------*/
+
+span.DataTables_sort_icon {
+    display: none;
+}

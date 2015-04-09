@@ -17,6 +17,7 @@
 
     $('.data-table').DataTable(
         {
+            "bJQueryUI": true,
             "language" : {
                 "emptyTable":     "{% trans 'No data available in table'%}",
                 "info":           "{% trans 'Showing _START_ to _END_ of _TOTAL_ entries'%}",
@@ -78,7 +79,7 @@
 
 {% block content %}
     <div>
-        {%if user_draws %}<h3>{% trans "Your Draws" %}:</h3>
+        {%if user_draws %}<h3>{% trans "Draws your take part in" %}:</h3>
         <table class="data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
