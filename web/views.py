@@ -17,6 +17,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.core.mail import send_mail
 from contextlib import contextmanager
+from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 import logging
 import time
@@ -177,11 +178,13 @@ def add_user_to_draw(request):
     new_users = users_to_add.replace(',', ' ').split()
 
     try:
-        bom_draw.add_observers(new_users)
+        for email in new_users:
+            validate_email(email)  # Raises a ValidationError
     except ValidationError:
         logger.info("One or more emails are not correct")
         return HttpResponseBadRequest()
 
+    bom_draw.users += new_users
     mongodb.save_draw(bom_draw)
 
     # TODO send emails to the users in the list "new_users"

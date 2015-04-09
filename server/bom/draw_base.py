@@ -1,6 +1,5 @@
 from django.utils.translation import ugettext_lazy as _
 import random
-from django.core.validators import validate_email
 import datetime
 from abc import ABCMeta, abstractmethod
 import logging
@@ -99,12 +98,6 @@ class BaseDraw(object):
 
     def is_feasible(self):
         return self.number_of_results > 0
-
-    def add_observers(self, emails):
-        """ Add the emails of the users that will be observers of the public draw """
-        for email in emails:
-            validate_email(email)  # Raises a ValidationError
-        self.users += emails
 
     def toss(self):
         result = {"datetime": datetime.datetime.utcnow(), "items": self.generate_result()}
