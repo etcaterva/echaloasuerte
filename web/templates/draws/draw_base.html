@@ -220,7 +220,7 @@
                 {% endblock input_form %}
             </div>
             {# shared-type: It's part of "FormBase". Can be "None", "Public" or "Invite" #}
-            <input id="shared-type" class="hidden" name="shared_type" value="{% if is_public %}Public{% else %}None{% endif %}"/>
+            <input id="shared-type" class="hidden" name="shared_type" value="{{ bom.shared_type }}"/>
             {# submit-type: Determine the type of submition, by default it's a toss (normal or public) #}
             <input class="hidden" name="submit-type" value="{% if is_public %}public_toss{% else %}toss{% endif %}"/>
             {# public-draw-step: Can be "Choose", "Confifure" or "Spread" #}

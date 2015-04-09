@@ -63,6 +63,21 @@ public_draw_manager.prepare_privacy_selection = function (){
 
 public_draw_manager.settings = function () {
 
+    // Update the slide selector to show the current level of privacy
+    function initialize_slideselector () {
+        var current_privacy_level = $('input#shared-type').val();
+        var password = $('#id_password').val();
+        if (current_privacy_level == "Public")
+            if (password == "")
+                SlideSelector.select_everyone();
+            else {
+                $('input#draw-password').val(password);
+                SlideSelector.select_password();
+            }
+        else if (current_privacy_level == "Invite")
+            SlideSelector.select_invited();
+    }
+
     function main_screen_settings () {
         $('#settings-general').removeClass("hide");
         $('.settings-submenu').addClass("hide");
@@ -111,6 +126,7 @@ public_draw_manager.settings = function () {
     });
 
     $('li#privacy').click(function() {
+        initialize_slideselector();
         $('#settings-general').addClass("hide");
         $('#settings-privacy').removeClass("hide");
     });
