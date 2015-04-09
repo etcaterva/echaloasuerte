@@ -134,15 +134,17 @@ public_draw_manager.settings = function () {
     });
 
     $('a#save-change-privacy').click(function() {
+        $('div#settings-privacy div.feedback').addClass('hide');
         public_draw_manager.update_privacy_fields();
         var draw_id = $(this).attr("data-id");
         var shared_type = $('input#shared-type').val();
         var password = $('input#id_password').val();
         $.get(public_draw_manager.url_draw_privacy, {draw_id: draw_id, shared_type: shared_type, password: password}, function(data){
-            if (data == "OK")
-                alert("Privacy Changed");
-            else
-                alert("Privacy could not be changed");
+            /* The delay has the purpose to show "refresh" feedback when a to consecutive changes success */
+            $('div#alert-level-privacy-success').removeClass('hide',100);
+        })
+        .fail(function() {
+            $('div#alert-level-privacy-failed').removeClass('hide',100);
         });
     });
 
