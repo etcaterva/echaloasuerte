@@ -109,63 +109,11 @@
 	    });
 
     {% if not is_public %}
-    $("#chat-row").removeClass("hidden");
-
-    //Chat js
-    $(".panel-heading").click( function() {
-        $(this).parent().find(".panel-body").toggle(150);
-    });
-
-    var chat = $(".panel-body .chat");
-    /**
-    * Code to handle a user hitting submit in the chat input
-    */
-    function chatInputSubmitted(){
-        var new_content = $("#btn-input-chat").val();
-        $("#btn-input-chat").val("");
-
-        //check empty string
-        if(!new_content || /^\s*$/.test(new_content)){
-            return;
-        }
-
-        $.ajax({
-            url : "{% url 'chat_add_message' %}",
-            method : "GET",
-            data: {
-                draw_id : "{{ bom.pk }}",
-                message : new_content
-            }
+    $('#chat-frame').chat({
+        "url_send_message": "{% url 'chat_add_message' %}",
+        "url_get_messages": "{% url 'chat_get_messages' %}",
+        "draw_id": "{{ bom.pk }}"
         });
-
-        updateChat();
-    }
-    $("#btn-chat").click(chatInputSubmitted);
-    $("#btn-input-chat").keyup(function (e) {
-       if(e.keyCode == 13) chatInputSubmitted();
-    });
-
-    //load chat
-    var timeout = false;
-    function updateChat(){
-        timeout && clearTimeout(timeout);
-        $.ajax({
-            url : "{% url 'chat_get_messages' %}",
-            method : "GET",
-            data: { draw_id : "{{ bom.pk }}"},
-            success : function(data){
-                chat.html("");
-                var arr = data.messages;
-                for (var i = 0, length = arr.length; i < length; i++) {
-                  var element = arr[i];
-                  var entry = formatChatEntry(element);
-                  chat.append(entry);
-                }
-            }
-        });
-        timeout = setTimeout(updateChat, 5000);
-    }; //auto update
-    updateChat();
     {% endif %}
 
     {% endif %}
@@ -256,21 +204,21 @@
         <!-- Chat -->
         {% if is_public  or bom.shared_type != "None" %}
 
-    <div id="chat-row" class="row hidden">
+    <div id="chat-frame" class="row hidden">
         <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <span class="glyphicon glyphicon-comment"></span> Chat
+                    <span class="fa fa-comment"></span> Chat
                 </div>
                 <div class="panel-body">
-                    <ul class="chat">
+                    <ul id="chat-board">
                     </ul>
                 </div>
                 <div class="panel-footer">
                     <div class="input-group">
-                        <input id="btn-input-chat"{%if user.is_anonymous%} disabled="disabled" {%endif%} type="text" class="form-control input-sm" placeholder="{% trans 'Type your message here...' %}" />
+                        <input id="chat-message-box"{%if user.is_anonymous%} disabled="disabled" {%endif%} type="text" class="form-control input-sm" placeholder="{% trans 'Type your message here...' %}" />
                         <span class="input-group-btn">
-                            <button class="btn btn-warning btn-sm" id="btn-chat" {%if user.is_anonymous%} title="{% trans 'Please, register to be able to use the chat'%}" {%endif%}>
+                            <button class="btn btn-warning btn-sm" id="chat-send" {%if user.is_anonymous%} title="{% trans 'Please, login or register to be able to use the chat'%}" {%endif%}>
                                 {% trans 'Send' %}</button>
                         </span>
                     </div>
