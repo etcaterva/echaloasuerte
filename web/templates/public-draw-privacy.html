@@ -2,6 +2,13 @@
 
 <div class="row">
     <div class="col-md-12">
+        <!-- Shown when the draw is already public -->
+        <div id="alert-level-privacy-success" class="alert feedback alert-success hide" role="alert">
+            {% trans "The level of privacy of your draw has been updated." %}
+        </div>
+        <div id="alert-level-privacy-fail" class="alert feedback alert-danger hide" role="alert">
+            {% trans "The level of privacy couldn't be change." %}
+        </div>
         {% trans "Who do you want to access the draw?" %}
         <div class="col-sm-8 col-sm-offset-2 text-center">
             <div id="restriction-headings">

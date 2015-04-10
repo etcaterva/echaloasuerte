@@ -17,6 +17,8 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.core.mail import send_mail
 from contextlib import contextmanager
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 import logging
 import time
 
@@ -161,26 +163,37 @@ def invite_user(user_emails,draw_id,owner_user):
 
 @login_required
 @time_it
-def add_user_to_draw(request,draw_id,new_users):
-    draw_id = request.POST.get('draw_id',None)
-    new_users = request.POST.get('new_users',[])
+def add_user_to_draw(request):
+    draw_id = request.GET.get('draw_id', None)
+    users_to_add = request.GET.get('emails', [])
 
     if draw_id is None:
         return HttpResponseBadRequest()
 
-    logger.info("Adding {0} to draw {1}".format(new_users,draw_id))
+    logger.info("Adding {0} to draw {1}".format(users_to_add, draw_id))
     bom_draw = mongodb.retrieve_draw(draw_id)
 
-    user_can_write_draw(request.user, bom_draw) #raises 500
+    user_can_write_draw(request.user, bom_draw) # Raises 500
 
-    user_list = new_users.replace(',',' ').split()
-    for user in user_list:
-        bom_draw.users.append(user.pk)
-    invite_user(user_list, draw_id,request.user.get_email())
+    new_users = users_to_add.replace(',', ' ').split()
 
-    logger.info("{0} users added to draw {1}".format(len(user_list),draw_id))
+    try:
+        for email in new_users:
+            validate_email(email)  # Raises a ValidationError
+    except ValidationError:
+        logger.info("One or more emails are not correct")
+        return HttpResponseBadRequest()
+
+    bom_draw.users += new_users
+    mongodb.save_draw(bom_draw)
+
+    # TODO send emails to the users in the list "new_users"
+    # invite_user(new_users, draw_id, request.user.get_email())
+
+    logger.info("{0} users added to draw {1}".format(len(new_users), draw_id))
 
     return HttpResponse()
+
 
 @login_required
 @time_it
@@ -224,6 +237,30 @@ def remove_favorite(request):
 
     logger.info("Draw {0} removed as favorite for user {1}".format(draw_id, request.user.pk))
     return HttpResponse()
+
+
+@login_required
+@time_it
+def change_privacy_public_draw(request):
+    draw_id = request.GET.get('draw_id', None)
+    shared_type = request.GET.get('shared_type', None)
+    password = request.GET.get('password', None)
+
+    if draw_id is None:
+        return HttpResponseBadRequest()
+
+    bom_draw = mongodb.retrieve_draw(draw_id)
+
+    if shared_type == "Public" or shared_type == "Invite":
+        bom_draw.shared_type = shared_type
+        bom_draw.password = password
+        mongodb.save_draw(bom_draw)
+        logger.warning("The type of the public draw {0} has changed to {1}".format(draw_id, shared_type))
+        return HttpResponse()
+    else:
+        logger.warning("Wrong type of public draw: {0}".format(shared_type))
+        return HttpResponseBadRequest()
+
 
 @login_required
 @time_it
@@ -319,14 +356,8 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             # When the draw is public, the variable "is_public" will be send to the template
             if bom_draw.shared_type != "None":
                 context['is_public'] = 'publish'
-            # If bom_draw.id == '' the user has filled the fields manually so the draw will be consider as a new one
-            # and the user who is doing the POST will own it.
-            if bom_draw.pk == '':
-                set_owner(bom_draw, request)
-
-            # If the user has not writing right on the draw, a exception will rise (as he can not POST on it)
             user_can_write_draw(request.user, bom_draw)
-
+            set_owner(bom_draw, request)
             bom_draw = find_previous_version(bom_draw)
             if bom_draw.is_feasible():
                 #check type of submit
