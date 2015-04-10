@@ -1,6 +1,6 @@
-
 ;(function ($) {
 
+    // Set the defaults
     var pluginName = 'EASchat',
         defaults = {
             url_send_message: "",
@@ -11,11 +11,10 @@
     var Chat = function (element, options){
         this.init(element, options);
     };
+
     Chat.prototype = {
         constructor: Chat,
         init: function (element, options){
-            console.log("init chat ");
-
             var that = this;
             this.$element = $(element)
             this.options = $.extend( {}, defaults, options) ;
@@ -45,6 +44,7 @@
                }
             });
 
+            // Auto refresh the chat against the server
             (function start_auto_refresh () {
                 that.get_messages();
                 setTimeout(start_auto_refresh,5000);
@@ -59,9 +59,7 @@
         },
 
         submit_message: function (message) {
-            console.log("MENSAJE ENVIADO");
-
-            //check empty string
+            // Check empty string
             if(!message || /^\s*$/.test(message)){
                 return;
             }
@@ -118,7 +116,6 @@
 
     $.fn.chat = function(options) {
         return this.each(function() {
-            console.log("init plugin");
             if (!$.data(this, 'plugin_' + pluginName)) {
                 $.data(this, 'plugin_' + pluginName,
                 new Chat( this, options ));
