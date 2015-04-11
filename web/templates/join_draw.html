@@ -17,6 +17,7 @@
 
     $('.data-table').DataTable(
         {
+            "bJQueryUI": true,
             "language" : {
                 "emptyTable":     "{% trans 'No data available in table'%}",
                 "info":           "{% trans 'Showing _START_ to _END_ of _TOTAL_ entries'%}",
@@ -78,7 +79,7 @@
 
 {% block content %}
     <div>
-        {%if user_draws %}<h3>{% trans "Your Draws" %}:</h3>
+        {%if user_draws %}<p class="h1 text-center">{% trans "Draws your take part in" %}</p>
         <table class="data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
@@ -99,9 +100,8 @@
             {% endfor %}
             </tbody>
         </table>
-        <hr/>
         {% endif %}
-        {%if public_draws %}<h3>{% trans "Public Draws" %}:</h3>
+        {%if public_draws %}<h1 class="text-center">{% trans "Public Draws" %}</h1>
         <table class="data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
