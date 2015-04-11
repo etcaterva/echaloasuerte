@@ -1,37 +1,32 @@
-.chat
+#chat-board
 {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.chat li
+#chat-board li
 {
     margin-bottom: 10px;
     padding-bottom: 5px;
     border-bottom: 1px dotted #B3A9A9;
 }
 
-.chat li.left .chat-body
+#chat-board li.left .chat-line
 {
     margin-left: 60px;
 }
 
-.chat li.right .chat-body
+#chat-board li.right .chat-line
 {
     margin-right: 60px;
 }
 
 
-.chat li .chat-body p
+#chat-board li .chat-line p
 {
     margin: 0;
     color: #777777;
-}
-
-.panel .slidedown .glyphicon, .chat .glyphicon
-{
-    margin-right: 5px;
 }
 
 .panel-heading
