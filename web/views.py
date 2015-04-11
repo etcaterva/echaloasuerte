@@ -340,6 +340,9 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
         # It's only declared during the process of creation (does not exists when the draw is published)
         # It's set to configure since the step "choose" has already been done in the view "index"
         context['public_draw_step'] = 'configure'
+
+        # When a public draw is going to be created, the shared type will be "Public" by default (instead of "None")
+        bom_draw.shared_type = "Public"
         logger.info("Creating public draw. Step finished: Choose type of draw")
 
     if request.method == 'POST':
