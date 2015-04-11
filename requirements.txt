@@ -2,4 +2,6 @@ django
 django-crispy-forms
 django-bootstrap-form
 pymongo
+selenium
 pytz
+pyvirtualdisplay

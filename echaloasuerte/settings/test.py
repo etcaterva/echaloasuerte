@@ -43,12 +43,12 @@ LOGGING = {
     },
     'loggers': {
         'django.request': {
-            'handlers': ['console'],
+            'handlers': [],
             'level': 'DEBUG',
             'propagate': False,
         },
         'echaloasuerte': {
-            'handlers': ['console'],
+            'handlers': [],
             'level': 'DEBUG',
             'propagate': False,
             },
