@@ -12,3 +12,4 @@ install:
 script:
   - export DJANGO_SETTINGS_MODULE="echaloasuerte.settings.test"
   - nosetests test_init.py . -v
+  - nosetests func_tests -v
