@@ -172,52 +172,52 @@
                     </div>
                 {% endfor  %}
                 <!-- Input Form -->
-                {% block input_form %}
-                    <div class="step-configure">
+               <div class="step-configure">
+                    {% block input_form %}
                         {% crispy draw draw.helper %}
-                    </div>
-                    <div class="col-xs-12 text-center">
-                        <!-- Buttons for 'Toss' or 'Try it!' -->
-                        <div class="row btn-row">
-                            {% if is_public %}
-                                    {% if public_draw_step == "configure" %}
-                                        <!-- Button to try a draw when creating a public one -->
-                                        <button id="try" type="submit" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
-                                    {% elif not public_draw_step %}
-                                        <button id="public-toss" type="submit" name="toss" class="btn btn-success"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
-                                        {%if not can_write and bom.owner%}
-                                            <div class="alert alert-warning alert-dismissible" role="alert">
-                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                              {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
-                                            </div>
-                                        {%else%}
-                                            {# Buttons to save changes when editing an already published public draw #}
-                                            <div id="edit-draw-save-changes" class="hide">
-                                                <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
-                                                <button type="submit" id="edit-draw-save" class="col-xs-6 btn btn-primary">{% trans 'Save changes' %}</button>
-                                            </div>
-                                        {% endif %}
-                                    {% endif %}
-                            {% else %}
-                                <button type="submit" name="toss" class="btn btn-success">{% trans 'Toss' %}</button>
-                            {% endif %}
-                        </div>
-
-                        <!-- Buttons for 'Next step' and 'Cancel' public draw creation -->
+                    {% endblock input_form %}
+                </div>
+                <div class="col-xs-12 text-center">
+                    <!-- Buttons for 'Toss' or 'Try it!' -->
+                    <div class="row btn-row">
                         {% if is_public %}
-                            {% if public_draw_step == "configure" or public_draw_step == "spread" %}
-                                <div class="col-sm-8 col-sm-offset-2 btn-row">
-                                    <a href="{% url 'index' %}" class="col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
-                                    {% if public_draw_step == "configure" %}
-                                        <button type="submit" id="next" name="next" class="col-xs-6 btn btn-primary">{% trans 'Next step' %}</button>
-                                    {% elif public_draw_step == "spread" %}
-                                        <button type="submit" name="next" class="col-xs-6 btn btn-primary">{% trans 'Publish it' %}</button>
+                                {% if public_draw_step == "configure" %}
+                                    <!-- Button to try a draw when creating a public one -->
+                                    <button id="try" type="submit" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
+                                {% elif not public_draw_step %}
+                                    <button id="public-toss" type="submit" name="toss" class="btn btn-success"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
+                                    {%if not can_write and bom.owner%}
+                                        <div class="alert alert-warning alert-dismissible" role="alert">
+                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                          {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
+                                        </div>
+                                    {%else%}
+                                        {# Buttons to save changes when editing an already published public draw #}
+                                        <div id="edit-draw-save-changes" class="hide">
+                                            <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
+                                            <button type="submit" id="edit-draw-save" class="col-xs-6 btn btn-primary">{% trans 'Save changes' %}</button>
+                                        </div>
                                     {% endif %}
-                                </div>
-                            {% endif %}
+                                {% endif %}
+                        {% else %}
+                            <button type="submit" name="toss" class="btn btn-success">{% trans 'Toss' %}</button>
                         {% endif %}
                     </div>
-                {% endblock input_form %}
+
+                    <!-- Buttons for 'Next step' and 'Cancel' public draw creation -->
+                    {% if is_public %}
+                        {% if public_draw_step == "configure" or public_draw_step == "spread" %}
+                            <div class="col-sm-8 col-sm-offset-2 btn-row">
+                                <a href="{% url 'index' %}" class="col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
+                                {% if public_draw_step == "configure" %}
+                                    <button type="submit" id="next" name="next" class="col-xs-6 btn btn-primary">{% trans 'Next step' %}</button>
+                                {% elif public_draw_step == "spread" %}
+                                    <button type="submit" name="next" class="col-xs-6 btn btn-primary">{% trans 'Publish it' %}</button>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
             </div>
             {# shared-type: It's part of "FormBase". Can be "None", "Public" or "Invite" #}
             <input id="shared-type" class="hidden" name="shared_type" value="{{ bom.shared_type }}"/>
