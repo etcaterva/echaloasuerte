@@ -8,12 +8,17 @@
             draw_id: ""
         };
 
+    /*********************************
+     *     CHAT CLASS DEFINITION
+     ********************************/
     var Chat = function (element, options){
         this.init(element, options);
     };
 
     Chat.prototype = {
+
         constructor: Chat,
+
         init: function (element, options){
             var that = this;
             this.$element = $(element)
@@ -51,6 +56,7 @@
              })();
         },
 
+        // Return the message from the chat input box and clean it
         get_message_and_clean: function (){
             var $message_input = this.$element.find("#chat-message-box");
             var message = $message_input.val();
@@ -58,6 +64,7 @@
             return message;
         },
 
+        // Submit the parameter "message" to the server
         submit_message: function (message) {
             // Check empty string
             if(!message || /^\s*$/.test(message)){
@@ -74,6 +81,7 @@
             });
         },
 
+        // Get all the messages of a public draw and refresh the chat board
         get_messages: function (){
             var that = this;
             var $chat = this.$element.find("#chat-board");
@@ -94,6 +102,7 @@
 
         },
 
+        // Given a chat entry generates and returns the html code necessarry to be rendered
         formatChatEntry: function (chat_entry){
             var user = chat_entry.user;
             var content = chat_entry.content;
@@ -114,6 +123,9 @@
 }
     };
 
+    /*********************************
+     *     CHAT PLUGIN DEFINITION
+     ********************************/
     $.fn.chat = function(options) {
         return this.each(function() {
             if (!$.data(this, 'plugin_' + pluginName)) {
