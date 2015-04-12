@@ -1,0 +1,18 @@
+{% load staticfiles %}
+{% load i18n %}
+
+{% comment %}
+    Parameters received:
+        - draw_type
+        - draw_icon
+        - title
+        - help
+{% endcomment %}
+
+<a class="draw-link" href="{% url 'draw' draw_type=draw_type publish=is_public %}">
+    <div class="draw-box">
+        <img src="{% static draw_icon %}"/>
+        <div class="draw-box-title text-center">{% trans title %}</div>
+        <span class="fa fa-question visible-lg" title="{% trans help %}"></span>
+    </div>
+</a>

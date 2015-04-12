@@ -2,20 +2,6 @@
 {% load staticfiles %}
 {% load bootstrap %}
 {% load i18n %}
-{% block extra_jq_ready %}
-    $(function() {
-        $( ".draw-link" ).hover(
-            function() {
-                $(this).find(".draw-box-title" ).stop(true,true).addClass( "no-padding", 400 );
-              $(this).find(".draw-box-subtitle" ).stop(true,true).show( "clip", 400 );
-            },
-            function() {
-                $(this).find(".draw-box-title" ).stop(true,true).removeClass( "no-padding", 400 );
-              $(this).find(".draw-box-subtitle" ).stop(true,true).hide( "clip", 400 );
-            }
-        );
-    });
-{% endblock extra_jq_ready %}
 {% block content %}
 	<div class="row">
     <!-- Public Draw Info -->
@@ -27,72 +13,19 @@
 	        </div>
             <a href="{% url 'index' %}" class="cancel fa fa-times fa-2x"></a><br>
 	    </div>
-	{% endif %}
     <!-- End Public Draw Info -->
+	{% endif %}
 	</div>
     <div class="container-draws row">
         <div class="col-sm-6">
-            <a class="draw-link" href="{% url 'draw' draw_type='coin' publish=is_public %}">
-                <div class="draw-box">
-                    <div class="draw-img"><img src="{% static "img/coin.gif" %}"/></div>
-                    <div class="draw-label text-center">
-                        <div class="draw-box-title">{% trans "Flip a coin" %}</div>
-                        <div class="hidden-xs hidden-sm draw-box-subtitle">Afraid of taking the wrong decision? Don't hesitate and throw the coin!</div>
-                    </div>
-                </div>
-            </a>
-            <a class="draw-link" href="{% url 'draw' draw_type='card' publish=is_public %}">
-                <div class="draw-box">
-                    <div class="draw-img"><img src="{% static "img/cards.png" %}"/></div>
-                    <div class="draw-label text-center">
-                        <div class="draw-box-title">{% trans "Take a card" %}</div>
-                        <div class="hidden-xs hidden-sm draw-box-subtitle">Let's play some drinking games!</div>
-
-                    </div>
-                </div>
-            </a>
-            <a class="draw-link" href="{% url 'draw' draw_type='dice' publish=is_public %}">
-                <div class="draw-box">
-                    <div class="draw-img"><img src="{% static "img/dice.png" %}"/></div>
-                    <div class="draw-label text-center">
-                        <div class="draw-box-title">{% trans "Roll dice" %}</div>
-                        <div class="hidden-xs hidden-sm draw-box-subtitle">Didn't you have a dice? Just roll this one</div>
-
-                    </div>
-                </div>
-            </a>
+            {% include "draw_box.html" with draw_type="coin" draw_icon="img/coin.gif" title="Flip a coin" help="Afraid of taking the wrong decision? Don't hesitate and throw the coin!" %}
+            {% include "draw_box.html" with draw_type="card" draw_icon="img/cards.png" title="Take a card" help="Let's play some drinking games!" %}
+            {% include "draw_box.html" with draw_type="dice" draw_icon="img/dice.png" title="Roll a dice" help="Didn't you have a dice? Just roll this one" %}
         </div>
         <div class="col-sm-6">
-            <a class="draw-link" href="{% url 'draw' draw_type='number' publish=is_public %}">
-                <div class="draw-box">
-                    <div class="draw-img"><img src="{% static "img/random_number.png" %}"/></div>
-                    <div class="draw-label text-center">
-                        <div class="draw-box-title">{% trans "Random number" %}</div>
-                        <div class="hidden-xs hidden-sm draw-box-subtitle">Doing a raffle? Luck will decide who is the winner</div>
-
-                    </div>
-                </div>
-            </a>
-            <a class="draw-link" href="{% url 'draw' draw_type='item' publish=is_public %}">
-                <div class="draw-box">
-                    <div class="draw-img"><img src="{% static "img/random_item.png" %}"/></div>
-                    <div class="draw-label text-center">
-                        <div class="draw-box-title">{% trans "Pick random items from a list" %}</div>
-                        <div class="hidden-xs hidden-sm draw-box-subtitle">Doing a raffle? Luck will decide who is the winner</div>
-
-                    </div>
-                </div>
-            </a>
-            <a class="draw-link" href="{% url 'draw' draw_type='link_sets' publish=is_public %}">
-                <div class="draw-box">
-                    <div class="draw-img"><img src="{% static "img/item_association.png" %}"/></div>
-                    <div class="draw-label text-center">
-                        <div class="draw-box-title">{% trans "Associate items from two lists" %}</div>
-                        <div class="hidden-xs hidden-sm draw-box-subtitle">Cleaning the house? Allocate the tasks within your housemates</div>
-
-                    </div>
-                </div>
-            </a>
+            {% include "draw_box.html" with draw_type="number" draw_icon="img/random_number.png" title="Random number" help="Doing a raffle? Luck will decide who is the winner" %}
+            {% include "draw_box.html" with draw_type="item" draw_icon="img/random_item.png" title="Pick random items from a list" help="Doing a raffle? Luck will decide who is the winner" %}
+            {% include "draw_box.html" with draw_type="link_sets" draw_icon="img/item_association.png" title="Associate items from two lists" help="Cleaning the house? Allocate the tasks within your housemates" %}
         </div>
     </div>
 {% endblock %}
