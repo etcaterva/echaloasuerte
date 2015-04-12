@@ -84,7 +84,7 @@ class MongoDriver(object):
     def retrieve_user(self,user_id):
         doc = self._users.find_one({"_id":user_id})
         if doc is None:
-            raise MongoDriver.NotFoundError("User not found: {0}".format(draw_id))
+            raise MongoDriver.NotFoundError("User not found: {0}".format(user_id))
         logger.debug("Retrieved documment: {0} using id {1}".format(doc,user_id))
         return User(**doc)
 

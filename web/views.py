@@ -113,15 +113,17 @@ def login_user(request):
         username = request.POST['email']
         password = request.POST['password']
 
-        try:
-            user = authenticate(username=username, password=password)
+        user = authenticate(username=username, password=password)
+        if user:
             if user.is_active:
                 if 'keep-logged' in request.POST:
                     request.session.set_expiry(31556926)  # 1 year
                 logger.info("expiration" + str(request.session.get_expiry_date()))
                 login(request, user)
                 return HttpResponseRedirect('/')
-        except MongoDriver.NotFoundError:
+            else:
+                context = {'error': "User is not activated yet"}
+        else:
             context = {'error': "Email or password not valid."}
     return render(request, 'login.html', context)
 
