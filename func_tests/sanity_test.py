@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from selenium_base import SeleniumTest
+from .selenium_base import SeleniumTest
+import time
 
 class SanityWebapp(SeleniumTest):
     """ Basic sanity test for the web app"""
@@ -35,6 +36,7 @@ class SanityWebapp(SeleniumTest):
         driver.find_element_by_css_selector("div.controls.col-xs-8 > #password").clear()
         driver.find_element_by_css_selector("div.controls.col-xs-8 > #password").send_keys("test")
         driver.find_element_by_id("login-button").click()
+        time.sleep(2)
         self.driver.get(self.base_url + "/accounts/profile/")
         driver.find_element_by_css_selector("input[type=\"search\"]").clear()
         driver.find_element_by_css_selector("input[type=\"search\"]").send_keys("any")

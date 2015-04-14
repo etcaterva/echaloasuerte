@@ -12,9 +12,9 @@ python:
 #    - sleep 3 # give xvfb some time to start
 install:
   - "pip install -r requirements.txt"
+  - export DJANGO_SETTINGS_MODULE="echaloasuerte.settings.test"
   - "python manage.py syncdb --noinput"
 # command to run tests
 script:
-  - export DJANGO_SETTINGS_MODULE="echaloasuerte.settings.test"
   - nosetests test_init.py server/test -v
   - nosetests func_tests -v
