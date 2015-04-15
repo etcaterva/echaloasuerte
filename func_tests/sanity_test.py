@@ -1,39 +1,68 @@
-from django.test import LiveServerTestCase
-from server.mongodb.driver import MongoDriver
-import django
-from selenium import webdriver
+# -*- coding: utf-8 -*-
+from .selenium_base import SeleniumTest
+import time
 
-class SanityWebapp(LiveServerTestCase):
+class SanityWebapp(SeleniumTest):
     """ Basic sanity test for the web app"""
-    def setUp(self):
-        django.setup()
-        self.db = MongoDriver.instance()
-        self.selenium = webdriver.Firefox()
-        self.selenium.maximize_window()
 
+    def setUp(self):
         super(SanityWebapp,self).setUp()
 
     def tearDown(self):
-        self.selenium.quit()
         super(SanityWebapp,self).tearDown()
 
-    def load_url(self, url):
-        self.selenium.get("{0}{1}".format(
-            self.live_server_url,
-            url
-        ))
-
-    def sanity_test(self):
-        self.load_url("/")
-
-    def change_language_test(self):
+    def test_sanity(self):
         pass
+
+    def test_change_language(self):
+        driver = self.driver
+
+        #TODO
+        #driver.find_element_by_css_selector("span.fa.fa-flag").click()
+        #driver.find_element_by_link_text(u"español (es)").click()
+        #driver.find_element_by_id("change_language_but").click()
+        #driver.find_element_by_css_selector("span.fa.fa-flag").click()
+        #driver.find_element_by_link_text("English (en)").click()
+        #driver.find_element_by_id("change_language_but").click()
+
+        #driver.find_element_by_link_text("About us").click()
 
     def user_login_test(self):
-        pass
+        self.user_signup_test()
+        driver = self.driver
+        driver.get(self.base_url + "/accounts/login/")
+        driver.find_element_by_css_selector("div.controls.col-xs-8 > #email").clear()
+        driver.find_element_by_css_selector("div.controls.col-xs-8 > #email").send_keys("test@test.com")
+        driver.find_element_by_css_selector("div.controls.col-xs-8 > #password").clear()
+        driver.find_element_by_css_selector("div.controls.col-xs-8 > #password").send_keys("test")
+        driver.find_element_by_id("login-button").click()
+        time.sleep(2)
+        self.driver.get(self.base_url + "/accounts/profile/")
+        driver.find_element_by_css_selector("input[type=\"search\"]").clear()
+        driver.find_element_by_css_selector("input[type=\"search\"]").send_keys("any")
 
     def user_logout_test(self):
-        pass
+        self.user_login_test()
+        driver = self.driver
+        driver.find_element_by_css_selector("#login-dropdown > a.dropdown-toggle").click()
+        driver.find_element_by_link_text("Sign out").click()
+        driver.find_element_by_css_selector("a > button.btn").click()
+
 
     def user_signup_test(self):
-        pass
+        self.remove_user("test2@test.com")
+        self.assertRaises(Exception, lambda: self.db.retrieve_user("test2@test.com"))
+
+        driver = self.driver
+        driver.find_element_by_css_selector("#login-dropdown > a.dropdown-toggle").click()
+        driver.find_element_by_link_text("Register now!").click()
+        driver.find_element_by_css_selector("div.controls.col-xs-8 > #email").clear()
+        driver.find_element_by_css_selector("div.controls.col-xs-8 > #email").send_keys("test2@test.com")
+        driver.find_element_by_css_selector("div.controls.col-xs-8 > #password").clear()
+        driver.find_element_by_css_selector("div.controls.col-xs-8 > #password").send_keys("test")
+        driver.find_element_by_id("register-button").click()
+        driver.find_element_by_css_selector("#login-dropdown > a.dropdown-toggle").click()
+        driver.find_element_by_css_selector("#login-dropdown > a.dropdown-toggle").click()
+
+        self.assertTrue(self.db.retrieve_user("test2@test.com"))
+

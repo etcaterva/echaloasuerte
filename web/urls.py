@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from web import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = patterns(None)
 
@@ -29,3 +30,5 @@ urlpatterns += patterns(
     url(r'^ws/chat/add/$', views.add_message_to_chat, name="chat_add_message"),
     url(r'^ws/chat/get/$', views.get_chat_messages, name="chat_get_messages"),
 )
+
+urlpatterns += staticfiles_urlpatterns()
