@@ -29,7 +29,6 @@ class SeleniumTest(LiveServerTestCase):
         self.display.start()
         self.driver = webdriver.Firefox()
         self.driver.set_window_size(1366,768)
-        self.driver.implicitly_wait(0.1)
         self.verificationErrors = []
         self.accept_next_alert = True
 
