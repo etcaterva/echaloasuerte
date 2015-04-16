@@ -16,48 +16,57 @@ class SanityWebapp(SeleniumTest):
 
     def coin_test(self):
         driver = self.driver
-        driver.find_element_by_css_selector("div.draw-box-title.text-center").click()
+        driver.find_element_by_id("coin-draw").click()
         driver.find_element_by_id("img-coin").click()
         driver.find_element_by_id("img-coin").click()
-        driver.find_element_by_id("ui-id-1").click()
-        driver.find_element_by_id("ui-id-3").click()
+        results = driver.find_elements_by_class_name("result")
+        self.assertEqual(2, len(results))
+
     def random_number_test(self):
         driver = self.driver
-        driver.find_element_by_xpath("//div[@id='content']/div[2]/div[2]/a/div/div").click()
-        driver.find_element_by_name("toss").click()
-        driver.find_element_by_name("toss").click()
-        driver.find_element_by_id("ui-id-1").click()
-        driver.find_element_by_id("ui-id-3").click()
+        driver.find_element_by_id("number-draw").click()
+        driver.find_element_by_id("toss-btn").click()
+        driver.find_element_by_id("toss-btn").click()
+        results = driver.find_elements_by_class_name("result")
+        self.assertEqual(2, len(results))
 
     def card_test(self):
         driver = self.driver
-        driver.find_element_by_xpath("//div[@id='content']/div[2]/div/a[2]/div/div").click()
+        driver.find_element_by_id("card-draw").click()
         driver.find_element_by_name("toss").click()
         driver.find_element_by_name("toss").click()
-        driver.find_element_by_id("ui-id-1").click()
-        driver.find_element_by_id("ui-id-3").click()
+        results = driver.find_elements_by_class_name("result")
+        self.assertEqual(2, len(results))
 
     def random_item_test(self):
         driver = self.driver
-        driver.find_element_by_xpath("//div[@id='content']/div[2]/div[2]/a[2]/div/div").click()
+        driver.find_element_by_id("item-draw").click()
         driver.find_element_by_id("id_items-tokenfield").clear()
         driver.find_element_by_id("id_items-tokenfield").send_keys("1,2,3")
         driver.find_element_by_name("toss").click()
-        driver.find_element_by_id("ui-id-1").click()
+        results = driver.find_elements_by_class_name("result")
+        self.assertEqual(1, len(results))
 
     def dice_test(self):
         driver = self.driver
-        driver.find_element_by_xpath("//div[@id='content']/div[2]/div/a[3]/div/div").click()
+        driver.find_element_by_id("dice-draw").click()
         driver.find_element_by_name("toss").click()
-        driver.find_element_by_id("ui-id-1").click()
+        results = driver.find_elements_by_class_name("result")
+        self.assertEqual(1, len(results))
 
     def link_sets_test(self):
         driver = self.driver
-        driver.find_element_by_xpath("//div[@id='content']/div[2]/div[2]/a[3]/div").click()
+        driver.find_element_by_id("link_sets-draw").click()
         driver.find_element_by_id("id_set_1-tokenfield").send_keys("1,2,3")
         driver.find_element_by_id("id_set_2-tokenfield").send_keys("a,b,c")
         driver.find_element_by_name("toss").click()
-        driver.find_element_by_id("ui-id-1").click()
-        driver.find_element_by_id("ui-id-1").click()
+        results = driver.find_elements_by_class_name("result")
+        self.assertEqual(1, len(results))
+
+    def back_button_test(self):
+        driver = self.driver
+        driver.find_element_by_id("number-draw").click()
+        driver.find_element_by_class_name("back-arrow").click()
+        driver.find_element_by_id("number-draw")
 
 

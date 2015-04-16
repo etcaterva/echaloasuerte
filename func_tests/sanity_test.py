@@ -31,12 +31,11 @@ class SanityWebapp(SeleniumTest):
         self.user_signup_test()
         driver = self.driver
         driver.get(self.base_url + "/accounts/login/")
-        driver.find_element_by_css_selector("div.controls.col-xs-8 > #email").clear()
-        driver.find_element_by_css_selector("div.controls.col-xs-8 > #email").send_keys("test@test.com")
-        driver.find_element_by_css_selector("div.controls.col-xs-8 > #password").clear()
-        driver.find_element_by_css_selector("div.controls.col-xs-8 > #password").send_keys("test")
-        driver.find_element_by_id("login-button").click()
-        time.sleep(2)
+        driver.find_element_by_css_selector("div#login #email").clear()
+        driver.find_element_by_css_selector("div#login #email").send_keys("test@test.com")
+        driver.find_element_by_css_selector("div#login #password").clear()
+        driver.find_element_by_css_selector("div#login #password").send_keys("test")
+        driver.find_element_by_css_selector("div#login #login-button").click()
         self.driver.get(self.base_url + "/accounts/profile/")
         driver.find_element_by_css_selector("input[type=\"search\"]").clear()
         driver.find_element_by_css_selector("input[type=\"search\"]").send_keys("any")
@@ -46,8 +45,6 @@ class SanityWebapp(SeleniumTest):
         driver = self.driver
         driver.find_element_by_css_selector("#login-dropdown > a.dropdown-toggle").click()
         driver.find_element_by_link_text("Sign out").click()
-        driver.find_element_by_css_selector("a > button.btn").click()
-
 
     def user_signup_test(self):
         self.remove_user("test2@test.com")
