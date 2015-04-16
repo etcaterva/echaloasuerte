@@ -3,6 +3,7 @@ from django.test import LiveServerTestCase
 from server.mongodb.driver import MongoDriver
 from server.bom.user import User
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
 import pyvirtualdisplay
 import django
 
