@@ -232,7 +232,7 @@
         <!-- End Chat -->
 
         {% if bom.results or bom.prev_draw %}
-            <div class="col-sm-8 col-sm-offset-2">
+            <div id="results" class="col-sm-8 col-sm-offset-2">
                 <div class="row text-center accordion">
                 {% for result in bom.results reversed %}
                 {% with result.items as results%}
