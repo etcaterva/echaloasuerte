@@ -231,36 +231,36 @@
         {% endif %}
         <!-- End Chat -->
 
-        <!-- Results -->
-        <div class="col-sm-8 col-sm-offset-2">
-            <div class="row text-center accordion">
-            {% for result in bom.results reversed %}
-            {% with result.items as results%}
-                {% if results %}
-                    <p class="h3">
-                        {%trans 'Result' %}{{results|length|pluralize}}
-                        <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
-                        <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
-                    </p>
-                    <div class="result">
-                        {% block result %}{% endblock result %}
-
+        {% if bom.results or bom.prev_draw %}
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="row text-center accordion">
+                {% for result in bom.results reversed %}
+                {% with result.items as results%}
+                    {% if results %}
+                        <!-- Results -->
+                        <p class="h3">
+                            {%trans 'Result' %}{{results|length|pluralize}}
+                            <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
+                            <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                        </p>
+                        <div class="result">
+                            {% block result %}{% endblock result %}
+                        </div>
+                        <!-- End Results -->
+                    {% endif %}
+                {% endwith %}
+                {% endfor %}
+                {% if bom.prev_draw %}
+                    <!-- Previous draw -->
+                    <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated before '%}</small></p>
+                    <div >
+                       {%trans 'The configuration of the draw was changed.'%}<br/>
+                       {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
                     </div>
                 {% endif %}
-            {% endwith %}
-            {% endfor %}
-            <!-- Previous draw -->
-            {% if bom.prev_draw %}
-                <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated before '%}</small></p>
-                <div >
-                   {%trans 'The configuration of the draw was changed.'%}<br/>
-                   {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
-
                 </div>
-            {% endif %}
             </div>
-            <!-- End Results -->
-        </div>
+        {% endif %}
     </div>
 
     <div id="modal" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
