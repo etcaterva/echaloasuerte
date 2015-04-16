@@ -10,7 +10,7 @@
 {% endcomment %}
 
 <a class="draw-link" href="{% url 'draw' draw_type=draw_type publish=is_public %}">
-    <div class="draw-box">
+    <div id="{{ draw_type }}-draw" class="draw-box">
         <img src="{% static draw_icon %}"/>
         <div class="draw-box-title text-center">{% trans title %}</div>
         <span class="fa fa-question visible-lg" title="{% trans help %}"></span>
