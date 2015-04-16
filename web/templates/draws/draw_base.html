@@ -186,7 +186,7 @@
                             <button type="submit" name="try" class="btn btn-success btn-try">{% trans 'Try it!' %}</button>
                             <button type="submit" name="next" class="btn btn-primary btn-next">{% trans 'Next' %}</button>
                         {% else %}
-                            <button type="submit" name="toss" class="btn btn-success btn-toss"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
+                            <button type="submit" id="toss-btn" name="toss" class="btn btn-success btn-toss"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
                             {%if not can_write and bom.owner%}
                                 <div class="alert alert-warning alert-dismissible" role="alert">
                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
