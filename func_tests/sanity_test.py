@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .selenium_base import SeleniumTest
+from selenium.webdriver.common.action_chains import ActionChains
 import time
 
 class SanityWebapp(SeleniumTest):
@@ -31,6 +32,19 @@ class SanityWebapp(SeleniumTest):
         driver = self.driver
         driver.get(self.base_url + "/about.html")
         driver.find_element_by_class_name("team-member")
+
+    def draw_tooltip_test(self):
+        driver = self.driver
+        # Check if it the help icon is visible when hovering
+        draw = driver.find_element_by_id("number-draw")
+        help_icon = driver.find_element_by_css_selector("#number-draw .fa-question")
+        ActionChains(driver).move_to_element(draw).perform()
+        ActionChains(driver).move_to_element(help_icon).perform()
+
+        # Check if it has a title to show in the tooltip
+        tooltip = help_icon.get_attribute("title")
+        self.assertIsNotNone(tooltip)
+        self.assertNotEqual("", tooltip)
 
     def user_login_test(self):
         self.user_signup_test()
