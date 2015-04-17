@@ -160,13 +160,13 @@
 
                         <!-- Public draw options -->
                         <li class="visible-xs"><a href="{% url 'join_public_draw' %}">{% trans "Join public draw" %}</a></li>
-                        <li class="nav-divider"></li>
+                        <li class="nav-divider visible-xs"></li>
                         <li class="visible-xs"><a href="{% url 'publish_draw' %}">{% trans "Create public draw" %}</a></li>
                         <li id="public-draw-dropdown" class="hidden-xs dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <span class="fa fa-globe" aria-hidden="true"></span>
-                                {% trans "Public Draw" %}<span class="caret">
-                            </span></a>
+                                {% trans "Public Draw" %}
+                                <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{% url 'join_public_draw' %}">{% trans "Join public draw" %}</a></li>
                                 <li class="nav-divider"></li>
@@ -174,7 +174,6 @@
                             </ul>
                         </li>
 
-                        <!-- Login panel -->
                         <li id="login-dropdown" class="hidden-xs dropdown">
                             {% if user.is_authenticated %}
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -182,6 +181,7 @@
                                     {{ user }}
                                     <span class="caret"></span>
                                 </a>
+                                <!-- Account dropdown panel -->
                                 <ul class="dropdown-menu">
                                     <li>
                                         <div class="navbar-login">
@@ -217,12 +217,12 @@
                                         </div>
                                     </li>
                                 </ul>
-                                <!-- END ACCOUNT -->
+                                <!-- End account dropdown panel -->
                             {% else %}
-                                <!-- START SIGN IN -->
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <span class="fa fa-user" aria-hidden="true"></span> {% trans "Sign in" %}<b class="caret"></b>
                                 </a>
+                                <!-- Login panel -->
                                 <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
                                     <li>
                                         <div class="row">
@@ -230,35 +230,35 @@
                                                 <form class="form" role="form" method="post" action="{% url 'login' %}" accept-charset="UTF-8" id="login-nav">
                                                     {% csrf_token %}
                                                     <div class="form-group">
-                                                        <label class="sr-only" for="email">Email</label>
-                                                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
+                                                        <label class="sr-only" for="email">{% trans "Email"%}</label>
+                                                        <input type="email" class="form-control" id="email" placeholder="{% trans "Email"%}" name="email" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="sr-only" for="password">Password</label>
-                                                        <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                                                        <label class="sr-only" for="password">{% trans "Password"%}</label>
+                                                        <input type="password" class="form-control" id="password" placeholder="{% trans "Password"%}" name="password" required>
                                                     </div>
                                                     <div class="form-group checkbox">
                                                         <label>
-                                                            <input type="checkbox" class="checkboxinput checkbox" id="keep-logged" name="keep-logged"> {% trans "Keep me logged in" %}
+                                                            <input type="checkbox" class="checkboxinput checkbox" id="keep-logged" name="keep-logged"> {% trans "Keep me signed in" %}
                                                         </label>
                                                     </div>
                                                     <div class="form-group">
-                                                        <button type="submit" class="btn btn-success btn-block">Sign in
+                                                        <button type="submit" class="btn btn-success btn-block">{% trans "Sign in"%}
                                                         </button>
                                                         <a class="forgot-password"
                                                            href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a>
                                                     </div>
                                                     <li class="nav-divider"></li>
                                                     <div class="register-now text-center">
-                                                        Don't have an account?<br>
-                                                        <a href="{% url 'register' %}">{% trans "Register now!" %}</a>
+                                                        {% trans "Don't have an account?"%}<br>
+                                                        <a href="{% url 'register' %}">{% trans "Sign up now!" %}</a>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
-                                <!-- END SIGN IN -->
+                                <!-- End login panel -->
                             {% endif %}
                         </li>
                     </ul>
