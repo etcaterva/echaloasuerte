@@ -27,6 +27,11 @@ class SanityWebapp(SeleniumTest):
 
         #driver.find_element_by_link_text("About us").click()
 
+    def about_test(self):
+        driver = self.driver
+        driver.get(self.base_url + "/about.html")
+        driver.find_element_by_class_name("team-member")
+
     def user_login_test(self):
         self.user_signup_test()
         driver = self.driver
