@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from telnetlib import EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 from .selenium_base import SeleniumTest
 import time
 
