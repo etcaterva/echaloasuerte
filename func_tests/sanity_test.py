@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 from .selenium_base import SeleniumTest
 from selenium.webdriver.common.action_chains import ActionChains
 import time
@@ -46,39 +49,35 @@ class SanityWebapp(SeleniumTest):
         self.assertIsNotNone(tooltip)
         self.assertNotEqual("", tooltip)
 
-    def user_login_test(self):
-        self.user_signup_test()
-        driver = self.driver
-        driver.get(self.base_url + "/accounts/login/")
-        driver.find_element_by_css_selector("div#login #email").clear()
-        driver.find_element_by_css_selector("div#login #email").send_keys("test@test.com")
-        driver.find_element_by_css_selector("div#login #password").clear()
-        driver.find_element_by_css_selector("div#login #password").send_keys("test")
-        driver.find_element_by_css_selector("div#login #login-button").click()
-        self.driver.get(self.base_url + "/accounts/profile/")
-        driver.find_element_by_css_selector("input[type=\"search\"]").clear()
-        driver.find_element_by_css_selector("input[type=\"search\"]").send_keys("any")
-
-    def user_logout_test(self):
-        self.user_login_test()
-        driver = self.driver
-        driver.find_element_by_css_selector("#login-dropdown > a.dropdown-toggle").click()
-        driver.find_element_by_link_text("Sign out").click()
-
     def user_signup_test(self):
         self.remove_user("test2@test.com")
         self.assertRaises(Exception, lambda: self.db.retrieve_user("test2@test.com"))
 
         driver = self.driver
-        driver.find_element_by_css_selector("#login-dropdown > a.dropdown-toggle").click()
-        driver.find_element_by_link_text("Register now!").click()
+        driver.find_element_by_css_selector("#account-dropdown > a.dropdown-toggle").click()
+        driver.find_element_by_css_selector("#account-dropdown #sign-up-link").click()
         driver.find_element_by_css_selector("div.controls.col-xs-8 > #email").clear()
         driver.find_element_by_css_selector("div.controls.col-xs-8 > #email").send_keys("test2@test.com")
         driver.find_element_by_css_selector("div.controls.col-xs-8 > #password").clear()
         driver.find_element_by_css_selector("div.controls.col-xs-8 > #password").send_keys("test")
         driver.find_element_by_id("register-button").click()
-        driver.find_element_by_css_selector("#login-dropdown > a.dropdown-toggle").click()
-        driver.find_element_by_css_selector("#login-dropdown > a.dropdown-toggle").click()
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "profile-dropdown-link")))
 
-        self.assertTrue(self.db.retrieve_user("test2@test.com"))
+    def user_login_screen_test(self):
+        driver = self.driver
+        driver.get(self.base_url + "/accounts/login/")
+        driver.find_element_by_css_selector("#login #email").clear()
+        driver.find_element_by_css_selector("#login #email").send_keys("test@test.com")
+        driver.find_element_by_css_selector("#login #password").clear()
+        driver.find_element_by_css_selector("#login #password").send_keys("test")
+        driver.find_element_by_id("login-button").click()
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "profile-dropdown-link")))
+
+    def user_logout_test(self):
+        self.user_login_screen_test()
+        driver = self.driver
+        driver.find_element_by_css_selector("#account-dropdown > a.dropdown-toggle").click()
+        driver.find_element_by_link_text("Sign out").click()
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "login-dropdown-link")))
+
 
