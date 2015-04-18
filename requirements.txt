@@ -2,6 +2,7 @@ django==1.7
 django-crispy-forms
 django-bootstrap-form
 pymongo
-selenium
 pytz
+selenium
 pyvirtualdisplay
+coverage
