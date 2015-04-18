@@ -134,12 +134,12 @@
                     <ul class="nav navbar-nav">
                         <li class="visible-xs">
                             {% if user.is_authenticated %}
-                                <a href="{% url 'profile' %}">
+                                <a id="profile-dropdown-link" href="{% url 'profile' %}">
                                     <span class="fa fa-user" aria-hidden="true"></span>
                                     {{ user }}
                                 </a>
                             {% else %}
-                                <a href="{% url 'login' %}">
+                                <a id="login-dropdown-link" href="{% url 'login' %}">
                                     <span class="fa fa-user"></span>
                                     {% trans "Sign in" %}
                                 </a>
