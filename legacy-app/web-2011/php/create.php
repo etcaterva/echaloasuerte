@@ -37,12 +37,12 @@
 						    $repe=1;
 						break;
 	}
-	$conn = mysql_connect("db372506665.db.1and1.com","dbo372506665","1234abcd");
-	mysql_select_db("db372506665", $conn);
+	$conn = mysql_connect("localhost","root","toor");
+	mysql_select_db("echaloasuerte", $conn);
 	if (!$conn)
 	{
 		die('Error al conectar con la base de datos: ' . mysql_error());
-	}			
+	}
 	//creamos la tirada
 	$query = "INSERT INTO TIRADA (password, participantes, nombre) VALUES ('".$contrasenia."',".$numParticipantes.",'".$nombre."')";
 	mysql_query($query);
@@ -51,22 +51,22 @@
 	$query = "INSERT INTO USUARIO (name, tirada) VALUES ('".$nombreUsuario."',".$tiradaID.")";
 	mysql_query($query);
 	$usuarioID = mysql_insert_id();//id de usuario
-	
+
 	//creamos los item solucion
 	for($i = 0;$i < count($solutionItem);$i++)
 	{
 		$query = "INSERT INTO ITEM_SOLUCION (contenido, tirada) VALUES ('".$solutionItem[$i]."',".$tiradaID.")";
 		mysql_query($query);
 	}
-	
+
 	//creamos la tirada especificamente
 	switch($type)
 	{
-		case "aleatorio": 
+		case "aleatorio":
 			$query = 	"INSERT INTO ALEATORIO (id, num, desde, hasta, repetir) VALUES (".$tiradaID.",".$num.",".$from.",".$to.",".$repe.");";
 			mysql_query($query);
 			break;
-		case "eleccion": 
+		case "eleccion":
 			$query = 	"INSERT INTO ELECCION (id, num, repetir) VALUES (".$tiradaID.",".$num.",".$repe.");";
 			mysql_query($query);
 			for($i = 0;$i < count($values);$i++)
@@ -75,7 +75,7 @@
 				mysql_query($query);
 			}
 			break;
-		case "asociacion": 
+		case "asociacion":
 			$query = 	"INSERT INTO ASOCIACION (id, repetir) VALUES (".$tiradaID.",".$repe.");";
 			mysql_query($query);
 			for($i = 0;$i < count($valuesA) && $i < count($valuesB);$i++)
@@ -92,9 +92,9 @@
 			}
 			break;
 	}
-	
-	echo json_encode(array("tirada"=>$tiradaID, "usuario" => $usuarioID));	
-	
+
+	echo json_encode(array("tirada"=>$tiradaID, "usuario" => $usuarioID));
+
 	//enviar los emails:
 	$url = "http://www.echaloasuerte.com/elegirSalas.php";
 	$cuerpo = "Has sido invitado a una sala en echaloasuerte.com:\n";
@@ -106,5 +106,5 @@
 	for($i = 0;$i < count($correo);$i++)
 	{
 		mail($correo[$i],"Invitacion en EchaloASuerte.com",$cuerpo,"From: admin@echaloasuerte.com");
-	}	
+	}
 ?>
