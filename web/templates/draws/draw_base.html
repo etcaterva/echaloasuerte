@@ -186,7 +186,7 @@
                             <button type="submit" name="try" class="btn btn-success btn-try">{% trans 'Try it!' %}</button>
                             <button type="submit" name="next" class="btn btn-primary btn-next">{% trans 'Next' %}</button>
                         {% else %}
-                            <button type="submit" name="toss" class="btn btn-success btn-toss"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
+                            <button type="submit" id="toss-btn" name="toss" class="btn btn-success btn-toss"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
                             {%if not can_write and bom.owner%}
                                 <div class="alert alert-warning alert-dismissible" role="alert">
                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -231,36 +231,36 @@
         {% endif %}
         <!-- End Chat -->
 
-        <!-- Results -->
-        <div class="col-sm-8 col-sm-offset-2">
-            <div class="row text-center accordion">
-            {% for result in bom.results reversed %}
-            {% with result.items as results%}
-                {% if results %}
-                    <p class="h3">
-                        {%trans 'Result' %}{{results|length|pluralize}}
-                        <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
-                        <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
-                    </p>
+        {% if bom.results or bom.prev_draw %}
+            <div id="results" class="col-sm-8 col-sm-offset-2">
+                <div class="row text-center accordion">
+                {% for result in bom.results reversed %}
+                {% with result.items as results%}
+                    {% if results %}
+                        <!-- Results -->
+                        <p class="h3">
+                            {%trans 'Result' %}{{results|length|pluralize}}
+                            <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
+                            <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                        </p>
+                        <div class="result">
+                            {% block result %}{% endblock result %}
+                        </div>
+                        <!-- End Results -->
+                    {% endif %}
+                {% endwith %}
+                {% endfor %}
+                {% if bom.prev_draw %}
+                    <!-- Previous draw -->
+                    <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated before '%}</small></p>
                     <div >
-                        {% block result %}{% endblock result %}
-
+                       {%trans 'The configuration of the draw was changed.'%}<br/>
+                       {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
                     </div>
                 {% endif %}
-            {% endwith %}
-            {% endfor %}
-            <!-- Previous draw -->
-            {% if bom.prev_draw %}
-                <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated before '%}</small></p>
-                <div >
-                   {%trans 'The configuration of the draw was changed.'%}<br/>
-                   {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
-
                 </div>
-            {% endif %}
             </div>
-            <!-- End Results -->
-        </div>
+        {% endif %}
     </div>
 
     <div id="modal" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">

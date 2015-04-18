@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from .selenium_base import SeleniumTest
+from selenium.webdriver.common.action_chains import ActionChains
 import time
 
 class SanityWebapp(SeleniumTest):
@@ -30,6 +31,24 @@ class SanityWebapp(SeleniumTest):
 
         #driver.find_element_by_link_text("About us").click()
 
+    def about_test(self):
+        driver = self.driver
+        driver.get(self.base_url + "/about.html")
+        driver.find_element_by_class_name("team-member")
+
+    def draw_tooltip_test(self):
+        driver = self.driver
+        # Check if it the help icon is visible when hovering
+        draw = driver.find_element_by_id("number-draw")
+        help_icon = driver.find_element_by_css_selector("#number-draw .fa-question")
+        ActionChains(driver).move_to_element(draw).perform()
+        ActionChains(driver).move_to_element(help_icon).perform()
+
+        # Check if it has a title to show in the tooltip
+        tooltip = help_icon.get_attribute("title")
+        self.assertIsNotNone(tooltip)
+        self.assertNotEqual("", tooltip)
+
     def user_signup_test(self):
         self.remove_user("test2@test.com")
         self.assertRaises(Exception, lambda: self.db.retrieve_user("test2@test.com"))
@@ -45,7 +64,6 @@ class SanityWebapp(SeleniumTest):
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "profile-dropdown-link")))
 
     def user_login_screen_test(self):
-        self.user_signup_test()
         driver = self.driver
         driver.get(self.base_url + "/accounts/login/")
         driver.find_element_by_css_selector("#login #email").clear()
