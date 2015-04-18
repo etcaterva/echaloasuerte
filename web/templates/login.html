@@ -4,46 +4,46 @@
 {% block content %}
     <div id="login" class="row">
         <div class="col-sm-6 col-sm-offset-3 text-center">
-            <h1>{% trans "Login" %}</h1>
+            <h1>{% trans "Sign in" %}</h1>
             <form class="form-horizontal" name="LoginForm" action="{% url 'login' %}" method="post">
             {% csrf_token %}
             {% if next %}
                 <input type="hidden" name="next" value="{{ next }}" />
             {% endif %}
             <div class="row control-group">
-                <label class="control-label col-xs-4" for="username">Email</label>
+                <label class="control-label col-xs-4" for="username">{% trans "Email" %}</label>
                 <div class="controls col-xs-8">
-                    <input class="form-control" type="email" id="email" name="email"  placeholder="Email">
+                    <input class="form-control" type="email" id="email" name="email"  placeholder="{% trans "Email" %}">
                 </div>
             </div>
             <div class="row control-group">
-                <label class="control-label col-xs-4" for="password">Password</label>
+                <label class="control-label col-xs-4" for="password">{% trans "Password" %}</label>
                 <div class="controls col-xs-8">
-                    <input class="form-control" type="password" name="password" id="password" placeholder="Password">
+                    <input class="form-control" type="password" name="password" id="password" placeholder="{% trans "Email" %}">
                 </div>
             </div>
             {% if error %}
                 <div class="alert alert-danger alert-login" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Error:</span>
+                    <span class="sr-only">{% trans "Error" %}</span>
                     {{error}}
                 </div>
             {% endif %}
             <div class="row control-group">
                 <div class="controls text-center">
-                    <button id="login-button" type="submit" class="btn btn-primary">Login</button>
+                    <button id="login-button" type="submit" class="btn btn-success">{% trans "Sign in" %}</button>
                 </div>
                 <a href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a>
             </div>
             </form>
-        <div class="row text-center">
-            <div class="line-separator">
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% trans "Or" %} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <div class="row text-center">
+                <div class="line-separator">
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% trans "Or" %} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </div>
+                <a href="{% url 'register' %}"><button type="button" class="btn btn-primary">{% trans "Sign up" %}</button></a>
             </div>
-            <a href="{% url 'register' %}"><button type="button" class="btn">Register</button></a>
-        </div>
         </div>
     </div>
 {% endblock %}
