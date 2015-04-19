@@ -1,3 +1,11 @@
+/**
+ * SlideSelector
+ * Defines a UI element used to choose between the three levels of privacy of a public draw
+ * It's a horizontal slide bar where the selector can take one of the three available positions:
+ *      - Everyone: The public draw is open
+ *      - Password: The public draw needs a password (or invitation) to be accessed
+ *      - Invitation: Only invited user can access to the draw
+ */
 var SlideSelector = {};
 
 SlideSelector.select_everyone = function (relative_pos_selector){
