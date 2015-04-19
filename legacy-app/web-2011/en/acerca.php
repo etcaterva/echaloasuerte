@@ -83,38 +83,38 @@ $(document).ready(function(){
 			function swapoffMoneda()
 			 {
 				  document.imgMoneda.src="img/cruz.png";
-			 }  
+			 }
 			 </script>
         <p>
         Heads or Tails?  Click the coin!
         </p>
 		<a href="#" id="CaraOCruz"><img  name="imgMoneda" src="img/cruz.png" alt="Moneda" onmouseover="swaponMoneda()" onmouseout="swapoffMoneda()" title="Heads or Tails?" /></a>
         </center>
-        </div>     
-        
+        </div>
+
 		  <h3 onclick="$('#rrss').toggle('slow')">
           Social Networks</h3>
 		<div id="rrss" class="comnews">
-        <center>        <a href="http://www.tuenti.com/#m=Page&func=index&page_key=1_1769_59547535" target="_blank"><img  name="imgTuenti" src="img/tuenti.png" alt="Tuenti" title="Sigenos en Tuenti" /></a>        
-        
+        <center>        <a href="http://www.tuenti.com/#m=Page&func=index&page_key=1_1769_59547535" target="_blank"><img  name="imgTuenti" src="img/tuenti.png" alt="Tuenti" title="Sigenos en Tuenti" /></a>
+
 		<iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FEchaloASuerte%2F202874843092116&amp;width=200&amp;colorscheme=light&amp;show_faces=false&amp;border_color=3A6BAD&amp;stream=false&amp;header=true&amp;height=62" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:250px; height:62px;" allowTransparency="true"></iframe>  <br />
-        
-<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.echaloasuerte.com" data-text="Usando #EchaloASuerte :D" data-count="horizontal" data-lang="es">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>         
-       
+
+<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.echaloasuerte.com" data-text="Usando #EchaloASuerte :D" data-count="horizontal" data-lang="es">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+
 
 <script type="text/javascript" src="http://platform.linkedin.com/in.js"></script><script type="in/share" data-url="http://www.echaloasuerte.com" data-counter="right"></script><br /><br />
 
 
-<a href="http://www.delicious.com/save" onclick="window.open('http://www.delicious.com/save?v=5&noui&jump=close&url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title), 'delicious','toolbar=no,width=550,height=550'); return false;"> 
+<a href="http://www.delicious.com/save" onclick="window.open('http://www.delicious.com/save?v=5&noui&jump=close&url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title), 'delicious','toolbar=no,width=550,height=550'); return false;">
 <img src="http://www.videojuegosonline.net/images/share/Share-delicius.png" height="50" width="50" alt="Delicious" />
 </a><font color="#FFFFFF" >____</font>
 <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script><!-- Añade esta etiqueta donde quieras colocar el botón +1 -->
-<g:plusone></g:plusone><br /><img src="img/logo.png" alt="" width="1" height="1" />  </div> 
+<g:plusone></g:plusone><br /><img src="img/logo.png" alt="" width="1" height="1" />  </div>
 
 <h3 onclick="$('#donar').toggle('slow')">
           Donations</h3>
 		<div id="donar" class="comnews">
-       
+
         <p>
         Want to help us with the project? You can donate just 2€ if you want.<a href="acerca.php">Click here and get further information.</a>
         </p>
@@ -125,9 +125,9 @@ $(document).ready(function(){
 <input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet.">
 <img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
 </form>
-		
+
         </center>
-        </div> 
+        </div>
 <h3>Advertising</h3> <div style="display:block ;" class="comnews"><center>
 <script type="text/javascript"><!--
 google_ad_client = "ca-pub-1409219619115807";
@@ -140,7 +140,7 @@ google_ad_height = 250;
 <script type="text/javascript"
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>  </center>
-      
+
        </div>
 
 	</div><div style="clear:both;">

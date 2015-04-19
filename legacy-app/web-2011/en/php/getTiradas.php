@@ -1,11 +1,11 @@
 <?php
 	header('Content-Type: text/html; charset=utf-8');
 	header('Cache-Control: no-cache');
-	$conn = mysql_connect("db372506665.db.1and1.com","dbo372506665","1234abcd");
-	mysql_select_db("db372506665", $conn);
-	
+    $conn = mysql_connect("localhost","root","toor");
+    mysql_select_db("echaloasuerte", $conn);
+
 	$result = mysql_query("SELECT * FROM TIRADA ORDER BY fecha DESC");
-	
+
 	$total = mysql_num_rows($result);
 	$json= array();
 	while($row = mysql_fetch_array($result))
