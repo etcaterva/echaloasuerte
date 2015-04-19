@@ -6,11 +6,15 @@
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/slideSelector.js' %}"></script>
+    <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
+    {% if is_public %}<script src="{% static 'js/public_draw_manager.js' %}"></script>{% endif %}
     <script src="{% static 'js/chat.js' %}"></script>
     <link href="{% static 'css/chat.css' %}" rel="stylesheet" />
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
+    {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
+
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
       $(this).select();
@@ -23,7 +27,7 @@
         $("textarea.autogrow").autoGrowInput({title:'{{ bom.title|default:bom.DEFAULT_TITLE }}',maxWidth: max_width,minWidth:30,comfortZone:30});
     };
 
-    // Autosize the first time
+    // Autosize the title box the first time
     autosize();
     $( window ).resize(function() {
         // Autosize when the window is resized
@@ -36,13 +40,6 @@
         return true;
     });
 
-    // set type of submit
-    $('button[type=submit]').click(function() {
-        $("input[name=submit-type]").val($(this).attr("name"));
-        return true;
-    });
-
-
     $('.accordion').accordion({collapsible: true});
 
     // Update draw's password
@@ -50,6 +47,7 @@
         $('#id_password').val($('#draw-password').val());
     });
 
+    // Setting up "Add to favourite" button
     $(this).find('#fav-loading').hide();
     $('#fav-button').click(function(){
         if ('{{ user.is_authenticated }}' == 'False'){
@@ -83,59 +81,22 @@
             }
          }
     });
+    {% if is_public %}
+        public_draw_manager.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
+        public_draw_manager.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
+        public_draw_manager.setup("{{ public_draw_step }}");
 
-    {% if is_public  or bom.shared_type != "None" %}
-	    var shared_type_field = $('input[name=shared_type]');
-
-    	//default is None, set to Public by default if it is a new public draw
-        shared_type_field.attr('value','{{bom.shared_type}}');
-        if(shared_type_field.attr('value') == 'None') {
-            shared_type_field.attr('value','Public');
-        }
-
-	    $('#save').click(function () {
-	        var mode = $('.slide-bar').attr('data-selected');
-	        if (mode == "invited"){
-				$('#id_password').val("");
-				shared_type_field.attr('value','Invite');
-	        }else if (mode == "password"){
-	            var password = $('#draw-password').val();
-	            $('#id_password').val(password);
-	            shared_type_field.attr('value','Public');
-	        }else{ // Everyone
-	        	$('#id_password').val("");
-				shared_type_field.attr('value','Public');
-	        }
-	    });
-
-    {% if not is_public %}
-    $('#chat-frame').chat({
-        "url_send_message": "{% url 'chat_add_message' %}",
-        "url_get_messages": "{% url 'chat_get_messages' %}",
-        "draw_id": "{{ bom.pk }}"
+		$('#chat-frame').chat({
+            "url_send_message": "{% url 'chat_add_message' %}",
+            "url_get_messages": "{% url 'chat_get_messages' %}",
+            "draw_id": "{{ bom.pk }}"
         });
     {% endif %}
-
-    {% endif %}
-
-    // Manages the slider to choose the level of restriction of the public draw
-    SlideSelector.setup();
-    {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
-
 {% endblock extra_jq_ready %}
 {% block content %}
+    {# breadcrumb to assist the creation of a public draw #}
+    {% include "snippets/snippet_breadcrumb.html" %}
     <div class="row">
-        <!-- Public Draw Info -->
-        {% if is_public %}
-            <div class="info-public-draw">
-                <div class="help-text">
-                    <span class="title">{%trans 'Creating a public draw' %}   </span>
-                    <span class="subtitle">{%trans 'Set it up' %}</span>
-                </div>
-                <a href="{% url 'index' %}" class="cancel fa fa-times fa-2x"></a><br>
-            </div>
-        {% endif %}
-	    <!-- End Public Draw Info -->
         <form class="clearfix" method="post">
             <!-- Draw Heading -->
             <div class="clearfix draw-heading">
@@ -143,10 +104,14 @@
                     <img src="{% static "img/back_arrow.png" %}"/>
                 </a>
                 <div class="col-xs-8 visible-xs"></div>
-                {% if is_public or bom.shared_type != "None" %}
-                    <a data-toggle="modal" href="#modal" class="add-password col-xs-2 col-sm-2 col-sm-push-8 text-center">
-                        <i class="fa fa-unlock fa-3x"></i>
-                    </a>
+                {% if is_public %}
+                    {% if not public_draw_step and can_write %}
+                        <a id="settings-button" data-toggle="modal" href="#public-draw-settings" title="{%trans 'Public draw settings'%}" class="public-draw-settings col-xs-2 col-sm-2 col-sm-push-8 text-center ">
+                            <span id="public-draw-options" class="fa fa-gear fa-2x"></span>
+                        </a>
+                    {% else %}
+                        <div class="hidden-xs col-xs-2 col-sm-2 col-sm-push-8"></div>
+                    {% endif %}
                 {% else %}
 	                    <a id="fav-button"
 	                    {% if bom.pk in user.favourites %}
@@ -168,6 +133,43 @@
                 </div>
             </div>
             <!-- End Draw Heading -->
+            {% if is_public %}
+                {% if public_draw_step == "configure" or public_draw_step == "spread" %}
+                    <!-- Inputs to configure the public draw, only rendered for configure and spread steps -->
+                    <div class="step-spread">
+                        <div class="row">
+                            <div class="public-draw-restriction col-xs-12 col-md-8 col-md-offset-2">
+                                <div class="col-xs-6">
+                                    <p class="h4">{% trans "Who can access your draw?" %} </p>
+                                </div>
+                                <div class="col-xs-6 text-center">
+                                    <a data-toggle="modal" href="#access-level" class="access-level">
+                                        <span class="fa fa-unlock fa-2x"></span> <div id="public-mode-selected"> {% trans "Everyone" %} </div>
+
+                                    </a>
+
+                                </div>
+                                <div id="recently-created" class="col-xs-12 form-group">
+                                    <p data-toggle="tooltip" data-placement="top" title="{% trans "It will help your friends to find your draw faster" %}">
+                                        <input type="checkbox">{% trans "Show the draw in the list 'Recently created'." %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="public-draw-invite" class="col-xs-12 col-md-8 col-md-offset-2">
+                                <p class="h4"> {% trans "Invite people" %}: </p>
+                                    <p>{% trans "An invitation will arrive to the emails you introduce below" %}</p>
+                                    <input type="email" id="emails" name="invite-emails" class="form-control" placeholder={% trans "Type the emails here..." %}>
+                                    <p>{% trans "OR" %}</p>
+                                <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">{% trans "Share the link to the draw" %}:
+                                    <a><strike>http://127.0.0.1:8000/draw/5504d71b78332720c439f120</strike></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
 
             <div class="col-sm-8 col-sm-offset-2">
                 {%block pre_draw %} {%endblock pre_draw%}
@@ -179,152 +181,220 @@
                     </div>
                 {% endfor  %}
                 <!-- Input Form -->
-                {% block input_form %}
-                {% crispy draw draw.helper %}
-                    <div class="col-xs-12 text-center">
+                <div class="step-configure">
+                    {% block input_form %}
+                        {% crispy draw draw.helper %}
+                    {% endblock input_form %}
+                </div>
+                <div class="col-xs-12 text-center">
+                    <!-- Buttons for 'Toss' or 'Try it!' -->
+                    <div class="row btn-row">
                         {% if is_public %}
-                            <button type="submit" name="try" class="btn btn-success btn-try">{% trans 'Try it!' %}</button>
-                            <button type="submit" name="next" class="btn btn-primary btn-next">{% trans 'Next' %}</button>
+                            {% if public_draw_step == "configure" %}
+                                <!-- Button to try a draw when creating a public one -->
+                                <button id="try" type="submit" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
+                            {% elif not public_draw_step %}
+                                <button id="toss" type="submit" name="toss" class="btn btn-success"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
+                                {%if not can_write and bom.owner%}
+                                    <div class="alert alert-warning alert-dismissible" role="alert">
+                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                      {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
+                                    </div>
+                                {%else%}
+                                    {# Buttons to save changes when editing an already published public draw #}
+                                    <div id="edit-draw-save-changes" class="hide">
+                                        <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
+                                        <button type="submit" id="edit-draw-save" class="col-xs-6 btn btn-primary">{% trans 'Save changes' %}</button>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
                         {% else %}
-                            <button type="submit" id="toss-btn" name="toss" class="btn btn-success btn-toss"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
-                            {%if not can_write and bom.owner%}
-                                <div class="alert alert-warning alert-dismissible" role="alert">
-                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                  {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
-                                </div>
-                            {%endif%}
+                            <button id="toss" type="submit" name="toss" class="btn btn-success">{% trans 'Toss' %}</button>
                         {% endif %}
                     </div>
-                {% endblock input_form %}
+
+                    <!-- Buttons for 'Next step' and 'Cancel' public draw creation -->
+                    {% if is_public %}
+                        {% if public_draw_step == "configure" or public_draw_step == "spread" %}
+                            <div class="col-sm-8 col-sm-offset-2 btn-row">
+                                <a href="{% url 'index' %}" class="col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
+                                {% if public_draw_step == "configure" %}
+                                    <button type="submit" id="next" name="next" class="col-xs-6 btn btn-primary">{% trans 'Next step' %}</button>
+                                {% elif public_draw_step == "spread" %}
+                                    <button type="submit" name="next" class="col-xs-6 btn btn-primary">{% trans 'Publish it' %}</button>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
             </div>
-            <input class="hidden" name="submit-type" />
+
+            {# shared-type: It's part of "FormBase". Can be "None", "Public" or "Invite" #}
+            <input id="shared-type" class="hidden" name="shared_type" value="{{ bom.shared_type }}"/>
+            {# submit-type: Determine the type of submition, by default it's a toss (normal or public) #}
+            <input class="hidden" name="submit-type" value="{% if is_public %}public_toss{% else %}toss{% endif %}"/>
+            {# public-draw-step: Can be "Choose", "Confifure" or "Spread" #}
+            <input class="hidden" name="public-draw-step" />
         </form>
         <!-- End Input Form -->
-
         <!-- Chat -->
-        {% if is_public  or bom.shared_type != "None" %}
-
-    <div id="chat-frame" class="row hidden">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <span class="fa fa-comment"></span> Chat
-                </div>
-                <div class="panel-body">
-                    <ul id="chat-board">
-                    </ul>
-                </div>
-                <div class="panel-footer">
-                    <div class="input-group">
-                        <input id="chat-message-box"{%if user.is_anonymous%} disabled="disabled" {%endif%} type="text" class="form-control input-sm" placeholder="{% trans 'Type your message here...' %}" />
-                        <span class="input-group-btn">
-                            <button class="btn btn-warning btn-sm" id="chat-send" {%if user.is_anonymous%} title="{% trans 'Please, login or register to be able to use the chat'%}" {%endif%}>
-                                {% trans 'Send' %}</button>
-                        </span>
+        {% if is_public and not public_draw_step %}
+            <div id="chat-frame" class="row hidden">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <span class="fa fa-comment"></span> Chat
+                        </div>
+                        <div class="panel-body">
+                            <ul id="chat-board">
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="input-group">
+                                <input id="chat-message-box"{%if user.is_anonymous%} disabled="disabled" {%endif%} type="text" class="form-control input-sm" placeholder="{% trans 'Type your message here...' %}" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-warning btn-sm" id="chat-send" {%if user.is_anonymous%} title="{% trans 'Please, login or register to be able to use the chat'%}" {%endif%}>
+                                        {% trans 'Send' %}</button>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-
         {% endif %}
         <!-- End Chat -->
 
-        {% if bom.results or bom.prev_draw %}
-            <div id="results" class="col-sm-8 col-sm-offset-2">
-                <div class="row text-center accordion">
-                {% for result in bom.results reversed %}
-                {% with result.items as results%}
-                    {% if results %}
-                        <!-- Results -->
-                        <p class="h3">
-                            {%trans 'Result' %}{{results|length|pluralize}}
-                            <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
-                            <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
-                        </p>
-                        <div class="result">
-                            {% block result %}{% endblock result %}
-                        </div>
-                        <!-- End Results -->
-                    {% endif %}
-                {% endwith %}
-                {% endfor %}
-                {% if bom.prev_draw %}
-                    <!-- Previous draw -->
-                    <p class="h3">{%trans 'Result' %}{{results|length|pluralize}}<small>{%trans ' generated before '%}</small></p>
-                    <div >
-                       {%trans 'The configuration of the draw was changed.'%}<br/>
-                       {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
+        {# Results #}
+        {% if not is_public or public_draw_step == "configure" or not public_draw_step %}
+            {% if bom.results or bom.prev_draw  %}
+                <!-- Results -->
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="row text-center accordion">
+                        {% for result in bom.results reversed %}
+                        {% with result.items as results%}
+                            {% if results %}
+                                <p class="h3">
+                                    {%trans 'Result' %}{{results|length|pluralize}}
+                                    <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
+                                    <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                                </p>
+                                <div class="result">
+                                    {% block result %}{% endblock result %}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                        {% endfor %}
+                        <!-- Previous draw -->
+                        {% if bom.prev_draw %}
+                            <p class="h3">{%trans 'Results' %}<small>{%trans ' generated before '%}</small></p>
+                            <div >
+                               {%trans 'The configuration of the draw was changed.'%}<br/>
+                               {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
+                            </div>
+                        {% endif %}
                     </div>
-                {% endif %}
                 </div>
-            </div>
+                <!-- End Results -->
+            {% endif %}
         {% endif %}
     </div>
 
-    <div id="modal" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">{% trans "Restict the access to your draw" %}</h4>
-            </div>
+    {% if is_public %}
+        {# Render the Modal panels options in public draws #}
+        {% if public_draw_step %} {# If user is creating the draw #}
+            {# Hover panel to change the lever of restriction of the public draw (when setting it up) #}
+            <div id="access-level" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">{% trans "Restict the access to your draw" %}</h4>
+                </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            {% trans "Who do you want to access the draw?" %}
-                            <div class="col-sm-8 col-sm-offset-2 text-center">
-                                <div id="restriction-headings">
-                                    <div id="restriction-everyone" class="col-xs-3">{% trans "Everyone" %}</div>
-                                    <div id="restriction-password" class="col-xs-6">{% trans "With password or invitation" %}</div>
-                                    <div id="restriction-invited" class="col-xs-3">{% trans "Only with invitation" %}</div>
-                                </div>
-                                <div class="col-xs-8 col-sm-10 col-xs-offset-2 col-sm-offset-1 slide-bar-container">
-                                    <div data-selected="everyone" class="slide-bar ui-widget-content">
-                                        <div class="slider-tick" style="left: 0%"></div>
-                                        <div class="slider-tick" style="left: 50%"></div>
-                                        <div class="slider-tick" style="left: 100%"></div>
-                                        <div class="slide-selector" ></div>
-                                    </div>
-                                </div>
+                    {% include "snippets/snippet_public_draw_privacy.html" %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Cancel" %}</button>
+                    <button id="save" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+                </div>
+            </div>
+        {% else%}{# If the draw is already published #}
+            {# Hover panel to show the settings of the public draw (when it is published) #}
+            {% if can_write %}
+                <div id="public-draw-settings" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
+                    <div id="settings-general">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Public draw settings" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul id="" class="list-group">
+                                <li id="edit-draw" class="settings-option list-group-item">{% trans "Edit draw configuration" %}</li>
+                                <li id="invite" class="settings-option list-group-item">{% trans "Invite people" %}</li>
+                                <li id="privacy" class="settings-option list-group-item">{% trans "Who can access your draw" %}</li>
+                                <li class="settings-option list-group-item"><input type="checkbox">{% trans "Show the draw in 'Recently created'" %}</li>
+                                <li class="settings-option list-group-item"><input type="checkbox">{% trans "Enable chat" %}</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Cancel" %}</button>
+                            <button id="save" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+                        </div>
+                    </div>
+                    <div id="settings-edit-draw" class="settings-submenu hide">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Edit draw configuration" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {% trans "If you modify the draw's configuration the spectator will be notified about these changes. Are you sure you want to continue?" %}
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
+                            <a id="btn-edit-draw" class="btn btn-warning">{% trans "Edit draw" %}</a>
+                        </div>
+                    </div>
+                    <div id="settings-invite" class="settings-submenu hide">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Invite people" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>{% trans "An invitation will arrive to the emails you introduce below" %}</p>
+                            <div id="alert-invitation-failed" class="alert feedback alert-danger hide" role="alert">
+                                <strong>{% trans "Ops!" %}</strong> {% trans "One or more emails contain errors..." %}
                             </div>
-                            <div id="restriction-extra" class="col-xs-12">
-                                <div id="extra-everyone" class="col-xs-12">
-                                    {% trans "Everyone will be able to access the draw." %}
-                                    <div class="alert alert-info" role="alert">
-                                        {% trans "Tip: Use this mode for informal and fast draws. Neither invitation nor password will be required!" %}
-                                    </div>
-                                </div>
-                                <div id="extra-password" class="col-xs-12">
-                                    {% trans "Only those who know the password will be able to access the draw." %}
-                                    <div class="col-xs-12 input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input id="draw-password" type="password" class="form-control has-clear" name="password" placeholder="Password">
-                                    </div>
-                                    <div class="alert alert-info" role="alert">
-                                        {% trans "Tip: You don't know exactly who is going to join the draw but still want some restriction? This is your draw!" %}
-                                    </div>
-                                </div>
-                                <div id="extra-invited" class="col-xs-12">
-                                    {% trans "You will be able to invite people by email when the draw is created." %}
-                                    <div class="alert alert-info" role="alert">
-                                        {% trans "Tip: Use this mode for small/medium groups where you know well who do you want to join the draw." %}
-                                    </div>
-                                </div>
+                            <div id="alert-invitation-success" class="alert feedback alert-success hide" role="alert">
+                                <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
                             </div>
+                            <input type="text" id="emails" name="invite-emails" class="form-control" placeholder="Type the emails here...">
+                            <a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a>
+                            <p>{% trans "OR" %}</p>
+                            <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">{% trans "Share the link to the draw:" %}
+                                <a><strike>http://127.0.0.1:8000/draw/5504d71b78332720c439f120</strike></a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
+                            <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Close" %}</button>
+                        </div>
+                    </div>
 
+                    <div id="settings-privacy" class="settings-submenu hide">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Restrict the access to your draw" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {% include "snippets/snippet_public_draw_privacy.html" %}
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
+                            <a id="save-change-privacy" data-id="{{ bom.pk }}" class="btn btn-primary">{% trans "Save" %}</a>
                         </div>
                     </div>
                 </div>
-            <div class="modal-footer">
-            <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-            <button id="save" data-dismiss="modal" type="button" class="btn btn-primary">Save</button>
-        </div>
-    </div>
-
-
-
-
-
+            {% endif %}
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
 

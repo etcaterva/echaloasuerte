@@ -1,0 +1,28 @@
+{% comment %}
+================= SNIPPET BREADCRUMB ==================
+It renders the breadcrumb to assist the creation of a public draw.
+
+It doesn't receive any parameter but it use variables that need to be declared in the parent template, namely:
+    - is_public: This variable only exists when the user is dealing with a public draw
+    - public_draw_step: This variable only exists when the user is creating a new public draw
+                        It can take the values "choose", "configure" or "spread"
+{% endcomment %}
+
+{% load i18n %}
+
+<!-- breadcrumb for creating Public Draw -->
+{% if is_public%}
+    <div class="row info-public-draw">
+        <div class="help-text">
+            {% if not public_draw_step %}
+                <span class="col-sm-10 col-sm-offset-1 title">{%trans 'Public draw' %}</span>
+            {% else %}
+                <span class="col-sm-10 col-sm-offset-1 title">{%trans 'Creating a public draw' %}</span>
+                <span id="choose" class="col-xs-4 subtitle {% if public_draw_step == "choose" %} focus {% endif %}">1. {%trans 'Choose' %}</span>
+                <span id="configure" class="col-xs-4 subtitle {% if public_draw_step == "configure" %} focus {% endif %}">2. {%trans 'Configure' %}</span>
+                <span id="spread" class="col-xs-4 subtitle {% if public_draw_step == "spread" %} focus {% endif %}">3. {%trans 'Spread' %}</span>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+<!-- End breadcrumb Public Draw -->

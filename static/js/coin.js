@@ -4,7 +4,7 @@ var pict = new Array(3, 4, 1, 4);
 var cachedimages = new Array(5);
 
 
-function coin() {}
+var coin = {};
 
 coin.result = 0;
 

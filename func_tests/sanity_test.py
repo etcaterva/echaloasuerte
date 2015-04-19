@@ -41,13 +41,16 @@ class SanityWebapp(SeleniumTest):
         # Check if it the help icon is visible when hovering
         draw = driver.find_element_by_id("number-draw")
         help_icon = driver.find_element_by_css_selector("#number-draw .fa-question")
-        ActionChains(driver).move_to_element(draw).perform()
-        ActionChains(driver).move_to_element(help_icon).perform()
 
         # Check if it has a title to show in the tooltip
         tooltip = help_icon.get_attribute("title")
         self.assertIsNotNone(tooltip)
         self.assertNotEqual("", tooltip)
+
+        # Check if the tooltip is rendered
+        ActionChains(driver).move_to_element(draw).perform()
+        ActionChains(driver).move_to_element(help_icon).perform()
+        driver.find_element_by_css_selector(".ui-tooltip")
 
     def user_signup_test(self):
         self.remove_user("test2@test.com")

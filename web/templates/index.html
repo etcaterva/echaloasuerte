@@ -3,19 +3,8 @@
 {% load bootstrap %}
 {% load i18n %}
 {% block content %}
-	<div class="row">
-    <!-- Public Draw Info -->
-	{% if is_public%}
-	    <div class="info-public-draw">
-	        <div class="help-text">
-	            <span class="title">{%trans 'Creating a public draw' %}   </span>
-                <span class="subtitle">{%trans 'Select the type of draw' %}</span>
-	        </div>
-            <a href="{% url 'index' %}" class="cancel fa fa-times fa-2x"></a><br>
-	    </div>
-    <!-- End Public Draw Info -->
-	{% endif %}
-	</div>
+    {# breadcrumb to assist the creation of a public draw #}
+    {% include "snippets/snippet_breadcrumb.html" %}
     <div class="container-draws row">
         <div class="col-sm-6">
             {% include "draw_box.html" with draw_type="coin" draw_icon="img/coin.gif" title="Flip a coin" help="Afraid of taking the wrong decision? Don't hesitate and throw the coin!" %}

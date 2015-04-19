@@ -14,6 +14,10 @@ class LinkSetsDrawForm(FormBase):
                 kwargs['initial']['set_{0}'.format(i+1)] = ','.join(kwargs['initial']['sets'][i])
         super(LinkSetsDrawForm, self).__init__(*args, **kwargs)
 
+        # Add "protected" class to the input that will be read-only when the draw is public
+        self.fields['set_1'].widget.attrs.update({'class': 'protected'})
+        self.fields['set_2'].widget.attrs.update({'class': 'protected'})
+
         self.helper.label_class = 'col-xs-3'
         self.helper.field_class = 'col-xs-9'
         self.helper.layout = Layout(
