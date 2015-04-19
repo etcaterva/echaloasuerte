@@ -228,10 +228,17 @@
                     {% endif %}
                 </div>
             </div>
+
+            {# shared-type: It's part of "FormBase". Can be "None", "Public" or "Invite" #}
+            <input id="shared-type" class="hidden" name="shared_type" value="{{ bom.shared_type }}"/>
+            {# submit-type: Determine the type of submition, by default it's a toss (normal or public) #}
+            <input class="hidden" name="submit-type" value="{% if is_public %}public_toss{% else %}toss{% endif %}"/>
+            {# public-draw-step: Can be "Choose", "Confifure" or "Spread" #}
+            <input class="hidden" name="public-draw-step" />
         </form>
         <!-- End Input Form -->
         <!-- Chat -->
-        {% if is_public  or bom.shared_type != "None" %}
+        {% if is_public and not public_draw_step %}
             <div id="chat-frame" class="row hidden">
                 <div class="col-md-12">
                     <div class="panel panel-primary">
