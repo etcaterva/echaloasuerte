@@ -35,25 +35,25 @@ public_draw_manager.set_submition_type = function (current_step){
 // Thi function runs when the user make changes in the privacy of a public draw and click "Save" button
 // It store the corresponding values in the input field which will be POSTed
 public_draw_manager.update_privacy_fields = function (){
-    var shared_type_field = $('input#shared-type');
-    var mode = $('.slide-bar').attr('data-selected');
+    var $shared_type_field = $('input#shared-type');
+    var mode = $('#privacy-selector').attr('data-selected');
     if (mode == "invited"){
         $('#id_password').val("");
-        shared_type_field.attr('value','Invite');
+        $shared_type_field.attr('value','Invite');
     }else if (mode == "password"){
         var password = $('#draw-password').val();
         $('#id_password').val(password);
-        shared_type_field.attr('value','Public');
+        $shared_type_field.attr('value','Public');
     }else{ // Everyone
         $('#id_password').val("");
-        shared_type_field.attr('value','Public');
+        $shared_type_field.attr('value','Public');
     }
 }
 
 //Initialize the UI to select the level of privacy for the draw
 public_draw_manager.prepare_privacy_selection = function (){
     // Initialize the UI (slider) to choose the level of restriction of the public draw
-    SlideSelector.setup();
+    $("#privacy-selector").slideSelector();
 
     // Initialize button "Save changes". It stores the selection in the form input
     $('a#save-change-privacy').click(function () {
@@ -67,15 +67,20 @@ public_draw_manager.settings = function () {
     function initialize_slideselector () {
         var current_privacy_level = $('input#shared-type').val();
         var password = $('#id_password').val();
+        var $privacySelector =  $('#privacy-selector');
         if (current_privacy_level == "Public")
-            if (password == "")
-                SlideSelector.select_everyone();
+            if (password == "") {
+                $privacySelector.slideSelector('select_everyone');
+            }
             else {
                 $('input#draw-password').val(password);
-                SlideSelector.select_password();
+                $privacySelector.slideSelector('select_password');
             }
-        else if (current_privacy_level == "Invite")
-            SlideSelector.select_invited();
+        else{
+            if (current_privacy_level == "Invite"){
+                $privacySelector.slideSelector('select_invited');
+            }
+        }
     }
 
     function main_screen_settings () {
