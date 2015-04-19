@@ -164,7 +164,7 @@ def invite_user(user_emails,draw_id,owner_user):
 @login_required
 @time_it
 def add_user_to_draw(request):
-    draw_id = request.GET.get('draw_id', None)
+    draw_id = request.GET.get('draw_id')
     users_to_add = request.GET.get('emails', [])
 
     if draw_id is None:
@@ -198,7 +198,7 @@ def add_user_to_draw(request):
 @login_required
 @time_it
 def add_favorite(request):
-    draw_id = request.GET.get('draw_id',None)
+    draw_id = request.GET.get('draw_id')
 
     if draw_id is None:
         return HttpResponseBadRequest()
@@ -220,7 +220,7 @@ def add_favorite(request):
 @login_required
 @time_it
 def remove_favorite(request):
-    draw_id = request.GET.get('draw_id',None)
+    draw_id = request.GET.get('draw_id')
 
     if draw_id is None:
         return HttpResponseBadRequest()
@@ -242,9 +242,9 @@ def remove_favorite(request):
 @login_required
 @time_it
 def change_privacy_public_draw(request):
-    draw_id = request.GET.get('draw_id', None)
-    shared_type = request.GET.get('shared_type', None)
-    password = request.GET.get('password', None)
+    draw_id = request.GET.get('draw_id')
+    shared_type = request.GET.get('shared_type')
+    password = request.GET.get('password')
 
     if draw_id is None:
         return HttpResponseBadRequest()
