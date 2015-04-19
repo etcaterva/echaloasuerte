@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from web import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = patterns(None)
 
@@ -26,4 +27,9 @@ urlpatterns += patterns(
     url(r'^ws/public_draw_privacy/$', views.change_privacy_public_draw, name="ws_public_draw_privacy"),
     url(r'^ws/favourites/add/$', views.add_favorite, name="ws_add_favorite"),
     url(r'^ws/favourites/remove/$', views.remove_favorite, name="ws_remove_favorite"),
+    url(r'^ws/check_access_to_draw/$', views.check_access_to_draw, name="check_access_to_draw"),
+    url(r'^ws/chat/add/$', views.add_message_to_chat, name="chat_add_message"),
+    url(r'^ws/chat/get/$', views.get_chat_messages, name="chat_get_messages"),
 )
+
+urlpatterns += staticfiles_urlpatterns()

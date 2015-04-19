@@ -115,15 +115,17 @@ def login_user(request):
         username = request.POST['email']
         password = request.POST['password']
 
-        try:
-            user = authenticate(username=username, password=password)
+        user = authenticate(username=username, password=password)
+        if user:
             if user.is_active:
                 if 'keep-logged' in request.POST:
                     request.session.set_expiry(31556926)  # 1 year
                 logger.info("expiration" + str(request.session.get_expiry_date()))
                 login(request, user)
                 return HttpResponseRedirect('/')
-        except MongoDriver.NotFoundError:
+            else:
+                context = {'error': "User is not activated yet"}
+        else:
             context = {'error': "Email or password not valid."}
     return render(request, 'login.html', context)
 
@@ -238,6 +240,32 @@ def remove_favorite(request):
     logger.info("Draw {0} removed as favorite for user {1}".format(draw_id, request.user.pk))
     return HttpResponse()
 
+@time_it
+def check_access_to_draw(request):
+    draw_id  = request.GET.get('draw_id')
+    password = request.GET.get('draw_pass')
+    draw = mongodb.retrieve_draw(draw_id)
+
+    user_can_read_draw(request.user, draw, password)
+    return HttpResponse()
+
+def add_message_to_chat(request):
+    draw_id  = request.GET.get('draw_id')
+    message  = request.GET.get('message')
+    user     = request.user.pk
+    mongodb.add_chat_message(draw_id, message, user)
+    return HttpResponse()
+
+def get_chat_messages(request):
+    draw_id  = request.GET.get('draw_id')
+    try:
+        messages = mongodb.retrieve_chat_messages(draw_id)
+    except MongoDriver.NotFoundError:
+        messages = []
+
+    return JsonResponse({
+        "messages" : messages
+        })
 
 @login_required
 @time_it

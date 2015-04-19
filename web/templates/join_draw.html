@@ -2,8 +2,22 @@
 {% load url from future %}
 {% load i18n %}
 {% block extra_jq_ready %}
+
+    /**
+     * Checks whether an user can access to a draw.
+     * Returns a promise
+    **/
+    function checkAccess(draw_id, password){
+        return $.ajax({
+            method : "GET",
+            url   : "{% url 'check_access_to_draw' %}",
+            data  : {draw_id : draw_id, draw_pass : password}
+        });
+    }
+
     $('.data-table').DataTable(
         {
+            "bJQueryUI": true,
             "language" : {
                 "emptyTable":     "{% trans 'No data available in table'%}",
                 "info":           "{% trans 'Showing _START_ to _END_ of _TOTAL_ entries'%}",
@@ -37,7 +51,9 @@
 
         // link targets a draw
         var target_url = $(this).attr('alt');
+        var draw_id = $(this).attr('data-draw_id');
 
+        var password = undefined
         if($(this).attr("data-pwd") == 'true') {
            password = prompt("Please enter a password");
            if(!password){   //cancel
@@ -48,14 +64,22 @@
            target_url += password;
         }
 
-        window.location = target_url;
+        checkAccess(draw_id, password)
+        .done(function (){
+            window.location = target_url;
+        })
+        .fail(function (){
+            alert("Invalid password!");
+        });
+
+        return false;
     } );
 
 {% endblock extra_jq_ready %}
 
 {% block content %}
     <div>
-        {%if user_draws %}<h3>{% trans "Your Draws" %}:</h3>
+        {%if user_draws %}<p class="h1 text-center">{% trans "Draws your take part in" %}</p>
         <table class="data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
@@ -67,7 +91,7 @@
             </thead>
             <tbody>
             {% for d in user_draws %}
-                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" style="cursor: pointer;">
+                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}" style="cursor: pointer;">
                     <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
                     <td>{{ d.owner|default:"" }}</td>
                     <td>{{ d.creation_time|date:" Y/m/d G:i:s "}}</td>
@@ -76,9 +100,8 @@
             {% endfor %}
             </tbody>
         </table>
-        <hr/>
         {% endif %}
-        {%if public_draws %}<h3>{% trans "Public Draws" %}:</h3>
+        {%if public_draws %}<h1 class="text-center">{% trans "Public Draws" %}</h1>
         <table class="data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
@@ -90,7 +113,7 @@
             </thead>
             <tbody>
             {% for d in public_draws %}
-                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-pwd="{{d.password|yesno:"true,false"}}" style="cursor: pointer;">
+                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}" data-pwd="{{d.password|yesno:"true,false"}}" style="cursor: pointer;">
                     <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
                     <td>{{ d.owner|default:"" }}</td>
                     <td>{{ d.creation_time|date:" Y/m/d G:i:s "}}</td>

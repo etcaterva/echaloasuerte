@@ -8,6 +8,8 @@
     <script src="{% static 'js/slideSelector.js' %}"></script>
     <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
     {% if is_public %}<script src="{% static 'js/public_draw_manager.js' %}"></script>{% endif %}
+    <script src="{% static 'js/chat.js' %}"></script>
+    <link href="{% static 'css/chat.css' %}" rel="stylesheet" />
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
@@ -83,6 +85,12 @@
         public_draw_manager.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
         public_draw_manager.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
         public_draw_manager.setup("{{ public_draw_step }}");
+
+		$('#chat-frame').chat({
+            "url_send_message": "{% url 'chat_add_message' %}",
+            "url_get_messages": "{% url 'chat_get_messages' %}",
+            "draw_id": "{{ bom.pk }}"
+        });
     {% endif %}
 {% endblock extra_jq_ready %}
 {% block content %}
@@ -220,12 +228,6 @@
                     {% endif %}
                 </div>
             </div>
-            {# shared-type: It's part of "FormBase". Can be "None", "Public" or "Invite" #}
-            <input id="shared-type" class="hidden" name="shared_type" value="{{ bom.shared_type }}"/>
-            {# submit-type: Determine the type of submition, by default it's a toss (normal or public) #}
-            <input class="hidden" name="submit-type" value="{% if is_public %}public_toss{% else %}toss{% endif %}"/>
-            {# public-draw-step: Can be "Choose", "Confifure" or "Spread" #}
-            <input class="hidden" name="public-draw-step" />
         </form>
         <!-- End Input Form -->
         <!-- Results -->
@@ -242,7 +244,6 @@
                             </p>
                             <div >
                                 {% block result %}{% endblock result %}
-
                             </div>
                         {% endif %}
                     {% endwith %}

@@ -10,6 +10,9 @@ from server.bom.random_item import *
 from server.bom.user import User
 from bson.objectid import ObjectId
 
+import datetime
+import pytz
+
 def safe_connection(func):
     """decorator to restart the connection if needed"""
     def _(*args,**kwargs):
@@ -58,6 +61,7 @@ class MongoDriver(object):
         self._db = self.client[database]
         self._users = self._db.users
         self._draws = self._db.draws
+        self._chats = self._db.chats
 
 
     @safe_connection
@@ -80,7 +84,7 @@ class MongoDriver(object):
     def retrieve_user(self,user_id):
         doc = self._users.find_one({"_id":user_id})
         if doc is None:
-            raise MongoDriver.NotFoundError("User not found: {0}".format(draw_id))
+            raise MongoDriver.NotFoundError("User not found: {0}".format(user_id))
         logger.debug("Retrieved documment: {0} using id {1}".format(doc,user_id))
         return User(**doc)
 
@@ -125,6 +129,31 @@ class MongoDriver(object):
             raise MongoDriver.NotFoundError("Draw not found: {0}".format(draw_id))
         logger.debug("Retrieved documment: {0}".format(doc))
         return build_draw(doc)
+
+    def add_chat_message(self, draw_id, content, user_name):
+        """ add a mesago to a chat. we'll use draw id as chat-id"""
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+        entry = {
+            "user" : user_name,
+            "content" : content,
+            "creation_time" : now
+        }
+        self._chats.update(
+                { "_id" : draw_id },
+                { "$push" : { "entries" : entry } },
+                upsert = True
+        )
+
+    def retrieve_chat_messages(self, draw_id):
+        """ retrieves all messages of a chat given its chat id (draw id)"""
+        logger.debug("Retrieving chat with id {0}".format(draw_id))
+        doc = self._chats.find_one( { "_id" : draw_id } )
+        if doc is None:
+            raise MongoDriver.NotFoundError("Chat not found: {0}".format(draw_id))
+        entries = doc["entries"]
+        logger.debug("Retrieved documment chat {0} with {1} entries "
+                .format(draw_id, len(entries)))
+        return sorted ( entries, key=lambda k: k['creation_time'], reverse = True)
 
     @staticmethod
     def instance():
