@@ -1,9 +1,18 @@
+/**
+ * SlideSelector
+ * Defines a UI element used to choose between the three levels of privacy of a public draw
+ * It's a horizontal slide bar where the selector can take one of the three available positions:
+ *      - Everyone: The public draw is open
+ *      - Password: The public draw needs a password (or invitation) to be accessed
+ *      - Invitation: Only invited user can access to the draw
+ */
 var SlideSelector = {};
 
 SlideSelector.select_everyone = function (relative_pos_selector){
     // If "relative_pos_selector" does not exist, simply move the selector to the final potion (without animation)
-    if (! relative_pos_selector )
+    if (! relative_pos_selector ) {
         $('.slide-selector').css({'left': '0%'});
+    }
     $('.slide-bar').attr("data-selected","everyone");
     $('#restriction-everyone').stop(true,true).addClass('restriction-selected', 200);
     $('#restriction-password').stop(true,true).removeClass('restriction-selected', 200);
@@ -17,8 +26,9 @@ SlideSelector.select_everyone = function (relative_pos_selector){
 
 SlideSelector.select_password = function (slide_bar_width, relative_pos_selector){
     // If "relative_pos_selector" does not exist, simply move the selector to the final potion (without animation)
-    if (! relative_pos_selector )
+    if (! relative_pos_selector ){
         $('.slide-selector').css({'left': '50%'});
+    }
     $('.slide-bar').attr("data-selected","password");
     $('#restriction-everyone').stop(true,true).removeClass('restriction-selected', 200);
     $('#restriction-password').stop(true,true).addClass('restriction-selected', 200);
@@ -33,8 +43,9 @@ SlideSelector.select_password = function (slide_bar_width, relative_pos_selector
 
 SlideSelector.select_invited = function (slide_bar_width, relative_pos_selector){
     // If "relative_pos_selector" does not exist, simply move the selector to the final potion (without animation)
-    if (! relative_pos_selector )
+    if (! relative_pos_selector ){
         $('.slide-selector').css({'left': '100%'});
+    }
     $('.slide-bar').attr("data-selected","invited");
     $('#restriction-everyone').stop(true,true).removeClass('restriction-selected', 200);
     $('#restriction-password').stop(true,true).removeClass('restriction-selected', 200);

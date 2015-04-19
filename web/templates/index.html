@@ -30,7 +30,7 @@
 {% endblock extra_jq_ready %}
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
-    {% include "breadcrumb.html" %}
+    {% include "snippets/snippet_breadcrumb.html" %}
     <div class="container-draws row">
         <div class="col-sm-6">
             <a class="draw-link" href="{% url 'draw' draw_type='coin' publish=is_public %}">
