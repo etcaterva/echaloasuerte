@@ -150,7 +150,7 @@
 
                                 </div>
                                 <div id="recently-created" class="col-xs-12 form-group">
-                                    <p data-toggle="tooltip" data-placement="top" title={% trans "It will help your friends to find your draw faster" %}>
+                                    <p data-toggle="tooltip" data-placement="top" title="{% trans "It will help your friends to find your draw faster" %}">
                                         <input type="checkbox">{% trans "Show the draw in the list 'Recently created'." %}
                                     </p>
                                 </div>
@@ -194,7 +194,7 @@
                                 <!-- Button to try a draw when creating a public one -->
                                 <button id="try" type="submit" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
                             {% elif not public_draw_step %}
-                                <button id="public-toss" type="submit" name="toss" class="btn btn-success"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
+                                <button id="toss" type="submit" name="toss" class="btn btn-success"{%if not can_write%}disabled="disabled"{%endif%}>{% trans 'Toss' %}</button>
                                 {%if not can_write and bom.owner%}
                                     <div class="alert alert-warning alert-dismissible" role="alert">
                                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -209,7 +209,7 @@
                                 {% endif %}
                             {% endif %}
                         {% else %}
-                            <button type="submit" name="toss" class="btn btn-success">{% trans 'Toss' %}</button>
+                            <button id="toss" type="submit" name="toss" class="btn btn-success">{% trans 'Toss' %}</button>
                         {% endif %}
                     </div>
 
@@ -278,7 +278,7 @@
                                     <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
                                     <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
                                 </p>
-                                <div >
+                                <div class="result">
                                     {% block result %}{% endblock result %}
                                 </div>
                             {% endif %}

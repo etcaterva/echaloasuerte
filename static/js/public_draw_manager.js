@@ -102,7 +102,7 @@ public_draw_manager.settings = function () {
     // Unlock the fields, hide toss button and present buttons to save changes and cancel the edition
     $('a#btn-edit-draw').click(function() {
         public_draw_manager.unlock_fields();
-        $('button#public-toss').addClass('hide');
+        $('button#toss').addClass('hide');
         $('div#edit-draw-save-changes').removeClass('hide');
         close_settings();
     });
