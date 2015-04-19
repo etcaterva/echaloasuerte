@@ -62,7 +62,7 @@
                 var move = this.relative_pos_selector + 10;
                 this.$element.find('.slider-selector').animate({"left": "-="+move+"px"}, "slow");
             }
-            this.$element.find('.slide-bar').attr("data-selected","everyone");
+            this.$element.attr("data-selected","everyone");
             $('#restriction-everyone').stop(true,true).addClass('restriction-selected', 200);
             $('#restriction-password').stop(true,true).removeClass('restriction-selected', 200);
             $('#restriction-invited').stop(true,true).removeClass('restriction-selected', 200);
@@ -78,7 +78,7 @@
                 var move = this.width/2 - this.relative_pos_selector - 10;
                 $('.slider-selector').animate({"left": "+="+move+"px"}, "slow");
             }
-            $('.slide-bar').attr("data-selected","password");
+            this.$element.attr("data-selected","password");
             $('#restriction-everyone').stop(true,true).removeClass('restriction-selected', 200);
             $('#restriction-password').stop(true,true).addClass('restriction-selected', 200);
             $('#restriction-invited').stop(true,true).removeClass('restriction-selected', 200);
@@ -96,7 +96,7 @@
                 var move = this.width - this.relative_pos_selector - 10;
                 $('.slider-selector').animate({"left": "+="+move+"px"}, "slow");
             }
-            $('.slide-bar').attr("data-selected","invited");
+            this.$element.attr("data-selected","invited");
             $('#restriction-everyone').stop(true,true).removeClass('restriction-selected', 200);
             $('#restriction-password').stop(true,true).removeClass('restriction-selected', 200);
             $('#restriction-invited').stop(true,true).addClass('restriction-selected', 200);

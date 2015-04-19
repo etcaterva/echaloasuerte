@@ -35,18 +35,18 @@ public_draw_manager.set_submition_type = function (current_step){
 // Thi function runs when the user make changes in the privacy of a public draw and click "Save" button
 // It store the corresponding values in the input field which will be POSTed
 public_draw_manager.update_privacy_fields = function (){
-    var shared_type_field = $('input#shared-type');
-    var mode = $('.slide-bar').attr('data-selected');
+    var $shared_type_field = $('input#shared-type');
+    var mode = $('#privacy-selector').attr('data-selected');
     if (mode == "invited"){
         $('#id_password').val("");
-        shared_type_field.attr('value','Invite');
+        $shared_type_field.attr('value','Invite');
     }else if (mode == "password"){
         var password = $('#draw-password').val();
         $('#id_password').val(password);
-        shared_type_field.attr('value','Public');
+        $shared_type_field.attr('value','Public');
     }else{ // Everyone
         $('#id_password').val("");
-        shared_type_field.attr('value','Public');
+        $shared_type_field.attr('value','Public');
     }
 }
 
