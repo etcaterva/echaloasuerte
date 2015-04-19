@@ -6,6 +6,7 @@
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/slideSelector.js' %}"></script>
+    <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
     {% if is_public %}<script src="{% static 'js/public_draw_manager.js' %}"></script>{% endif %}
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
