@@ -53,7 +53,7 @@ public_draw_manager.update_privacy_fields = function (){
 //Initialize the UI to select the level of privacy for the draw
 public_draw_manager.prepare_privacy_selection = function (){
     // Initialize the UI (slider) to choose the level of restriction of the public draw
-    $("#slide-bar-container").slideSelector();
+    $("#privacy-selector").slideSelector();
 
     // Initialize button "Save changes". It stores the selection in the form input
     $('a#save-change-privacy').click(function () {
@@ -67,18 +67,18 @@ public_draw_manager.settings = function () {
     function initialize_slideselector () {
         var current_privacy_level = $('input#shared-type').val();
         var password = $('#id_password').val();
-        var $slideSelector =  $('#slide-bar-container');
+        var $privacySelector =  $('#privacy-selector');
         if (current_privacy_level == "Public")
             if (password == "") {
-                $slideSelector.slideSelector('select_everyone');
+                $privacySelector.slideSelector('select_everyone');
             }
             else {
                 $('input#draw-password').val(password);
-                $slideSelector.slideSelector('select_password');
+                $privacySelector.slideSelector('select_password');
             }
         else{
             if (current_privacy_level == "Invite"){
-                $slideSelector.slideSelector('select_invited');
+                $privacySelector.slideSelector('select_invited');
             }
         }
     }

@@ -34,13 +34,13 @@
 
             $('#extra-password').hide();
             $('#extra-invited').hide();
-            this.$element.find( ".slide-selector" ).draggable({axis: "x", containment: "parent"});
+            this.$element.find( ".slider-selector" ).draggable({axis: "x", containment: "parent"});
             this.$element.find('.slide-bar').click(function(e) {
                 var $slidebar = $(this);
-                that.$element.find('.slide-selector').stop(true,true);
+                that.$element.find('.slider-selector').stop(true,true);
                 that.width = $slidebar.width();
                 var pos_slide_bar = $slidebar.offset().left;
-                var pos_selector = $('.slide-selector').offset().left;
+                var pos_selector = $('.slider-selector').offset().left;
                 var relative_pos_click = e.pageX - pos_slide_bar;
                 that.relative_pos_selector = pos_selector - pos_slide_bar;
                 if (relative_pos_click < that.width/4){
@@ -57,10 +57,10 @@
 
         select_everyone: function (no_animation){
             if (no_animation ) {
-                this.$element.find('.slide-selector').css({'left': '0%'});
+                this.$element.find('.slider-selector').css({'left': '0%'});
             }else{
                 var move = this.relative_pos_selector + 10;
-                this.$element.find('.slide-selector').animate({"left": "-="+move+"px"}, "slow");
+                this.$element.find('.slider-selector').animate({"left": "-="+move+"px"}, "slow");
             }
             this.$element.find('.slide-bar').attr("data-selected","everyone");
             $('#restriction-everyone').stop(true,true).addClass('restriction-selected', 200);
@@ -73,10 +73,10 @@
 
         select_password: function (no_animation){
             if (no_animation ) {
-                $('.slide-selector').css({'left': '50%'});
+                $('.slider-selector').css({'left': '50%'});
             }else{
                 var move = this.width/2 - this.relative_pos_selector - 10;
-                $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
+                $('.slider-selector').animate({"left": "+="+move+"px"}, "slow");
             }
             $('.slide-bar').attr("data-selected","password");
             $('#restriction-everyone').stop(true,true).removeClass('restriction-selected', 200);
@@ -91,10 +91,10 @@
 
         select_invited: function (no_animation){
             if (no_animation ) {
-                $('.slide-selector').css({'left': '100%'});
+                $('.slider-selector').css({'left': '100%'});
             }else{
                 var move = this.width - this.relative_pos_selector - 10;
-                $('.slide-selector').animate({"left": "+="+move+"px"}, "slow");
+                $('.slider-selector').animate({"left": "+="+move+"px"}, "slow");
             }
             $('.slide-bar').attr("data-selected","invited");
             $('#restriction-everyone').stop(true,true).removeClass('restriction-selected', 200);
@@ -111,7 +111,7 @@
                             '<div class="slider-tick position-1"></div>' +
                             '<div class="slider-tick position-2"></div>' +
                             '<div class="slider-tick position-3"></div>' +
-                            '<div class="slide-selector" ></div>' +
+                            '<div class="slider-selector" ></div>' +
                         '</div>';
             this.$element.append(html);
         }

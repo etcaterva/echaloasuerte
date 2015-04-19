@@ -1,6 +1,5 @@
 /* Slidebar to choose the level of access to public draws */
-#slide-bar-container {
-
+#privacy-selector {
     height: 50px;
 }
 
@@ -42,7 +41,7 @@
     border: 0px solid transparent;
 }
 
-.slide-selector {
+.slider-selector {
     position: absolute;
     width: 20px;
     height: 20px;
@@ -61,17 +60,17 @@
 }
 
 .slider-tick.position-1,
-.slide-selector.position-1 {
+.slider-selector.position-1 {
     left: 0;
 }
 
 .slider-tick.position-2,
-.slide-selector.position-2 {
+.slider-selector.position-2 {
     left: 50%;
 }
 
 .slider-tick.position-3,
-.slide-selector.position-3 {
+.slider-selector.position-3 {
     left: 100%;
 }
 
