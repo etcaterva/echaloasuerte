@@ -56,7 +56,7 @@ public_draw_manager.prepare_privacy_selection = function (){
     $("#privacy-selector").slideSelector();
 
     // Initialize button "Save changes". It stores the selection in the form input
-    $('a#save-change-privacy').click(function () {
+    $('button#save-change-privacy').click(function () {
         public_draw_manager.update_privacy_fields();
     });
 }
@@ -154,7 +154,7 @@ public_draw_manager.settings = function () {
         });
     });
 
-    $('a#save-change-privacy').click(function() {
+    $('button#save-change-privacy').click(function() {
         $('div#settings-privacy div.feedback').addClass('hide');
         public_draw_manager.update_privacy_fields();
         var draw_id = $(this).attr("data-id");
