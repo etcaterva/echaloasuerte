@@ -28,7 +28,7 @@ class LinkSetsDrawForm(FormBase):
         )
 
     def clean(self):
-        cleaned_data = self.cleaned_data
+        cleaned_data = super(LinkSetsDrawForm, self).clean()
         if not self._errors:
             raw_set1 = cleaned_data.get('set_1')
             raw_set2 = cleaned_data.get('set_2')

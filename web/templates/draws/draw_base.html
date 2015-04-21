@@ -14,7 +14,6 @@
 {% endblock extra_head %}
 {% block extra_jq_ready %}
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
-
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
       $(this).select();
@@ -81,6 +80,7 @@
             }
          }
     });
+
     {% if is_public %}
         public_draw_manager.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
         public_draw_manager.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
@@ -160,7 +160,7 @@
                             <div id="public-draw-invite" class="col-xs-12 col-md-8 col-md-offset-2">
                                 <p class="h4"> {% trans "Invite people" %}: </p>
                                     <p>{% trans "An invitation will arrive to the emails you introduce below" %}</p>
-                                    <input type="email" id="emails" name="invite-emails" class="form-control" placeholder={% trans "Type the emails here..." %}>
+                                    <input type="email" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..." %}">
                                     <p>{% trans "OR" %}</p>
                                 <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">{% trans "Share the link to the draw" %}:
                                     <a><strike>http://127.0.0.1:8000/draw/5504d71b78332720c439f120</strike></a>
@@ -219,9 +219,9 @@
                             <div class="col-sm-8 col-sm-offset-2 btn-row">
                                 <a href="{% url 'index' %}" class="col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
                                 {% if public_draw_step == "configure" %}
-                                    <button type="submit" id="next" name="next" class="col-xs-6 btn btn-primary">{% trans 'Next step' %}</button>
+                                    <button type="submit" id="next" class="col-xs-6 btn btn-primary">{% trans 'Next step' %}</button>
                                 {% elif public_draw_step == "spread" %}
-                                    <button type="submit" name="next" class="col-xs-6 btn btn-primary">{% trans 'Publish it' %}</button>
+                                    <button id="publish" type="submit" class="col-xs-6 btn btn-primary">{% trans 'Publish it' %}</button>
                                 {% endif %}
                             </div>
                         {% endif %}
@@ -235,6 +235,8 @@
             <input class="hidden" name="submit-type" value="{% if is_public %}public_toss{% else %}toss{% endif %}"/>
             {# public-draw-step: Can be "Choose", "Confifure" or "Spread" #}
             <input class="hidden" name="public-draw-step" />
+            {# users: Sring with the emails of the users invited to the draw #}
+            <input class="hidden" id="users" name="users" value="{% if bom.users|length > 0 %} {{ bom.users }} {% endif %}">
         </form>
         <!-- End Input Form -->
         <!-- Chat -->
@@ -313,7 +315,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Cancel" %}</button>
-                    <button id="save" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+                    <button id="save-change-privacy" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
                 </div>
             </div>
         {% else%}{# If the draw is already published #}
@@ -365,7 +367,7 @@
                             <div id="alert-invitation-success" class="alert feedback alert-success hide" role="alert">
                                 <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
                             </div>
-                            <input type="text" id="emails" name="invite-emails" class="form-control" placeholder="Type the emails here...">
+                            <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
                             <a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a>
                             <p>{% trans "OR" %}</p>
                             <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">{% trans "Share the link to the draw:" %}
@@ -388,7 +390,7 @@
                         </div>
                         <div class="modal-footer">
                             <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
-                            <a id="save-change-privacy" data-id="{{ bom.pk }}" class="btn btn-primary">{% trans "Save" %}</a>
+                            <button id="save-change-privacy" data-id="{{ bom.pk }}" class="btn btn-primary">{% trans "Save" %}</button>
                         </div>
                     </div>
                 </div>
