@@ -145,7 +145,11 @@ public_draw_manager.settings = function () {
     $('a#send-emails').click(function() {
         $('div#settings-invite div.feedback').addClass('hide');
         var draw_id = $(this).attr("data-id");
-        var users = $('input#emails').val();
+        var users = $('input#invite-emails').val();
+
+        // Store the emails in the draw form input
+        $('#users').val(users);
+
         $.get(public_draw_manager.url_invite_users, {draw_id: draw_id, emails: users}, function(data){
             $('div#alert-invitation-success').removeClass('hide');
         })
@@ -189,13 +193,23 @@ public_draw_manager.unlock_fields = function () {
     $('.protected').parent('.tokenfield').removeAttr('readonly');
 }
 
+public_draw_manager.prepare_invitation_fields = function () {
+    $('#publish').click(function () {
+        var users_to_invite = $('#invite-emails').val();
+        $('#users').val(users_to_invite);
+    });
+};
+
 // Initialize the interface for a public draw
 public_draw_manager.setup = function(current_step){
     public_draw_manager.set_submition_type(current_step);
     //Initialize the UI to select the level of privacy for the draw
     public_draw_manager.prepare_privacy_selection();
+
+    public_draw_manager.prepare_invitation_fields();
+
     // Initialize input to submit emails to be shown as a tokenField
-    $('input#emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
+    $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
 
     if (current_step == ""){
         // If the draw has already been published

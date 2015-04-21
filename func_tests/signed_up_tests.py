@@ -3,6 +3,7 @@ from unittest import skip
 from .selenium_base import SeleniumTest
 from selenium import webdriver
 import time
+from server.bom.user import User
 
 class SanityWebapp(SeleniumTest):
     """ Basic sanity test for the web app"""
@@ -89,6 +90,57 @@ class SanityWebapp(SeleniumTest):
         driver.find_element_by_xpath("//tr[@data-draw_id='{0}']".format(draw_id)).click()
 
         #  password should be introduced here (and test that the title has been changed)
+
+        # Check the spectator can not toss
+        toss_status = driver.find_element_by_id("toss").get_attribute('disabled')
+        self.assertNotEqual("disabled", toss_status)
+
+        # Check the spectator can see the result
+        results = driver.find_elements_by_class_name("result")
+        self.assertEqual(1, len(results))
+
+    def public_draw_invite_test(self):
+        """
+        - Create a public draw (Privacy: only invited)
+        - The draw is in the list "Recently created"
+        - The draw can be accessed by invited users
+        - Only the owner can toss
+        """
+        # Create guest user
+        self.remove_user("test_guest@test.com")
+        self.test_user = User(
+            'test_guest@test.com',
+        )
+        self.test_user.set_password("test")
+        self.db.create_user(self.test_user)
+
+        # Guest signs in
+        driver = self.driver
+        driver.get(self.base_url + "/accounts/login/")
+        driver.find_element_by_css_selector("#login #email").clear()
+        driver.find_element_by_css_selector("#login #email").send_keys("test_guest@test.com")
+        driver.find_element_by_css_selector("#login #password").clear()
+        driver.find_element_by_css_selector("#login #password").send_keys("test")
+        driver.find_element_by_id("login-button").click()
+
+        driver_signed_in = self.driver_signed_in
+        driver_signed_in.find_element_by_id("public-draw").click()
+        driver_signed_in.find_element_by_css_selector("#public-draw-dropdown .public-draw-create").click()
+        driver_signed_in.find_element_by_css_selector("#dice-draw").click()
+        driver_signed_in.find_element_by_name("title").clear()
+        driver_signed_in.find_element_by_name("title").send_keys("Public draw test")
+        driver_signed_in.find_element_by_id("next").click()
+        driver_signed_in.find_element_by_id("public-mode-selected").click()
+        time.sleep(1)
+        driver_signed_in.find_element_by_css_selector("div.slider-tick.position-3").click()
+        driver_signed_in.find_element_by_id("save-change-privacy").click()
+
+        driver_signed_in.find_element_by_id("invite-emails-tokenfield").send_keys("test_guest@test.com")
+        driver_signed_in.find_element_by_id("publish").click()
+        draw_id = driver_signed_in.find_element_by_id("id__id").get_attribute('value')
+        driver_signed_in.find_element_by_id("toss").click()
+
+        driver.get(self.base_url + "/draw/dice/" + draw_id)
 
         # Check the spectator can not toss
         toss_status = driver.find_element_by_id("toss").get_attribute('disabled')

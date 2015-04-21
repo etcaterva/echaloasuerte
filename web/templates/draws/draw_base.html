@@ -160,7 +160,7 @@
                             <div id="public-draw-invite" class="col-xs-12 col-md-8 col-md-offset-2">
                                 <p class="h4"> {% trans "Invite people" %}: </p>
                                     <p>{% trans "An invitation will arrive to the emails you introduce below" %}</p>
-                                    <input type="email" id="emails" name="invite-emails" class="form-control" placeholder={% trans "Type the emails here..." %}>
+                                    <input type="email" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..." %}">
                                     <p>{% trans "OR" %}</p>
                                 <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">{% trans "Share the link to the draw" %}:
                                     <a><strike>http://127.0.0.1:8000/draw/5504d71b78332720c439f120</strike></a>
@@ -235,6 +235,8 @@
             <input class="hidden" name="submit-type" value="{% if is_public %}public_toss{% else %}toss{% endif %}"/>
             {# public-draw-step: Can be "Choose", "Confifure" or "Spread" #}
             <input class="hidden" name="public-draw-step" />
+            {# users: Sring with the emails of the users invited to the draw #}
+            <input class="hidden" id="users" name="users" value="{% if bom.users|length > 0 %} {{ bom.users }} {% endif %}">
         </form>
         <!-- End Input Form -->
         <!-- Chat -->
@@ -365,7 +367,7 @@
                             <div id="alert-invitation-success" class="alert feedback alert-success hide" role="alert">
                                 <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
                             </div>
-                            <input type="text" id="emails" name="invite-emails" class="form-control" placeholder="Type the emails here...">
+                            <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
                             <a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a>
                             <p>{% trans "OR" %}</p>
                             <p data-toggle="tooltip" data-placement="top" title="Feature coming soon">{% trans "Share the link to the draw:" %}
