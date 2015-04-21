@@ -457,7 +457,7 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
             logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
             if bom_draw.draw_type == model_name:
                 # If the draw is public, the variable is_public is send to the template
-                if not bom_draw.shared_type is None:
+                if not bom_draw.shared_type == 'None':
                     context['is_public'] = 'publish'
                 draw_form = globals()[form_name](initial=bom_draw.__dict__)
             else:
