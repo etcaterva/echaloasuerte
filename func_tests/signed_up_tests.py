@@ -14,6 +14,9 @@ class SanityWebapp(SeleniumTest):
         self.driver_signed_in = webdriver.Firefox()
         self.driver_signed_in.set_window_size(1366, 768)
 
+        #if something is not found give it 3 seconds to load
+        self.driver_signed_in.implicitly_wait(3)
+
         # Sign up in one of the browsers
         driver_signed_in = self.driver_signed_in
         driver_signed_in.get(self.base_url + "/accounts/login/")
