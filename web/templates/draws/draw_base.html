@@ -47,11 +47,20 @@
     });
 
     function add_to_favorite_panel(draw_id, title){
+        // Hide the "favourites empty" label in case it was rendered
+        $('span#favourites-empty').hide();
         var html =  ' <a href="/draw/' + draw_id + '/">' +
                     ' <li> ' + title + ' | now </li>' +
                     ' </a>';
         console.log("add_fav " + html);
         $('#favourites-panel ul').append(html);
+    }
+
+    function remove_from_favorite_panel(draw_id, title){
+        // Show the "favourites empty" label in case it was rendered
+        $('span#favourites-empty').show();
+
+        $('a[href*="' + draw_id + '"]').remove();
     }
 
     // Setting up "Add to favourite" button
@@ -76,7 +85,7 @@
                         $this.find('img').attr("src","{% static "img/star-o.png" %}");
                         $fav_loading.hide();
                         $fav_image.show();
-                        $('a[href*="' + draw_id + '"]').remove();
+                        remove_from_favorite_panel();
                     });
                 } else {
                     $.get('{% url 'ws_add_favorite' %}', {draw_id: draw_id}, function(data){

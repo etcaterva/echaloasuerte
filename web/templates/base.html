@@ -152,7 +152,7 @@
 
                         {% if user.is_authenticated %}
                             <li>
-                            <a href="#" data-toggle="collapse" data-target="#favourites-panel">
+                            <a id="favourites" href="#" data-toggle="collapse" data-target="#favourites-panel">
                                 <span class="fa fa-star" aria-hidden="true"></span>
                                 {% trans "favourites" %}
                             </a>
@@ -277,7 +277,7 @@
                                 {% for d in user.favourites_list %}
                                     <a href="{% url 'retrieve_draw' draw_id=d.pk %}"><li>{{ d.title|default:d.DEFAULT_TITLE }} | {{d.creation_time|date:" Y/m/d G:i:s "}}</li></a>
                                     {% empty %}
-                                       {% trans "You don't have favourite draws" %}
+                                       <span id="favourites-empty"> {% trans "You don't have favourite draws" %} </span>
                                 {% endfor %}
                             </ul>
                         </div>
