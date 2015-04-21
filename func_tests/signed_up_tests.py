@@ -24,7 +24,7 @@ class SanityWebapp(SeleniumTest):
         driver_signed_in.find_element_by_css_selector("#login #email").send_keys("test@test.com")
         driver_signed_in.find_element_by_css_selector("#login #password").clear()
         driver_signed_in.find_element_by_css_selector("#login #password").send_keys("test")
-        driver_signed_in.find_element_by_id("login-button").click()
+        driver_signed_in.find_element_by_css_selector("#login #login-button").click()
 
     def tearDown(self):
         super(SanityWebapp,self).tearDown()
@@ -174,7 +174,7 @@ class SanityWebapp(SeleniumTest):
         driver.find_element_by_css_selector("#login #email").send_keys("test_guest@test.com")
         driver.find_element_by_css_selector("#login #password").clear()
         driver.find_element_by_css_selector("#login #password").send_keys("test")
-        driver.find_element_by_id("login-button").click()
+        driver.find_element_by_css_selector("#login #login-button").click()
 
         driver_signed_in = self.driver_signed_in
         driver_signed_in.find_element_by_id("public-draw").click()
