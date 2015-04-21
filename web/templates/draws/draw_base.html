@@ -46,6 +46,14 @@
         $('#id_password').val($('#draw-password').val());
     });
 
+    function add_to_favorite_panel(draw_id, title){
+        var html =  ' <a href="/draw/' + draw_id + '/">' +
+                    ' <li> ' + title + ' | now </li>' +
+                    ' </a>';
+        console.log("add_fav " + html);
+        $('#favourites-panel ul').append(html);
+    }
+
     // Setting up "Add to favourite" button
     $(this).find('#fav-loading').hide();
     $('#fav-button').click(function(){
@@ -68,6 +76,7 @@
                         $this.find('img').attr("src","{% static "img/star-o.png" %}");
                         $fav_loading.hide();
                         $fav_image.show();
+                        $('a[href*="' + draw_id + '"]').remove();
                     });
                 } else {
                     $.get('{% url 'ws_add_favorite' %}', {draw_id: draw_id}, function(data){
@@ -75,6 +84,8 @@
                         $this.find('img').attr("src","{% static "img/star.png" %}");
                         $fav_loading.hide();
                         $fav_image.show();
+                        var title = $('#draw-title-container textarea').val();
+                        add_to_favorite_panel(draw_id, title);
                    });
                 }
             }
