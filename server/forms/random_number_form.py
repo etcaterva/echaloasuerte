@@ -38,7 +38,7 @@ class RandomNumberDrawForm(FormBase):
         raise ValidationError(_("Between 1 and 50"))
 
     def clean(self):
-        cleaned_data = self.cleaned_data
+        cleaned_data = super(RandomNumberDrawForm, self).clean()
         # Form errors will be shown only when there are not field errors
         if not self._errors:
             range_min = cleaned_data.get('range_min', 0)
