@@ -41,11 +41,6 @@
 
     $('.accordion').accordion({collapsible: true});
 
-    // Update draw's password
-    $('.change-password').click(function(){
-        $('#id_password').val($('#draw-password').val());
-    });
-
     function add_to_favorite_panel(draw_id, title){
         // Hide the "favourites empty" label in case it was rendered
         $('span#favourites-empty').hide();
@@ -102,9 +97,9 @@
     });
 
     {% if is_public %}
-        public_draw_manager.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
-        public_draw_manager.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
-        public_draw_manager.setup("{{ public_draw_step }}");
+        PublicDraw.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
+        PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
+        PublicDraw.setup("{{ public_draw_step }}");
 
 		$('#chat-frame').chat({
             "url_send_message": "{% url 'chat_add_message' %}",
@@ -371,7 +366,7 @@
                         </div>
                         <div class="modal-footer">
                             <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
-                            <a id="btn-edit-draw" class="btn btn-warning">{% trans "Edit draw" %}</a>
+                            <a id="edit-draw-confirmation" class="btn btn-warning">{% trans "Edit draw" %}</a>
                         </div>
                     </div>
                     <div id="settings-invite" class="settings-submenu hide">
