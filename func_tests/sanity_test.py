@@ -87,14 +87,14 @@ class SanityWebapp(SeleniumTest):
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "profile-dropdown-link")))
 
     def user_sign_out_from_dropdown_test(self):
-        self.user_login_screen_test()
+        self.user_sign_in_screen_test()
         driver = self.driver
         driver.find_element_by_css_selector("#account-dropdown > a.dropdown-toggle").click()
         driver.find_element_by_css_selector("#account-dropdown #sign-out").click()
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "login-dropdown-link")))
 
     def user_sign_out_from_profile_test(self):
-        self.user_login_screen_test()
+        self.user_sign_in_screen_test()
         driver = self.driver
         driver.get(self.base_url + "/accounts/profile/")
         driver.find_element_by_css_selector("#content #sign-out").click()
