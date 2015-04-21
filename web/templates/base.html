@@ -213,8 +213,7 @@
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <p>
-                                                        <a href="{% url 'login' %}"
-                                                           class="btn btn-danger btn-block">{% trans "Sign out" %}</a>
+                                                        <a id="sign-out" href="{% url 'login' %}" class="btn btn-danger btn-block">{% trans "Sign out" %}</a>
                                                     </p>
                                                 </div>
                                             </div>
@@ -247,7 +246,7 @@
                                                         </label>
                                                     </div>
                                                     <div class="form-group">
-                                                        <button type="submit" class="btn btn-success btn-block">{% trans "Sign in"%}
+                                                        <button id="login-button" type="submit" class="btn btn-success btn-block">{% trans "Sign in"%}
                                                         </button>
                                                         <a class="forgot-password"
                                                            href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a>

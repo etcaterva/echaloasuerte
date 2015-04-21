@@ -52,7 +52,7 @@ class SanityWebapp(SeleniumTest):
         ActionChains(driver).move_to_element(help_icon).perform()
         driver.find_element_by_css_selector(".ui-tooltip")
 
-    def user_signup_test(self):
+    def user_sign_up_test(self):
         self.remove_user("test2@test.com")
         self.assertRaises(Exception, lambda: self.db.retrieve_user("test2@test.com"))
 
@@ -66,21 +66,36 @@ class SanityWebapp(SeleniumTest):
         driver.find_element_by_id("register-button").click()
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "profile-dropdown-link")))
 
-    def user_login_screen_test(self):
+    def user_sign_in_from_dropdown_test(self):
+        driver = self.driver
+        driver.find_element_by_css_selector("#account-dropdown > a.dropdown-toggle").click()
+        driver.find_element_by_css_selector("#account-dropdown #email").clear()
+        driver.find_element_by_css_selector("#account-dropdown #email").send_keys("test@test.com")
+        driver.find_element_by_css_selector("#account-dropdown #password").clear()
+        driver.find_element_by_css_selector("#account-dropdown #password").send_keys("test")
+        driver.find_element_by_css_selector("#account-dropdown #login-button").click()
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "profile-dropdown-link")))
+
+    def user_sign_in_screen_test(self):
         driver = self.driver
         driver.get(self.base_url + "/accounts/login/")
         driver.find_element_by_css_selector("#login #email").clear()
         driver.find_element_by_css_selector("#login #email").send_keys("test@test.com")
         driver.find_element_by_css_selector("#login #password").clear()
         driver.find_element_by_css_selector("#login #password").send_keys("test")
-        driver.find_element_by_id("login-button").click()
+        driver.find_element_by_css_selector("#login #login-button").click()
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "profile-dropdown-link")))
 
-    def user_logout_test(self):
+    def user_sign_out_from_dropdown_test(self):
         self.user_login_screen_test()
         driver = self.driver
         driver.find_element_by_css_selector("#account-dropdown > a.dropdown-toggle").click()
-        driver.find_element_by_link_text("Sign out").click()
+        driver.find_element_by_css_selector("#account-dropdown #sign-out").click()
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "login-dropdown-link")))
 
-
+    def user_sign_out_from_profile_test(self):
+        self.user_login_screen_test()
+        driver = self.driver
+        driver.get(self.base_url + "/accounts/profile/")
+        driver.find_element_by_css_selector("#content #sign-out").click()
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "login-dropdown-link")))
