@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
-from unittest import skip
 from .selenium_base import SeleniumTest
-from selenium import webdriver
 import time
-from server.bom.user import User
 
 class SanityWebapp(SeleniumTest):
     """ Basic sanity test for the web app"""
 
     def setUp(self):
-        super(SanityWebapp,self).setUp()
+        super(SanityWebapp, self).setUp()
 
         # Sign up as owner
         driver = self.driver
@@ -30,8 +27,6 @@ class SanityWebapp(SeleniumTest):
 
     def tearDown(self):
         super(SanityWebapp, self).tearDown()
-
-        self.driver.quit()
 
     def update_privacy_to_password_test(self):
         password = "123456"
@@ -70,4 +65,3 @@ class SanityWebapp(SeleniumTest):
         draw = self.db.retrieve_draw(self.draw_id)
         self.assertEqual("Invite", draw.shared_type)
         self.assertEqual("", draw.password)
-        pass
