@@ -6,6 +6,7 @@
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/slideSelector.js' %}"></script>
+    <script src="{% static 'js/favourites.js' %}"></script>
     <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
     {% if is_public %}<script src="{% static 'js/public_draw_manager.js' %}"></script>{% endif %}
     <script src="{% static 'js/chat.js' %}"></script>
@@ -41,70 +42,20 @@
 
     $('.accordion').accordion({collapsible: true});
 
-    // Update draw's password
-    $('.change-password').click(function(){
-        $('#id_password').val($('#draw-password').val());
+    $('#fav-button').favourites({
+            "url_add": "{% url 'ws_add_favorite' %}",
+            "url_remove": "{% url 'ws_remove_favorite' %}",
+            "user_authenticated": ('{{ user.is_authenticated }}' == 'False')? false: true,
+            "draw_id": "{{ bom.pk }}",
+            "path_img_star": "{% static "img/star.png" %}",
+            "path_img_star_empty": "{% static "img/star-o.png" %}",
+            "msg_regsiter": "You need an account to save your favourite draws",
+            "msg_toss": "Click on the 'Toss' button to try the draw first"
     });
-
-    function add_to_favorite_panel(draw_id, title){
-        // Hide the "favourites empty" label in case it was rendered
-        $('span#favourites-empty').hide();
-        var html =  ' <a href="/draw/' + draw_id + '/">' +
-                    ' <li> ' + title + ' | now </li>' +
-                    ' </a>';
-        console.log("add_fav " + html);
-        $('#favourites-panel ul').append(html);
-    }
-
-    function remove_from_favorite_panel(draw_id, title){
-        // Show the "favourites empty" label in case it was rendered
-        $('span#favourites-empty').show();
-
-        $('a[href*="' + draw_id + '"]').remove();
-    }
-
-    // Setting up "Add to favourite" button
-    $(this).find('#fav-loading').hide();
-    $('#fav-button').click(function(){
-        if ('{{ user.is_authenticated }}' == 'False'){
-            alert("You need an account to save your favourite draws");
-        } else{
-            var draw_id = $(this).attr("data-id");
-            if (draw_id == 'None'){
-                alert("Click on the 'Toss' button to try the draw first");
-            }else{
-                var is_fav = ($(this).attr("data-active") == "y");
-                $this = $(this);
-                var $fav_image = $this.find('img');
-                var $fav_loading = $this.find('#fav-loading');
-                $fav_image.hide();
-                $fav_loading.show();
-                if(is_fav){
-                    $.get('{% url 'ws_remove_favorite' %}', {draw_id: draw_id}, function(data){
-                        $this.attr("data-active","n");
-                        $this.find('img').attr("src","{% static "img/star-o.png" %}");
-                        $fav_loading.hide();
-                        $fav_image.show();
-                        remove_from_favorite_panel();
-                    });
-                } else {
-                    $.get('{% url 'ws_add_favorite' %}', {draw_id: draw_id}, function(data){
-                        $this.attr("data-active","y");
-                        $this.find('img').attr("src","{% static "img/star.png" %}");
-                        $fav_loading.hide();
-                        $fav_image.show();
-                        var title = $('#draw-title-container textarea').val();
-                        add_to_favorite_panel(draw_id, title);
-                   });
-                }
-            }
-         }
-    });
-
     {% if is_public %}
-        public_draw_manager.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
-        public_draw_manager.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
-        public_draw_manager.setup("{{ public_draw_step }}");
+        PublicDraw.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
+        PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
+        PublicDraw.setup("{{ public_draw_step }}");
 
 		$('#chat-frame').chat({
             "url_send_message": "{% url 'chat_add_message' %}",
@@ -140,7 +91,7 @@
 	                    data-active="n"
 	                    {% endif %}
 	                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favourites col-xs-2 col-sm-2 col-sm-push-8 text-center ">
-                            <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x"></span>
+                            <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x hide"></span>
 	                    {% if bom.pk in user.favourites %}
                             <img src="{% static "img/star.png" %}"/>
 	                    {% else %}
@@ -371,7 +322,7 @@
                         </div>
                         <div class="modal-footer">
                             <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
-                            <a id="btn-edit-draw" class="btn btn-warning">{% trans "Edit draw" %}</a>
+                            <a id="edit-draw-confirmation" class="btn btn-warning">{% trans "Edit draw" %}</a>
                         </div>
                     </div>
                     <div id="settings-invite" class="settings-submenu hide">
