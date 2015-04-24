@@ -2,85 +2,121 @@
 {% load url from future %}
 {% load i18n %}
 {% block extra_jq_ready %}
+    // Fill the datatable
+    $('.data-table').DataTable(
+    {
+        "bJQueryUI": true,
+        "language" : {
+            "emptyTable":     "{% trans 'No data available in table'%}",
+            "info":           "{% trans 'Showing _START_ to _END_ of _TOTAL_ entries'%}",
+            "infoEmpty":      "{% trans 'Showing 0 to 0 of 0 entries'%}",
+            "infoFiltered":   "{% trans '(filtered from _MAX_ total entries)'%}",
+            "thousands":      "{% trans ','%}",
+            "lengthMenu":     "{% trans 'Show _MENU_ entries'%}",
+            "loadingRecords": "{% trans 'Loading...'%}",
+            "processing":     "{% trans 'Processing...'%}",
+            "search":         "{% trans 'Search:'%}",
+            "zeroRecords":    "{% trans 'No matching records found'%}",
+            "paginate": {
+                "first":      "{% trans 'First'%}",
+                "last":       "{% trans 'Last'%}",
+                "next":       "{% trans 'Next'%}",
+                "previous":   "{% trans 'Previous'%}"
+            },
+            "aria": {
+                "sortAscending":  "{% trans ': activate to sort column ascending'%}",
+                "sortDescending": "{% trans ': activate to sort column descending'%}"
+            }
+        },
+        "order": [[ 2, "desc" ]],
+        "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "{%trans 'All' %}"]]
+    }
+    );
+
+    // Dialog to request the password to access a protected public draw
+    dialog = $( "#password-dialog" ).dialog({
+        autoOpen: false,
+        height: 'auto',
+        width: 350,
+        modal: true,
+        buttons: {
+        "{% trans "Access" %}": function() {
+            var password = $('#password-dialog #password').val();
+            var draw_id = dialog.data('draw_id');
+            var target_url = dialog.data('target_url');
+            target_url += "?password=";
+            target_url += password;
+            access_draw(draw_id, password, target_url);
+         },
+        Cancel: function() {
+            dialog.dialog( "close" );
+                $('#input-password').removeClass('has-error');
+                $('#wrong-password').addClass('hidden');
+        }
+        },
+        close: function() {
+            // Reset dialog inputs
+            form[ 0 ].reset();
+        }
+    });
 
     /**
-     * Checks whether an user can access to a draw.
-     * Returns a promise
+     * Check whether an user can access and, if possible, access to it
     **/
-    function checkAccess(draw_id, password){
-        return $.ajax({
+    function access_draw(draw_id, password, target_url){
+        console.log(draw_id +" "+password);
+        $.ajax({
             method : "GET",
             url   : "{% url 'check_access_to_draw' %}",
             data  : {draw_id : draw_id, draw_pass : password}
+        }).done(function (){
+            window.location = target_url;
+        })
+        .fail(function (){
+            $('#input-password').addClass('has-error');
+            $('#wrong-password').removeClass('hidden');
         });
     }
 
-    $('.data-table').DataTable(
-        {
-            "bJQueryUI": true,
-            "language" : {
-                "emptyTable":     "{% trans 'No data available in table'%}",
-                "info":           "{% trans 'Showing _START_ to _END_ of _TOTAL_ entries'%}",
-                "infoEmpty":      "{% trans 'Showing 0 to 0 of 0 entries'%}",
-                "infoFiltered":   "{% trans '(filtered from _MAX_ total entries)'%}",
-                "thousands":      "{% trans ','%}",
-                "lengthMenu":     "{% trans 'Show _MENU_ entries'%}",
-                "loadingRecords": "{% trans 'Loading...'%}",
-                "processing":     "{% trans 'Processing...'%}",
-                "search":         "{% trans 'Search:'%}",
-                "zeroRecords":    "{% trans 'No matching records found'%}",
-                "paginate": {
-                    "first":      "{% trans 'First'%}",
-                    "last":       "{% trans 'Last'%}",
-                    "next":       "{% trans 'Next'%}",
-                    "previous":   "{% trans 'Previous'%}"
-                },
-                "aria": {
-                    "sortAscending":  "{% trans ': activate to sort column ascending'%}",
-                    "sortDescending": "{% trans ': activate to sort column descending'%}"
-                }
-            },
-            "order": [[ 2, "desc" ]],
-            "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "{%trans 'All' %}"]]
-        }
-    );
-
+    //
     $('.data-table').on( 'click', 'tr', function () {
         if(!($(this).attr('alt')))
             return true;
 
-        // link targets a draw
+        // Get url and draw id
         var target_url = $(this).attr('alt');
         var draw_id = $(this).attr('data-draw_id');
 
         var password = undefined
         if($(this).attr("data-pwd") == 'true') {
-           password = prompt("Please enter a password");
-           if(!password){   //cancel
-                return false;
-           }
-
-           target_url += "?password=";
-           target_url += password;
+            dialog.data('draw_id', draw_id)
+                  .data('target_url', target_url)
+                  .dialog( "open" );
         }
-
-        checkAccess(draw_id, password)
-        .done(function (){
-            window.location = target_url;
-        })
-        .fail(function (){
-            alert("Invalid password!");
-        });
+        else{
+            // If the draw is not password protected, directly access to it
+            access_draw(draw_id, password,target_url);
+        }
 
         return false;
     } );
 
+    // Allow form submission with keyboard without duplicating the dialog button
+    form = dialog.find( "form" ).on( "submit", function( event ) {
+        event.preventDefault();
+        var password = $('#password-dialog #password').val();
+        var draw_id = dialog.data('draw_id');
+        var target_url = dialog.data('target_url');
+        target_url += "?password=";
+        target_url += password;
+        access_draw(draw_id, password, target_url);
+    });
 {% endblock extra_jq_ready %}
 
 {% block content %}
     <div>
         {%if user_draws %}<p class="h1 text-center">{% trans "Draws your take part in" %}</p>
-        <table class="data-table" width="100%" cellspacing="0">
+        <table class="draw-list data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
                     <th>{%trans 'Draw Name' %}</th>
@@ -91,7 +127,7 @@
             </thead>
             <tbody>
             {% for d in user_draws %}
-                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}" style="cursor: pointer;">
+                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}">
                     <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
                     <td>{{ d.owner|default:"" }}</td>
                     <td>{{ d.creation_time|date:" Y/m/d G:i:s "}}</td>
@@ -102,7 +138,7 @@
         </table>
         {% endif %}
         {%if public_draws %}<h1 class="text-center">{% trans "Public Draws" %}</h1>
-        <table class="data-table" width="100%" cellspacing="0">
+        <table class="draw-list data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
                     <th>{%trans 'Draw Name' %}</th>
@@ -113,7 +149,7 @@
             </thead>
             <tbody>
             {% for d in public_draws %}
-                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}" data-pwd="{{d.password|yesno:"true,false"}}" style="cursor: pointer;">
+                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}" data-pwd="{{d.password|yesno:"true,false"}}">
                     <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
                     <td>{{ d.owner|default:"" }}</td>
                     <td>{{ d.creation_time|date:" Y/m/d G:i:s "}}</td>
@@ -124,5 +160,24 @@
         </table>
         <hr/>
         {% endif %}
+    </div>
+
+    <div id="password-dialog" title="{% trans "This draw is protected" %}">
+        <p>{% trans "Type the password to access the draw" %}</p>
+        <form autocomplete="off">
+            <fieldset>
+                <div id="input-password" class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                    <!-- "prevent-autofill" is a workaround to avoid chrome autofill -->
+                    <input type="password" name="prevent-autofill" style="display:none;" />
+                    <input id="password" type="password" class="form-control" name="password" placeholder="{% trans "Password" %}" autocomplete="off" >
+                </div>
+                <div id="wrong-password" class="alert alert-danger hidden">
+                    <strong>{% trans "Ops!" %}</strong> {% trans "The password is not correct" %}.
+                </div>
+                <!-- Allow form submission with keyboard without duplicating the dialog button-->
+                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            </fieldset>
+        </form>
     </div>
 {% endblock %}

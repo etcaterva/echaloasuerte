@@ -13,6 +13,10 @@ h2,
     font-size: 24px;
 }
 
+div.alert {
+    margin-top: 10px;
+}
+
 /* Used to leave an empty region on the top of the screen - Only is used in some screen sizes */
 .padding-top-big {
     color: #b9b9b9;
@@ -317,5 +321,10 @@ table.dataTable.no-footer {
 
 .dataTables_wrapper .previous.ui-state-disabled {
     display: none !important;
+}
+
+
+table.draw-list tr{
+    cursor: pointer;
 }
 
