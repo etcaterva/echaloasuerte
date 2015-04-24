@@ -39,14 +39,12 @@ class SanityWebapp(SeleniumTest):
 
         # Change privacy to password protected
         driver.find_element_by_id("public-draw-options").click()
-        time.sleep(1)
         driver.find_element_by_id("privacy").click()
         driver.find_element_by_css_selector("div.slider-tick.position-2").click()
         driver.find_element_by_id("draw-password").clear()
         driver.find_element_by_id("draw-password").send_keys(password)
         driver.find_element_by_id("save-change-privacy").click()
         driver.find_element_by_css_selector("#settings-privacy button.close").click()
-        time.sleep(1)
 
         # Check that the configuration has changed
         draw = self.db.retrieve_draw(self.draw_id)

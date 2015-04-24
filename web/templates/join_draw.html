@@ -40,14 +40,18 @@
         width: 350,
         modal: true,
         buttons: {
-        "{% trans "Access" %}": function() {
-            var password = $('#password-dialog #password').val();
-            var draw_id = dialog.data('draw_id');
-            var target_url = dialog.data('target_url');
-            target_url += "?password=";
-            target_url += password;
-            access_draw(draw_id, password, target_url);
-         },
+        "Access": {
+            id: "check-password",
+            text: "{% trans "Access" %}",
+            click: function() {
+                var password = $('#password-dialog #password').val();
+                var draw_id = dialog.data('draw_id');
+                var target_url = dialog.data('target_url');
+                target_url += "?password=";
+                target_url += password;
+                access_draw(draw_id, password, target_url);
+            }
+        },
         Cancel: function() {
             dialog.dialog( "close" );
                 $('#input-password').removeClass('has-error');
