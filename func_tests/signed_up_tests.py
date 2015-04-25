@@ -135,6 +135,7 @@ class SanityWebapp(SeleniumTest):
         driver_signed_in.find_element_by_id("draw-password").send_keys(password)
         driver_signed_in.find_element_by_id("save-change-privacy").click()
         driver_signed_in.find_element_by_id("publish").click()
+        time.sleep(1)
         draw_id = driver_signed_in.find_element_by_id("id__id").get_attribute('value')
         driver_signed_in.find_element_by_id("toss").click()
 
