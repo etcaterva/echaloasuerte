@@ -19,10 +19,6 @@
 
         constructor: SlideSelector,
 
-        test: function() {
-            console.log("testtt");
-        },
-
         init: function (element, options){
             var that = this
             this.$element = $(element);

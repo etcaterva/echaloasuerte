@@ -24,12 +24,62 @@ class SanityWebapp(SeleniumTest):
         driver_signed_in.find_element_by_css_selector("#login #email").send_keys("test@test.com")
         driver_signed_in.find_element_by_css_selector("#login #password").clear()
         driver_signed_in.find_element_by_css_selector("#login #password").send_keys("test")
-        driver_signed_in.find_element_by_id("login-button").click()
+        driver_signed_in.find_element_by_css_selector("#login #login-button").click()
 
     def tearDown(self):
         super(SanityWebapp,self).tearDown()
 
         self.driver_signed_in.quit()
+
+    def favourites_test(self):
+        """
+        - Add a title to a draw
+        - Store it in favorites
+        - Is dynamically added by JS
+        - Access to it through the favourites sections from the home screen (so it's added to the DB)
+        - Remove the draw from favorites
+        - Remove it dynamically with JS
+        - Check from the home screen that it's not anymore in the favourites section
+        """
+        draw_title = "Testing favourites"
+        driver_signed_in = self.driver_signed_in
+        driver_signed_in.find_element_by_css_selector("#card-draw").click()
+
+        # Change the name of the draw
+        driver_signed_in.find_element_by_name("title").clear()
+        driver_signed_in.find_element_by_name("title").send_keys(draw_title)
+
+        # Toss
+        driver_signed_in.find_element_by_id("toss").click()
+
+        # Add to favourites
+        driver_signed_in.find_element_by_id("fav-button").click()
+        driver_signed_in.find_element_by_id("favourites").click()
+        draw_id = driver_signed_in.find_element_by_id("id__id").get_attribute('value')
+
+        # Check that it has been dynamically added
+        link = driver_signed_in.find_element_by_xpath("//*[@id='favourites-panel']//a[contains(@href,'" + draw_id + "')]")
+        link.click()
+
+        # Check that is correctly stored in the DB
+        driver_signed_in.get(self.base_url + "/")
+        driver_signed_in.find_element_by_id("favourites").click()
+        driver_signed_in.find_element_by_xpath("//*[@id='favourites-panel']//a[contains(@href,'" + draw_id + "')]").click()
+        same_name = draw_title == driver_signed_in.find_element_by_name("title").get_attribute("value")
+        self.assertTrue(same_name)
+
+        # Remove from favourites
+        driver_signed_in.find_element_by_id("fav-button").click()
+
+        # Check that it has been dynamically removed
+        is_present = self.is_element_present("xpath", "//*[@id='favourites-panel']//a[contains(@href,'" + draw_id + "')]")
+        self.assertFalse(is_present)
+
+        # Check that is correctly removed from the DB
+        driver_signed_in.get(self.base_url + "/")
+        driver_signed_in.find_element_by_id("favourites").click()
+        is_present = self.is_element_present("xpath", "//*[@id='favourites-panel']//a[contains(@href,'" + draw_id + "')]")
+        self.assertFalse(is_present)
 
     def public_draw_everyone_test(self):
         """
@@ -124,7 +174,7 @@ class SanityWebapp(SeleniumTest):
         driver.find_element_by_css_selector("#login #email").send_keys("test_guest@test.com")
         driver.find_element_by_css_selector("#login #password").clear()
         driver.find_element_by_css_selector("#login #password").send_keys("test")
-        driver.find_element_by_id("login-button").click()
+        driver.find_element_by_css_selector("#login #login-button").click()
 
         driver_signed_in = self.driver_signed_in
         driver_signed_in.find_element_by_id("public-draw").click()
