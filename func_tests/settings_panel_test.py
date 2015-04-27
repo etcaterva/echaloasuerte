@@ -28,7 +28,7 @@ class SanityWebapp(SeleniumTest):
     def tearDown(self):
         super(SanityWebapp, self).tearDown()
 
-    def update_privacy_to_password_test(self):
+    def update_privacy_test(self):
         password = "123456"
         driver = self.driver
 
