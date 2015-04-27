@@ -204,8 +204,8 @@ class SanityWebapp(SeleniumTest):
 
         driver_signed_in.find_element_by_id("invite-emails-tokenfield").send_keys("test_guest@test.com")
         driver_signed_in.find_element_by_id("publish").click()
-        draw_id = driver_signed_in.find_element_by_id("id__id").get_attribute('value')
         driver_signed_in.find_element_by_id("toss").click()
+        draw_id = driver_signed_in.find_element_by_id("id__id").get_attribute('value')
 
         driver.get(self.base_url + "/draw/dice/" + draw_id)
 
