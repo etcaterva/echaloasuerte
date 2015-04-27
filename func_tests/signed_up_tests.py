@@ -118,6 +118,7 @@ class SanityWebapp(SeleniumTest):
         - The draw can be accessed by non-register users by using the password
         - Only the owner can toss
         """
+        # comment
         driver_signed_in = self.driver_signed_in
         driver = self.driver
         password = '123456'
@@ -125,7 +126,7 @@ class SanityWebapp(SeleniumTest):
         driver_signed_in.find_element_by_css_selector("#public-draw-dropdown .public-draw-create").click()
         driver_signed_in.find_element_by_css_selector("#dice-draw").click()
         driver_signed_in.find_element_by_name("title").clear()
-        driver_signed_in.find_element_by_name("title").send_keys("Public draw test")
+        driver_signed_in.find_element_by_name("title").send_keys("Public draw test2")
         driver_signed_in.find_element_by_id("next").click()
         driver_signed_in.find_element_by_id("public-mode-selected").click()
         time.sleep(1)
@@ -133,9 +134,19 @@ class SanityWebapp(SeleniumTest):
         driver_signed_in.find_element_by_id("draw-password").clear()
         driver_signed_in.find_element_by_id("draw-password").send_keys(password)
         driver_signed_in.find_element_by_id("save-change-privacy").click()
+
+        driver_signed_in.find_element_by_id("invite-emails-tokenfield").send_keys("test_guest@test.com")
+        driver_signed_in.find_element_by_id("publish").click()
+        driver_signed_in.find_element_by_id("toss").click()
+        draw_id = driver_signed_in.find_element_by_id("id__id").get_attribute('value')
+        '''
+        driver_signed_in.find_element_by_css_selector("div.slider-tick.position-3").click()
+        #driver_signed_in.find_element_by_id("draw-password").clear()
+        #driver_signed_in.find_element_by_id("draw-password").send_keys(password)
+        driver_signed_in.find_element_by_id("save-change-privacy").click()
         driver_signed_in.find_element_by_id("publish").click()
         draw_id = driver_signed_in.find_element_by_id("id__id").get_attribute('value')
-        driver_signed_in.find_element_by_id("toss").click()
+        driver_signed_in.find_element_by_id("toss").click()'''
 
         # Access the draw using the password
         driver.find_element_by_id("public-draw").click()
@@ -193,8 +204,8 @@ class SanityWebapp(SeleniumTest):
 
         driver_signed_in.find_element_by_id("invite-emails-tokenfield").send_keys("test_guest@test.com")
         driver_signed_in.find_element_by_id("publish").click()
-        draw_id = driver_signed_in.find_element_by_id("id__id").get_attribute('value')
         driver_signed_in.find_element_by_id("toss").click()
+        draw_id = driver_signed_in.find_element_by_id("id__id").get_attribute('value')
 
         driver.get(self.base_url + "/draw/dice/" + draw_id)
 
