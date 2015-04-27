@@ -17,7 +17,11 @@
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
-      $(this).select();
+        var attr = $(this).hasClass('protected');
+    console.log(attr);
+        if (typeof attr === typeof undefined || attr === false) {
+            $(this).select();
+        }
     });
 
     // Autoresize the title box when window is resized
