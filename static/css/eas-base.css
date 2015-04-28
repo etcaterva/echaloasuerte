@@ -323,7 +323,13 @@ table.dataTable.no-footer {
     display: none !important;
 }
 
+.ui-corner-tl {
+	border-top-left-radius: 2px;
+}
 
+.ui-corner-tr {
+	border-top-right-radius: 2px;
+}
 table.draw-list tr{
     cursor: pointer;
 }

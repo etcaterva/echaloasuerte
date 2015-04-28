@@ -5,7 +5,7 @@
 {% block extra_jq_ready %}
 
     // Fill the datatable
-    var $public_draws = $('.data-table').DataTable(
+    var $public_draws = $('#public-draws').DataTable(
     {
         "bJQueryUI": true,
         "language" : {
@@ -42,6 +42,7 @@
         ]
     }
     );
+
 
     // Dialog to request the password to access a protected public draw
     dialog = $( "#password-dialog" ).dialog({
@@ -92,7 +93,7 @@
         });
     }
 
-    //
+    // Set action when a draw row is clicked
     $('.data-table').on( 'click', 'tr', function () {
         if(!($(this).attr('alt')))
             return true;
@@ -126,23 +127,16 @@
         access_draw(draw_id, password, target_url);
     });
 
-    var html_only_my_draws = '<div class="checkbox"><label><input id="only-your-draws" type="checkbox">' +
-                            '{% trans "Show only the draws you take part in" %}' +
-                            '</label></div>';
-    $('.data-table').append(html_only_my_draws);
-    $('#only-your-draws').click(function(){
-        if ($('#only-your-draws').prop('checked')){
-            $public_draws.column(5).search("y").draw();
-        } else{
-            $public_draws.column(5).search("").draw();
-        }
+    $('#public-draws_wrapper').easDataTable({
+        "dataTable_plugin": $public_draws,
+        "msg_your_draws": "{% trans "Show only the draws you take part in" %}",
     });
 {% endblock extra_jq_ready %}
 
 {% block content %}
     <div>
         {%if user_draws %}<p class="h1 text-center">{% trans "Public draws" %}</p>
-        <table class="draw-list data-table" width="100%" cellspacing="0">
+        <table id="public-draws" class="draw-list data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
                     <th></th>
