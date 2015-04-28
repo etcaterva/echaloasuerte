@@ -197,6 +197,8 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 ALLOWED_HOSTS = [
     '.etcaterva.com',
     '.etcaterva.com.',
+    '.pickforme.net',
+    '.pickforme.net.',
     '.onlinewbs.com',
     '.onlinewbs.com.',  # Also allow FQDN and subdomains
     '.echaloasuerte.com',
