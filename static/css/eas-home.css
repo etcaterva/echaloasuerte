@@ -4,6 +4,13 @@ a[disabled] {
     color: gray;
 }
 
+
+/* CSS for the top bar notificationns */
+.notification-top-bar {
+    top:20px;
+    margin 0 auto;
+}
+
 /* Contain all the draw boxes in the index */
 .container-draws {
     padding-top: 10px;
