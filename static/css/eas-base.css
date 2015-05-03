@@ -314,6 +314,7 @@ table.dataTable tfoot td {
     background-color: #e2f3e2 !important;
     border: 1px solid #AAAAAA ;
 }
+
 table.dataTable.no-footer {
   border-bottom: 1px solid #AAAAAA ;
 }
@@ -332,5 +333,21 @@ table.dataTable.no-footer {
 }
 table.draw-list tr{
     cursor: pointer;
+}
+
+.dataTables_filter {
+    width: 250px;
+}
+
+.dataTables_length {
+    width: 250px;
+}
+
+.dataTables_length select {
+    width: 50px;
+}
+
+.dataTables_length #entry-label {
+    left: 100px;
 }
 
