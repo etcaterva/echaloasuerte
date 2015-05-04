@@ -339,9 +339,7 @@ table.draw-list tr{
     width: 250px;
 }
 
-.dataTables_length {
-    width: 250px;
-}
+
 
 .dataTables_length select {
     width: 50px;

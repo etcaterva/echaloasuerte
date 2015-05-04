@@ -55,7 +55,7 @@
             this.$element.find('#public-draws_filter').append(html_search_input);
 
             // Select input to choose the number of results
-            var html_select = this.$element.find('select').outerHTML();
+            /*var html_select = this.$element.find('select').outerHTML();
             html_select =  '<label for="inputKey" class="col-md-1 control-label">Show</label>' +
                             '<label id="entry-label" for="inputKey" class="col-md-1 control-label">entries</label>' +
                             '<div class="col-md-10"> ' + html_select + '</div>';
@@ -64,7 +64,7 @@
             this.$element.find('.dataTables_length').empty();
             this.$element.find('.dataTables_length').append(html_select);
             this.$element.find('.dataTables_length').append('<p class="form-control-static"></p>');
-            this.$element.find('select').addClass("form-control");
+            this.$element.find('select').addClass("form-control");*/
         }
     };
 
