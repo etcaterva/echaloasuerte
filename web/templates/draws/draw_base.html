@@ -112,7 +112,6 @@
                 {% if public_draw_step == "configure" or public_draw_step == "spread" %}
                     <!-- Inputs to configure the public draw, only rendered for configure and spread steps -->
                     <div class="step-spread">
-                        <div class="row">
                             <div class="public-draw-restriction col-xs-12 col-md-8 col-md-offset-2">
                                 <div class="col-xs-6">
                                     <p class="h4">{% trans "Who can access your draw?" %} </p>
@@ -130,8 +129,6 @@
                                     </p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div id="public-draw-invite" class="col-xs-12 col-md-8 col-md-offset-2">
                                 <p class="h4"> {% trans "Invite people" %}: </p>
                                     <p>{% trans "An invitation will arrive to the emails you introduce below" %}</p>
@@ -141,7 +138,6 @@
                                     <a><strike>http://127.0.0.1:8000/draw/5504d71b78332720c439f120</strike></a>
                                 </p>
                             </div>
-                        </div>
                     </div>
                 {% endif %}
             {% endif %}
