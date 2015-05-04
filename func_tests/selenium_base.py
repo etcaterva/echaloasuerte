@@ -47,8 +47,8 @@ class SeleniumTest(LiveServerTestCase):
         #load index
         self.driver.get(self.base_url + "/")
 
-        #if something is not found give it 3 seconds to load
-        self.driver.implicitly_wait(3)
+        #if something is not found give it 10 seconds to load
+        self.driver.implicitly_wait(10)
 
     def tearDown(self):
         self.driver.quit()
