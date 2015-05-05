@@ -5,4 +5,6 @@ pymongo
 pytz
 selenium
 pyvirtualdisplay
+sauceclient
 coverage
+
