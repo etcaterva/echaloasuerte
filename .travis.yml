@@ -11,9 +11,10 @@ addons:
       - access_key: "d9f595a6-adce-4580-92b9-b12a05d73760"
 install:
   - "pip install -r requirements.txt"
+  - "pip install selenium pyvirtualdisplay coverage"
   - export DJANGO_SETTINGS_MODULE="echaloasuerte.settings.test"
   - "python manage.py syncdb --noinput"
 # command to run tests
 script:
   - nosetests test_init.py server/test -v
-  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" == "false" ]]; then nosetests func_test -v ; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" == "false" ]]; then pip install sauceclient && nosetests func_test -v ; fi
