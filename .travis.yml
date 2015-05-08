@@ -7,8 +7,8 @@ python:
 # command to install dependencies
 addons:
     sauce_connect:
-        username: "echaloasuerte"
-        access_key: "966c755a-b4b0-42f9-80ec-5e5a0f0375ab"
+        username: "pickforme"
+        access_key: "d9f595a6-adce-4580-92b9-b12a05d73760"
 install:
   - "pip install -r requirements.txt"
   - export DJANGO_SETTINGS_MODULE="echaloasuerte.settings.test"
