@@ -91,4 +91,6 @@ LOGGING = {
 ########## END LOGGING CONFIGURATION
 
 #Mongo db configuration list
-MONGO_END_POINTS = [ {'host':'92.222.219.42', 'port':27017, 'database':'echaloasuerte'} ]
+MONGO_END_POINTS = [
+        {'host':'localhost', 'port':27017, 'database':'prod'},
+        ]
