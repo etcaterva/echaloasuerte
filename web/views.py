@@ -306,26 +306,19 @@ def profile(request):
 def join_draw(request):
     """view to show the list of draws a user can join"""
     public_draws = []
-    user_draws = []
     try:
         public_draws = mongodb.get_draws_with_filter({
-            "shared_type":"Public",
-            "show_in_public_list": True
+            "$or": [
+                {"shared_type": "Public", "show_in_public_list": True},
+                {"$and": [
+                    {"shared_type": "Invite"},
+                    {"$or": [{"owner": request.user.pk}, {"user": request.user.pk}]}
+                ]},
+                ]
             })
     except Exception as e:
         logger.error("There was an issue when retrieving public draws. {0}".format(e))
-    if request.user.is_authenticated():
-        try:
-            user_draws = mongodb.get_draws_with_filter({
-                "$and" : [
-                    { "$or" : [{"shared_type" : "Public"},  {"shared_type" : "Invite"} ] },
-                    { "$or" : [{"owner" : request.user.pk}, {"user": request.user.pk}  ] }
-                    ]
-                })
-        except Exception as e:
-            logger.error("There was an issue when retrieving user draws. {0}".format(e))
-
-    context = {'public_draws': public_draws, 'user_draws' : user_draws}
+    context = {'public_draws': public_draws}
     return render(request, 'join_draw.html', context)
 
 @time_it
