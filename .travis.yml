@@ -5,16 +5,16 @@ python:
   - "2.7"
   - "3.4"
 # command to install dependencies
-#before_install:
-#    - 'export XVFBARGS=":99 -ac -screen 0 1024x768x16"XVFBA'
-#    - "export DISPLAY=:99.0"
-#    - "sh -e /etc/init.d/xvfb start"
-#    - sleep 3 # give xvfb some time to start
+addons:
+  - sauce_connect:
+      - username: "pickforme"
+      - access_key: "d9f595a6-adce-4580-92b9-b12a05d73760"
 install:
   - "pip install -r requirements.txt"
+  - "pip install selenium pyvirtualdisplay coverage"
   - export DJANGO_SETTINGS_MODULE="echaloasuerte.settings.test"
   - "python manage.py syncdb --noinput"
 # command to run tests
 script:
   - nosetests test_init.py server/test -v
-  - nosetests func_tests -v
+  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" == "false" ]]; then pip install sauceclient && nosetests func_test -v ; fi
