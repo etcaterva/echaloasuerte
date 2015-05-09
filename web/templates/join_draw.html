@@ -156,7 +156,7 @@
                         {% elif user.pk in d.users %}
                             <span title="{% trans "You have been invited to this draw" %}" class="fa fa-envelope-o"></span>
                         {% elif d.password %}
-                            <span title="{% trans "This draw is has a password" %}" class="fa fa-key"></span>
+                            <span title="{% trans "This draw is protected with a password" %}" class="fa fa-key"></span>
                         {%endif%}
                     </td>
                     <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
