@@ -2,6 +2,14 @@
 {% load staticfiles %}
 {% load bootstrap %}
 {% load i18n %}
+
+{% block pre-content %}
+    <div class="alert alert-info text-center notification-top-bar" role="alert">
+    {% trans  "Welcome to the new version of pickforme.net. Click <a href='http://2011.pickforme.net'>here</a> to use the previous version." %}
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+    </div>
+{% endblock pre-content %}
+
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
     {% include "snippets/snippet_breadcrumb.html" %}
