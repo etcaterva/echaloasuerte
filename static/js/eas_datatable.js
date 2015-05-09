@@ -48,23 +48,16 @@
         },
 
         add_bootstrap: function(){
-            var html_search_input = '<div class="input-group">' +
-                                        '<input id="public-draw-search" class="form-control" type="text" placeholder="' + this.options.msg_search + '">' +
-                                        '<span class="input-group-btn"><button class="btn btn-default" type="button"><span class="fa fa-search"></span></button></span>';
-            this.$element.find('#public-draws_filter').empty();
-            this.$element.find('#public-draws_filter').append(html_search_input);
+            var $search_input = this.$element.find(".dataTables_filter input");
+            // Remove the content of the label, and the label itself
+            this.$element.find(".dataTables_filter label").contents().filter(function(){ return this.nodeType != 1; }).remove();
+            $search_input.unwrap();
 
-            // Select input to choose the number of results
-            /*var html_select = this.$element.find('select').outerHTML();
-            html_select =  '<label for="inputKey" class="col-md-1 control-label">Show</label>' +
-                            '<label id="entry-label" for="inputKey" class="col-md-1 control-label">entries</label>' +
-                            '<div class="col-md-10"> ' + html_select + '</div>';
-
-            console.log(html_select);
-            this.$element.find('.dataTables_length').empty();
-            this.$element.find('.dataTables_length').append(html_select);
-            this.$element.find('.dataTables_length').append('<p class="form-control-static"></p>');
-            this.$element.find('select').addClass("form-control");*/
+            $search_input.addClass("form-control");
+            $search_input.prop("id","public-draw-search" );
+            $search_input.prop("placeholder",this.options.msg_search );
+            $search_input.wrap( "<div class='input-group'></div>" );
+            $search_input.after("<span class='input-group-btn'><button class='btn btn-default' type='button'><span class='fa fa-search'></span></button></span>");
         }
     };
 
