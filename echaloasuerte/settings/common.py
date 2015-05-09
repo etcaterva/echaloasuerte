@@ -197,6 +197,8 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 ALLOWED_HOSTS = [
     '.etcaterva.com',
     '.etcaterva.com.',
+    '.pickforme.net',
+    '.pickforme.net.',
     '.onlinewbs.com',
     '.onlinewbs.com.',  # Also allow FQDN and subdomains
     '.echaloasuerte.com',
@@ -211,3 +213,18 @@ EMAIL_HOST="localhost"
 EMAIL_PORT=25
 EMAIL_SUBJECT_PREFIX="[django][echaloasuerte] "#for admin mails
 SERVER_EMAIL="automation@echaloasuerte.com"
+
+#template caching
+TEMPLATE_LOADERS = (
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
+)
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 60 # 1 MINUTE
+    }
+}

@@ -3,6 +3,3 @@ django-crispy-forms
 django-bootstrap-form
 pymongo
 pytz
-selenium
-pyvirtualdisplay
-coverage
