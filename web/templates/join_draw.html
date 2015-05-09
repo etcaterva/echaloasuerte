@@ -76,7 +76,7 @@
         }).done(function (){
             window.location = target_url;
         })
-        .fail(function (){
+        .fail(function () {
             $('#input-password').addClass('has-error');
             $('#wrong-password').removeClass('hidden');
         });
@@ -91,7 +91,7 @@
         var target_url = $(this).attr('alt');
         var draw_id = $(this).attr('data-draw_id');
 
-        var password = undefined
+        var password = undefined;
         if($(this).attr("data-pwd") == 'true') {
             dialog.data('draw_id', draw_id)
                   .data('target_url', target_url)
