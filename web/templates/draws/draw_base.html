@@ -126,7 +126,7 @@
                                 </div>
                                 <div id="recently-created" class="col-xs-12 form-group">
                                     <p data-toggle="tooltip" data-placement="top" title="{% trans "It will help your friends to find your draw faster" %}">
-                                        <input type="checkbox">{% trans "Show the draw in the list 'Recently created'." %}
+                                        <input type="checkbox" name="show_in_public_list" checked>{% trans "Show the draw in the list 'Recently created'." %}
                                     </p>
                                 </div>
                             </div>
@@ -307,7 +307,7 @@
                                 <li id="edit-draw" class="settings-option list-group-item">{% trans "Edit draw configuration" %}</li>
                                 <li id="invite" class="settings-option list-group-item">{% trans "Invite people" %}</li>
                                 <li id="privacy" class="settings-option list-group-item">{% trans "Who can access your draw" %}</li>
-                                <li class="settings-option list-group-item"><input type="checkbox">{% trans "Show the draw in 'Recently created'" %}</li>
+                                <li class="settings-option list-group-item"><input type="checkbox" name="show_in_public_list" {%if bom.show_in_public_list %}checked{%endif%}>{% trans "Show the draw in 'Recently created'" %}</li>
                                 <li class="settings-option list-group-item"><input type="checkbox">{% trans "Enable chat" %}</li>
                             </ul>
                         </div>

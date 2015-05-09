@@ -20,7 +20,8 @@ class BaseDraw(object):
 
     def __init__(self, creation_time = None, owner = None, number_of_results = 1,
                   results= None, _id = None, draw_type = None, prev_draw = None,
-                  users = None, title = None, password=None, shared_type = 'None'):
+                  users = None, title = None, password=None, shared_type = 'None',
+                  show_in_public_list = True):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -57,6 +58,9 @@ class BaseDraw(object):
 
         #if self.title is None:
         #    logger.warning("Draw with id {0} and type {1} have no title".format(self._id,str(type(self).__name__)))
+        self.show_in_public_list = show_in_public_list
+        """Wether or not to display the draw in the public lists of draws"""
+
 
         self.shared_type = shared_type
         '''Type of shared type. None, Public, Invite'''
