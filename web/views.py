@@ -324,7 +324,8 @@ def join_draw(request):
                 })
         except Exception as e:
             logger.error("There was an issue when retrieving user draws. {0}".format(e))
-
+    user_draw_ids = [draw.pk for draw in user_draws]
+    public_draws = [draw for draw in public_draws if draw.pk not in user_draw_ids]
     context = {'public_draws': public_draws, 'user_draws' : user_draws}
     return render(request, 'join_draw.html', context)
 
