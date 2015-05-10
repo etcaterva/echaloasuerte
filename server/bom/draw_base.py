@@ -43,9 +43,8 @@ class BaseDraw(object):
         self.draw_type = type(self).__name__
         """Type of the draw"""
 
-        self.creation_time = creation_time if creation_time is not None else django.utils.timezone.now()
+        self.creation_time = creation_time if creation_time is not None else datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
         """Time the draw was created"""
-        self.creation_time.replace(tzinfo=pytz.utc)
 
         self.prev_draw = prev_draw
         """Id of the prev draw that was modified creating this one"""
@@ -115,7 +114,7 @@ class BaseDraw(object):
 
 
     def toss(self):
-        result = {"datetime": datetime.datetime.utcnow(), "items": self.generate_result()}
+        result = {"datetime": get_utc_now(), "items": self.generate_result()}
         self.results.append(result)
         logger.debug("Tossed draw: {0}".format(self))
         return result
