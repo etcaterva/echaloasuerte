@@ -84,38 +84,11 @@
 
 </head>
 
-<body>
+<body class="background">
 
 {% block pre-content %}
 {% endblock pre-content %}
 <div class="container">
-
-    <!-- Showing screen size tag -->
-    <div class="hidden clearfix">
-        <div class="col-xs-1" style="padding:0px; background: #b9cfaf" padd>
-            <div class="visible-xs">XS</div>
-            <div class="visible-sm">SM</div>
-            <div class="visible-md">MD</div>
-            <div class="visible-lg">LG</div>
-        </div>
-        <div class="col-xs-1" style="padding:0px; background: #cfb1af">2</div>
-        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">3</div>
-        <div class="col-xs-1" style="padding:0px; background: #cfb1af">4</div>
-        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">5</div>
-        <div class="col-xs-1" style="padding:0px; background: #cfb1af">6</div>
-        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">7</div>
-        <div class="col-xs-1" style="padding:0px; background: #cfb1af">8</div>
-        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">9</div>
-        <div class="col-xs-1" style="padding:0px; background: #cfb1af">10</div>
-        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">11</div>
-        <div class="col-xs-1" style="padding:0px; background: #cfb1af">12</div>
-    </div>
-
-    <div class="visible-lg padding-top-big"></div>
-    <div class="visible-md padding-top-medium"></div>
-    <div class="visible-sm padding-top-small"></div>
-
-    <div id="site-frame" class="col-sm-10 col-md-10 col-lg-8 col-lg-offset-2 col-md-offset-1 col-sm-offset-1">
         <!-- Static navbar -->
         <div class="row navbar navbar-default" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -270,6 +243,33 @@
                 </div>
             </div>
         </div>
+
+    <!-- Showing screen size tag -->
+    <div class="hidden clearfix">
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf" padd>
+            <div class="visible-xs">XS</div>
+            <div class="visible-sm">SM</div>
+            <div class="visible-md">MD</div>
+            <div class="visible-lg">LG</div>
+        </div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">2</div>
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">3</div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">4</div>
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">5</div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">6</div>
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">7</div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">8</div>
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">9</div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">10</div>
+        <div class="col-xs-1" style="padding:0px; background: #b9cfaf">11</div>
+        <div class="col-xs-1" style="padding:0px; background: #cfb1af">12</div>
+    </div>
+
+    <div class="visible-lg padding-top-big"></div>
+    <div class="visible-md padding-top-medium"></div>
+    <div class="visible-sm padding-top-small"></div>
+
+    <div id="site-frame" class="col-sm-10 col-md-10 col-lg-8 col-lg-offset-2 col-md-offset-1 col-sm-offset-1">
             <div id="content">
                 {% if user.is_authenticated and not is_public%}
                     <div id="favourites-panel" class="row collapse">
@@ -290,6 +290,10 @@
                 {% endblock content %}
             </div>
 
+
+        {% block extra_body %}
+        {% endblock extra_body %}
+    </div>
             <!-- Footer -->
             <div class="row footer">
                 <div class="col-xs-7 col-sm-4 col-md-5 text-left">
@@ -346,10 +350,6 @@
                 </div>
             </div>
         </div>
-
-        {% block extra_body %}
-        {% endblock extra_body %}
-    </div>
     <!-- end container -->
 </body>
 </html>
