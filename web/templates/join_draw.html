@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% load i18n %}
+{% load eas_humanize %}
 {% block extra_jq_ready %}
     // Fill the datatable
-    $('.data-table').DataTable(
+    var $public_draws = $('#public-draws').DataTable(
     {
         "bJQueryUI": true,
         "language" : {
@@ -29,9 +30,18 @@
             }
         },
         "order": [[ 2, "desc" ]],
-        "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "{%trans 'All' %}"]]
+        "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "{%trans 'All' %}"]],
+        "columnDefs": [
+        { "width": "1px", "targets": 0, "sortable": true },
+        { "targets": 1, "serchable": true },
+        { "targets": 2, "serchable": true },
+        { "targets": 3, "serchable": true },
+        { "width": "5px", "targets": 4, "sortable": false },
+        { "targets": 5, "serchable": true, "visible": false }
+        ]
     }
     );
+
 
     // Dialog to request the password to access a protected public draw
     dialog = $( "#password-dialog" ).dialog({
@@ -82,7 +92,7 @@
         });
     }
 
-    //
+    // Set action when a draw row is clicked
     $('.data-table').on( 'click', 'tr', function () {
         if(!($(this).attr('alt')))
             return true;
@@ -115,57 +125,50 @@
         target_url += password;
         access_draw(draw_id, password, target_url);
     });
+
+    $('#public-draws_wrapper').easDataTable({
+        "dataTable_plugin": $public_draws,
+        "msg_your_draws": "{% trans "Show only the draws you take part in" %}",
+        "msg_search": "{% trans "Search" %}..."
+    });
 {% endblock extra_jq_ready %}
 
 {% block content %}
     <div>
-        {%if user_draws %}<p class="h1 text-center">{% trans "Draws your take part in" %}</p>
-        <table class="draw-list data-table" width="100%" cellspacing="0">
+        {%if public_draws %}<p class="h1 text-center">{% trans "Public draws" %}</p>
+        <table id="public-draws" class="draw-list data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
+                    <th></th>
                     <th>{%trans 'Draw Name' %}</th>
                     <th>{%trans 'Owner' %}</th>
-                    <th>{%trans 'Created on' %}</th>
-                    <th>{%trans '# users' %}</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for d in user_draws %}
-                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}">
-                    <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
-                    <td>{{ d.owner|default:"" }}</td>
-                    <td>{{ d.creation_time|date:" Y/m/d G:i:s "}}</td>
-                    <td>{{ d.users|length }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
-        {%if public_draws %}<h1 class="text-center">{% trans "Public Draws" %}</h1>
-        <table class="draw-list data-table" width="100%" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>{%trans 'Draw Name' %}</th>
-                    <th>{%trans 'Owner' %}</th>
-                    <th>{%trans 'Created on' %}</th>
-                    <th>{%trans 'Password?' %}</th>
+                    <th>{%trans 'Created' %}</th>
+                    <th><span title="{% trans "Number of spectators" %}" class="fa fa-users"></span></th>
+                    <th>is_participant</th>
                 </tr>
             </thead>
             <tbody>
             {% for d in public_draws %}
                 <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}" data-pwd="{{d.password|yesno:"true,false"}}">
+                    <td>{% if user.pk == d.owner %}
+                            <span title="{% trans "You have created this draw" %}" class="fa fa-paw"></span>
+                        {% elif user.pk in d.users %}
+                            <span title="{% trans "You have been invited to this draw" %}" class="fa fa-envelope-o"></span>
+                        {% elif d.password %}
+                            <span title="{% trans "This draw is protected with a password" %}" class="fa fa-key"></span>
+                        {%endif%}
+                    </td>
                     <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
-                    <td>{{ d.owner|default:"" }}</td>
-                    <td>{{ d.creation_time|date:" Y/m/d G:i:s "}}</td>
-                    <td>{% if d.password %}{%trans 'Y' %}{%else%}{%trans 'N'%}{%endif%}</td> {# better to use ifelse than yesno, we can use icons  #}
+                    <td>{% if user.is_authenticated and d.owner == user.pk %} {% trans "Me" %} {% else %}{{ d.owner|default:"" }} {% endif %}</td>
+                    <td>{{ d.creation_time|naturaltime}}</td>
+                    <td>{{ d.users|length }}</td>
+                    <td>{% if user.pk in d.owner or user.pk in d.users %}y{% endif %}</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <hr/>
         {% endif %}
     </div>
-
     <div id="password-dialog" title="{% trans "This draw is protected" %}">
         <p>{% trans "Type the password to access the draw" %}</p>
         <form autocomplete="off">

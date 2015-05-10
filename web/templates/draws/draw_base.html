@@ -212,6 +212,8 @@
             <input class="hidden" name="public-draw-step" />
             {# users: Sring with the emails of the users invited to the draw #}
             <input class="hidden" id="users" name="users" value="{% if bom.users|length > 0 %} {{ bom.users }} {% endif %}">
+            {# users: show or hide the draw in the "Recently created" list #}
+            <input class="hidden" type="checkbox" name="show_in_public_list" {%if bom.show_in_public_list %}checked{%endif%}>
         </form>
         <!-- End Input Form -->
         <!-- Chat -->
@@ -307,7 +309,7 @@
                                 <li id="edit-draw" class="settings-option list-group-item">{% trans "Edit draw configuration" %}</li>
                                 <li id="invite" class="settings-option list-group-item">{% trans "Invite people" %}</li>
                                 <li id="privacy" class="settings-option list-group-item">{% trans "Who can access your draw" %}</li>
-                                <li class="settings-option list-group-item"><input type="checkbox" name="show_in_public_list" {%if bom.show_in_public_list %}checked{%endif%}>{% trans "Show the draw in 'Recently created'" %}</li>
+                                <li class="settings-option list-group-item"><input type="checkbox" id="settings-show-in-public-list" {%if bom.show_in_public_list %}checked{%endif%}>{% trans "Show the draw in 'Recently created'" %}</li>
                                 <li class="settings-option list-group-item"><input type="checkbox">{% trans "Enable chat" %}</li>
                             </ul>
                         </div>

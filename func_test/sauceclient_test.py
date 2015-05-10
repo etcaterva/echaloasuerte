@@ -366,7 +366,6 @@ class SauceTest(LiveServerTestCase):
         driver.find_element_by_id("draw-password").send_keys(password)
         driver.find_element_by_id("save-change-privacy").click()
 
-        driver.find_element_by_id("invite-emails-tokenfield").send_keys("test_guest@test.com")
         driver.find_element_by_id("publish").click()
         driver.find_element_by_id("toss").click()
         draw_id = driver.find_element_by_id("id__id").get_attribute('value')
