@@ -206,10 +206,15 @@ PublicDraw.settings = function () {
         });
     });
 
-    $('li#privacy').click(function() {
-        initialize_slideselector();
-        $('#settings-general').addClass("hide");
-        $('#settings-privacy').removeClass("hide");
+    /*
+    SETTINGS OPTION: Show draw in "Recently created" list
+    */
+    $('button#save').click(function () {
+        if ($('#settings-show-in-public-list').is(":checked")){
+            $("input[name=show_in_public_list]").prop( "checked", true );
+        }else{
+            $("input[name=show_in_public_list]").prop( "checked", false );
+        }
     });
 }
 
