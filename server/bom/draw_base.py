@@ -7,6 +7,9 @@ logger = logging.getLogger("echaloasuerte")
 import django.utils.timezone
 import pytz
 
+def get_utc_now():
+    return datetime.datetime.utcnow().replace(tzinfo = pytz.utc)
+
 class BaseDraw(object):
     """
     Stores the content of a draw of random items
@@ -21,12 +24,15 @@ class BaseDraw(object):
     def __init__(self, creation_time = None, owner = None, number_of_results = 1,
                   results= None, _id = None, draw_type = None, prev_draw = None,
                   users = None, title = None, password=None, shared_type = 'None',
-                  show_in_public_list = True):
+                  show_in_public_list = True, last_updated_time=None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
         self.results = results if results is not None else []
         """List of results (list of list of items)"""
+
+        self.last_updated_time = last_updated_time
+        """last time this draw was updated"""
 
         self._id = _id
         """Unique identifier of the draw"""
@@ -102,6 +108,11 @@ class BaseDraw(object):
 
     def is_feasible(self):
         return self.number_of_results > 0
+
+    def mark_updated(self):
+        """updated the last_updated_time of the draw to now"""
+        self.last_updated_time = get_utc_now()
+
 
     def toss(self):
         result = {"datetime": datetime.datetime.utcnow(), "items": self.generate_result()}
