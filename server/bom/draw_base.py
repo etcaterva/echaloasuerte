@@ -24,7 +24,7 @@ class BaseDraw(object):
     def __init__(self, creation_time = None, owner = None, number_of_results = 1,
                   results= None, _id = None, draw_type = None, prev_draw = None,
                   users = None, title = None, password=None, shared_type = 'None',
-                  show_in_public_list = True, last_update_time=None):
+                  show_in_public_list = True, last_updated_time=None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
