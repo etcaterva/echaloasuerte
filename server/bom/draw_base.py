@@ -31,9 +31,6 @@ class BaseDraw(object):
         self.results = results if results is not None else []
         """List of results (list of list of items)"""
 
-        self.last_updated_time = last_updated_time
-        """last time this draw was updated"""
-
         self._id = _id
         """Unique identifier of the draw"""
 
@@ -45,6 +42,14 @@ class BaseDraw(object):
 
         self.creation_time = creation_time if creation_time is not None else datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
         """Time the draw was created"""
+
+        if self.creation_time.tzinfo is None:
+            self.creation_time.replace(tzinfo=pytz.utc)
+
+        self.last_updated_time = last_updated_time if last_updated_time else self.creation_time
+        """last time this draw was updated"""
+        if self.last_updated_time.tzinfo is None:
+            self.last_updated_time.replace(tzinfo=pytz.utc)
 
         self.prev_draw = prev_draw
         """Id of the prev draw that was modified creating this one"""
