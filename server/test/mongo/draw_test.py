@@ -17,7 +17,7 @@ class SanityMongo(TestCase):
         res_id = self._driver.save_draw(tested_item)
         raw = self._driver._draws.find_one({"_id":res_id})
         for k,v in tested_item.__dict__.items():
-            if k == "creation_time":
+            if k in ("creation_time","last_updated_time"):
                 continue
             self.assertTrue(k in raw.keys())
             self.assertTrue(v == raw[k])
@@ -30,7 +30,7 @@ class SanityMongo(TestCase):
         draw = RandomNumberDraw(**self._driver._draws.find_one({"_id":res_id}))
 
         for k,v in tested_item.__dict__.items():
-            if k == "creation_time":
+            if k in ("creation_time","last_updated_time"):
                 continue
             self.assertTrue(k in draw.__dict__.keys())
             self.assertEqual(v , draw.__dict__[k])
