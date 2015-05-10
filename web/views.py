@@ -306,13 +306,16 @@ def profile(request):
 def join_draw(request):
     """view to show the list of draws a user can join"""
     public_draws = []
+    user = "";
+    if request.user.is_authenticated():
+        user = request.user.pk
     try:
         public_draws = mongodb.get_draws_with_filter({
             "$or": [
-                {"shared_type": "Public", "show_in_public_list": True},
+                {"shared_type": "Public","show_in_public_list": True},
                 {"$and": [
                     {"shared_type": "Invite"},
-                    {"$or": [{"owner": request.user.pk}, {"user": request.user.pk}]}
+                    {"$or": [{"owner": user }, {"user": user}]}
                 ]},
                 ]
             })

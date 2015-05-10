@@ -212,6 +212,8 @@
             <input class="hidden" name="public-draw-step" />
             {# users: Sring with the emails of the users invited to the draw #}
             <input class="hidden" id="users" name="users" value="{% if bom.users|length > 0 %} {{ bom.users }} {% endif %}">
+            {# users: show or hide the draw in the "Recently created" list (it's only render when the draw is already public to avoid rendering twice when creating it#}
+            {% if not public_draw_step %} <input class="hidden" type="checkbox" name="show_in_public_list" {%if bom.show_in_public_list %}checked{%endif%}>{%endif%}
         </form>
         <!-- End Input Form -->
         <!-- Chat -->

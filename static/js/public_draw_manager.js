@@ -205,6 +205,12 @@ PublicDraw.settings = function () {
             $('div#alert-level-privacy-failed').removeClass('hide',100);
         });
     });
+
+    $('li#privacy').click(function() {
+        initialize_slideselector();
+        $('#settings-general').addClass("hide");
+        $('#settings-privacy').removeClass("hide");
+    });
 }
 
 PublicDraw.lock_fields = function () {
