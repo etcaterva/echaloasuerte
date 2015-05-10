@@ -159,7 +159,7 @@
                         {%endif%}
                     </td>
                     <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
-                    <td>{% if d.owner == user.pk %} {% trans "Me" %} {% else %}{{ d.owner|default:"" }} {% endif %}</td>
+                    <td>{% if user.is_authenticated and d.owner == user.pk %} {% trans "Me" %} {% else %}{{ d.owner|default:"" }} {% endif %}</td>
                     <td>{{ d.creation_time|naturaltime}}</td>
                     <td>{{ d.users|length }}</td>
                     <td>{% if user.pk in d.owner or user.pk in d.users %}y{% endif %}</td>
