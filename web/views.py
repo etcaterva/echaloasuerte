@@ -59,7 +59,7 @@ def find_previous_version(curr_draw):
     Otherwise it will clean the draw id (so mongo will assign a new one to it later). A link to the older version of the
     draw is added.
     """
-    IGNORED_FIELDS = ('creation_time', 'number_of_results',
+    IGNORED_FIELDS = ('creation_time', 'last_updated_time', 'number_of_results',
                   'results', '_id', 'draw_type', 'prev_draw',
                   'users', 'password', 'title', 'shared_type')  # 'owner',
     if curr_draw._id == '':
