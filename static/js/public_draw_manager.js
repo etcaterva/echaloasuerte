@@ -32,10 +32,10 @@ PublicDraw.set_submition_type = function (current_step){
     });
 }
 
-// Thi function runs when the user make changes in the privacy of a public draw and click "Save" button
+// This function runs when the user make changes in the privacy of a public draw and click "Save" button
 // It store the corresponding values in the input field which will be POSTed
 PublicDraw.update_privacy_fields = function (){
-    var $shared_type_field = $('input#shared-type');
+    var $shared_type_field = $('input#id_shared_type');
     var mode = $('#privacy-selector').attr('data-selected');
     if (mode == "invited"){
         $('#id_password').val("");
@@ -64,7 +64,7 @@ PublicDraw.prepare_privacy_selection = function (){
 PublicDraw.settings = function () {
     // Update the slide selector to show the current level of privacy
     function initialize_slideselector () {
-        var current_privacy_level = $('input#shared-type').val();
+        var current_privacy_level = $('input#id_shared_type').val();
         var password = $('#id_password').val();
         var $privacySelector =  $('#privacy-selector');
         if (current_privacy_level == "Public")
@@ -195,7 +195,7 @@ PublicDraw.settings = function () {
         $('div#settings-privacy div.feedback').addClass('hide');
         PublicDraw.update_privacy_fields();
         var draw_id = $(this).attr("data-id");
-        var shared_type = $('input#shared-type').val();
+        var shared_type = $('input#id_shared_type').val();
         var password = $('input#id_password').val();
         $.get(PublicDraw.url_draw_privacy, {draw_id: draw_id, shared_type: shared_type, password: password}, function(data){
             /* The delay has the purpose to show "refresh" feedback when a to consecutive changes success */

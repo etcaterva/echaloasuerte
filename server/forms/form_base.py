@@ -9,7 +9,7 @@ class FormBase(forms.Form):
     password = forms.CharField(required=False, widget=forms.HiddenInput())
     '''Password of the draw. If present, users can use it to access the draw'''
 
-    shared_type = forms.CharField(required=False)
+    shared_type = forms.CharField(required=False, widget=forms.HiddenInput())
     '''Type of shared type. None, Public, Invite. It needs to be rendered manually in the templates'''
 
     show_in_public_list = forms.BooleanField(required=False)
