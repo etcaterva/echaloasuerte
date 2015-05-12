@@ -464,8 +464,8 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
                 logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
                 raise Http404
         else:
-            #Serve to create Draw
-            draw_form = globals()[form_name]()
+            # Even though it's a new form, some fields may have been preset before (i.e shared_type field)
+            draw_form = globals()[form_name](initial=bom_draw.__dict__)
 
     context['can_write'] = bom_draw.user_can_write(request.user)
     context['draw'] = draw_form
