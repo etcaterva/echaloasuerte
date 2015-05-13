@@ -254,7 +254,7 @@ ul.nav.navbar-nav {
 }
 
 /***** PUBLIC DRAW *****/
-.info-public-draw {
+.breadcrumb-public-draw {
     display: -webkit-flex;
     display: flex;
     -webkit-flex-direction: row;
@@ -265,23 +265,25 @@ ul.nav.navbar-nav {
     align-items: center;
     height: 80px;
     background-color: #F0F8F1;
+    margin-top: -10px;
+    margin-bottom: 10px;
     padding: 0 0 0 0;
     border-bottom: 1px #E7E7E7 solid;
 }
 
 
 
-.info-public-draw .cancel {
+.breadcrumb-public-draw .cancel {
     flex: 0 0 40px;
     color: #6f6f6f;
 }
 
-.info-public-draw .help-text {
+.breadcrumb-public-draw .help-text {
     text-align: center;
     flex: auto;
 }
 
-.info-public-draw .title {
+.breadcrumb-public-draw .title {
     margin-top: 10px;
     padding-bottom:5px;
     font-size: 20px;
@@ -289,19 +291,19 @@ ul.nav.navbar-nav {
     border-bottom: 2px #c8e7ca solid;
 }
 
-.info-public-draw .subtitle {
+.breadcrumb-public-draw .subtitle {
     margin: 10px 0 10px;
     font-size: 16px;
     color: #979797;
 }
 
-.info-public-draw .subtitle.focus {
+.breadcrumb-public-draw .subtitle.focus {
     font-size: 17px;
     font-weight: bold;
     color: #4cae4c;
 }
 
-.info-public-draw .subtitle.done {
+.breadcrumb-public-draw .subtitle.done {
     font-weight: bold;
 }
 
