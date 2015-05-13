@@ -325,8 +325,8 @@ class SauceTest(LiveServerTestCase):
         driver.find_element_by_css_selector("#card-draw").click()
         driver.find_element_by_id("next").click()
         driver.find_element_by_id("publish").click()
-        draw_id = driver.find_element_by_id("id__id").get_attribute('value')
         driver.find_element_by_id("toss").click()
+        draw_id = driver.find_element_by_id("id__id").get_attribute('value')
 
         self.sign_out_user()
 
