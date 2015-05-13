@@ -11,11 +11,6 @@ a[disabled] {
     margin: 0 auto;
 }
 
-/* Contain all the draw boxes in the index */
-.container-draws {
-    padding: 10px 0 10px;
-}
-
 /* Remove the underling when the draws are hovered */
 .draw-link:hover {
     text-decoration: none;

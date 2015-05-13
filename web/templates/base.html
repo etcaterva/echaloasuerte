@@ -249,25 +249,23 @@
     <div class="visible-sm padding-top-small"></div>
 
     <div id="site-frame" class="col-sm-10 col-md-10 col-lg-8 col-lg-offset-2 col-md-offset-1 col-sm-offset-1">
-        <div id="content">
-            {% if user.is_authenticated and not is_public%}
-                <div id="favourites-panel" class="row collapse">
-                    <div class="col-xs-10">
-                        <ul>
-                            {% for d in user.favourites_list %}
-                                <a href="{% url 'retrieve_draw' draw_id=d.pk %}"><li>{{ d.title|default:d.DEFAULT_TITLE }} | {{d.creation_time|date:" Y/m/d G:i:s "}}</li></a>
-                                {% empty %}
-                                   <span id="favourites-empty"> {% trans "You don't have favourite draws" %} </span>
-                            {% endfor %}
-                        </ul>
-                    </div>
+        {% if user.is_authenticated and not is_public%}
+            <div id="favourites-panel" class="row collapse">
+                <div class="col-xs-10">
+                    <ul>
+                        {% for d in user.favourites_list %}
+                            <a href="{% url 'retrieve_draw' draw_id=d.pk %}"><li>{{ d.title|default:d.DEFAULT_TITLE }} | {{d.creation_time|date:" Y/m/d G:i:s "}}</li></a>
+                            {% empty %}
+                               <span id="favourites-empty"> {% trans "You don't have favourite draws" %} </span>
+                        {% endfor %}
+                    </ul>
                 </div>
-            {% endif %}
+            </div>
+        {% endif %}
 
-            {% block content %}
-                <p>Page to be filled.</p>
-            {% endblock content %}
-        </div>
+        {% block content %}
+            <p>Page to be filled.</p>
+        {% endblock content %}
     </div>
     {% block extra_body %}
     {% endblock extra_body %}
