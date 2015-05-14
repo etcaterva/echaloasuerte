@@ -57,6 +57,28 @@
         // Replaced default tooltip by the one from JQueryUI
         $(document).tooltip();
 
+
+        function place_chat(){
+            var chat = {};
+            var $site_frame = $('#site-frame');
+            var pos = $site_frame.offset();
+            var width = $site_frame.outerWidth();
+            var extra = 10; // 5px border + 5px padding from site-frame
+            chat.left = pos.left + width + extra;
+            var window_width = $(window).width();
+            chat.width = window_width - chat.left - 20;
+            $("#chat_column").css({
+                position: "absolute",
+                width: chat.width + "px",
+                top: pos.top + "px",
+                left: (pos.left + width + extra) + "px"
+            });
+        }
+
+        $( window ).resize(function() {
+            place_chat();
+        });
+
         $(document).ready(function () {
            $('#language-dropdown li a').click(function () {
                 var lang_code = $(this).attr('title');
@@ -72,6 +94,9 @@
                 $(sel2).toggleClass('out');
             });
             <!---->
+            $(window).resize();
+            place_chat();
+
             {% block extra_jq_ready %}{% endblock extra_jq_ready %}
         });
         window.onload = function (){
@@ -327,5 +352,6 @@
         </div>
     </div><!-- #footer -->
 </div>
+    <div id="chat_column" class="visible-lg">CHAT</div>
 </body>
 </html>
