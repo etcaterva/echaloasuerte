@@ -159,18 +159,3 @@ a.fa:focus {
     -ms-user-select: none;
     user-select: none;
 }
-
-#chat-column {
-    max-width: 400px;
-}
-
-@media screen and (min-width: 1440px) {
-    .chat-inline {
-        display: none;
-    }
-}
-@media screen and (max-width: 1440px) {
-    .chat-outside {
-        display: none;
-    }
-}
