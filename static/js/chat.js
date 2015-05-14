@@ -3,9 +3,14 @@
     // Set the defaults
     var pluginName = 'EASchat',
         defaults = {
+            is_disabled: true,
             url_send_message: "",
             url_get_messages: "",
-            draw_id: ""
+            draw_id: "",
+            msg_type_your_message: "",
+            msg_chat: "",
+            msg_login_first: "",
+            msg_send: ""
         };
 
     /*********************************
@@ -25,6 +30,8 @@
             this.options = $.extend( {}, defaults, options) ;
 
             this.$element.removeClass("hidden");
+
+            this.renderChat();
 
             // Toggle chat when click on it header
             this.$element.find('.panel-heading').click(function (){
@@ -54,6 +61,30 @@
                 that.get_messages();
                 setTimeout(start_auto_refresh,5000);
              })();
+
+            $( window ).resize(function() {
+                that.setup_outer_chat_box();
+            });
+
+            $(window).resize();
+            this.setup_outer_chat_box();
+        },
+
+        setup_outer_chat_box: function(){
+            var chat_location = {};
+            var $site_frame = $('#site-frame');
+            var site_frame_position = $site_frame.offset();
+            var width = $site_frame.outerWidth();
+            var extra = 10; // 5px border + 5px padding from site-frame
+            chat_location.left = site_frame_position.left + width + extra;
+            var window_width = $(window).width();
+            chat_location.width = window_width - chat_location.left - 20;
+            $("#chat-column").css({
+                position: "absolute",
+                width: chat_location.width + "px",
+                top: site_frame_position.top + "px",
+                left: (site_frame_position.left + width + extra) + "px"
+            });
         },
 
         // Return the message from the chat input box and clean it
@@ -120,7 +151,42 @@
                 '</li>';
 
             return html;
-}
+        },
+
+        renderChat: function (){
+             var html_input = '<input id="chat-message-box" type="text" class="form-control input-sm" placeholder="'+this.options.msg_type_your_message+'"';
+             if (this.options.is_disabled) {
+                 html_input += 'disabled="disabled"';
+             }
+             html_input += '/>';
+
+            var html_button = '<button class="btn btn-warning btn-sm" id="chat-send" ';
+             if (this.options.is_disabled) {
+                 html_button += 'title="' + this.options.msg_login_first + '"';
+             }
+             html_button += '>'+this.options.msg_send+'</button>';
+
+             var html = '<div class="col-md-12">' +
+                        '    <div class="panel panel-primary">' +
+                        '        <div class="panel-heading">' +
+                        '            <span class="fa fa-comment"></span>'+this.options.msg_chat +
+                        '        </div>' +
+                        '        <div class="panel-body">' +
+                        '            <ul id="chat-board">' +
+                        '            </ul>' +
+                        '        </div>' +
+                        '        <div class="panel-footer">' +
+                        '            <div class="input-group">' +
+                        '                '+ html_input +
+                        '                <span class="input-group-btn">' +
+                        '                    '+ html_button +
+                        '                </span>' +
+                        '            </div>' +
+                        '        </div>' +
+                        '    </div>' +
+                        '</div>';
+             this.$element.append(html);
+        }
     };
 
     /*********************************

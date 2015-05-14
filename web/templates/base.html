@@ -94,9 +94,6 @@
                 $(sel2).toggleClass('out');
             });
             <!---->
-            $(window).resize();
-            place_chat();
-
             {% block extra_jq_ready %}{% endblock extra_jq_ready %}
         });
         window.onload = function (){
@@ -292,9 +289,6 @@
             <p>Page to be filled.</p>
         {% endblock content %}
     </div>
-    {% block extra_body %}
-    {% endblock extra_body %}
-    <!-- end container -->
     <div id="footer">
         <div class="col-lg-8 col-lg-offset-2">
             <div class="col-xs-7 col-sm-4 col-md-5 text-left">
@@ -352,6 +346,8 @@
         </div>
     </div><!-- #footer -->
 </div>
-    <div id="chat_column" class="visible-lg">CHAT</div>
+<!-- end container -->
+{% block extra_body %}
+{% endblock extra_body %}
 </body>
 </html>

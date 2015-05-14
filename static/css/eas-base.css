@@ -413,9 +413,3 @@ table.draw-list tr{
 .dataTables_length #entry-label {
     left: 100px;
 }
-
-
-#chat_column {
-    background-color: #ac2925;
-    max-width: 350px;
-}
