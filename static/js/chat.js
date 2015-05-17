@@ -173,14 +173,14 @@
              }
              html_input += '/>';
 
-            var html_button = '<button class="btn btn-warning btn-sm" id="chat-send" ';
+            var html_button = '<button class="btn btn-success btn-sm" id="chat-send" ';
              if (this.options.is_disabled) {
                  html_button += 'title="' + this.options.msg_login_first + '"';
              }
              html_button += '>'+this.options.msg_send+'</button>';
 
              var html = '<div class="col-md-12">' +
-                        '    <div class="panel panel-primary">' +
+                        '    <div class="panel panel-success">' +
                         '        <div class="panel-heading">' +
                         '            <span class="fa fa-comment"></span>'+this.options.msg_chat +
                         '        </div>' +
