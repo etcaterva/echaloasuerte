@@ -56,6 +56,10 @@
                }
             });
 
+            this.$element.find("li").hover(function () {
+               console.log("his");
+            });
+
             // Auto refresh the chat against the server
             (function start_auto_refresh () {
                 that.get_messages();
@@ -137,9 +141,9 @@
         formatChatEntry: function (chat_entry){
             var user = chat_entry.user;
             var content = chat_entry.content;
-            var time = chat_entry.creation_time;
-            var html = '<li class="right clearfix"><span class="chat-img pull-right">' +
-                '    <img src="http://placehold.it/50/FA6F57/fff&text=' + user.toUpperCase().charAt(0) + '" alt="User Avatar" class="img-circle" />' +
+            var time = moment(chat_entry.creation_time).fromNow();;
+            var html = '<li class="right clearfix"><span class="chat-img pull-left">' +
+                '    <img src="http://placehold.it/40/FA6F57/fff&text=' + user.toUpperCase().charAt(0) + '" alt="User Avatar" class="img-circle" />' +
                 '</span>' +
                 '    <div class="chat-line clearfix">' +
                 '        <div class="header">' +
@@ -150,7 +154,16 @@
                 '    </div>' +
                 '</li>';
 
-            return html;
+            var html2 = '<li class="clearfix">' +
+                        '    <p class="chatline-details text-muted small">' + user + '<span class="chatline-datetime"><i class="fa fa-clock-o"></i> ' + time + '</span></p>' +
+                        '	<span class="chat-img pull-left">' +
+                        '		<img src="http://placehold.it/30/FA6F57/fff&text=' + user.toUpperCase().charAt(0) + '" alt="User Avatar" class="img-circle">' +
+                        '	</span>' +
+                        '	<div class="chatline-content">' + content +
+                        '	</div>' +
+                        '</li>';
+
+            return html2    ;
         },
 
         renderChat: function (){

@@ -12,21 +12,26 @@
     border-bottom: 1px dotted #B3A9A9;
 }
 
-#chat-board li.left .chat-line
-{
-    margin-left: 60px;
-}
-
-#chat-board li.right .chat-line
-{
-    margin-right: 60px;
-}
-
-
-#chat-board li .chat-line p
-{
-    margin: 0;
+#chat-board .chatline-content {
+    margin-left: 40px;
+    margin-right: 40px;
     color: #777777;
+}
+
+
+#chat-board .chatline-details{
+    margin-bottom: 0;
+}
+
+
+#chat-board .chatline-datetime {
+    margin-left: 10px;
+    display: none;
+}
+
+#chat-board li:hover .chatline-datetime{
+    display: inline-block;
+
 }
 
 .panel-heading
@@ -63,6 +68,7 @@
     background-color: #555;
 }
 
+/* This class if only for the LG sizes */
 #chat-column {
     max-width: 400px;
 }
