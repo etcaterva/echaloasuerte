@@ -15,14 +15,14 @@
     {% include "snippets/snippet_breadcrumb.html" %}
     <div class="container-draws row">
         <div class="col-sm-6">
-            {% include "draw_box.html" with draw_type="coin" draw_icon="img/coin.gif" title="Flip a coin" help="Afraid of taking the wrong decision? Don't hesitate and throw the coin!" %}
-            {% include "draw_box.html" with draw_type="card" draw_icon="img/cards.png" title="Take a card" help="Let's play some drinking games!" %}
-            {% include "draw_box.html" with draw_type="dice" draw_icon="img/dice.png" title="Roll a dice" help="Didn't you have a dice? Just roll this one" %}
+            {% include "snippets/snippet_draw_box.html" with draw_type="coin" draw_icon="img/coin.gif" title="Flip a coin" help="Afraid of taking the wrong decision? Don't hesitate and throw the coin!" %}
+            {% include "snippets/snippet_draw_box.html" with draw_type="card" draw_icon="img/cards.png" title="Take a card" help="Let's play some drinking games!" %}
+            {% include "snippets/snippet_draw_box.html" with draw_type="dice" draw_icon="img/dice.png" title="Roll a dice" help="Didn't you have a dice? Just roll this one" %}
         </div>
         <div class="col-sm-6">
-            {% include "draw_box.html" with draw_type="number" draw_icon="img/random_number.png" title="Random number" help="Doing a raffle? Luck will decide who is the winner" %}
-            {% include "draw_box.html" with draw_type="item" draw_icon="img/random_item.png" title="Pick random items from a list" help="Doing a raffle? Luck will decide who is the winner" %}
-            {% include "draw_box.html" with draw_type="link_sets" draw_icon="img/item_association.png" title="Associate items from two lists" help="Cleaning the house? Allocate the tasks within your housemates" %}
+            {% include "snippets/snippet_draw_box.html" with draw_type="number" draw_icon="img/random_number.png" title="Random number" help="Doing a raffle? Luck will decide who is the winner" %}
+            {% include "snippets/snippet_draw_box.html" with draw_type="item" draw_icon="img/random_item.png" title="Pick random items from a list" help="Doing a raffle? Luck will decide who is the winner" %}
+            {% include "snippets/snippet_draw_box.html" with draw_type="link_sets" draw_icon="img/item_association.png" title="Associate items from two lists" help="Cleaning the house? Allocate the tasks within your housemates" %}
         </div>
     </div>
 {% endblock %}
