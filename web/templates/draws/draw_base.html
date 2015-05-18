@@ -5,16 +5,21 @@
 {% block title %}{{ bom.title|default:bom.DEFAULT_TITLE }} | {% endblock title %}
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
-    <script src="{% static 'js/slideSelector.js' %}"></script>
     <script src="{% static 'js/favourites.js' %}"></script>
-    <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
-    {% if is_public %}<script src="{% static 'js/public_draw_manager.js' %}"></script>{% endif %}
-    <script src="{% static 'js/chat.js' %}"></script>
-    <link href="{% static 'css/chat.css' %}" rel="stylesheet" />
+    {% if is_public %}
+        <script src="{% static 'js/moment.js' %}"></script>
+        <script src="{% static 'js/slideSelector.js' %}"></script>
+        <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
+        <script src="{% static 'js/public_draw_manager.js' %}"></script>
+        <script src="{% static 'js/chat.js' %}"></script>
+        <link href="{% static 'css/chat.css' %}" rel="stylesheet" />
+    {% endif %}
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
+
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
+
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
         var attr = $(this).hasClass('protected');
@@ -62,9 +67,24 @@
         PublicDraw.setup("{{ public_draw_step }}");
 
 		$('#chat-frame').chat({
+            "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
             "url_send_message": "{% url 'chat_add_message' %}",
             "url_get_messages": "{% url 'chat_get_messages' %}",
-            "draw_id": "{{ bom.pk }}"
+            "draw_id": "{{ bom.pk }}",
+            "msg_type_your_message": "{% trans 'Type your message here...' %}",
+            "msg_login_first": "{% trans 'Please, login or register to be able to use the chat'%}",
+            "msg_chat": "{% trans 'Chat' %}",
+            "msg_send": "{% trans 'Send' %}"
+        });
+        $('#chat-column').chat({
+            "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
+            "url_send_message": "{% url 'chat_add_message' %}",
+            "url_get_messages": "{% url 'chat_get_messages' %}",
+            "draw_id": "{{ bom.pk }}",
+            "msg_type_your_message": "{% trans 'Type your message here...' %}",
+            "msg_login_first": "{% trans 'Please, login or register to be able to use the chat'%}",
+            "msg_chat": "{% trans 'Chat' %}",
+            "msg_send": "{% trans 'Send' %}"
         });
     {% endif %}
 {% endblock extra_jq_ready %}
@@ -216,28 +236,7 @@
         <!-- End Input Form -->
         <!-- Chat -->
         {% if is_public and not public_draw_step %}
-            <div id="chat-frame" class="row hidden">
-                <div class="col-md-12">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <span class="fa fa-comment"></span> Chat
-                        </div>
-                        <div class="panel-body">
-                            <ul id="chat-board">
-                            </ul>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="input-group">
-                                <input id="chat-message-box"{%if user.is_anonymous%} disabled="disabled" {%endif%} type="text" class="form-control input-sm" placeholder="{% trans 'Type your message here...' %}" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" id="chat-send" {%if user.is_anonymous%} title="{% trans 'Please, login or register to be able to use the chat'%}" {%endif%}>
-                                        {% trans 'Send' %}</button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="chat-frame" class="chat-inline col-xs-12 hidden"></div>
         {% endif %}
         <!-- End Chat -->
 
@@ -373,5 +372,9 @@
         {% endif %}
     {% endif %}
 {% endblock %}
+
+{% block extra_body %}
+    <div id="chat-column" class="chat-outside hidden"></div>
+{% endblock extra_body %}
 
 

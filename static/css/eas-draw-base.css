@@ -14,10 +14,11 @@ a.fa:focus {
     outline-color: #4cae4c;
 }
 
+/* Draw title (given by users)*/
 .draw-heading .draw-title-area {
     /* Font */
     font-family: 'robotoregular', sans-serif;
-    color: #6f6f6f;
+    color: #3f3f3f;
     font-size: 28px;
 
     /* Removing textarea look */

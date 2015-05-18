@@ -12,32 +12,42 @@
     border-bottom: 1px dotted #B3A9A9;
 }
 
-#chat-board li.left .chat-line
-{
-    margin-left: 60px;
-}
-
-#chat-board li.right .chat-line
-{
-    margin-right: 60px;
-}
-
-
-#chat-board li .chat-line p
-{
-    margin: 0;
+#chat-board .chatline-content {
+    margin-left: 40px;
+    margin-right: 40px;
     color: #777777;
 }
 
-.panel-heading
-{
+
+#chat-board .chatline-details{
+    margin-bottom: 0;
+}
+
+
+#chat-board .chatline-datetime {
+    margin-left: 10px;
+    display: none;
+}
+
+#chat-board li:hover .chatline-datetime{
+    display: inline-block;
+
+}
+
+.panel-heading {
     cursor:pointer;
 }
 
 .panel-body
 {
     overflow-y: scroll;
+    overflow-x: hidden;
     height: 250px;
+}
+
+.chat-outside .panel-body
+{
+    height: 400px;
 }
 
 ::-webkit-scrollbar-track
@@ -56,4 +66,20 @@
 {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     background-color: #555;
+}
+
+/* This class if only for the LG sizes */
+#chat-column {
+    max-width: 400px;
+}
+
+@media screen and (min-width: 1440px) {
+    .chat-inline {
+        display: none;
+    }
+}
+@media screen and (max-width: 1440px) {
+    .chat-outside {
+        display: none;
+    }
 }
