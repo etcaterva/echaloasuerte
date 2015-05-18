@@ -13,43 +13,15 @@ from server.mongodb.driver import MongoDriver
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.core.mail import send_mail
-from contextlib import contextmanager
-from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from django.contrib import messages
+from web.common import user_can_read_draw, user_can_write_draw, time_it
 import logging
-import time
 
 logger = logging.getLogger("echaloasuerte")
 mongodb = MongoDriver.instance()
-
-
-@contextmanager
-def scoped_timer(func_name):
-    st = time.time()
-    yield
-    elapsed = time.time() - st
-    logger.debug("{1} completed in {0:.2f}ms.".format(elapsed,func_name))
-
-def minimice(data):
-    """Reduces the amount of info for some types of object"""
-    if isinstance(data,HttpRequest):
-        return dict(user=data.user.pk, post=data.POST, get=data.GET)
-    else:
-        return data
-
-def time_it(func):
-    """decorator to add trace information"""
-    def _(*args,**kwargs):
-        min_args = [minimice(x) for x in args]
-        min_kwargs = {k:minimice(x) for k,x in kwargs.items()}
-        logger.debug("Calling: {0} with args: {1}, and kwargs {2}".format(func.__name__,min_args,min_kwargs))
-        with scoped_timer(func.__name__):
-            return func(*args,**kwargs)
-    return _
-
 
 
 def find_previous_version(curr_draw):
@@ -86,19 +58,6 @@ def find_previous_version(curr_draw):
         prev_draw.__dict__[k] = curr_draw.__dict__[k]
     return prev_draw
 
-
-def user_can_read_draw(user,draw,password = None):
-    '''Validates that user can read draw. Throws unauth otherwise'''
-    if not draw.user_can_read(user,password):
-        logger.info("User {0} not allowed to read draw {1}. Type: {2}, Password? {3}, Owner:{4}, Users: {5}"
-                .format(user.pk, draw.pk, draw.shared_type, 'Y' if draw.password else 'N', draw.owner, draw.users))
-        raise PermissionDenied()
-
-def user_can_write_draw(user,draw):
-    if not draw.user_can_write(user):
-        logger.info("User {0} not allowed to write draw {1}. Type: {2}, Password? {3}, Owner:{4}"
-                .format(user.pk, draw.pk, draw.shared_type, 'Y' if draw.password else 'N', draw.owner))
-        raise PermissionDenied()
 
 def set_owner(draw, request):
     """Best effort to set the owner given a request"""
@@ -165,133 +124,6 @@ def invite_user(user_emails,draw_id,owner_user):
 
 @login_required
 @time_it
-def add_user_to_draw(request):
-    draw_id = request.GET.get('draw_id')
-    users_to_add = request.GET.get('emails', [])
-
-    if draw_id is None:
-        return HttpResponseBadRequest()
-
-    logger.info("Adding {0} to draw {1}".format(users_to_add, draw_id))
-    bom_draw = mongodb.retrieve_draw(draw_id)
-
-    user_can_write_draw(request.user, bom_draw) # Raises 500
-
-    new_users = users_to_add.replace(',', ' ').split()
-
-    try:
-        for email in new_users:
-            validate_email(email)  # Raises a ValidationError
-    except ValidationError:
-        logger.info("One or more emails are not correct")
-        return HttpResponseBadRequest()
-
-    bom_draw.users += new_users
-    mongodb.save_draw(bom_draw)
-
-    # TODO send emails to the users in the list "new_users"
-    # invite_user(new_users, draw_id, request.user.get_email())
-
-    logger.info("{0} users added to draw {1}".format(len(new_users), draw_id))
-
-    return HttpResponse()
-
-
-@login_required
-@time_it
-def add_favorite(request):
-    draw_id = request.GET.get('draw_id')
-
-    if draw_id is None:
-        return HttpResponseBadRequest()
-
-    bom_draw = mongodb.retrieve_draw(draw_id)
-    user_can_write_draw(request.user, bom_draw) #raises 500
-    user = mongodb.retrieve_user(request.user.pk)
-    if draw_id in user.favourites:
-        logger.info("Draw {0} is favorite for user {1}".format(draw_id, request.user.pk))
-        return HttpResponse()
-
-    user.favourites.append(draw_id)
-    mongodb.save_user(user)
-
-    logger.info("Draw {0} added as favorite for user {1}".format(draw_id, request.user.pk))
-    return HttpResponse()
-
-
-@login_required
-@time_it
-def remove_favorite(request):
-    draw_id = request.GET.get('draw_id')
-
-    if draw_id is None:
-        return HttpResponseBadRequest()
-
-    bom_draw = mongodb.retrieve_draw(draw_id)
-    user_can_write_draw(request.user, bom_draw) #raises 500
-    user = mongodb.retrieve_user(request.user.pk)
-    if draw_id not in user.favourites:
-        logger.info("Draw {0} is not favorite for user {1}".format(draw_id, request.user.pk))
-        return HttpResponse()
-
-    user.favourites.remove(draw_id)
-    mongodb.save_user(user)
-
-    logger.info("Draw {0} removed as favorite for user {1}".format(draw_id, request.user.pk))
-    return HttpResponse()
-
-@time_it
-def check_access_to_draw(request):
-    draw_id  = request.GET.get('draw_id')
-    password = request.GET.get('draw_pass')
-    draw = mongodb.retrieve_draw(draw_id)
-
-    user_can_read_draw(request.user, draw, password)
-    return HttpResponse()
-
-def add_message_to_chat(request):
-    draw_id  = request.GET.get('draw_id')
-    message  = request.GET.get('message')
-    user     = request.user.pk
-    mongodb.add_chat_message(draw_id, message, user)
-    return HttpResponse()
-
-def get_chat_messages(request):
-    draw_id  = request.GET.get('draw_id')
-    try:
-        messages = mongodb.retrieve_chat_messages(draw_id)
-    except MongoDriver.NotFoundError:
-        messages = []
-
-    return JsonResponse({
-        "messages" : messages
-        })
-
-@login_required
-@time_it
-def change_privacy_public_draw(request):
-    draw_id = request.GET.get('draw_id')
-    shared_type = request.GET.get('shared_type')
-    password = request.GET.get('password')
-
-    if draw_id is None:
-        return HttpResponseBadRequest()
-
-    bom_draw = mongodb.retrieve_draw(draw_id)
-
-    if shared_type == "Public" or shared_type == "Invite":
-        bom_draw.shared_type = shared_type
-        bom_draw.password = password
-        mongodb.save_draw(bom_draw)
-        logger.info("The type of the public draw {0} has changed to {1}".format(draw_id, shared_type))
-        return HttpResponse()
-    else:
-        logger.warning("Wrong type of public draw: {0}".format(shared_type))
-        return HttpResponseBadRequest()
-
-
-@login_required
-@time_it
 def profile(request):
     draws = []
     try:
@@ -346,10 +178,133 @@ URL_TO_DRAW_MAP = {
 
 DRAW_TO_URL_MAP ={ v:k for k,v in URL_TO_DRAW_MAP.items()}
 
+#TODO:
+# - Remove this first retrieve_draw that just redirect to draw
+# - Wrap the creation of draws and form through a factory. No more global
+# - Move is_feasible to the form validation
+# - Wrap "draw" config data in group so we can check in a single instruction if
+#       a draw changed
+# - Change user_can_read and write to methods
+# - Add ws to validate a bom without creating it
+
 @time_it
 def retrieve_draw(request, draw_id):
     bom_draw = mongodb.retrieve_draw(draw_id)
     return draw(request, DRAW_TO_URL_MAP[bom_draw.draw_type], draw_id)
+
+
+@time_it
+def toss_draw(request):
+    """generates and saves a result
+    The id of the draw to toss is present as a POST attribute
+    redirects to the draw to display
+    """
+    bom_draw = mongodb.retrieve_draw(draw_id)
+    user_can_write_draw(request.user, bom_draw)
+    bom_draw.toss()
+    mongodb.save_draw(bom_draw)
+    return redirect('retrieve_draw', draw_id=bom_draw.pk)
+
+
+@time_it
+def create_draw(request, draw_type):
+    """create_draw view
+    @param
+    Serves the page to create a draw (empty) form
+        and handles the creation of a draw.
+    When received a GET request returns an empty form to create a draw
+        and with a POST and data attempts to create a draw. If success,
+        redirects to the draw, otherwise, returns the form with the errors.
+    """
+    model_name = URL_TO_DRAW_MAP[draw_type]
+    form_name = model_name + "Form"
+    template_path = 'draws/{0}.html'.format(model_name)
+
+    if request.method == 'GET':
+        logger.debug("Serving view to create a draw")
+        draw_form = globals()[form_name]()
+        return render(request, template_path, {"draw" : draw_form})
+    else:
+        logger.debug("Received post data: {0}".format(request.POST))
+        draw_form = globals()[form_name](request.POST)
+        if not draw_form.is_valid():
+            logger.info("Form not valid: {0}".format(draw_form.errors))
+            messages.error(request, _('Invalid values provided'))
+            return render(request, template_path, {"draw" : draw_form})
+        else:
+            raw_draw = draw_form.cleaned_data
+            logger.debug("Form cleaned data: {0}".format(raw_draw))
+            # Create a draw object with the data coming in the POST
+            bom_draw = globals()[model_name](**raw_draw)
+            set_owner(bom_draw, request)
+            if not bom_draw.is_feasible(): # This should actually go in the form validation
+                logger.info("Draw {0} is not feasible".format(bom_draw))
+                messages.error(request, _('The draw is not feasible'))
+                return render(request, template_path,{"draw" : draw_form })
+            else:
+                mongodb.save_draw(bom_draw)
+                logger.info("Generated draw: {0}".format(bom_draw))
+                messages.error(request, _('Draw created successfully'))
+                return redirect('retrieve_draw', draw_id=bom_draw.pk)
+
+
+def update_draw(request, draw_id):
+    """Serves the update of a draw
+    @draw_id: pk of the draw to update
+    Given the draw details through the POST data, updates the draw.
+    If success, redirects to display the view, otherwise, returns
+        the form with the errors. It always create a new version
+        of the draw. Use ws to update parts of the draw without
+        creating a new version
+    """
+    prev_bom_draw = mongodb.retrieve_draw(draw_id)
+    model_name = prev_bom_draw.draw_type
+    form_name = model_name + "Form"
+    user_can_write_draw(request.user, prev_bom_draw,request.GET.get("password"))
+    template_path = 'draws/{0}.html'.format(model_name)
+
+    if request.method == 'GET':
+        logger.debug("Serving view to update a draw")
+        draw_form = globals()[form_name](initial=prev_bom_draw.__dict__)
+        return render(request, template_path, {"draw": draw_form})
+    else:
+        logger.debug("Received post data: {0}".format(request.POST))
+        draw_form = globals()[form_name](request.POST)
+        if not draw_form.is_valid():
+            logger.info("Form not valid: {0}".format(draw_form.errors))
+            messages.error(request, _('Invalid values provided'))
+            return render(request, template_path, {"draw" : draw_form})
+        else:
+            raw_draw = draw_form.cleaned_data
+            logger.debug("Form cleaned data: {0}".format(raw_draw))
+            # Create a draw object with the data coming in the POST
+            bom_draw = globals()[model_name](**raw_draw)
+            bom_draw._id = None #Ensure we create a new draw
+            bom_draw.prev_draw = prev_bom_draw.pk
+            if not bom_draw.is_feasible(): # This should actually go in the form validation
+                logger.info("Draw {0} is not feasible".format(bom_draw))
+                messages.error(request, _('The draw is not feasible'))
+                return render(request, template_path,{"draw" : draw_form })
+            else:
+                mongodb.save_draw(bom_draw)
+                logger.info("Generated draw: {0}".format(bom_draw))
+                messages.error(request, _('Draw updated successfully'))
+                return redirect('retrieve_draw', draw_id=bom_draw.pk)
+
+
+@time_it
+def display_draw(request, draw_id):
+    """Returns the data to display a draw
+    Given a draw id, retrieves it and returns the data required to display it
+    """
+    bom_draw = mongodb.retrieve_draw(draw_id)
+    model_name = bom_draw.draw_type
+    form_name = model_name + "Form"
+    user_can_read_draw(request.user, bom_draw,request.GET.get("password"))
+    draw_form = globals()[form_name](initial=bom_draw.__dict__)
+    template_path = 'draws/{0}.html'.format(model_name)
+    return render(request, template_path, {"draw": draw_form, "bom": bom_draw})
+
 
 @time_it
 def draw(request, draw_type=None,  draw_id=None, publish=None):

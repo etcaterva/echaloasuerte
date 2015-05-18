@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from web import views
+from web import web_services as ws
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = patterns(None)
@@ -16,20 +17,20 @@ urlpatterns += patterns(
     url(r'^join_draw.html$', views.join_draw, name="join_public_draw"),
 
     url(r'^about.html$', TemplateView.as_view(template_name='about.html'), name="about"),
-    url(r'^draw/(?P<draw_id>[0-9a-g]+)/$', views.retrieve_draw, name="retrieve_draw"),
+    url(r'^draw/(?P<draw_id>[0-9a-g]+)/$', views.display_draw, name="retrieve_draw"),
     url(r'^accounts/register/$', views.register, name='register'),
     url(r'^accounts/forgot_password/$', views.under_construction, name='forgot_password'),
     url(r'^accounts/login/$', views.login_user, name='login'),
     url(r'^accounts/profile/$', views.profile, name='profile'),
 
     #web services
-    url(r'^ws/draw_add_users/$', views.add_user_to_draw, name="ws_add_users_to_draw"),
-    url(r'^ws/public_draw_privacy/$', views.change_privacy_public_draw, name="ws_public_draw_privacy"),
-    url(r'^ws/favourites/add/$', views.add_favorite, name="ws_add_favorite"),
-    url(r'^ws/favourites/remove/$', views.remove_favorite, name="ws_remove_favorite"),
-    url(r'^ws/check_access_to_draw/$', views.check_access_to_draw, name="check_access_to_draw"),
-    url(r'^ws/chat/add/$', views.add_message_to_chat, name="chat_add_message"),
-    url(r'^ws/chat/get/$', views.get_chat_messages, name="chat_get_messages"),
+    url(r'^ws/draw_add_users/$', ws.add_user_to_draw, name="ws_add_users_to_draw"),
+    url(r'^ws/public_draw_privacy/$', ws.change_privacy_public_draw, name="ws_public_draw_privacy"),
+    url(r'^ws/favourites/add/$', ws.add_favorite, name="ws_add_favorite"),
+    url(r'^ws/favourites/remove/$', ws.remove_favorite, name="ws_remove_favorite"),
+    url(r'^ws/check_access_to_draw/$', ws.check_access_to_draw, name="check_access_to_draw"),
+    url(r'^ws/chat/add/$', ws.add_message_to_chat, name="chat_add_message"),
+    url(r'^ws/chat/get/$', ws.get_chat_messages, name="chat_get_messages"),
 )
 
 urlpatterns += staticfiles_urlpatterns()
