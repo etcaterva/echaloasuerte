@@ -56,10 +56,6 @@
                }
             });
 
-            this.$element.find("li").hover(function () {
-               console.log("his");
-            });
-
             // Auto refresh the chat against the server
             (function start_auto_refresh () {
                 that.get_messages();
