@@ -166,6 +166,8 @@ ul.nav.navbar-nav {
 }
 
 .navbar-default {
+    padding-right: 15px;
+    padding-left: 15px;
     margin-bottom: 0;
     background-color: transparent;
     border-radius: 0;
@@ -234,7 +236,7 @@ ul.nav.navbar-nav {
 #site-frame {
     margin-top: 10px;
     margin-bottom:100px;
-    padding: 10px 0 10px;
+    padding: 10px 15px 10px 15px;
     color: #3f3f3f;
     border: 1px #d6d6d6 solid;
     outline: 5px #e9e9e9 solid;
