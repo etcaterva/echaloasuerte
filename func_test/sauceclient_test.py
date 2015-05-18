@@ -258,7 +258,7 @@ class SauceTest(LiveServerTestCase):
     def sign_out_user(self):
         driver = self.driver
         driver.get(self.base_url + "/accounts/profile/")
-        driver.find_element_by_css_selector("#content #sign-out").click()
+        driver.find_element_by_css_selector("#profile #sign-out").click()
 
     def favourites_test(self):
         """
