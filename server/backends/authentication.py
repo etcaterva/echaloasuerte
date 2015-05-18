@@ -3,7 +3,6 @@ from server.mongodb.driver import *
 import logging
 logger = logging.getLogger("echaloasuerte")
 
-import datetime
 class EchaloasuerteAuthBE(object):
     """
     Authenticate against echaloasuerte users

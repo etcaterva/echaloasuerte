@@ -1,6 +1,5 @@
 from django.utils.translation import ugettext_lazy as _
 import random
-import datetime
 from server.bom.draw_base import *
 
 
