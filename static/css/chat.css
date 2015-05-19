@@ -68,11 +68,6 @@
     background-color: #555;
 }
 
-/* This class if only for the LG sizes */
-#chat-column {
-    max-width: 400px;
-}
-
 @media screen and (min-width: 1440px) {
     .chat-inline {
         display: none;

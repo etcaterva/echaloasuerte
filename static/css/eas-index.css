@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Gloria+Hallelujah);
+
 /* Workaround to disable links */
 a[disabled] {
     pointer-events: none;
@@ -74,6 +76,23 @@ a[disabled] {
         display: block !important;
         visibility: visible;
     }
+}
+
+#sentences {
+    margin-top: 30px;
+}
+
+#sentences p {
+    font-family: 'Gloria Hallelujah', cursive;
+    -webkit-transform: rotate(347deg);
+    -moz-transform: rotate(347deg);
+    -o-transform: rotate(347deg);
+    writing-mode: lr-tb;
+}
+
+#sentences img {
+    width: 60px;
+    height: auto;
 }
 
 

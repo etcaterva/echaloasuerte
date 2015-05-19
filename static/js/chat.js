@@ -61,30 +61,6 @@
                 that.get_messages();
                 setTimeout(start_auto_refresh,5000);
              })();
-
-            $( window ).resize(function() {
-                that.setup_outer_chat_box();
-            });
-
-            $(window).resize();
-            this.setup_outer_chat_box();
-        },
-
-        setup_outer_chat_box: function(){
-            var chat_location = {};
-            var $site_frame = $('#site-frame');
-            var site_frame_position = $site_frame.offset();
-            var width = $site_frame.outerWidth();
-            var extra = 10; // 5px border + 5px padding from site-frame
-            chat_location.left = site_frame_position.left + width + extra;
-            var window_width = $(window).width();
-            chat_location.width = window_width - chat_location.left - 20;
-            $("#chat-column").css({
-                position: "absolute",
-                width: chat_location.width + "px",
-                top: site_frame_position.top + "px",
-                left: (site_frame_position.left + width + extra) + "px"
-            });
         },
 
         // Return the message from the chat input box and clean it
