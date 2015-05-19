@@ -58,7 +58,7 @@
         $(document).tooltip();
 
 
-        function place_chat(){
+        function place_right_column(){
             var chat = {};
             var $site_frame = $('#site-frame');
             var pos = $site_frame.offset();
@@ -67,7 +67,7 @@
             chat.left = pos.left + width + extra;
             var window_width = $(window).width();
             chat.width = window_width - chat.left - 20;
-            $("#chat_column").css({
+            $("#column-right").css({
                 position: "absolute",
                 width: chat.width + "px",
                 top: pos.top + "px",
@@ -75,8 +75,9 @@
             });
         }
 
+
         $( window ).resize(function() {
-            place_chat();
+            place_right_column();
         });
 
         $(document).ready(function () {
@@ -94,6 +95,9 @@
                 $(sel2).toggleClass('out');
             });
             <!---->
+            // Resize the window to avoid problems with wrong width
+            $(window).resize();
+            place_right_column();
             {% block extra_jq_ready %}{% endblock extra_jq_ready %}
         });
         window.onload = function (){
@@ -347,6 +351,11 @@
     </div><!-- #footer -->
 </div>
 <!-- end container -->
+<div id="column-right">
+    {% block right_column %}
+        asdsa
+    {% endblock right_column %}
+</div>
 {% block extra_body %}
 {% endblock extra_body %}
 </body>
