@@ -416,3 +416,10 @@ table.draw-list tr{
 .dataTables_length #entry-label {
     left: 100px;
 }
+
+@media screen and (max-width: 1300px) {
+    #column-right {
+        display: none;
+    }
+}
+
