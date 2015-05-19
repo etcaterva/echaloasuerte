@@ -1,0 +1,79 @@
+/* Workaround to disable links */
+a[disabled] {
+    pointer-events: none;
+    color: gray;
+}
+
+
+/* CSS for the top bar notificationns */
+.notification-top-bar {
+    top:20px;
+    margin: 0 auto;
+}
+
+/* Remove the underling when the draws are hovered */
+.draw-link:hover {
+    text-decoration: none;
+}
+
+
+.draw-box-title {
+    font-family: 'robotoregular', Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    color: #6f6f6f;
+        flex: auto;
+}
+
+/* Added green color effect when draws are hovered */
+.draw-link:hover .draw-box-title{
+    color: #449D44;
+}
+
+/* Container for the links to each draw */
+.draw-box {
+    min-height: 36px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 5px 0 5px;
+    background-color: #fff;
+    -moz-border-radius: 15px;
+    border-radius: 8px;
+    border: 1px #d6d6d6 solid;
+
+    display: -webkit-flex;
+   display: flex;
+   -webkit-flex-direction: row;
+   flex-direction: row;
+   -webkit-justify-content: flex-start;
+   justify-content: flex-start;
+    -webkit-align-items: center;
+   align-items: center;
+
+}
+
+.draw-box img {
+    height: 34px;
+    width: auto;
+}
+
+.fa-question{
+    padding-top: 0;
+    margin: -34px -10px 0 2px;
+    display: none !important;
+    visibility: hidden;
+}
+
+@media (min-width: 992px) {
+    .draw-box img {
+        height: 56px;
+        width: auto;
+    }
+    .draw-link:hover .fa-question{
+        padding-top: 0;
+        margin: -34px -10px 0 2px;
+        display: block !important;
+        visibility: visible;
+    }
+}
+
+
