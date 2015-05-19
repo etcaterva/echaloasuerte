@@ -420,9 +420,10 @@ table.draw-list tr{
 a#back-old-version {
     background-image: url('../img/back_to_old_version/corner_old_version.png');
     background-repeat: no-repeat;
+    background-size: contain;
     position: absolute;
-    width: 195px;
-    height: 215px;
+    width: 150px;
+    height: 200px;
     left: 0;
     top: 0;
 }
