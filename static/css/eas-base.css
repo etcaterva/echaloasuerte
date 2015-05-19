@@ -416,3 +416,27 @@ table.draw-list tr{
 .dataTables_length #entry-label {
     left: 100px;
 }
+
+a#back-old-version {
+    background-image: url('../img/back_to_old_version/corner_old_version.png');
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 181px;
+    height: 177px;
+    left: 0;
+    top: 0;
+}
+
+a#back-old-version img{
+    position: relative;
+    width: 181px;
+    height: 177px;
+    margin-bottom: -400px;
+    margin-left: 60px;
+}
+
+
+a#back-old-version:hover {
+    background-image: url('../img/back_to_old_version/corner_old_version_hover.png');
+}
+
