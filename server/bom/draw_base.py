@@ -21,6 +21,9 @@ class BaseDraw(object):
     def pk(self):
         return str(self._id)
 
+    def is_shared(self):
+        return self.shared_type is not None
+
     def __init__(self, creation_time = None, owner = None, number_of_results = 1,
                   results= None, _id = None, draw_type = None, prev_draw = None,
                   users = None, title = None, password=None, shared_type = 'None',
@@ -83,6 +86,10 @@ class BaseDraw(object):
         Public       N          Anybody can access
         Public       Y          Either users or password
         '''
+
+        #TODO: remove me in the future, PLEASE
+        if self.shared_type == "None" or self.shared_type == "":
+            self.shared_type = None
 
     def user_can_read(self, user, password = None):
         '''Checks for read access'''

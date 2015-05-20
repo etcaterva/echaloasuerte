@@ -302,8 +302,7 @@ def display_draw(request, draw_id):
     form_name = model_name + "Form"
     user_can_read_draw(request.user, bom_draw,request.GET.get("password"))
     draw_form = globals()[form_name](initial=bom_draw.__dict__)
-    template_path = 'draws/{0}.html'.format(model_name)
-    return render(request, template_path, {"draw": draw_form, "bom": bom_draw})
+    return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
 
 
 @time_it
@@ -352,6 +351,9 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
                     # Tossing a normal draw
                     bom_draw.toss()
                     logger.info("Generating result for draw {0}".format(bom_draw.pk))
+                    mongodb.save_draw(bom_draw)
+                    # The user is redirected to the draw he has created
+                    return redirect('draw', draw_type=draw_type, draw_id=bom_draw.pk)
 
                 elif submit_type == "go_to_spread":
                     # Configuration has been done. Next step is spread
@@ -407,17 +409,7 @@ def draw(request, draw_type=None,  draw_id=None, publish=None):
     else:
         if draw_id:
             # The user is retrieving a draw (it can be public or for a single user)
-            bom_draw = mongodb.retrieve_draw(draw_id)
-            user_can_read_draw(request.user, bom_draw,request.GET.get("password", default=None))
-            logger.debug("Filling form with retrieved draw {0}".format(bom_draw))
-            if bom_draw.draw_type == model_name:
-                # If the draw is public, the variable is_public is send to the template
-                if not bom_draw.shared_type == 'None':
-                    context['is_public'] = 'publish'
-                draw_form = globals()[form_name](initial=bom_draw.__dict__)
-            else:
-                logger.info("Draw type mismatch, type: {0}".format(bom_draw.draw_type))
-                raise Http404
+            return redirect('retrieve_draw', draw_id=draw_id)
         else:
             # Even though it's a new form, some fields may have been preset before (i.e shared_type field)
             draw_form = globals()[form_name](initial=bom_draw.__dict__)

@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block title %}{{ bom.title|default:bom.DEFAULT_TITLE }} | {% endblock title %}
+{% block extra_head %}
+    <script src="{% static 'js/autoGrowArea.js' %}"></script>
+    <script src="{% static 'js/favourites.js' %}"></script>
+    <script src="{% static 'js/moment.js' %}"></script>
+    <script src="{% static 'js/slideSelector.js' %}"></script>
+    <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
+    <script src="{% static 'js/public_draw_manager.js' %}"></script>
+    <script src="{% static 'js/chat.js' %}"></script>
+    <link href="{% static 'css/chat.css' %}" rel="stylesheet" />
+
+        <script src="{% static 'js/card.js' %}"></script>
+        <script src="{% static 'js/coin.js' %}"></script>
+        <script src="{% static 'js/dice.js' %}"></script>
+    {% block draw_extra_head %}{% endblock draw_extra_head %}
+{% endblock extra_head %}
+{% block extra_js %}
+    //Precaching the images
+    {% if bom.draw_type == "CoinDraw" %}
+        coin.setup('{{ STATIC_URL }}' + "img/img_coin/");
+    {% elif bom.draw_type == "DiceDraw"  %}
+        D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
+        D6Animator.getImageBank("", D6.baseUrl);
+    {% endif %}
+{% endblock extra_js %}
+{% block extra_jq_ready %}
+
+    // When fields are focused, all the content is pre-selected
+    $('.form-control').click(function() {
+        var attr = $(this).hasClass('protected');
+        console.log(attr);
+        if (typeof attr === typeof undefined || attr === false) {
+            $(this).select();
+        }
+    });
+
+    // Autoresize the title box when window is resized
+    autosize = function(){
+        var max_width = $("#draw-title-container").width()*2/3;
+        $("textarea.autogrow").width(max_width);
+        $("textarea.autogrow").autoGrowInput({title:'{{ bom.title|default:bom.DEFAULT_TITLE }}',maxWidth: max_width,minWidth:30,comfortZone:30});
+    };
+
+    // Autosize the title box the first time
+    autosize();
+    $( window ).resize(function() {
+        // Autosize when the window is resized
+        autosize();
+    });
+
+    // Disable submit button after submitting
+    $('form').submit(function() {
+        $(this).find("button[type='submit']").prop('disabled',true);
+        return true;
+    });
+
+    $('.accordion').accordion({collapsible: true});
+
+    $('#fav-button').favourites({
+            "url_add": "{% url 'ws_add_favorite' %}",
+            "url_remove": "{% url 'ws_remove_favorite' %}",
+            "user_authenticated": ('{{ user.is_authenticated }}' == 'False')? false: true,
+            "draw_id": "{{ bom.pk }}",
+            "path_img_star": "{% static "img/star.png" %}",
+            "path_img_star_empty": "{% static "img/star-o.png" %}",
+            "msg_regsiter": "You need an account to save your favourite draws",
+            "msg_toss": "Click on the 'Toss' button to try the draw first"
+    });
+    {% if bom.is_shared %}
+        PublicDraw.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
+        PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
+
+		$('#chat-frame').chat({
+            "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
+            "url_send_message": "{% url 'chat_add_message' %}",
+            "url_get_messages": "{% url 'chat_get_messages' %}",
+            "draw_id": "{{ bom.pk }}",
+            "msg_type_your_message": "{% trans 'Type your message here...' %}",
+            "msg_login_first": "{% trans 'Please, login or register to be able to use the chat'%}",
+            "msg_chat": "{% trans 'Chat' %}",
+            "msg_send": "{% trans 'Send' %}"
+        });
+        $('#chat-column').chat({
+            "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
+            "url_send_message": "{% url 'chat_add_message' %}",
+            "url_get_messages": "{% url 'chat_get_messages' %}",
+            "draw_id": "{{ bom.pk }}",
+            "msg_type_your_message": "{% trans 'Type your message here...' %}",
+            "msg_login_first": "{% trans 'Please, login or register to be able to use the chat'%}",
+            "msg_chat": "{% trans 'Chat' %}",
+            "msg_send": "{% trans 'Send' %}"
+        });
+        PublicDraw.setup(""); //FIXME: TODO: WTF IS THIS, JUST LOCK FIELDS
+    {% endif %}
+
+
+    $('.token-input').tokenfield({createTokensOnBlur:true});
+{% endblock extra_jq_ready %}
+{% block content %}
+    {# breadcrumb to assist the creation of a public draw #}
+    {% include "snippets/snippet_breadcrumb.html" %}
+    <form class="clearfix" method="post">
+        <!-- Draw Heading -->
+        <div class="clearfix draw-heading">
+            <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
+                <img src="{% static "img/back_arrow.png" %}"/>
+            </a>
+            <div class="col-xs-8 visible-xs"></div>
+            {% if bom.is_shared %}
+                {% if not bom.owner or bom.owner == user.pk %}
+                    <a id="settings-button" data-toggle="modal" href="#public-draw-settings" title="{%trans 'Public draw settings'%}" class="public-draw-settings col-xs-2 col-sm-2 col-sm-push-8 text-center ">
+                        <span id="public-draw-options" class="fa fa-gear fa-2x"></span>
+                    </a>
+                {% else %}
+                    <div class="hidden-xs col-xs-2 col-sm-2 col-sm-push-8"></div>
+                {% endif %}
+            {% else %}
+                    <a id="fav-button"
+                    {% if bom.pk in user.favourites %}
+                    data-active="y"
+                    {% else %}
+                    data-active="n"
+                    {% endif %}
+                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favourites col-xs-2 col-sm-2 col-sm-push-8 text-center ">
+                        <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x hide"></span>
+                    {% if bom.pk in user.favourites %}
+                        <img src="{% static "img/star.png" %}"/>
+                    {% else %}
+                        <img src="{% static "img/star-o.png" %}"/>
+                    {% endif %}
+                    </a>
+            {% endif %}
+            <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
+                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title|default:bom.DEFAULT_TITLE }}</textarea>
+            </div>
+        </div>
+        <!-- End Draw Heading -->
+
+        <div class="col-sm-8 col-sm-offset-2">
+            {# pre-draw #}
+                {% if bom.draw_type == "LinksSetsDraw" %}
+                    <div class='alert alert-info' role='alert'>{%trans 'Separate items by commas. e.g: David S, Maria, Leo, ...'%}</div>
+                {% endif %}
+            {# end pre-draw #}
+            <!-- Display Form -->
+            <div class="step-configure">
+                {% if bom.draw_type == "CoinDraw" %}
+                    {% crispy draw draw.helper %}
+                    <div class="text-center">
+                        <input type="image" id="img-coin" src="{% static "img/img_coin/head.png" %}" name="coin">
+                        <p>{% trans "Tap the coin to flip it." %}</p>
+                        {% if result %}
+                            <script>
+                                coin.flip("{{ result.0.0 }}");
+                            </script>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    {% crispy draw draw.helper %}
+                {% endif %}
+            </div>
+            <div class="col-xs-12 text-center">
+                <!-- Button to toss -->
+                <div class="row btn-row">
+                    {%if not bom.owner or bom.owner == user.pk %}
+                        <button id="toss" type="submit" name="toss" class="btn btn-success">{% trans 'Toss' %}</button>
+                    {%else%}
+                        <button id="toss" type="submit" name="toss" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</button>
+                        <div class="alert alert-warning alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- End Input Form -->
+    <!-- Chat -->
+    {% if bom.is_shared %}
+        <div id="chat-frame" class="chat-inline col-xs-12 hidden"></div>
+    {% endif %}
+    <!-- End Chat -->
+
+    <!-- Results -->
+    {% if bom.results or bom.prev_draw  %}
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="row text-center accordion">
+                {% for result in bom.results reversed %}
+                {% with result.items as results%}
+                    {% if results %}
+                        <p class="h3">
+                            {%trans 'Result' %}{{results|length|pluralize}}
+                            <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
+                            <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                        </p>
+                        <div class="result">
+                        {% if bom.draw_type == "CardDraw" %}
+                            <script>
+                                var baseUrl = '{{ STATIC_URL }}' + "img/";
+                                Card.setup(baseUrl, {{ results }});
+                                Card.draw();
+                            </script>
+                        {% elif bom.draw_type == "CoinDraw" %}
+                            {% if forloop.counter == 1 %}
+                                <script>
+                                    coin.flip("{{ results.0 }}");
+                                </script>
+                            {% endif %}
+                            {% if results.0 == 'tail'%}
+                                {% trans 'tail' %}
+                            {% elif results.0 == 'head'%}
+                                {% trans 'head' %}
+                            {% else %}
+                                {{results.0}}
+                            {% endif %}
+                        {% elif bom.draw_type == "DiceDraw" %}
+                            {% if forloop.counter == 1 %}
+                                <script>
+                                    D6.dice({{ results }});
+                                </script>
+                            {% else %}
+                                <script>
+                                    D6.showPastResult({{ results}})
+                                </script>
+                            {% endif %}
+                        {% elif bom.draw_type == "LinkSetsDraw" %}
+                            <ul class="list-group">
+                                {% for link in results %}
+                                    <li class="list-group-item col-xs-12">
+                                        {% for item in link %}
+                                            <b>{{ item }}</b> {%if not forloop.last %} <span class="glyphicon glyphicon-minus" ></span> {%endif%}
+                                        {% endfor %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% elif bom.draw_type == "LinkSetsDraw" %}
+                            <ul class="list-group">
+                                {% for item in results %}
+                                    <li class="list-group-item col-xs-6 col-xs-offset-3">
+                                        {{ item }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% elif bom.draw_type == "RandomNumberDraw" %}
+                            <ul class="list-group">
+                                {% for number in results %}
+                                    <li class="list-group-item">
+                                        {{ number }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% endfor %}
+                <!-- Previous draw -->
+                {% if bom.prev_draw %}
+                    <p class="h3">{%trans 'Results' %}<small>{%trans ' generated before '%}</small></p>
+                    <div >
+                        {%trans 'The configuration of the draw was changed.'%}<br/>
+                        {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    <!-- End Results -->
+{% endblock %}
+
+{% block right_column %}
+    <div id="chat-column" class="chat-outside hidden"></div>
+{% endblock right_column %}
