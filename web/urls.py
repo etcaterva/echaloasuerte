@@ -24,6 +24,8 @@ urlpatterns += patterns(
     url(r'^accounts/profile/$', views.profile, name='profile'),
 
     #web services
+    url(r'^ws/draw/toss/$', ws.toss_draw, name="ws_toss_draw"),
+    url(r'^ws/draw/try/$', ws.try_draw, name="ws_try_draw"),
     url(r'^ws/draw_add_users/$', ws.add_user_to_draw, name="ws_add_users_to_draw"),
     url(r'^ws/public_draw_privacy/$', ws.change_privacy_public_draw, name="ws_public_draw_privacy"),
     url(r'^ws/favourites/add/$', ws.add_favorite, name="ws_add_favorite"),

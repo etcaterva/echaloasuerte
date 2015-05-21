@@ -16,10 +16,27 @@ LOG = logging.getLogger("echaloasuerte")
 MONGO = MongoDriver.instance()
 
 
-def ws_try_draw(request, draw_id):
+@time_it
+def toss_draw(request):
+    """generates a result and returns it"""
+    draw_id = request.GET.get("draw_id")
+    if draw_id is None:
+        return HttpResponseBadRequest()
+    password = request.GET.get("password") #TODO use on user can write
+    bom_draw = MONGO.retrieve_draw(draw_id)
+    user_can_write_draw(request.user, bom_draw) #raises 500
+    result = bom_draw.toss()
+    MONGO.save_draw(bom_draw)
+    return JsonResponse({
+        "result" : result
+        })
+
+def try_draw(request, draw_id):
     """generates a result and returns it"""
     bom_draw = MONGO.retrieve_draw(draw_id)
-    return bom_draw.toss()
+    return JsonResponse({
+        "result" : bom_draw.toss()
+        })
 
 
 @login_required

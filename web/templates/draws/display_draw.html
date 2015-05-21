@@ -13,9 +13,9 @@
     <script src="{% static 'js/chat.js' %}"></script>
     <link href="{% static 'css/chat.css' %}" rel="stylesheet" />
 
-        <script src="{% static 'js/card.js' %}"></script>
-        <script src="{% static 'js/coin.js' %}"></script>
-        <script src="{% static 'js/dice.js' %}"></script>
+    <script src="{% static 'js/card.js' %}"></script>
+    <script src="{% static 'js/coin.js' %}"></script>
+    <script src="{% static 'js/dice.js' %}"></script>
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_js %}
@@ -95,7 +95,20 @@
             "msg_send": "{% trans 'Send' %}"
         });
         PublicDraw.setup(""); //FIXME: TODO: WTF IS THIS, JUST LOCK FIELDS
+
     {% endif %}
+    $("#toss-button").click( function() {
+        $.ajax({
+            method : "GET",
+            url   : "{% url 'ws_toss_draw' %}",
+            data  : {draw_id : "{{bom.pk}}", draw_pass : "{{bom.password}}"}
+        }).done(function (){
+            window.location.reload();
+        })
+        .fail(function () {
+            alert("{% trans 'There was an issue when tossing the draw :(' %}");
+        });
+    });
 
 
     $('.token-input').tokenfield({createTokensOnBlur:true});
@@ -167,9 +180,9 @@
                 <!-- Button to toss -->
                 <div class="row btn-row">
                     {%if not bom.owner or bom.owner == user.pk %}
-                        <button id="toss" type="submit" name="toss" class="btn btn-success">{% trans 'Toss' %}</button>
+                        <button id="toss-button" type="button" class="btn btn-success">{% trans 'Toss' %}</button>
                     {%else%}
-                        <button id="toss" type="submit" name="toss" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</button>
+                        <button id="toss-disabled-button" type="button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</button>
                         <div class="alert alert-warning alert-dismissible" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
