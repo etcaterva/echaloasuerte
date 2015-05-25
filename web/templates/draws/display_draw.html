@@ -275,8 +275,86 @@
         </div>
     {% endif %}
     <!-- End Results -->
+
+
+
+                <div id="public-draw-settings" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
+                    <div id="settings-general">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Public draw settings" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul id="" class="list-group">
+                                <li id="edit-draw" class="settings-option list-group-item">{% trans "Edit draw configuration" %}</li>
+                                <li id="invite" class="settings-option list-group-item">{% trans "Invite people" %}</li>
+                                <li id="privacy" class="settings-option list-group-item">{% trans "Who can access your draw" %}</li>
+                                <li class="settings-option list-group-item"><input type="checkbox" id="settings-show-in-public-list" {%if bom.show_in_public_list %}checked{%endif%}>{% trans "Show the draw in 'Recently created'" %}</li>
+                                <li class="settings-option list-group-item"><input type="checkbox">{% trans "Enable chat" %}</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Cancel" %}</button>
+                            <button id="save" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+                        </div>
+                    </div>
+                    <div id="settings-edit-draw" class="settings-submenu hide">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Edit draw configuration" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {% trans "If you modify the draw's configuration the spectator will be notified about these changes. Are you sure you want to continue?" %}
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
+                            <a id="edit-draw-confirmation" class="btn btn-warning">{% trans "Edit draw" %}</a>
+                        </div>
+                    </div>
+                    <div id="settings-invite" class="settings-submenu hide">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Invite people" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>{% trans "An invitation will arrive to the emails you introduce below" %}</p>
+                            <div id="alert-invitation-failed" class="alert feedback alert-danger hide" role="alert">
+                                <strong>{% trans "Ops!" %}</strong> {% trans "One or more emails contain errors..." %}
+                            </div>
+                            <div id="alert-invitation-success" class="alert feedback alert-success hide" role="alert">
+                                <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
+                            </div>
+                            <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
+                            <a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a>
+                            <p>{% trans "OR" %}</p>
+                            <p data-toggle="tooltip" data-placement="top">{% trans "Share the link to the draw:" %}
+                            <a>{% url 'retrieve_draw' draw_id=bom.pk %}</a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
+                            <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Close" %}</button>
+                        </div>
+                    </div>
+
+                    <div id="settings-privacy" class="settings-submenu hide">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Restrict the access to your draw" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {% include "snippets/snippet_public_draw_privacy.html" %}
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
+                            <button id="save-change-privacy" data-id="{{ bom.pk }}" class="btn btn-primary">{% trans "Save" %}</button>
+                        </div>
+                    </div>
+                </div>
+
 {% endblock %}
 
 {% block right_column %}
     <div id="chat-column" class="chat-outside hidden"></div>
 {% endblock right_column %}
+
