@@ -91,9 +91,17 @@ class BaseDraw(object):
         if self.shared_type == "None" or self.shared_type == "":
             self.shared_type = None
 
-    def user_can_read(self, user, password = None):
+        @property
+        def share_settings(self):
+            return {
+                    "shared_type" : self.shared_type,
+                    "password" : bool(self, password),
+                    "show_in_public_list" : self.show_in_public_list
+                   }
+
+    def user_can_read(self, user, password=None):
         '''Checks for read access'''
-        if self.shared_type == 'None':
+        if self.shared_type is None or self.shared_type == 'None':
             #Only owner can access
             return self.user_can_write(user)
         else:
