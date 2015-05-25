@@ -74,17 +74,7 @@
         PublicDraw.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
         PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
 
-		$('#chat-frame').chat({
-            "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
-            "url_send_message": "{% url 'chat_add_message' %}",
-            "url_get_messages": "{% url 'chat_get_messages' %}",
-            "draw_id": "{{ bom.pk }}",
-            "msg_type_your_message": "{% trans 'Type your message here...' %}",
-            "msg_login_first": "{% trans 'Please, login or register to be able to use the chat'%}",
-            "msg_chat": "{% trans 'Chat' %}",
-            "msg_send": "{% trans 'Send' %}"
-        });
-        $('#chat-column').chat({
+		$('#chat-frame #chat-column').chat({
             "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
             "url_send_message": "{% url 'chat_add_message' %}",
             "url_get_messages": "{% url 'chat_get_messages' %}",
@@ -97,6 +87,7 @@
         PublicDraw.setup(""); //FIXME: TODO: WTF IS THIS, JUST LOCK FIELDS
 
     {% endif %}
+    PublicDraw.lock_fields();
     $("#toss-button").click( function() {
         $.ajax({
             method : "GET",
