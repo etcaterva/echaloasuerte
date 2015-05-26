@@ -9,7 +9,7 @@
         - help
 {% endcomment %}
 
-<a class="draw-link" href="{% url 'draw' draw_type=draw_type publish=is_public %}">
+<a class="draw-link" href="{% url 'create_draw' draw_type=draw_type is_public=is_public %}">
     <div id="{{ draw_type }}-draw" class="draw-box">
         <img src="{% static draw_icon %}"/>
         <div class="draw-box-title text-center">{% trans title %}</div>

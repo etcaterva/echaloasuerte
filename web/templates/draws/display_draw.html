@@ -3,6 +3,10 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% block title %}{{ bom.title|default:bom.DEFAULT_TITLE }} | {% endblock title %}
+{#
+    MAKE THE EDITION OF SHARE CONFIG WORK
+    CLEANUP
+#}
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/favourites.js' %}"></script>

@@ -207,7 +207,7 @@ def toss_draw(request):
 
 
 @time_it
-def create_draw(request, draw_type):
+def create_draw(request, draw_type, is_public):
     """create_draw view
     @param
     Serves the page to create a draw (empty) form
@@ -218,36 +218,41 @@ def create_draw(request, draw_type):
     """
     model_name = URL_TO_DRAW_MAP[draw_type]
     form_name = model_name + "Form"
-    template_path = 'draws/{0}.html'.format(model_name)
+    is_public = is_public == 'True'
 
     if request.method == 'GET':
-        logger.debug("Serving view to create a draw")
+        logger.debug("Serving view to create a draw. Form: {0}".format(form_name))
         draw_form = globals()[form_name]()
-        return render(request, template_path, {"draw" : draw_form})
+        return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": is_public, "draw_type": model_name, "default_title": "New Draw"})
     else:
         logger.debug("Received post data: {0}".format(request.POST))
         draw_form = globals()[form_name](request.POST)
         if not draw_form.is_valid():
             logger.info("Form not valid: {0}".format(draw_form.errors))
             messages.error(request, _('Invalid values provided'))
-            return render(request, template_path, {"draw" : draw_form})
+            return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": is_public, "draw_type": model_name })
         else:
             raw_draw = draw_form.cleaned_data
             logger.debug("Form cleaned data: {0}".format(raw_draw))
             # Create a draw object with the data coming in the POST
             bom_draw = globals()[model_name](**raw_draw)
+            bom_draw._id = None # Ensure we have no id
             set_owner(bom_draw, request)
             if not bom_draw.is_feasible(): # This should actually go in the form validation
                 logger.info("Draw {0} is not feasible".format(bom_draw))
                 messages.error(request, _('The draw is not feasible'))
-                return render(request, template_path,{"draw" : draw_form })
+                return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": is_public, "draw_type": model_name })
             else:
+                #generate a result if a private draw
+                if not bom_draw.is_shared():
+                    bom_draw.toss()
                 mongodb.save_draw(bom_draw)
                 logger.info("Generated draw: {0}".format(bom_draw))
                 messages.error(request, _('Draw created successfully'))
                 return redirect('retrieve_draw', draw_id=bom_draw.pk)
 
 
+@time_it
 def update_draw(request, draw_id):
     """Serves the update of a draw
     @draw_id: pk of the draw to update
