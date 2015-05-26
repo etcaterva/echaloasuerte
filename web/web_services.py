@@ -31,6 +31,7 @@ def toss_draw(request):
         "result" : result
         })
 
+@time_it
 def try_draw(request, draw_id):
     """generates a result and returns it"""
     bom_draw = MONGO.retrieve_draw(draw_id)
@@ -40,6 +41,7 @@ def try_draw(request, draw_id):
 
 
 @login_required
+@time_it
 def add_user_to_draw(request):
     """Add an user to a draw and sends a mail to inform him"""
     draw_id = request.GET.get('draw_id')
@@ -74,6 +76,7 @@ def add_user_to_draw(request):
 
 
 @login_required
+@time_it
 def add_favorite(request):
     """Add a draw to the list of favourites of an user"""
     draw_id = request.GET.get('draw_id')
@@ -98,6 +101,7 @@ def add_favorite(request):
 
 
 @login_required
+@time_it
 def remove_favorite(request):
     """removes a draw from the list of favourites"""
     draw_id = request.GET.get('draw_id')
@@ -149,6 +153,7 @@ def get_chat_messages(request):
         })
 
 
+@time_it
 def update_share_settings(request):
     """Updates the shared settings.
 
@@ -194,6 +199,7 @@ def update_share_settings(request):
 
 
 @login_required
+@time_it
 def change_privacy_public_draw(request):
     #TODO: REMOVE
     draw_id = request.GET.get('draw_id')
