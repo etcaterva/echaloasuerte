@@ -179,19 +179,12 @@ URL_TO_DRAW_MAP = {
 DRAW_TO_URL_MAP ={ v:k for k,v in URL_TO_DRAW_MAP.items()}
 
 #TODO:
-# - Remove this first retrieve_draw that just redirect to draw
 # - Wrap the creation of draws and form through a factory. No more global
 # - Move is_feasible to the form validation
 # - Wrap "draw" config data in group so we can check in a single instruction if
 #       a draw changed
 # - Change user_can_read and write to methods
 # - Add ws to validate a bom without creating it
-
-@time_it
-def retrieve_draw(request, draw_id):
-    bom_draw = mongodb.retrieve_draw(draw_id)
-    return draw(request, DRAW_TO_URL_MAP[bom_draw.draw_type], draw_id)
-
 
 @time_it
 def toss_draw(request):
