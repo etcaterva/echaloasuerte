@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.layout import Layout, Row
+from crispy_forms.layout import Layout, Row, HTML
 from server.forms import FormBase
 
 
@@ -22,6 +22,7 @@ class LinkSetsDrawForm(FormBase):
         self.helper.field_class = 'col-xs-9'
         self.helper.layout = Layout(
             Row(
+                HTML("<div class='alert alert-info' role='alert'>{0}</div>".format(_("Separate items by commas. e.g: David S, Maria, Leo, ..."))),
                 'set_1',
                 'set_2',
             ),

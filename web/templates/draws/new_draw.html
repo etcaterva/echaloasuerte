@@ -79,9 +79,6 @@
         </div>
         <!-- End Draw Heading -->
         <div class="col-sm-8 col-sm-offset-2">
-                {% if draw_type == "LinksSetsDraw" %}
-                    <div class='alert alert-info' role='alert'>{%trans 'Separate items by commas. e.g: David S, Maria, Leo, ...'%}</div>
-                {% endif %}
             <!-- Errors -->
             {%for err in errors %}
                 <div class="alert alert-danger text-center" role="alert">
