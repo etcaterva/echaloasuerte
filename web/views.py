@@ -163,7 +163,7 @@ def join_draw(request):
 def index(request, is_public=None):
     context = {}
     if is_public:
-        context['is_public'] = 'publish'
+        context['is_public'] = 'True'
         context['public_draw_step'] = 'choose'
     return render(request, 'index.html', context)
 
