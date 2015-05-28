@@ -11,14 +11,6 @@
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/favourites.js' %}"></script>
-    {% if is_public %}
-        <script src="{% static 'js/moment.js' %}"></script>
-        <script src="{% static 'js/slideSelector.js' %}"></script>
-        <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
-        <script src="{% static 'js/public_draw_manager.js' %}"></script>
-        <script src="{% static 'js/chat.js' %}"></script>
-        <link href="{% static 'css/chat.css' %}" rel="stylesheet" />
-    {% endif %}
     {% block draw_extra_head %}{% endblock draw_extra_head %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
@@ -27,11 +19,7 @@
 
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
-        var attr = $(this).hasClass('protected');
-    console.log(attr);
-        if (typeof attr === typeof undefined || attr === false) {
-            $(this).select();
-        }
+        $(this).select();
     });
 
     // Autoresize the title box when window is resized
@@ -53,14 +41,6 @@
         $(this).find("button[type='submit']").prop('disabled',true);
         return true;
     });
-
-    $('.accordion').accordion({collapsible: true});
-
-    {% if is_public %}
-        PublicDraw.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
-        PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
-        PublicDraw.setup("{{ public_draw_step }}");
-    {% endif %}
 {% endblock extra_jq_ready %}
 {% block content %}
     <form class="clearfix" method="post">
