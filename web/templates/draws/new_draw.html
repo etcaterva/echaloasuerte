@@ -63,8 +63,6 @@
     {% endif %}
 {% endblock extra_jq_ready %}
 {% block content %}
-    {# breadcrumb to assist the creation of a public draw #}
-    {% include "snippets/snippet_breadcrumb.html" %}
     <form class="clearfix" method="post">
         <!-- Draw Heading -->
         <div class="clearfix draw-heading">
@@ -87,28 +85,13 @@
                 </div>
             {% endfor  %}
             <!-- Input Form -->
-            {% if draw_type == "CoinDraw" %}
-                {% crispy draw draw.helper %}
-                <div class="text-center">
-                    <input type="image" id="img-coin" src="{% static "img/img_coin/head.png" %}" name="coin">
-                    <p>{% trans "Tap the coin to flip it." %}</p>
-                    {% if result %}
-                        <script>
-                            coin.flip("{{ result.0.0 }}");
-                        </script>
-                    {% endif %}
-                </div>
-            {% else %}
-                {% crispy draw draw.helper %}
-            {% endif %}
+            {% crispy draw draw.helper %}
+            <!-- End Input Form -->
 
-            <div class="col-xs-12 text-center">
-                <div class="row btn-row">
-                    <!-- Button to directly toss the private draw -->
-                    <button id="toss" type="submit" name="toss" class="btn btn-success">{% trans 'Toss!' %}</button>
-                </div>
+            <!-- Button to directly toss the private draw -->
+            <div class="col-xs-12 text-center btn-row">
+                <button id="toss" type="submit" name="toss" class="btn btn-success">{% trans 'Toss!' %}</button>
             </div>
         </div>
     </form>
-    <!-- End Input Form -->
 {% endblock %}
