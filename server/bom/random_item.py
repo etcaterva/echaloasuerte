@@ -7,7 +7,6 @@ class RandomItemDraw(BaseDraw):
     """
     Stores the content of a draw of random items
     """
-    DEFAULT_TITLE= _("""Random Item""")
 
     def __init__(self, items = None, allow_repeat=False, **kwargs):
         super(RandomItemDraw, self).__init__(**kwargs)

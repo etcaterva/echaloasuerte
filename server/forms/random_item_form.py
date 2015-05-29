@@ -10,6 +10,9 @@ class RandomItemDrawForm(FormBase):
     allow_repeat = forms.BooleanField(label=_("Allow repetitions"), required=False)
     items = forms.CharField(label=_("Items (comma separated)"), widget=forms.TextInput())
 
+    DEFAULT_TITLE= _("Random Item")
+    TEMPLATE_NAME = 'RandomItemDraw.html'
+
     def __init__(self, *args, **kwargs):
         if 'initial' in kwargs:
             kwargs['initial']['items'] = ','.join(kwargs['initial']['items'])
