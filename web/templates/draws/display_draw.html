@@ -80,7 +80,8 @@
         PublicDraw.prepare_privacy_selection();
         PublicDraw.settings();
 
-		$('#chat-frame #chat-column').chat({
+        var chat_containers = $('#chat-frame, #chat-column');
+		chat_containers.chat({
             "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
             "url_send_message": "{% url 'chat_add_message' %}",
             "url_get_messages": "{% url 'chat_get_messages' %}",
@@ -91,6 +92,15 @@
             "msg_send": "{% trans 'Send' %}"
         });
 
+
+        var show_chat = function (enable_chat) {
+            if(enable_chat) {
+                chat_containers.removeClass("chat-disabled");
+            } else {
+                chat_containers.addClass("chat-disabled");
+            }
+        };
+        show_chat({{bom.enable_chat|yesno:"true,false"}});
 
         /*
             SETTINGS OPTION: Change privacy
@@ -115,6 +125,7 @@
                 /* The delay has the purpose to show "refresh" feedback when a to consecutive changes success */
                 $('div#alert-level-privacy-success').removeClass('hide',100);
                 bom_password = new_password;
+                show_chat(enable_chat);
             })
             .fail(function() {
                 $('div#alert-level-privacy-failed').removeClass('hide',100);
