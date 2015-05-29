@@ -7,7 +7,7 @@ from server.forms.form_base import FormBase
 class CoinDrawForm(FormBase):
 
     DEFAULT_TITLE = _("Flip a Coin")
-    TEMPLATE_PATH = 'draw/CoinDraw.html'
+    TEMPLATE_PATH = 'snippets/draws/CoinDraw.html'
 
     def __init__(self, *args, **kwargs):
         super(CoinDrawForm, self).__init__(*args, **kwargs)

@@ -1,0 +1,17 @@
+{% load i18n %}
+
+{% if forloop.counter == 1 %}
+    <script>
+        //Precaching the images
+        coin.setup('{{ STATIC_URL }}' + "img/img_coin/");
+        coin.flip("{{ results.0 }}");
+    </script>
+{% endif %}
+{% if results.0 == 'tail'%}
+    {% trans 'tail' %}
+{% elif results.0 == 'head'%}
+    {% trans 'head' %}
+{% else %}
+    {{results.0}}
+{% endif %}
+
