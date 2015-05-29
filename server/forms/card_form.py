@@ -16,7 +16,7 @@ class CardDrawForm(FormBase):
     type_of_deck = forms.ChoiceField(required=True, initial="french", choices=DECKS_CHOICES)
 
     DEFAULT_TITLE = _("Draw a Card")
-    TEMPLATE_NAME = 'CardDraw.html'
+    TEMPLATE_PATH = 'draw/CardDraw.html'
 
     def __init__(self, *args, **kwargs):
         super(CardDrawForm, self).__init__(*args, **kwargs)

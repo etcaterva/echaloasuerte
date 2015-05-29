@@ -9,7 +9,7 @@ class DiceDrawForm(FormBase):
     number_of_results = forms.IntegerField(label=_("Number of dice"), required=True, initial=1, max_value=20)
 
     DEFAULT_TITLE = _("Roll dice")
-    TEMPLATE_NAME = 'DiceDraw.html'
+    TEMPLATE_PATH = 'draw/DiceDraw.html'
 
     def __init__(self, *args, **kwargs):
         super(DiceDrawForm, self).__init__(*args, **kwargs)

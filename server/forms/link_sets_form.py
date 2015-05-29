@@ -9,7 +9,7 @@ class LinkSetsDrawForm(FormBase):
     set_2 = forms.CharField(label=_("Set 2"), widget=forms.TextInput(), required=True)
 
     DEFAULT_TITLE = _("Link sets")
-    TEMPLATE_NAME = 'LinkSetsDraw.html'
+    TEMPLATE_PATH = 'draw/LinkSetsDraw.html'
 
     def __init__(self, *args, **kwargs):
         if 'initial' in kwargs:
