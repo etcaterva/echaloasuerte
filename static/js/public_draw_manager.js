@@ -187,35 +187,6 @@ PublicDraw.settings = function () {
         $('#settings-privacy').removeClass("hide");
     });
 
-    /*
-    SETTINGS OPTION: Change privacy
-    Confirmation after editing privacy settings
-    */
-    $('button#save-change-privacy').click(function() {
-        $('div#settings-privacy div.feedback').addClass('hide');
-        PublicDraw.update_privacy_fields();
-        var draw_id = $(this).attr("data-id");
-        var shared_type = $('input#id_shared_type').val();
-        var password = $('input#id_password').val();
-        $.get(PublicDraw.url_draw_privacy, {draw_id: draw_id, shared_type: shared_type, password: password}, function(data){
-            /* The delay has the purpose to show "refresh" feedback when a to consecutive changes success */
-            $('div#alert-level-privacy-success').removeClass('hide',100);
-        })
-        .fail(function() {
-            $('div#alert-level-privacy-failed').removeClass('hide',100);
-        });
-    });
-
-    /*
-    SETTINGS OPTION: Show draw in "Recently created" list
-    */
-    $('button#save').click(function () {
-        if ($('#settings-show-in-public-list').is(":checked")){
-            $("input[name=show_in_public_list]").prop( "checked", true );
-        }else{
-            $("input[name=show_in_public_list]").prop( "checked", false );
-        }
-    });
 }
 
 PublicDraw.lock_fields = function () {

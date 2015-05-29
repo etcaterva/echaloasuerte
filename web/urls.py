@@ -27,7 +27,7 @@ urlpatterns += patterns(
     #web services
     url(r'^ws/draw/toss/$', ws.toss_draw, name="ws_toss_draw"),
     url(r'^ws/draw/try/$', ws.try_draw, name="ws_try_draw"),
-    url(r'^ws/draw/share_settings/update/$', ws.try_draw, name="ws_update_share_settings"),
+    url(r'^ws/draw/share_settings/update/$', ws.update_share_settings, name="ws_update_share_settings"),
 
     url(r'^ws/draw_add_users/$', ws.add_user_to_draw, name="ws_add_users_to_draw"),
     url(r'^ws/public_draw_privacy/$', ws.change_privacy_public_draw, name="ws_public_draw_privacy"),
