@@ -28,6 +28,7 @@ urlpatterns += patterns(
     url(r'^ws/draw/toss/$', ws.toss_draw, name="ws_toss_draw"),
     url(r'^ws/draw/try/$', ws.try_draw, name="ws_try_draw"),
     url(r'^ws/draw/share_settings/update/$', ws.update_share_settings, name="ws_update_share_settings"),
+    url(r'^ws/chat/details/$', ws.get_draw_details, name="ws_get_draw_details"),
 
     url(r'^ws/draw_add_users/$', ws.add_user_to_draw, name="ws_add_users_to_draw"),
     url(r'^ws/public_draw_privacy/$', ws.change_privacy_public_draw, name="ws_public_draw_privacy"),
@@ -35,7 +36,6 @@ urlpatterns += patterns(
     url(r'^ws/favourites/remove/$', ws.remove_favorite, name="ws_remove_favorite"),
     url(r'^ws/check_access_to_draw/$', ws.check_access_to_draw, name="check_access_to_draw"),
     url(r'^ws/chat/add/$', ws.add_message_to_chat, name="chat_add_message"),
-    url(r'^ws/chat/get/$', ws.get_chat_messages, name="chat_get_messages"),
 )
 
 urlpatterns += staticfiles_urlpatterns()

@@ -111,7 +111,7 @@
         formatChatEntry: function (chat_entry){
             var user = chat_entry.user;
             var content = chat_entry.content;
-            var time = moment(chat_entry.creation_time).fromNow();;
+            var time = moment.utc(chat_entry.creation_time).fromNow();;
             var html = '<li class="right clearfix"><span class="chat-img pull-left">' +
                 '    <img src="http://placehold.it/40/FA6F57/fff&text=' + user.toUpperCase().charAt(0) + '" alt="User Avatar" class="img-circle" />' +
                 '</span>' +

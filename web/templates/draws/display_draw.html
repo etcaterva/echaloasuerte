@@ -75,6 +75,7 @@
             "msg_toss": "Click on the 'Toss' button to try the draw first"
     });
     {% if bom.is_shared %}
+        var bom_last_updated = moment.utc("{{bom.last_updated_time.isoformat}}");
         PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
         $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
         PublicDraw.prepare_privacy_selection();
@@ -84,7 +85,7 @@
 		var chats = chat_containers.chat({
             "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
             "url_send_message": "{% url 'chat_add_message' %}",
-            "url_get_messages": "{% url 'chat_get_messages' %}",
+            "url_get_messages": "{% url 'ws_get_draw_details' %}",
             "draw_id": "{{ bom.pk }}",
             "msg_type_your_message": "{% trans 'Type your message here...' %}",
             "msg_login_first": "{% trans 'Please, login or register to be able to use the chat'%}",
@@ -126,6 +127,7 @@
                 $('div#alert-level-privacy-success').removeClass('hide',100);
                 bom_password = new_password;
                 show_chat(enable_chat);
+                bom_last_updated = new Date();
             })
             .fail(function() {
                 $('div#alert-level-privacy-failed').removeClass('hide',100);
@@ -134,10 +136,13 @@
 
         (function get_draw_details() {
             $.ajax({
-                url : "{% url 'chat_get_messages' %}",
+                url : "{% url 'ws_get_draw_details' %}",
                 method : "GET",
                 data: { draw_id : "{{bom.pk}}" },
             }).done(function(data) {
+                if(bom_last_updated < moment.utc(data.last_updated_time)){
+                    window.location.reload();
+                }
                 for(var i=0; i<chats.length; i++) {
                     chats[i].messages = data.messages;
                 }
