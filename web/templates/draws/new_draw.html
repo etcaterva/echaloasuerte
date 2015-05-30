@@ -49,9 +49,11 @@
     });
 
     {% if is_public %}
+        PublicDrawCreator.url_index = "{% url 'publish_draw' %}"; {# index to create a public draw #}
         PublicDrawCreator.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
         PublicDrawCreator.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
-        PublicDrawCreator.setup("{{ public_draw_step }}");
+        PublicDrawCreator.url_try = "{% url 'ws_try_draw' %}";
+        PublicDrawCreator.setup();
     {% endif %}
 {% endblock extra_jq_ready %}
 {% block content %}
@@ -119,7 +121,7 @@
             {% if is_public %}
                 {# Button to try a draw when creating a public one #}
                 <div class="row btn-row step-configure">
-                    <button id="try" type="submit" name="try" class="btn btn-success" disabled>{% trans 'Try it! (not implemented)' %}</button>
+                    <a id="try" name="try" class="btn btn-success">{% trans 'Try it!' %}</a>
                 </div>
 
                 {# Buttons "Next Step" and "Cancel" shown when creating a public draw #}
@@ -139,6 +141,10 @@
 
     {# Hover panel to change the lever of restriction of the public draw #}
     {% if is_public %}
+        <div id="confirmation-change-draw-type" title="Change the type of draw">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Any configuration you have set up will be lost</p>
+        </div>
+
         <div id="access-level" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -153,6 +159,7 @@
             </div>
         </div>
 
+        {# Show results, in case the user tries the configuration (through the button "Try") #}
         {% include draw.TEMPLATE_PATH %}
     {% endif %}
 {% endblock %}

@@ -3,14 +3,22 @@ var PublicDrawCreator = {};
 // Updates the breadcrumb to show the steps that have been already done
 PublicDrawCreator.update_breadcrumb = function (current_step){
     // However we reached here, the step "choose it" has already been done
-    $('.info-public-draw #choose').addClass('done');
+    $('.breadcrumb-public-draw #choose').addClass('done');
+    $('.breadcrumb-public-draw #choose').removeClass('focus');
+    $('.breadcrumb-public-draw').attr('data-current-step', 'configure');
     if (current_step == "spread"){
-        $('.info-public-draw #configure').addClass('done');
+        $('.breadcrumb-public-draw #configure').addClass('done');
+        $('.breadcrumb-public-draw #configure').removeClass('focus');
+        $('.breadcrumb-public-draw #spread').addClass('done');
+        $('.breadcrumb-public-draw #spread').addClass('focus');
+        $('.breadcrumb-public-draw').attr('data-current-step', 'spread');
     }
     else{
         if (current_step == "configure"){
-            // If the step "spread" has already been done, add the CSS class "done"
-            // This part will be filled when the step backward is implemented
+            $('.breadcrumb-public-draw #configure').addClass('done');
+            $('.breadcrumb-public-draw #configure').addClass('focus');
+            $('.breadcrumb-public-draw #spread').removeClass('focus');
+            $('.breadcrumb-public-draw').attr('data-current-step', 'configure');
         }
     }
 };
@@ -56,26 +64,96 @@ PublicDrawCreator.prepare_invitation_fields = function () {
 };
 
 PublicDrawCreator.show_spread_step = function () {
+    PublicDrawCreator.update_breadcrumb("spread");
     $('.step-configure').addClass('hidden');
     $('.step-spread').removeClass('hidden');
 };
 
 PublicDrawCreator.show_configure_step = function () {
+    PublicDrawCreator.update_breadcrumb("configure");
     $('.step-spread').addClass('hidden');
     $('.step-configure').removeClass('hidden');
 };
 
+
+// Get all the messages of a public draw and refresh the chat board
+PublicDrawCreator.try_draw = function (){
+    var that = this;
+    var $chat = this.$element.find("#chat-board");
+    $.ajax({
+        url : PublicDrawCreator.url_try,
+        method : "GET",
+        data: { draw_id : this.options.draw_id},
+        success : function(data){
+
+            var arr = data.messages;
+            for (var i = 0, length = arr.length; i < length; i++) {
+              var element = arr[i];
+              console.log(element);
+            }
+        }
+    });
+};
+
 // Initialize the interface for a public draw
-PublicDrawCreator.setup = function(current_step){
+PublicDrawCreator.setup = function(){
     //Initialize the UI to select the level of privacy for the draw
     PublicDrawCreator.prepare_privacy_selection();
 
     PublicDrawCreator.prepare_invitation_fields();
 
-    PublicDrawCreator.update_breadcrumb(current_step);
+    PublicDrawCreator.update_breadcrumb("configure");
 
     $('a#next').click(function () {
         PublicDrawCreator.show_spread_step();
     });
 
+    $('a.back-arrow').click(function () {
+        var current_step = $('.breadcrumb-public-draw').attr('data-current-step');
+        if (current_step == "spread"){ // If step is spread
+            PublicDrawCreator.show_configure_step();
+            return false;
+        }
+        else{
+            if (current_step == "configure") {
+                // TODO Ask for confimation, as the process done will be lost
+                $( "#dialog" ).dialog( "open" );
+                return true; // Go to the index (href in <a> tag)
+            }
+        }
+    });
+
+    $('a#try').click(function () {
+        PublicDrawCreator.try_draw();
+    });
+
+    $('.breadcrumb-public-draw #configure').click(function(){
+        PublicDrawCreator.show_configure_step();
+    })
+
+    $('.breadcrumb-public-draw #spread').click(function(){
+        PublicDrawCreator.show_spread_step();
+    })
+    $('.breadcrumb-public-draw #choose').click(function(){
+        // TODO Ask for confimation, as the process done will be lost
+        $( "#confirmation-change-draw-type" ).dialog( "open" );
+    })
+
+    $(function() {
+        $( "#confirmation-change-draw-type" ).dialog({
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            buttons: {
+                // TODO "Change type" has to be tranlated
+                "Change type": function() {
+                    $( this ).dialog( "close" );
+                    window.location.href = PublicDrawCreator.url_index;
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    });
 };
