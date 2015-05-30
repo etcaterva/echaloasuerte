@@ -67,7 +67,7 @@
     $('#fav-button').favourites({
             "url_add": "{% url 'ws_add_favorite' %}",
             "url_remove": "{% url 'ws_remove_favorite' %}",
-            "user_authenticated": ('{{ user.is_authenticated }}' == 'False')? false: true,
+            "user_authenticated": {{ user.is_authenticated|yesno:"true,false" }},
             "draw_id": "{{ bom.pk }}",
             "path_img_star": "{% static "img/star.png" %}",
             "path_img_star_empty": "{% static "img/star-o.png" %}",
@@ -81,7 +81,7 @@
         PublicDraw.settings();
 
         var chat_containers = $('#chat-frame, #chat-column');
-		chat_containers.chat({
+		var chats = chat_containers.chat({
             "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
             "url_send_message": "{% url 'chat_add_message' %}",
             "url_get_messages": "{% url 'chat_get_messages' %}",
@@ -131,6 +131,22 @@
                 $('div#alert-level-privacy-failed').removeClass('hide',100);
             });
         });
+
+        (function get_draw_details() {
+            $.ajax({
+                url : "{% url 'chat_get_messages' %}",
+                method : "GET",
+                data: { draw_id : "{{bom.pk}}" },
+            }).done(function(data) {
+                for(var i=0; i<chats.length; i++) {
+                    chats[i].messages = data.messages;
+                }
+            }).fail (function() {
+                console.log("Error when retrieving draw details");
+            });
+
+            setTimeout(get_draw_details,2000);
+        })();
 
 
     {% endif %}
