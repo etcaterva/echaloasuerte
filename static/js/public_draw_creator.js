@@ -1,11 +1,28 @@
 var PublicDrawCreator = {};
 
-// Updates the breadcrumb to show the steps that have been already done
-PublicDrawCreator.update_breadcrumb = function (current_step){
+PublicDrawCreator.setup_breadcrumb = function (){
     // However we reached here, the step "choose it" has already been done
     $('.breadcrumb-public-draw #choose').addClass('done');
     $('.breadcrumb-public-draw #choose').removeClass('focus');
     $('.breadcrumb-public-draw').attr('data-current-step', 'configure');
+
+    PublicDrawCreator.update_breadcrumb("configure");
+
+    $('.breadcrumb-public-draw #configure').click(function(){
+        PublicDrawCreator.show_configure_step();
+    })
+
+    $('.breadcrumb-public-draw #spread').click(function(){
+        PublicDrawCreator.show_spread_step();
+    })
+    $('.breadcrumb-public-draw #choose').click(function(){
+        // TODO Ask for confimation, as the process done will be lost
+        $( "#confirmation-change-draw-type" ).dialog( "open" );
+    })
+};
+
+// Updates the breadcrumb to show the steps that have been already done
+PublicDrawCreator.update_breadcrumb = function (current_step){
     if (current_step == "spread"){
         $('.breadcrumb-public-draw #configure').addClass('done');
         $('.breadcrumb-public-draw #configure').removeClass('focus');
@@ -102,7 +119,7 @@ PublicDrawCreator.setup = function(){
 
     PublicDrawCreator.prepare_invitation_fields();
 
-    PublicDrawCreator.update_breadcrumb("configure");
+    PublicDrawCreator.setup_breadcrumb("configure");
 
     $('a#next').click(function () {
         PublicDrawCreator.show_spread_step();
@@ -127,18 +144,7 @@ PublicDrawCreator.setup = function(){
         PublicDrawCreator.try_draw();
     });
 
-    $('.breadcrumb-public-draw #configure').click(function(){
-        PublicDrawCreator.show_configure_step();
-    })
-
-    $('.breadcrumb-public-draw #spread').click(function(){
-        PublicDrawCreator.show_spread_step();
-    })
-    $('.breadcrumb-public-draw #choose').click(function(){
-        // TODO Ask for confimation, as the process done will be lost
-        $( "#confirmation-change-draw-type" ).dialog( "open" );
-    })
-
+    // Set up confirmation dialog that will be shown if the user tries to go to the index while he is setting up a public draw
     $(function() {
         $( "#confirmation-change-draw-type" ).dialog({
             resizable: false,
