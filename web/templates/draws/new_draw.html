@@ -48,16 +48,20 @@
         return true;
     });
 
+    $('.accordion').accordion({collapsible: true});
+
     {% if is_public %}
+        PublicDrawCreator.draw_type = "{{ draw_type }}"
         PublicDrawCreator.url_index = "{% url 'publish_draw' %}"; {# index to create a public draw #}
-        PublicDrawCreator.url_try = "{% url 'ws_try_draw' %}";
+        PublicDrawCreator.url_try = "{% url 'try_draw' draw_type=draw_type %}";
+        PublicDrawCreator.url_validate = "{% url 'ws_validate_draw' %}";
         PublicDrawCreator.setup();
     {% endif %}
 {% endblock extra_jq_ready %}
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
     {% include "snippets/snippet_breadcrumb.html" %}
-    <form class="clearfix" method="post">
+    <form id="draw-form" class="clearfix" method="post">
         <!-- Draw Heading -->
         <div class="clearfix draw-heading">
             <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
@@ -119,13 +123,13 @@
             {% if is_public %}
                 {# Button to try a draw when creating a public one #}
                 <div class="row btn-row step-configure">
-                    <button type="submit" name="try" id="try" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
+                    <button type="submit" id="try" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
                 </div>
 
                 {# Buttons "Next Step" and "Cancel" shown when creating a public draw #}
                 <div class="col-sm-8 col-sm-offset-2 btn-row">
                     <a href="{% url 'index' %}" class="col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
-                    <button type="submit" name="next" id="next" class="step-configure col-xs-6 btn btn-primary">{% trans 'Next step' %}</button>
+                    <a id="next" class="step-configure col-xs-6 btn btn-primary">{% trans 'Next step' %}</a>
                     <button id="publish" type="submit" class="step-spread col-xs-6 btn btn-primary hidden">{% trans 'Publish it' %}</button>
                 </div>
             {% else %}
@@ -158,6 +162,24 @@
         </div>
 
         {# Show results, in case the user tries the configuration (through the button "Try") #}
-        {% include draw.TEMPLATE_PATH %}
+        {% if bom.results %}
+            <!-- Results -->
+            <div class="step-configure col-sm-8 col-sm-offset-2">
+                <div class="row text-center accordion">
+                    {% for result in bom.results reversed %}
+                    {% with result.items as results%}
+                        {% if results %}
+                            <p id="header-try-result" class="h3">
+                                {%trans 'Result' %}{{results|length|pluralize}}
+                            <div class="result">
+                                {% include draw.TEMPLATE_PATH %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        <!-- End Results -->
     {% endif %}
 {% endblock %}

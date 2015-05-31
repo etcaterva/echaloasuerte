@@ -97,14 +97,14 @@ PublicDrawCreator.show_configure_step = function () {
 PublicDrawCreator.validate = function (){
     var that = this;
     $.ajax({
-        url : PublicDrawCreator.url_try,
+        url : PublicDrawCreator.url_validate,
         method : "GET",
-        data: { draw_id : this.options.draw_id},
+        data: {draw_type: PublicDrawCreator.draw_type},
         success : function(data){
             PublicDrawCreator.show_spread_step();
         },
         error : function (data) {
-            var $form = $('form');
+            var $form = $('#draw-form');
             $form.attr("action", PublicDrawCreator.url_try);
             $form.submit();
 
@@ -138,12 +138,12 @@ PublicDrawCreator.setup = function(){
 
     $('#next').click(function () {
         //PublicDrawCreator.show_spread_step();
-        $('form').attr("action", PublicDrawCreator.validate);
+        PublicDrawCreator.validate();
     });
 
     $('#try').click(function () {
         //PublicDrawCreator.try_draw();
-        $('form').attr("action", PublicDrawCreator.url_try);
+        $('#draw-form').attr("action", PublicDrawCreator.url_try);
     });
 
     // Set up confirmation dialog that will be shown if the user tries to go to the index while he is setting up a public draw

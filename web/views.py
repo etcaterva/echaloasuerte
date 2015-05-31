@@ -200,11 +200,11 @@ def toss_draw(request):
 
 
 @time_it
-def validate_draw(request, draw_type):
+def try_draw(request, draw_type):
     """validate the draw
     if request.POST contains "try_draw", generates a result
     """
-    model_name = URL_TO_DRAW_MAP[draw_type]
+    model_name = draw_type
     form_name = model_name + "Form"
 
     logger.debug("Received post data: {0}".format(request.POST))
@@ -222,10 +222,8 @@ def validate_draw(request, draw_type):
             messages.error(request, _('The draw is not feasible'))
             return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name })
         else:
-            if request.POST.get("try_draw"):
-                bom_draw.toss()
-
-            return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name })
+            bom_draw.toss()
+            return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name, "bom": bom_draw})
 
 @time_it
 def create_draw(request, draw_type, is_public):
