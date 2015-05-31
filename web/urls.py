@@ -29,6 +29,7 @@ urlpatterns += patterns(
     #web services
     url(r'^ws/draw/toss/$', ws.toss_draw, name="ws_toss_draw"),
     url(r'^ws/draw/try/$', ws.try_draw, name="ws_try_draw"),
+    url(r'^ws/draw/validate/(?P<draw_type>[^/]+)/$', ws.validate_draw, name="ws_validate_draw"),
     url(r'^ws/draw/share_settings/update/$', ws.update_share_settings, name="ws_update_share_settings"),
     url(r'^ws/chat/details/$', ws.get_draw_details, name="ws_get_draw_details"),
 

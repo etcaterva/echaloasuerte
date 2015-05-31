@@ -206,7 +206,6 @@ def validate_draw(request, draw_type):
     """
     model_name = URL_TO_DRAW_MAP[draw_type]
     form_name = model_name + "Form"
-    is_public = is_public == 'True'
 
     logger.debug("Received post data: {0}".format(request.POST))
     draw_form = globals()[form_name](request.POST)
