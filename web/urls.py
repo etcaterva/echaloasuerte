@@ -20,6 +20,7 @@ urlpatterns += patterns(
     url(r'^draw/(?P<draw_id>[0-9a-g]+)/$', views.display_draw, name="retrieve_draw"),
     url(r'^draw/new/(?P<draw_type>[^/]+)/public/$', views.create_draw, {'is_public': "True"}, name="create_public_draw"),
     url(r'^draw/new/(?P<draw_type>[^/]+)/$', views.create_draw, {'is_public': "False"}, name="create_draw"),
+    url(r'^draw/validate/(?P<draw_type>[^/]+)/$', views.validate_draw, name="validate_draw"),
     url(r'^accounts/register/$', views.register, name='register'),
     url(r'^accounts/forgot_password/$', views.under_construction, name='forgot_password'),
     url(r'^accounts/login/$', views.login_user, name='login'),
