@@ -94,20 +94,20 @@ PublicDrawCreator.show_configure_step = function () {
 
 
 // Get all the messages of a public draw and refresh the chat board
-PublicDrawCreator.try_draw = function (){
+PublicDrawCreator.validate = function (){
     var that = this;
-    var $chat = this.$element.find("#chat-board");
     $.ajax({
         url : PublicDrawCreator.url_try,
         method : "GET",
         data: { draw_id : this.options.draw_id},
         success : function(data){
+            PublicDrawCreator.show_spread_step();
+        },
+        error : function (data) {
+            var $form = $('form');
+            $form.attr("action", PublicDrawCreator.url_try);
+            $form.submit();
 
-            var arr = data.messages;
-            for (var i = 0, length = arr.length; i < length; i++) {
-              var element = arr[i];
-              console.log(element);
-            }
         }
     });
 };
@@ -120,10 +120,6 @@ PublicDrawCreator.setup = function(){
     PublicDrawCreator.prepare_invitation_fields();
 
     PublicDrawCreator.setup_breadcrumb("configure");
-
-    $('a#next').click(function () {
-        PublicDrawCreator.show_spread_step();
-    });
 
     $('a.back-arrow').click(function () {
         var current_step = $('.breadcrumb-public-draw').attr('data-current-step');
@@ -140,8 +136,14 @@ PublicDrawCreator.setup = function(){
         }
     });
 
-    $('a#try').click(function () {
-        PublicDrawCreator.try_draw();
+    $('#next').click(function () {
+        //PublicDrawCreator.show_spread_step();
+        $('form').attr("action", PublicDrawCreator.validate);
+    });
+
+    $('#try').click(function () {
+        //PublicDrawCreator.try_draw();
+        $('form').attr("action", PublicDrawCreator.url_try);
     });
 
     // Set up confirmation dialog that will be shown if the user tries to go to the index while he is setting up a public draw

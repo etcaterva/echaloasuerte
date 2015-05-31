@@ -119,13 +119,13 @@
             {% if is_public %}
                 {# Button to try a draw when creating a public one #}
                 <div class="row btn-row step-configure">
-                    <a id="try" name="try" class="btn btn-success">{% trans 'Try it!' %}</a>
+                    <button type="submit" name="try" id="try" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
                 </div>
 
                 {# Buttons "Next Step" and "Cancel" shown when creating a public draw #}
                 <div class="col-sm-8 col-sm-offset-2 btn-row">
                     <a href="{% url 'index' %}" class="col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
-                    <a type="button" id="next" class="step-configure col-xs-6 btn btn-primary">{% trans 'Next step' %}</a>
+                    <button type="submit" name="next" id="next" class="step-configure col-xs-6 btn btn-primary">{% trans 'Next step' %}</button>
                     <button id="publish" type="submit" class="step-spread col-xs-6 btn btn-primary hidden">{% trans 'Publish it' %}</button>
                 </div>
             {% else %}
