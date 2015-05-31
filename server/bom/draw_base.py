@@ -15,14 +15,6 @@ class BaseDraw(object):
     Stores the content of a draw of random items
     """
     __metaclass__ = ABCMeta
-    DEFAULT_TITLE = None
-
-    @property
-    def pk(self):
-        return str(self._id)
-
-    def is_shared(self):
-        return self.shared_type is not None
 
     def __init__(self, creation_time = None, owner = None, number_of_results = 1,
                   results= None, _id = None, draw_type = None, prev_draw = None,
@@ -92,6 +84,13 @@ class BaseDraw(object):
         #TODO: remove me in the future, PLEASE
         if self.shared_type == "None" or self.shared_type == "":
             self.shared_type = None
+
+    @property
+    def pk(self):
+        return str(self._id)
+
+    def is_shared(self):
+        return self.shared_type is not None
 
     @property
     def share_settings(self):
