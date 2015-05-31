@@ -12,16 +12,12 @@ It doesn't receive any parameter but it use variables that need to be declared i
 
 <!-- breadcrumb for creating Public Draw -->
 {% if is_public%}
-    <div class="breadcrumb-public-draw">
+    <div class="row breadcrumb-public-draw" data-current-step="choose">
         <div class="help-text">
-            {% if not public_draw_step %}
-                <span class="col-xs-12 col-sm-10 col-sm-offset-1 title">{%trans 'Public draw' %}</span>
-            {% else %}
-                <span class="col-xs-12 col-sm-10 col-sm-offset-1 title">{%trans 'Creating a public draw' %}</span>
-                <span id="choose" class="col-xs-4 subtitle {% if public_draw_step == "choose" %} focus {% endif %}">1. {%trans 'Choose' %}</span>
-                <span id="configure" class="col-xs-4 subtitle {% if public_draw_step == "configure" %} focus {% endif %}">2. {%trans 'Configure' %}</span>
-                <span id="spread" class="col-xs-4 subtitle {% if public_draw_step == "spread" %} focus {% endif %}">3. {%trans 'Spread' %}</span>
-            {% endif %}
+            <span class="col-xs-12 col-sm-10 col-sm-offset-1 title">{%trans 'Creating a public draw' %}</span>
+            <a id="choose" class="col-xs-4 subtitle focus">1. {%trans 'Choose' %}</a>
+            <a id="configure" class="col-xs-4 subtitle ">2. {%trans 'Configure' %}</a>
+            <a id="spread" class="col-xs-4 subtitle ">3. {%trans 'Spread' %}</a>
         </div>
     </div>
 {% endif %}

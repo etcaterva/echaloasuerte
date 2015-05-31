@@ -23,7 +23,6 @@ class LinkSetsDraw(BaseDraw):
         - The numer of results generated will be equal to the number of items in the first set
         - If needed, items will be added to the others set or ignoted to match the length of the first
     """
-    DEFAULT_TITLE = _("""Link sets""")
 
     def __init__(self, sets = None, **kwargs):
         super(LinkSetsDraw, self).__init__(**kwargs)

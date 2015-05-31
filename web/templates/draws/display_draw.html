@@ -170,7 +170,7 @@
     });
 
 
-    $('.token-input').tokenfield({createTokensOnBlur:true});
+    $('.tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
@@ -220,20 +220,7 @@
             {# end pre-draw #}
             <!-- Display Form -->
             <div class="step-configure">
-                {% if bom.draw_type == "CoinDraw" %}
-                    {% crispy draw draw.helper %}
-                    <div class="text-center">
-                        <input type="image" id="img-coin" src="{% static "img/img_coin/head.png" %}" name="coin">
-                        <p>{% trans "Tap the coin to flip it." %}</p>
-                        {% if result %}
-                            <script>
-                                coin.flip("{{ result.0.0 }}");
-                            </script>
-                        {% endif %}
-                    </div>
-                {% else %}
-                    {% crispy draw draw.helper %}
-                {% endif %}
+                {% crispy draw draw.helper %}
             </div>
             <div class="col-xs-12 text-center">
                 <!-- Button to toss -->
@@ -271,62 +258,7 @@
                             <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
                         </p>
                         <div class="result">
-                        {% if bom.draw_type == "CardDraw" %}
-                            <script>
-                                var baseUrl = '{{ STATIC_URL }}' + "img/";
-                                Card.setup(baseUrl, {{ results }});
-                                Card.draw();
-                            </script>
-                        {% elif bom.draw_type == "CoinDraw" %}
-                            {% if forloop.counter == 1 %}
-                                <script>
-                                    coin.flip("{{ results.0 }}");
-                                </script>
-                            {% endif %}
-                            {% if results.0 == 'tail'%}
-                                {% trans 'tail' %}
-                            {% elif results.0 == 'head'%}
-                                {% trans 'head' %}
-                            {% else %}
-                                {{results.0}}
-                            {% endif %}
-                        {% elif bom.draw_type == "DiceDraw" %}
-                            {% if forloop.counter == 1 %}
-                                <script>
-                                    D6.dice({{ results }});
-                                </script>
-                            {% else %}
-                                <script>
-                                    D6.showPastResult({{ results}})
-                                </script>
-                            {% endif %}
-                        {% elif bom.draw_type == "LinkSetsDraw" %}
-                            <ul class="list-group">
-                                {% for link in results %}
-                                    <li class="list-group-item col-xs-12">
-                                        {% for item in link %}
-                                            <b>{{ item }}</b> {%if not forloop.last %} <span class="glyphicon glyphicon-minus" ></span> {%endif%}
-                                        {% endfor %}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% elif bom.draw_type == "LinkSetsDraw" %}
-                            <ul class="list-group">
-                                {% for item in results %}
-                                    <li class="list-group-item col-xs-6 col-xs-offset-3">
-                                        {{ item }}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% elif bom.draw_type == "RandomNumberDraw" %}
-                            <ul class="list-group">
-                                {% for number in results %}
-                                    <li class="list-group-item">
-                                        {{ number }}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
+                            {% include draw.TEMPLATE_PATH %}
                         </div>
                     {% endif %}
                 {% endwith %}

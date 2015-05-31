@@ -298,9 +298,20 @@ ul.nav.navbar-nav {
     margin: 10px 0 10px;
     font-size: 16px;
     color: #979797;
+    text-decoration: none;
+
+    /* Disable links */
+    pointer-events: none;
+    cursor: default;
 }
 
-.breadcrumb-public-draw .subtitle.focus {
+.breadcrumb-public-draw .subtitle.done:not(.focus) {
+    /* Disable links */
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.breadcrumb-public-draw .subtitle.focus{
     font-size: 17px;
     font-weight: bold;
     color: #4cae4c;

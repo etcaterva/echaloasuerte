@@ -14,7 +14,6 @@ class CardDraw(BaseDraw):
     """
     Stores the content of a draw of CardsDraw
     """
-    DEFAULT_TITLE = _("""Draw a Card""")
 
     def __init__(self, type_of_deck='french', **kwargs):
         super(CardDraw, self).__init__(**kwargs)

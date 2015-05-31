@@ -12,6 +12,9 @@ class RandomNumberDrawForm(FormBase):
     number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1, max_value=1000)
     allow_repeat = forms.BooleanField(label=_("Allow repetitions"), required=False)
 
+    DEFAULT_TITLE= _("Random Number")
+    TEMPLATE_PATH = 'snippets/draws/RandomNumberDraw.html'
+
     def __init__(self, *args, **kwargs):
         super(RandomNumberDrawForm, self).__init__(*args, **kwargs)
 

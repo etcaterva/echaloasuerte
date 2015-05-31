@@ -213,19 +213,17 @@ def create_draw(request, draw_type, is_public):
     form_name = model_name + "Form"
     is_public = is_public == 'True'
 
-    template = 'draws/new_public_draw.html' if is_public else 'draws/new_draw.html'
-
     if request.method == 'GET':
         logger.debug("Serving view to create a draw. Form: {0}".format(form_name))
         draw_form = globals()[form_name]()
-        return render(request, template, {"draw" : draw_form, "is_public": is_public, "draw_type": model_name, "default_title": "New Draw"})
+        return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": is_public, "draw_type": model_name, "default_title": "New Draw"})
     else:
         logger.debug("Received post data: {0}".format(request.POST))
         draw_form = globals()[form_name](request.POST)
         if not draw_form.is_valid():
             logger.info("Form not valid: {0}".format(draw_form.errors))
             messages.error(request, _('Invalid values provided'))
-            return render(request, template, {"draw" : draw_form, "is_public": is_public, "draw_type": model_name })
+            return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": is_public, "draw_type": model_name })
         else:
             raw_draw = draw_form.cleaned_data
             logger.debug("Form cleaned data: {0}".format(raw_draw))
@@ -236,7 +234,7 @@ def create_draw(request, draw_type, is_public):
             if not bom_draw.is_feasible(): # This should actually go in the form validation
                 logger.info("Draw {0} is not feasible".format(bom_draw))
                 messages.error(request, _('The draw is not feasible'))
-                return render(request, templatenew_draw.html, {"draw" : draw_form, "is_public": is_public, "draw_type": model_name })
+                return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": is_public, "draw_type": model_name })
             else:
                 #generate a result if a private draw
                 if not bom_draw.is_shared():

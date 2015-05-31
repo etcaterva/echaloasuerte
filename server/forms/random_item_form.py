@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.layout import Layout, Row
+from crispy_forms.layout import Layout, Row, Field
 from server.forms import FormBase
 
 
@@ -9,6 +9,9 @@ class RandomItemDrawForm(FormBase):
     number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1)
     allow_repeat = forms.BooleanField(label=_("Allow repetitions"), required=False)
     items = forms.CharField(label=_("Items (comma separated)"), widget=forms.TextInput())
+
+    DEFAULT_TITLE = _("Random Item")
+    TEMPLATE_PATH = 'snippets/draws/RandomItemDraw.html'
 
     def __init__(self, *args, **kwargs):
         if 'initial' in kwargs:
@@ -25,7 +28,7 @@ class RandomItemDrawForm(FormBase):
         self.helper.layout = Layout(
             Row(
                 'number_of_results',
-                'items',
+                Field('items', css_class="tokenfield"),
                 'allow_repeat',
             ),
         )

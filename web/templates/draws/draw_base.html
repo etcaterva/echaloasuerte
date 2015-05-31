@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% block title %}{{ bom.title|default:bom.DEFAULT_TITLE }} | {% endblock title %}
+{% block title %}{{ bom.title|default:draw.DEFAULT_TITLE }} | {% endblock title %}
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/favourites.js' %}"></script>
@@ -33,7 +33,7 @@
     autosize = function(){
         var max_width = $("#draw-title-container").width()*2/3;
         $("textarea.autogrow").width(max_width);
-        $("textarea.autogrow").autoGrowInput({title:'{{ bom.title|default:bom.DEFAULT_TITLE }}',maxWidth: max_width,minWidth:30,comfortZone:30});
+        $("textarea.autogrow").autoGrowInput({title:'{{ bom.title|default:draw.DEFAULT_TITLE }}',maxWidth: max_width,minWidth:30,comfortZone:30});
     };
 
     // Autosize the title box the first time
@@ -123,7 +123,7 @@
                     </a>
             {% endif %}
             <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
-                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title|default:bom.DEFAULT_TITLE }}</textarea>
+                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title|default:draw.DEFAULT_TITLE }}</textarea>
             </div>
         </div>
         <!-- End Draw Heading -->
@@ -260,7 +260,7 @@
                         <p class="h3">{%trans 'Results' %}<small>{%trans ' generated before '%}</small></p>
                         <div >
                            {%trans 'The configuration of the draw was changed.'%}<br/>
-                           {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
+                           {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ draw.DEFAULT_TITLE }}</a>
                         </div>
                     {% endif %}
                 </div>

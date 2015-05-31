@@ -1,12 +1,15 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.layout import Layout, Row, HTML
+from crispy_forms.layout import Layout, Row, HTML, Field
 from server.forms import FormBase
 
 
 class LinkSetsDrawForm(FormBase):
     set_1 = forms.CharField(label=_("Set 1"), widget=forms.TextInput(), required=True)
     set_2 = forms.CharField(label=_("Set 2"), widget=forms.TextInput(), required=True)
+
+    DEFAULT_TITLE = _("Link sets")
+    TEMPLATE_PATH = 'snippets/draws/LinkSetsDraw.html'
 
     def __init__(self, *args, **kwargs):
         if 'initial' in kwargs:
@@ -23,8 +26,8 @@ class LinkSetsDrawForm(FormBase):
         self.helper.layout = Layout(
             Row(
                 HTML("<div class='alert alert-info' role='alert'>{0}</div>".format(_("Separate items by commas. e.g: David S, Maria, Leo, ..."))),
-                'set_1',
-                'set_2',
+                Field('set_1', css_class="tokenfield"),
+                Field('set_2', css_class="tokenfield"),
             ),
         )
 
