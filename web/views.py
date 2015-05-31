@@ -200,6 +200,34 @@ def toss_draw(request):
 
 
 @time_it
+def validate_draw(request, draw_type):
+    """validate the draw
+    if request.POST contains "try_draw", generates a result
+    """
+    model_name = URL_TO_DRAW_MAP[draw_type]
+    form_name = model_name + "Form"
+
+    logger.debug("Received post data: {0}".format(request.POST))
+    draw_form = globals()[form_name](request.POST)
+    if not draw_form.is_valid():
+        logger.info("Form not valid: {0}".format(draw_form.errors))
+        messages.error(request, _('Invalid values provided'))
+        return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name })
+    else:
+        raw_draw = draw_form.cleaned_data
+        logger.debug("Form cleaned data: {0}".format(raw_draw))
+        bom_draw = globals()[model_name](**raw_draw)
+        if not bom_draw.is_feasible(): # This should actually go in the form validation
+            logger.info("Draw {0} is not feasible".format(bom_draw))
+            messages.error(request, _('The draw is not feasible'))
+            return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name })
+        else:
+            if request.POST.get("try_draw"):
+                bom_draw.toss()
+
+            return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name })
+
+@time_it
 def create_draw(request, draw_type, is_public):
     """create_draw view
     @param
@@ -239,9 +267,10 @@ def create_draw(request, draw_type, is_public):
                 #generate a result if a private draw
                 if not bom_draw.is_shared():
                     bom_draw.toss()
+
                 mongodb.save_draw(bom_draw)
                 logger.info("Generated draw: {0}".format(bom_draw))
-                messages.error(request, _('Draw created successfully'))
+                messages.info(request, _('Draw created successfully'))
                 return redirect('retrieve_draw', draw_id=bom_draw.pk)
 
 

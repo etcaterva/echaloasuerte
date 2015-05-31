@@ -157,6 +157,36 @@ def get_draw_details(request):
         "last_updated_time" : draw.last_updated_time
         })
 
+@try_it
+def validate_draw(request):
+    """WS to validate a draw"""
+    model_name = URL_TO_DRAW_MAP[draw_type]
+    form_name = model_name + "Form"
+
+    logger.debug("Received post data: {0}".format(request.POST))
+    draw_form = globals()[form_name](request.POST)
+    if not draw_form.is_valid():
+        logger.info("Form not valid: {0}".format(draw_form.errors))
+        return JsonResponse({
+            "is_valid" : False,
+            "errors": draw_form.errors
+            })
+    else:
+        raw_draw = draw_form.cleaned_data
+        logger.debug("Form cleaned data: {0}".format(raw_draw))
+        bom_draw = globals()[model_name](**raw_draw)
+        if not bom_draw.is_feasible():
+            logger.info("Draw {0} is not feasible".format(bom_draw))
+            return JsonResponse({
+                "is_valid" : False,
+                "errors": "Not feasiible"
+                })
+        else:
+            return JsonResponse({
+                "is_valid" : True,
+                })
+
+
 @time_it
 def update_share_settings(request):
     """Updates the shared settings.
