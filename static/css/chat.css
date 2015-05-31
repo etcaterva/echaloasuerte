@@ -68,6 +68,10 @@
     background-color: #555;
 }
 
+.chat-disabled {
+    display: none;
+}
+
 @media screen and (min-width: 1440px) {
     .chat-inline {
         display: none;

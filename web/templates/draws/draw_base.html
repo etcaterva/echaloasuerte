@@ -69,7 +69,7 @@
 		$('#chat-frame').chat({
             "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
             "url_send_message": "{% url 'chat_add_message' %}",
-            "url_get_messages": "{% url 'chat_get_messages' %}",
+            "url_get_messages": "{% url 'ws_get_draw_details' %}",
             "draw_id": "{{ bom.pk }}",
             "msg_type_your_message": "{% trans 'Type your message here...' %}",
             "msg_login_first": "{% trans 'Please, login or register to be able to use the chat'%}",
@@ -79,7 +79,7 @@
         $('#chat-column').chat({
             "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
             "url_send_message": "{% url 'chat_add_message' %}",
-            "url_get_messages": "{% url 'chat_get_messages' %}",
+            "url_get_messages": "{% url 'ws_get_draw_details' %}",
             "draw_id": "{{ bom.pk }}",
             "msg_type_your_message": "{% trans 'Type your message here...' %}",
             "msg_login_first": "{% trans 'Please, login or register to be able to use the chat'%}",

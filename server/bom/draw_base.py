@@ -27,7 +27,7 @@ class BaseDraw(object):
     def __init__(self, creation_time = None, owner = None, number_of_results = 1,
                   results= None, _id = None, draw_type = None, prev_draw = None,
                   users = None, title = None, password=None, shared_type = 'None',
-                  show_in_public_list = True, last_updated_time=None):
+                  show_in_public_list = True, enable_chat = True, last_updated_time=None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -74,6 +74,8 @@ class BaseDraw(object):
         self.show_in_public_list = show_in_public_list
         """Wether or not to display the draw in the public lists of draws"""
 
+        self.enable_chat = enable_chat
+        """Wether or not to display the chat"""
 
         self.shared_type = shared_type
         '''Type of shared type. None, Public, Invite'''
@@ -91,13 +93,14 @@ class BaseDraw(object):
         if self.shared_type == "None" or self.shared_type == "":
             self.shared_type = None
 
-        @property
-        def share_settings(self):
-            return {
-                    "shared_type" : self.shared_type,
-                    "password" : bool(self, password),
-                    "show_in_public_list" : self.show_in_public_list
-                   }
+    @property
+    def share_settings(self):
+        return {
+                "shared_type" : self.shared_type,
+                "password" : bool(self.password),
+                "show_in_public_list" : self.show_in_public_list,
+                "enable_chat" : self.enable_chat
+                }
 
     def user_can_read(self, user, password=None):
         '''Checks for read access'''

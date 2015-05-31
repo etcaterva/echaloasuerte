@@ -56,11 +56,6 @@
                }
             });
 
-            // Auto refresh the chat against the server
-            (function start_auto_refresh () {
-                that.get_messages();
-                setTimeout(start_auto_refresh,5000);
-             })();
         },
 
         // Return the message from the chat input box and clean it
@@ -88,22 +83,25 @@
             });
         },
 
+        set messages(messages) {
+            var $chat = this.$element.find("#chat-board");
+            $chat.html("");
+            for (var i = 0, length = messages.length; i < length; i++) {
+                var element = messages[i];
+                var entry = this.formatChatEntry(element);
+                $chat.append(entry);
+            }
+        },
+
         // Get all the messages of a public draw and refresh the chat board
         get_messages: function (){
             var that = this;
-            var $chat = this.$element.find("#chat-board");
             $.ajax({
                 url : this.options.url_get_messages,
                 method : "GET",
                 data: { draw_id : this.options.draw_id},
                 success : function(data){
-                    $chat.html("");
-                    var arr = data.messages;
-                    for (var i = 0, length = arr.length; i < length; i++) {
-                      var element = arr[i];
-                      var entry = that.formatChatEntry(element);
-                      $chat.append(entry);
-                    }
+                    that.messages = data.messages;
                 }
             });
 
@@ -113,7 +111,7 @@
         formatChatEntry: function (chat_entry){
             var user = chat_entry.user;
             var content = chat_entry.content;
-            var time = moment(chat_entry.creation_time).fromNow();;
+            var time = moment.utc(chat_entry.creation_time).fromNow();;
             var html = '<li class="right clearfix"><span class="chat-img pull-left">' +
                 '    <img src="http://placehold.it/40/FA6F57/fff&text=' + user.toUpperCase().charAt(0) + '" alt="User Avatar" class="img-circle" />' +
                 '</span>' +
@@ -178,12 +176,14 @@
      *     CHAT PLUGIN DEFINITION
      ********************************/
     $.fn.chat = function(options) {
-        return this.each(function() {
+        var chats = []
+        this.each(function() {
             if (!$.data(this, 'plugin_' + pluginName)) {
                 $.data(this, 'plugin_' + pluginName,
-                new Chat( this, options ));
+                chats.push(new Chat( this, options )));
             }
         });
+        return chats;
     };
 })(window.jQuery, window, document );
 
