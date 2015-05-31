@@ -50,8 +50,6 @@
 
     {% if is_public %}
         PublicDrawCreator.url_index = "{% url 'publish_draw' %}"; {# index to create a public draw #}
-        PublicDrawCreator.url_draw_privacy = "{% url 'ws_public_draw_privacy' %}";
-        PublicDrawCreator.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
         PublicDrawCreator.url_try = "{% url 'ws_try_draw' %}";
         PublicDrawCreator.setup();
     {% endif %}
