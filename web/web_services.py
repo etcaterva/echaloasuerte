@@ -163,7 +163,6 @@ def validate_draw(request):
     form_name = draw_type + "Form"
 
     logger.debug("Received post data: {0}".format(request.POST))
-    asd = globals()
     draw_form = globals()[form_name](request.POST)
     if not draw_form.is_valid():
         logger.info("Form not valid: {0}".format(draw_form.errors))
