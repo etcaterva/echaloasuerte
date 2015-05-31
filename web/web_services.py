@@ -141,17 +141,21 @@ def add_message_to_chat(request):
     MONGO.add_chat_message(draw_id, message, user)
     return HttpResponse()
 
-def get_chat_messages(request):
+
+#@time_it
+def get_draw_details(request):
     draw_id = request.GET.get('draw_id')
+    draw = MONGO.retrieve_draw(draw_id)
     try:
         messages = MONGO.retrieve_chat_messages(draw_id)
     except MongoDriver.NotFoundError:
         messages = []
 
     return JsonResponse({
-        "messages" : messages
+        "messages" : messages,
+        "settings" : draw.share_settings,
+        "last_updated_time" : draw.last_updated_time
         })
-
 
 @time_it
 def update_share_settings(request):
@@ -163,13 +167,14 @@ def update_share_settings(request):
     password = request.GET.get('password')
     new_password = request.GET.get('new_password')
     shared_type = request.GET.get('shared_type')
-    enable_chat = request.GET.get('enable_chat')
-    show_in_public_list = request.GET.get('show_in_public_list')
+    enable_chat = request.GET.get('enable_chat') == "true"
+    show_in_public_list = request.GET.get('show_in_public_list') == "true"
 
     if shared_type not in ("Public", "Invite", None):
         LOG.warning("Wrong type of public draw: {0}".format(shared_type))
         return HttpResponseBadRequest()
     if draw_id is None:
+        LOG.warning("Empty draw_id")
         return HttpResponseBadRequest()
     bom_draw = MONGO.retrieve_draw(draw_id)
     user_can_write_draw(request.user, bom_draw) #raises 500
@@ -193,7 +198,7 @@ def update_share_settings(request):
 
     MONGO.save_draw(bom_draw)
     LOG.info("Draw {0} updated to {1}".format(
-        bom_draw.share_settings))
+        bom_draw.pk, bom_draw.share_settings))
     return HttpResponse()
 
 
