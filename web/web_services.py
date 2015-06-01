@@ -10,6 +10,7 @@ from django.core.exceptions import ValidationError
 from server.mongodb.driver import MongoDriver, logger
 from web.common import user_can_read_draw, user_can_write_draw, time_it
 from server.forms import *
+from server.bom import *
 
 LOG = logging.getLogger("echaloasuerte")
 MONGO = MongoDriver.instance()
@@ -158,7 +159,7 @@ def get_draw_details(request):
 
 def validate_draw(request):
     """WS to validate a draw"""
-    draw_type = request.GET.get("draw_type")
+    draw_type = request.POST.get("draw_type")
     model_name = draw_type
     form_name = draw_type + "Form"
 

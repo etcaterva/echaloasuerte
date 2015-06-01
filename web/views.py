@@ -10,6 +10,7 @@ from server.bom.dice import DiceDraw
 from server.bom.card import CardDraw
 from server.bom.user import User
 from server.mongodb.driver import MongoDriver
+from server.forms.form_base import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
@@ -167,17 +168,6 @@ def index(request, is_public=None):
         context['public_draw_step'] = 'choose'
     return render(request, 'index.html', context)
 
-URL_TO_DRAW_MAP = {
-    'coin': 'CoinDraw',
-    'dice': 'DiceDraw',
-    'card': 'CardDraw',
-    'number': 'RandomNumberDraw',
-    'item': 'RandomItemDraw',
-    'link_sets': 'LinkSetsDraw',
-}
-
-DRAW_TO_URL_MAP ={ v:k for k,v in URL_TO_DRAW_MAP.items()}
-
 #TODO:
 # - Wrap the creation of draws and form through a factory. No more global
 # - Move is_feasible to the form validation
@@ -235,7 +225,10 @@ def create_draw(request, draw_type, is_public):
         and with a POST and data attempts to create a draw. If success,
         redirects to the draw, otherwise, returns the form with the errors.
     """
-    model_name = URL_TO_DRAW_MAP[draw_type]
+    if draw_type in URL_TO_DRAW_MAP:
+        model_name = URL_TO_DRAW_MAP[draw_type]
+    else:
+        model_name = draw_type
     form_name = model_name + "Form"
     is_public = is_public == 'True'
 
