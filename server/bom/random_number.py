@@ -1,5 +1,3 @@
-from django.utils.translation import ugettext_lazy as _
-import random
 from server.bom.draw_base import *
 
 

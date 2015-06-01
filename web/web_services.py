@@ -1,13 +1,8 @@
 """definition of basic web services"""
-
-import logging
-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
-
-from server.mongodb.driver import MongoDriver, logger
+from server.mongodb.driver import MongoDriver
 from web.common import user_can_read_draw, user_can_write_draw, time_it
 from server.forms import *
 from server.bom import *

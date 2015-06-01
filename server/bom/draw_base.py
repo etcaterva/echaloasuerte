@@ -4,7 +4,6 @@ import datetime
 from abc import ABCMeta, abstractmethod
 import logging
 logger = logging.getLogger("echaloasuerte")
-import django.utils.timezone
 import pytz
 
 def get_utc_now():
