@@ -256,6 +256,9 @@
                             {%trans 'Result' %}{{results|length|pluralize}}
                             <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
                             <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                            {% if bom.audit and bom.audit.0 and bom.audit.0.datetime > result.datetime %}
+                            <i class="fa fa-exclamation-triangle" title="Warning! The draw was modified after the generation of this result."></i>
+                            {% endif %}
                         </p>
                         <div class="result">
                             {% include draw.TEMPLATE_PATH %}
