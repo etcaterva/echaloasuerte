@@ -1,7 +1,4 @@
-from django.core.mail import send_mail
 from django.contrib.auth.hashers import (check_password, make_password)
-from django.utils.translation import ugettext_lazy as _
-import random
 
 import logging
 logger = logging.getLogger("echaloasuerte")

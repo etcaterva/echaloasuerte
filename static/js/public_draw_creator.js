@@ -92,24 +92,31 @@ PublicDrawCreator.show_configure_step = function () {
     $('.step-configure').removeClass('hidden');
 };
 
-
 // Get all the messages of a public draw and refresh the chat board
-PublicDrawCreator.try_draw = function (){
-    var that = this;
-    var $chat = this.$element.find("#chat-board");
-    $.ajax({
-        url : PublicDrawCreator.url_try,
-        method : "GET",
-        data: { draw_id : this.options.draw_id},
-        success : function(data){
+PublicDrawCreator.validate = function (){
+    var form_fields = $('#draw-form').serialize();
+    form_fields += "&draw_type=" + PublicDrawCreator.draw_type;
+    $.post( PublicDrawCreator.url_validate, form_fields)
+        .done(function( data ) {
+            if (data.is_valid == true) {
+                var $form = $('#draw-form');
+                // Set the form action to create a new draw as it may be "try_draw"
+                $form.attr("action", PublicDrawCreator.url_create_public_draw);
 
-            var arr = data.messages;
-            for (var i = 0, length = arr.length; i < length; i++) {
-              var element = arr[i];
-              console.log(element);
+                // Since the form has been just validated, hide possible previous alerts
+                $('.step-configure .alert').hide();
+
+                PublicDrawCreator.show_spread_step();
+            }else{
+                var $form = $('#draw-form');
+                $form.attr("action", PublicDrawCreator.url_try);
+                $form.submit();
             }
-        }
-    });
+        })
+        .fail(function (){
+            // TODO Translate this message and show it in a better way
+            alert("Something went wrong");
+        });
 };
 
 // Initialize the interface for a public draw
@@ -121,10 +128,6 @@ PublicDrawCreator.setup = function(){
 
     PublicDrawCreator.setup_breadcrumb("configure");
 
-    $('a#next').click(function () {
-        PublicDrawCreator.show_spread_step();
-    });
-
     $('a.back-arrow').click(function () {
         var current_step = $('.breadcrumb-public-draw').attr('data-current-step');
         if (current_step == "spread"){ // If step is spread
@@ -135,13 +138,19 @@ PublicDrawCreator.setup = function(){
             if (current_step == "configure") {
                 // TODO Ask for confimation, as the process done will be lost
                 $( "#dialog" ).dialog( "open" );
-                return true; // Go to the index (href in <a> tag)
+                return true; // Go to the index (setup in href in <a> tag)
             }
         }
     });
 
-    $('a#try').click(function () {
-        PublicDrawCreator.try_draw();
+    $('#next').click(function () {
+        //PublicDrawCreator.show_spread_step();
+        PublicDrawCreator.validate();
+    });
+
+    $('#try').click(function () {
+        //PublicDrawCreator.try_draw();
+        $('#draw-form').attr("action", PublicDrawCreator.url_try);
     });
 
     // Set up confirmation dialog that will be shown if the user tries to go to the index while he is setting up a public draw

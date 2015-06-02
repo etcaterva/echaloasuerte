@@ -11,7 +11,6 @@ class RandomItemDrawForm(FormBase):
     items = forms.CharField(label=_("Items (comma separated)"), widget=forms.TextInput())
 
     DEFAULT_TITLE = _("Random Item")
-    TEMPLATE_PATH = 'snippets/draws/RandomItemDraw.html'
 
     def __init__(self, *args, **kwargs):
         if 'initial' in kwargs:

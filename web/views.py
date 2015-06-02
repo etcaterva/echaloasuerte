@@ -1,21 +1,15 @@
 from django.http import *
+from server.bom import *
 from server.forms import *
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
-from server.bom.random_item import RandomItemDraw
-from server.bom.random_number import RandomNumberDraw
-from server.bom.link_sets import LinkSetsDraw
-from server.bom.coin import CoinDraw
-from server.bom.dice import DiceDraw
-from server.bom.card import CardDraw
 from server.bom.user import User
 from server.mongodb.driver import MongoDriver
+from server.forms.form_base import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.shortcuts import redirect
 from django.core.mail import send_mail
-from django.core.exceptions import ValidationError
 from django.contrib import messages
 from web.common import user_can_read_draw, user_can_write_draw, time_it
 import logging
@@ -167,17 +161,6 @@ def index(request, is_public=None):
         context['public_draw_step'] = 'choose'
     return render(request, 'index.html', context)
 
-URL_TO_DRAW_MAP = {
-    'coin': 'CoinDraw',
-    'dice': 'DiceDraw',
-    'card': 'CardDraw',
-    'number': 'RandomNumberDraw',
-    'item': 'RandomItemDraw',
-    'link_sets': 'LinkSetsDraw',
-}
-
-DRAW_TO_URL_MAP ={ v:k for k,v in URL_TO_DRAW_MAP.items()}
-
 #TODO:
 # - Wrap the creation of draws and form through a factory. No more global
 # - Move is_feasible to the form validation
@@ -200,7 +183,7 @@ def toss_draw(request):
 
 
 @time_it
-def validate_draw(request, draw_type):
+def try_draw(request, draw_type):
     """validate the draw
     if request.POST contains "try_draw", generates a result
     """
@@ -222,10 +205,8 @@ def validate_draw(request, draw_type):
             messages.error(request, _('The draw is not feasible'))
             return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name })
         else:
-            if request.POST.get("try_draw"):
-                bom_draw.toss()
-
-            return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name })
+            bom_draw.toss()
+            return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name, "bom": bom_draw})
 
 @time_it
 def create_draw(request, draw_type, is_public):
@@ -237,6 +218,7 @@ def create_draw(request, draw_type, is_public):
         and with a POST and data attempts to create a draw. If success,
         redirects to the draw, otherwise, returns the form with the errors.
     """
+
     model_name = URL_TO_DRAW_MAP[draw_type]
     form_name = model_name + "Form"
     is_public = is_public == 'True'

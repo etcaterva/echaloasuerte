@@ -1,16 +1,11 @@
 """definition of basic web services"""
-
-import logging
-
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest, JsonResponse, \
-                        HttpResponse
+from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
-
 from server.mongodb.driver import MongoDriver
 from web.common import user_can_read_draw, user_can_write_draw, time_it
-
+from server.forms import *
+from server.bom import *
 
 LOG = logging.getLogger("echaloasuerte")
 MONGO = MongoDriver.instance()
@@ -160,8 +155,9 @@ def get_draw_details(request):
 @time_it
 def validate_draw(request):
     """WS to validate a draw"""
-    model_name = URL_TO_DRAW_MAP[draw_type]
-    form_name = model_name + "Form"
+    draw_type = request.POST.get("draw_type")
+    model_name = draw_type
+    form_name = draw_type + "Form"
 
     logger.debug("Received post data: {0}".format(request.POST))
     draw_form = globals()[form_name](request.POST)
