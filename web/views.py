@@ -1,22 +1,15 @@
 from django.http import *
+from server.bom import *
 from server.forms import *
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
-from server.bom.random_item import RandomItemDraw
-from server.bom.random_number import RandomNumberDraw
-from server.bom.link_sets import LinkSetsDraw
-from server.bom.coin import CoinDraw
-from server.bom.dice import DiceDraw
-from server.bom.card import CardDraw
 from server.bom.user import User
 from server.mongodb.driver import MongoDriver
 from server.forms.form_base import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.shortcuts import redirect
 from django.core.mail import send_mail
-from django.core.exceptions import ValidationError
 from django.contrib import messages
 from web.common import user_can_read_draw, user_can_write_draw, time_it
 import logging
