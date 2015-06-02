@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% block title %}{{ bom.title|default:bom.DEFAULT_TITLE }} | {% endblock title %}
+{% block title %}{{ bom.title }} | {% endblock title %}
 {#
     MAKE THE EDITION OF SHARE CONFIG WORK
     CLEANUP
@@ -46,7 +46,7 @@
     autosize = function(){
         var max_width = $("#draw-title-container").width()*2/3;
         $("textarea.autogrow").width(max_width);
-        $("textarea.autogrow").autoGrowInput({title:'{{ bom.title|default:bom.DEFAULT_TITLE }}',maxWidth: max_width,minWidth:30,comfortZone:30});
+        $("textarea.autogrow").autoGrowInput({title:'{{ bom.title }}',maxWidth: max_width,minWidth:30,comfortZone:30});
     };
 
     // Autosize the title box the first time
@@ -207,7 +207,7 @@
                     </a>
             {% endif %}
             <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
-                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title|default:bom.DEFAULT_TITLE }}</textarea>
+                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title }}</textarea>
             </div>
         </div>
         <!-- End Draw Heading -->
