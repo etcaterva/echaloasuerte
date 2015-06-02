@@ -159,3 +159,8 @@ a.fa:focus {
     -ms-user-select: none;
     user-select: none;
 }
+
+/* When trying a public draw, the results tag seemed to be not centered */
+#header-try-result {
+    padding-right: 30px;
+}
