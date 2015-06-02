@@ -302,12 +302,13 @@ def update_draw(request, draw_id):
             messages.error(request, _('Invalid values provided'))
             return render(request, template_path, {"draw" : draw_form})
         else:
+            bom_draw = prev_bom_draw
             raw_draw = draw_form.cleaned_data
             logger.debug("Form cleaned data: {0}".format(raw_draw))
-            # Create a draw object with the data coming in the POST
+            # update the draw with the data comming from the POST
+            for key, value in raw_draw.iteritems():
+                setattr(bom_draw, key, value)
             bom_draw = globals()[model_name](**raw_draw)
-            bom_draw._id = None #Ensure we create a new draw
-            bom_draw.prev_draw = prev_bom_draw.pk
             if not bom_draw.is_feasible(): # This should actually go in the form validation
                 logger.info("Draw {0} is not feasible".format(bom_draw))
                 messages.error(request, _('The draw is not feasible'))
