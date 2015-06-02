@@ -18,8 +18,9 @@ class BaseDraw(object):
 
     def __init__(self, creation_time = None, owner = None, number_of_results = 1,
                   results= None, _id = None, draw_type = None, prev_draw = None,
-                  users = None, title = None, password=None, shared_type = 'None',
-                  show_in_public_list = True, enable_chat = True, last_updated_time=None):
+                  users = None, title = None, password=None, shared_type = None,
+                  show_in_public_list = True, enable_chat = True, last_updated_time=None,
+                  audit = None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -38,13 +39,8 @@ class BaseDraw(object):
         self.creation_time = creation_time if creation_time is not None else datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
         """Time the draw was created"""
 
-        if self.creation_time.tzinfo is None:
-            self.creation_time.replace(tzinfo=pytz.utc)
-
         self.last_updated_time = last_updated_time if last_updated_time else self.creation_time
         """last time this draw was updated"""
-        if self.last_updated_time.tzinfo is None:
-            self.last_updated_time.replace(tzinfo=pytz.utc)
 
         self.prev_draw = prev_draw
         """Id of the prev draw that was modified creating this one"""
@@ -58,11 +54,9 @@ class BaseDraw(object):
         self.password = password
         """Password of the public draw"""
 
-        if draw_type and draw_type != self.draw_type:
-            logger.warning("A draw was built with type {0} but type {1} was passed as argument! Fix it!".format(draw_type,self.draw_type))
+        self.audit = audit if audit is not None else []
+        """List of changes in the draw main config"""
 
-        #if self.title is None:
-        #    logger.warning("Draw with id {0} and type {1} have no title".format(self._id,str(type(self).__name__)))
         self.show_in_public_list = show_in_public_list
         """Wether or not to display the draw in the public lists of draws"""
 
@@ -84,6 +78,14 @@ class BaseDraw(object):
         #TODO: remove me in the future, PLEASE
         if self.shared_type == "None" or self.shared_type == "":
             self.shared_type = None
+        if draw_type and draw_type != self.draw_type:
+            logger.warning("A draw was built with type {0} but type {1} was "
+                           "passed as argument! Fix it!".format(
+                               draw_type, self.draw_type))
+        if self.last_updated_time.tzinfo is None:
+            self.last_updated_time.replace(tzinfo=pytz.utc)
+        if self.creation_time.tzinfo is None:
+            self.creation_time.replace(tzinfo=pytz.utc)
 
     @property
     def pk(self):
@@ -103,7 +105,7 @@ class BaseDraw(object):
 
     def user_can_read(self, user, password=None):
         '''Checks for read access'''
-        if self.shared_type is None or self.shared_type == 'None':
+        if self.shared_type is None:
             #Only owner can access
             return self.user_can_write(user)
         else:
@@ -134,6 +136,13 @@ class BaseDraw(object):
         """updated the last_updated_time of the draw to now"""
         self.last_updated_time = get_utc_now()
 
+    def add_audit(self, message):
+        """Adds an audit message for the modification of a draw"""
+        self.audit.append({
+            "message": message,
+            "datetime": get_utc_now()
+        })
+        self.mark_updated()
 
     def toss(self):
         result = {"datetime": get_utc_now(), "items": self.generate_result()}
