@@ -246,7 +246,7 @@
     <!-- End Chat -->
 
     <!-- Results -->
-    {% if bom.results or bom.prev_draw  %}
+    {% if bom.resultsw  %}
         <div class="col-sm-8 col-sm-offset-2">
             <div class="row text-center accordion">
                 {% for result in bom.results reversed %}
@@ -263,14 +263,6 @@
                     {% endif %}
                 {% endwith %}
                 {% endfor %}
-                <!-- Previous draw -->
-                {% if bom.prev_draw %}
-                    <p class="h3">{%trans 'Results' %}<small>{%trans ' generated before '%}</small></p>
-                    <div >
-                        {%trans 'The configuration of the draw was changed.'%}<br/>
-                        {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
-                    </div>
-                {% endif %}
             </div>
         </div>
     {% endif %}

@@ -157,7 +157,7 @@ def get_draw_details(request):
         "last_updated_time" : draw.last_updated_time
         })
 
-@try_it
+@time_it
 def validate_draw(request):
     """WS to validate a draw"""
     model_name = URL_TO_DRAW_MAP[draw_type]
