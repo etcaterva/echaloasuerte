@@ -194,7 +194,7 @@ def try_draw(request, draw_type):
     """validate the draw
     if request.POST contains "try_draw", generates a result
     """
-    model_name = draw_type
+    model_name = URL_TO_DRAW_MAP[draw_type]
     form_name = model_name + "Form"
 
     logger.debug("Received post data: {0}".format(request.POST))
@@ -225,10 +225,8 @@ def create_draw(request, draw_type, is_public):
         and with a POST and data attempts to create a draw. If success,
         redirects to the draw, otherwise, returns the form with the errors.
     """
-    if draw_type in URL_TO_DRAW_MAP:
-        model_name = URL_TO_DRAW_MAP[draw_type]
-    else:
-        model_name = draw_type
+
+    model_name = URL_TO_DRAW_MAP[draw_type]
     form_name = model_name + "Form"
     is_public = is_public == 'True'
 

@@ -32,7 +32,7 @@ class FormBase(forms.Form):
     '''User invited to the draw, in case of been public. It needs to be rendered manually in the templates'''
 
     TEMPLATE_PATH = None
-    SUBMIT_URL = None
+    NAME_IN_URL = None
 
     def __init__(self, *args, **kwargs):
         if 'initial' in kwargs:
@@ -43,7 +43,7 @@ class FormBase(forms.Form):
         model_name = form_name[:-4]
         name_in_url = DRAW_TO_URL_MAP[model_name]
         self.TEMPLATE_PATH = 'snippets/draws/' + model_name + '.html'
-        self.SUBMIT_URL = reverse('create_public_draw',  kwargs={'draw_type': name_in_url})
+        self.NAME_IN_URL = name_in_url
 
         self.helper = FormHelper()
         self.helper.form_tag = False
