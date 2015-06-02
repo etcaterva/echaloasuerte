@@ -313,6 +313,7 @@ def update_draw(request, draw_id):
                 messages.error(request, _('The draw is not feasible'))
                 return render(request, template_path,{"draw" : draw_form })
             else:
+                bom_draw.add_audit("DRAW_PARAMETERS")
                 mongodb.save_draw(bom_draw)
                 logger.info("Generated draw: {0}".format(bom_draw))
                 messages.error(request, _('Draw updated successfully'))

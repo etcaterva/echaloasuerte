@@ -55,7 +55,7 @@ class BaseDraw(object):
         """Password of the public draw"""
 
         self.audit = audit if audit is not None else []
-        """List of changes in the draw main config"""
+        """List of changes in the draw main config, user add_audit to add items"""
 
         self.show_in_public_list = show_in_public_list
         """Wether or not to display the draw in the public lists of draws"""
@@ -136,10 +136,14 @@ class BaseDraw(object):
         """updated the last_updated_time of the draw to now"""
         self.last_updated_time = get_utc_now()
 
-    def add_audit(self, message):
-        """Adds an audit message for the modification of a draw"""
+    def add_audit(self, type_):
+        """Adds an audit message for the modification of a draw
+        the type of audits are:
+        SETTINGS_CONFIG: Something changed related to the config of the draw
+        DRAW_PARAMETERS: one or more of the basic parameters of the draw changed
+        """
         self.audit.append({
-            "message": message,
+            "type": type_,
             "datetime": get_utc_now()
         })
         self.mark_updated()
