@@ -269,38 +269,33 @@ def update_draw(request, draw_id):
     prev_bom_draw = mongodb.retrieve_draw(draw_id)
     model_name = prev_bom_draw.draw_type
     form_name = model_name + "Form"
-    user_can_write_draw(request.user, prev_bom_draw,request.GET.get("password"))
-    template_path = 'draws/{0}.html'.format(model_name)
+    user_can_write_draw(request.user, prev_bom_draw)
 
-    if request.method == 'GET':
-        logger.debug("Serving view to update a draw")
-        draw_form = globals()[form_name](initial=prev_bom_draw.__dict__)
-        return render(request, template_path, {"draw": draw_form})
+    logger.debug("Received post data: {0}".format(request.POST))
+    draw_form = globals()[form_name](request.POST)
+    if not draw_form.is_valid():
+        logger.info("Form not valid: {0}".format(draw_form.errors))
+        messages.error(request, _('Invalid values provided'))
+        return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": prev_bom_draw})
     else:
-        logger.debug("Received post data: {0}".format(request.POST))
-        draw_form = globals()[form_name](request.POST)
-        if not draw_form.is_valid():
-            logger.info("Form not valid: {0}".format(draw_form.errors))
-            messages.error(request, _('Invalid values provided'))
-            return render(request, template_path, {"draw" : draw_form})
-        else:
-            bom_draw = prev_bom_draw
-            raw_draw = draw_form.cleaned_data
-            logger.debug("Form cleaned data: {0}".format(raw_draw))
-            # update the draw with the data comming from the POST
-            for key, value in raw_draw.iteritems():
+        bom_draw = prev_bom_draw
+        raw_draw = draw_form.cleaned_data
+        logger.debug("Form cleaned data: {0}".format(raw_draw))
+        # update the draw with the data comming from the POST
+        for key, value in raw_draw.iteritems():
+            if key not in ("_id", "pk") and value != "":
                 setattr(bom_draw, key, value)
-            bom_draw = globals()[model_name](**raw_draw)
-            if not bom_draw.is_feasible(): # This should actually go in the form validation
-                logger.info("Draw {0} is not feasible".format(bom_draw))
-                messages.error(request, _('The draw is not feasible'))
-                return render(request, template_path,{"draw" : draw_form })
-            else:
-                bom_draw.add_audit("DRAW_PARAMETERS")
-                mongodb.save_draw(bom_draw)
-                logger.info("Generated draw: {0}".format(bom_draw))
-                messages.error(request, _('Draw updated successfully'))
-                return redirect('retrieve_draw', draw_id=bom_draw.pk)
+        if not bom_draw.is_feasible(): # This should actually go in the form validation
+            logger.info("Draw {0} is not feasible".format(bom_draw))
+            messages.error(request, _('The draw is not feasible'))
+            draw_form = globals()[form_name](initial=bom_draw.__dict__)
+            return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
+        else:
+            bom_draw.add_audit("DRAW_PARAMETERS")
+            mongodb.save_draw(bom_draw)
+            logger.info("Updated draw: {0}".format(bom_draw))
+            messages.error(request, _('Draw updated successfully'))
+            return redirect('retrieve_draw', draw_id=bom_draw.pk)
 
 
 @time_it

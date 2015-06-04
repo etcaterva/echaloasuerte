@@ -168,6 +168,10 @@
             alert("{% trans 'There was an issue when tossing the draw :(' %}");
         });
     });
+    $("#edit-draw-save").click( function() {
+        $("#draw-form").attr("action", "{% url 'update_draw' draw_id=bom.pk %}");
+        $("#draw-form").submit();
+    });
 
 
     $('.tokenfield').tokenfield({createTokensOnBlur:true});
@@ -175,7 +179,7 @@
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
     {% include "snippets/snippet_breadcrumb.html" %}
-    <form class="clearfix" method="post">
+    <form class="clearfix" method="post" id="draw-form">
         <!-- Draw Heading -->
         <div class="clearfix draw-heading">
             <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
@@ -227,6 +231,11 @@
                 <div class="row btn-row">
                     {%if not bom.owner or bom.owner == user.pk %}
                         <button id="toss-button" type="button" class="btn btn-success">{% trans 'Toss' %}</button>
+                        {# Buttons to save changes when editing an already published public draw #}
+                        <div id="edit-draw-save-changes" class="hide">
+                            <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
+                            <button type="button" id="edit-draw-save" class="col-xs-6 btn btn-primary">{% trans 'Save changes' %}</button>
+                        </div>
                     {%else%}
                         <button id="toss-disabled-button" type="button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</button>
                         <div class="alert alert-warning alert-dismissible" role="alert">
