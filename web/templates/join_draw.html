@@ -160,7 +160,7 @@
                             {%endif%}
                         {%endif%}
                     </td>
-                    <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
+                    <td>{{ d.title }}</td>
                     <td>{% if user.is_authenticated and d.owner == user.pk %} {% trans "Me" %} {% else %}{{ d.owner|default:"" }} {% endif %}</td>
                     <td>{{ d.creation_time|naturaltime}}</td>
                     <td>{{ d.users|length }}</td>
