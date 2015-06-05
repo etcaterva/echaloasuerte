@@ -18,6 +18,7 @@ urlpatterns += patterns(
 
     url(r'^about.html$', TemplateView.as_view(template_name='about.html'), name="about"),
     url(r'^draw/(?P<draw_id>[0-9a-g]+)/$', views.display_draw, name="retrieve_draw"),
+    url(r'^draw/(?P<draw_id>[0-9a-g]+)/update/$', views.update_draw, name="update_draw"),
     url(r'^draw/new/(?P<draw_type>[^/]+)/public/$', views.create_draw, {'is_public': "True"}, name="create_public_draw"),
     url(r'^draw/new/(?P<draw_type>[^/]+)/$', views.create_draw, {'is_public': "False"}, name="create_draw"),
     url(r'^draw/try/(?P<draw_type>[^/]+)/$', views.try_draw, name="try_draw"),

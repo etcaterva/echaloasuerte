@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% block title %}{{ bom.title|default:bom.DEFAULT_TITLE }} | {% endblock title %}
+{% block title %}{{ bom.title }} | {% endblock title %}
 {#
     MAKE THE EDITION OF SHARE CONFIG WORK
     CLEANUP
@@ -46,7 +46,7 @@
     autosize = function(){
         var max_width = $("#draw-title-container").width()*2/3;
         $("textarea.autogrow").width(max_width);
-        $("textarea.autogrow").autoGrowInput({title:'{{ bom.title|default:bom.DEFAULT_TITLE }}',maxWidth: max_width,minWidth:30,comfortZone:30});
+        $("textarea.autogrow").autoGrowInput({title:'{{ bom.title }}',maxWidth: max_width,minWidth:30,comfortZone:30});
     };
 
     // Autosize the title box the first time
@@ -168,6 +168,10 @@
             alert("{% trans 'There was an issue when tossing the draw :(' %}");
         });
     });
+    $("#edit-draw-save").click( function() {
+        $("#draw-form").attr("action", "{% url 'update_draw' draw_id=bom.pk %}");
+        $("#draw-form").submit();
+    });
 
 
     $('.tokenfield').tokenfield({createTokensOnBlur:true});
@@ -175,7 +179,7 @@
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
     {% include "snippets/snippet_breadcrumb.html" %}
-    <form class="clearfix" method="post">
+    <form class="clearfix" method="post" id="draw-form">
         <!-- Draw Heading -->
         <div class="clearfix draw-heading">
             <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
@@ -207,7 +211,7 @@
                     </a>
             {% endif %}
             <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
-                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title|default:bom.DEFAULT_TITLE }}</textarea>
+                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title }}</textarea>
             </div>
         </div>
         <!-- End Draw Heading -->
@@ -227,6 +231,11 @@
                 <div class="row btn-row">
                     {%if not bom.owner or bom.owner == user.pk %}
                         <button id="toss-button" type="button" class="btn btn-success">{% trans 'Toss' %}</button>
+                        {# Buttons to save changes when editing an already published public draw #}
+                        <div id="edit-draw-save-changes" class="hide">
+                            <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
+                            <button type="button" id="edit-draw-save" class="col-xs-6 btn btn-primary">{% trans 'Save changes' %}</button>
+                        </div>
                     {%else%}
                         <button id="toss-disabled-button" type="button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</button>
                         <div class="alert alert-warning alert-dismissible" role="alert">
@@ -246,7 +255,7 @@
     <!-- End Chat -->
 
     <!-- Results -->
-    {% if bom.results or bom.prev_draw  %}
+    {% if bom.results  %}
         <div class="col-sm-8 col-sm-offset-2">
             <div class="row text-center accordion">
                 {% for result in bom.results reversed %}
@@ -256,6 +265,9 @@
                             {%trans 'Result' %}{{results|length|pluralize}}
                             <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
                             <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                            {% if bom.audit and bom.audit.0 and bom.audit.0.datetime > result.datetime %}
+                            <i class="fa fa-exclamation-triangle" title="Warning! The draw was modified after the generation of this result."></i>
+                            {% endif %}
                         </p>
                         <div class="result">
                             {% include draw.TEMPLATE_PATH %}
@@ -263,14 +275,6 @@
                     {% endif %}
                 {% endwith %}
                 {% endfor %}
-                <!-- Previous draw -->
-                {% if bom.prev_draw %}
-                    <p class="h3">{%trans 'Results' %}<small>{%trans ' generated before '%}</small></p>
-                    <div >
-                        {%trans 'The configuration of the draw was changed.'%}<br/>
-                        {%trans 'This is the previous version: '%}<a href="{%url 'retrieve_draw' draw_id=bom.prev_draw %}">{{ bom.DEFAULT_TITLE }}</a>
-                    </div>
-                {% endif %}
             </div>
         </div>
     {% endif %}
