@@ -10,9 +10,6 @@ urlpatterns += patterns(
     '',
     url(r'^$', views.index, name='index'),
 
-    url(r'^draw/(?P<draw_type>[a-zA-Z_]+)/(?P<publish>publish)?$', views.draw, name="draw"),
-    url(r'^draw/(?P<draw_type>[a-zA-Z_]+)/(?P<draw_id>[0-9a-g]+)?$', views.draw, name="draw"),
-
     url(r'^publish_draw.html$', views.index, {'is_public': True}, name="publish_draw"),
     url(r'^join_draw.html$', views.join_draw, name="join_public_draw"),
 
