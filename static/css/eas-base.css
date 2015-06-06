@@ -118,8 +118,8 @@ div.alert {
         .side-collapse {
             background-color: #E5E5E5 !important;
             white-space: nowrap;  /* One line text */
-            top:62px;
-            right:16px;
+            top:65px;
+            right:0;
             width:200px;
             position:fixed;
             overflow:hidden;
