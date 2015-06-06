@@ -157,7 +157,7 @@
 {% endblock extra_jq_ready %}
 
 {% block content %}
-        {%if public_draws %}<p class="h1 text-center">{% trans "Public draws" %}</p>
+    {%if public_draws %}<p class="h1 text-center">{% trans "Public draws" %}</p>
         <table id="public-draws" class="draw-list data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
@@ -191,7 +191,7 @@
             {% endfor %}
             </tbody>
         </table>
-        {% endif %}
+    {% endif %}
     <div id="password-dialog" title="{% trans "This draw is protected" %}">
         <p>{% trans "Type the password to access the draw" %}</p>
         <form autocomplete="off">
