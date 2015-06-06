@@ -59,6 +59,11 @@ body {
     bottom: 100% !important;
 }
 
+/* Language select in XS sizes */
+#language-selector {
+    color: #6F6F6F;
+}
+
 
 
 body.background {
