@@ -372,7 +372,7 @@ span.DataTables_sort_icon {
     color: #333333 !important;
     border: 1px solid transparent;
     border-radius: 6px;
-    background: #b7cc9b url(" ") 50% 100% repeat-x;
+    background: #b7cc9b url("images/ui-bg_glass_75_b7cc9b_1x400.png") 50% 100% repeat-x;
 }
 
 .dataTables_wrapper .dataTables_paginate .fg-button.ui-state-disabled {
