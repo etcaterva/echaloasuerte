@@ -282,7 +282,7 @@ def update_draw(request, draw_id):
         raw_draw = draw_form.cleaned_data
         logger.debug("Form cleaned data: {0}".format(raw_draw))
         # update the draw with the data comming from the POST
-        for key, value in raw_draw.iteritems():
+        for key, value in raw_draw.items():
             if key not in ("_id", "pk") and value != "":
                 setattr(bom_draw, key, value)
         if not bom_draw.is_feasible(): # This should actually go in the form validation
