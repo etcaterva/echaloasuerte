@@ -13,7 +13,7 @@ DECKS_CHOICES = (('french', _("French")),
 
 class CardDrawForm(FormBase):
     number_of_results = forms.IntegerField(label=_("Number of cards to draw"), required=True, initial=1, max_value=20)
-    type_of_deck = forms.ChoiceField(required=True, initial="french", choices=DECKS_CHOICES)
+    #type_of_deck = forms.ChoiceField(required=True, initial="french", choices=DECKS_CHOICES)
 
     DEFAULT_TITLE = _("Draw a Card")
 
@@ -22,14 +22,14 @@ class CardDrawForm(FormBase):
 
         # Add "protected" class to the input that will be read-only when the draw is public
         self.fields['number_of_results'].widget.attrs.update({'class': 'protected'})
-        self.fields['type_of_deck'].widget.attrs.update({'class': 'protected'})
+        #self.fields['type_of_deck'].widget.attrs.update({'class': 'protected'})
 
         self.helper.label_class = 'col-xs-7 text-right'
         self.helper.field_class = 'col-xs-5'
         self.helper.layout = Layout(
             Row(
                 'number_of_results',
-                'type_of_deck',
+                #'type_of_deck',
             ),
         )
 
