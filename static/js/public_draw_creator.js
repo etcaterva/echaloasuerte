@@ -128,6 +128,9 @@ PublicDrawCreator.setup = function(){
 
     PublicDrawCreator.setup_breadcrumb("configure");
 
+    // Initialize the shared_type field to Public
+    $('input#id_shared_type').val("Public");
+
     $('a.back-arrow').click(function () {
         var current_step = $('.breadcrumb-public-draw').attr('data-current-step');
         if (current_step == "spread"){ // If step is spread
