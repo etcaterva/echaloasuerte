@@ -56,6 +56,7 @@
             $search_input.addClass("form-control");
             $search_input.prop("id","public-draw-search" );
             $search_input.prop("placeholder",this.options.msg_search );
+            $search_input.parent().addClass("col-xs-12");
             $search_input.wrap( "<div class='input-group'></div>" );
             $search_input.after("<span class='input-group-btn'><button class='btn btn-default' type='button'><span class='fa fa-search'></span></button></span>");
         }

@@ -355,7 +355,7 @@ span.DataTables_sort_icon {
 
 .dataTables_wrapper .ui-toolbar {
     padding: 8px;
-    background: #cccccc url('images/ui-bg_highlight-soft_75_d5e6cd_1x100.png') 50% 50% repeat-x;
+    background: #EBF2E1 url('images/ui-bg_highlight-soft_75_d5e6cd_1x100.png') 50% 50% repeat-x;
 }
 
 .dataTables_wrapper .dataTables_paginate .fg-button {
@@ -372,13 +372,13 @@ span.DataTables_sort_icon {
     color: #333333 !important;
     border: 1px solid transparent;
     border-radius: 6px;
-    background: #b7cc9b url("http://download.jqueryui.com/themeroller/images/ui-bg_glass_75_b7cc9b_1x400.png") 50% 100% repeat-x;
+    background: #b7cc9b url(" ") 50% 100% repeat-x;
 }
 
 .dataTables_wrapper .dataTables_paginate .fg-button.ui-state-disabled {
 	opacity: 1;
 	filter:Alpha(Opacity=100); /* support: IE8 */
-	background: #b7cc9b url("http://download.jqueryui.com/themeroller/images/ui-bg_glass_75_b7cc9b_1x400.png") 50% 50% repeat-x !important;
+	background: #b7cc9b url("images/ui-bg_glass_75_b7cc9b_1x400.png") 50% 50% repeat-x !important;
 }
 
 .dataTables_wrapper .dataTables_info {
