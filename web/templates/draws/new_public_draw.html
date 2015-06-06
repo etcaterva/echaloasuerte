@@ -57,7 +57,7 @@
     $('.accordion').accordion({collapsible: true});
 
     {% if is_public %}
-        PublicDraw.setup("{{ public_draw_step }}");
+        PublicDraw.setup("choose");
     {% endif %}
 {% endblock extra_jq_ready %}
 {% block content %}
@@ -77,7 +77,6 @@
         </div>
         <!-- End Draw Heading -->
         {% if is_public %}
-            {#% if public_draw_step == "configure" or public_draw_step == "spread" %#}
                 <!-- Inputs to configure the public draw, only rendered for configure and spread steps -->
                 <div class="step-spread col-xs-12">
                     <div class="public-draw-restriction col-xs-12 col-md-8 col-md-offset-2">
@@ -104,7 +103,6 @@
                         </p>
                     </div>
                 </div>
-            {#% endif %#}
         {% endif %}
 
         <div class="col-sm-8 col-sm-offset-2">
@@ -167,7 +165,6 @@
 
     {% if is_public %}
         {# Render the Modal panels options in public draws #}
-        {#% if public_draw_step %} {# If user is creating the draw #}
             {# Hover panel to change the lever of restriction of the public draw (when setting it up) #}
             <div id="access-level" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
                 <div class="modal-header">

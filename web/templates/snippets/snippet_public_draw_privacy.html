@@ -4,9 +4,6 @@ It renders the UI to modify the level of privacy of a public draw. There are thr
     - Everyone
     - With password or invitation
     - Only with invitation
-
-It doesn't receive any parameter. Nevertheless, the variable public_draw_step is used once to customize feedback
-depending on the situation. The variable public_draw_step only exists during the process of creation of a public draw.
 {% endcomment %}
 
 {% load i18n %}
@@ -48,11 +45,7 @@ depending on the situation. The variable public_draw_step only exists during the
                 </div>
             </div>
             <div id="extra-invited" class="col-xs-12">
-                {% if public_draw_step %}
-                    {% trans "You will be able to invite people by email when the draw is created." %}
-                {% else %}
                     {% trans "You can invite people from the settings panel." %}
-                {% endif %}
                 <div class="alert alert-info" role="alert">
                     {% trans "Tip: Use this mode for small/medium groups where you know well who do you want to join the draw." %}
                 </div>
