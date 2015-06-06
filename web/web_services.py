@@ -229,29 +229,3 @@ def update_share_settings(request):
     return HttpResponse()
 
 
-
-@login_required
-@time_it
-def change_privacy_public_draw(request):
-    #TODO: REMOVE
-    draw_id = request.GET.get('draw_id')
-    shared_type = request.GET.get('shared_type')
-    password = request.GET.get('password')
-
-    if draw_id is None:
-        return HttpResponseBadRequest()
-
-    bom_draw = MONGO.retrieve_draw(draw_id)
-
-    if shared_type == "Public" or shared_type == "Invite":
-        bom_draw.shared_type = shared_type
-        bom_draw.password = password
-        MONGO.save_draw(bom_draw)
-        LOG.info("The type of the public draw {0} has changed to {1}".format(
-            draw_id, shared_type))
-        return HttpResponse()
-    else:
-        LOG.warning("Wrong type of public draw: {0}".format(shared_type))
-        return HttpResponseBadRequest()
-
-

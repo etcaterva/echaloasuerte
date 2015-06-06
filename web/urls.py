@@ -30,13 +30,12 @@ urlpatterns += patterns(
     url(r'^ws/draw/validate/$', ws.validate_draw, name="ws_validate_draw"),
     url(r'^ws/draw/share_settings/update/$', ws.update_share_settings, name="ws_update_share_settings"),
     url(r'^ws/chat/details/$', ws.get_draw_details, name="ws_get_draw_details"),
+    url(r'^ws/favourites/add/$', ws.add_favorite, name="ws_add_favorite"),
+    url(r'^ws/chat/add/$', ws.add_message_to_chat, name="chat_add_message"),
 
     url(r'^ws/draw_add_users/$', ws.add_user_to_draw, name="ws_add_users_to_draw"),
-    url(r'^ws/public_draw_privacy/$', ws.change_privacy_public_draw, name="ws_public_draw_privacy"),
-    url(r'^ws/favourites/add/$', ws.add_favorite, name="ws_add_favorite"),
     url(r'^ws/favourites/remove/$', ws.remove_favorite, name="ws_remove_favorite"),
     url(r'^ws/check_access_to_draw/$', ws.check_access_to_draw, name="check_access_to_draw"),
-    url(r'^ws/chat/add/$', ws.add_message_to_chat, name="chat_add_message"),
 )
 
 urlpatterns += staticfiles_urlpatterns()
