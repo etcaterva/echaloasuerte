@@ -279,6 +279,15 @@ ul.nav.navbar-nav {
     border-bottom: 1px #E7E7E7 solid;
 }
 
+#public-draw-dropdown .dropdown-menu a{
+      padding: 7px 10px;
+}
+
+#public-draw-dropdown .dropdown-menu .nav-divider {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
 
 
 .breadcrumb-public-draw .cancel {

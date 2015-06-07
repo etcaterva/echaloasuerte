@@ -167,9 +167,11 @@
 
 
                     <!-- Public draw options -->
-                    <li class="visible-xs"><a class="public-draw-join" href="{% url 'join_public_draw' %}">{% trans "Join public draw" %}</a></li>
+                    <li class="visible-xs">
+                        <a class="public-draw-join" href="{% url 'join_public_draw' %}"><span class="fa fa-share" aria-hidden="true"></span> {% trans "Join public draw" %}</a>
+                    </li>
                     <li class="nav-divider visible-xs"></li>
-                    <li class="visible-xs"><a class="public-draw-create" href="{% url 'publish_draw' %}">{% trans "Create public draw" %}</a></li>
+                    <li class="visible-xs"><a class="public-draw-create" href="{% url 'publish_draw' %}"><span class="fa fa-rocket" aria-hidden="true"></span> {% trans "Create public draw" %}</a></li>
                     <li id="public-draw-dropdown" class="hidden-xs dropdown">
                         <a id="public-draw" href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <span class="fa fa-globe" aria-hidden="true"></span>
@@ -177,9 +179,11 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a class="public-draw-join" href="{% url 'join_public_draw' %}">{% trans "Join public draw" %}</a></li>
+                            <li>
+                                <a class="public-draw-join" href="{% url 'join_public_draw' %}"><span class="fa fa-share" aria-hidden="true"></span> {% trans "Join public draw" %}</a>
+                            </li>
                             <li class="nav-divider"></li>
-                            <li><a class="public-draw-create" href="{% url 'publish_draw' %}">{% trans "Create public draw" %}</a></li>
+                            <li><a class="public-draw-create" href="{% url 'publish_draw' %}"><span class="fa fa-rocket" aria-hidden="true"></span> {% trans "Create public draw" %}</a></li>
                         </ul>
                     </li>
 
