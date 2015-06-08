@@ -254,6 +254,10 @@ def update_draw(request, draw_id):
             return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
         else:
             bom_draw.add_audit("DRAW_PARAMETERS")
+            #generate a result if a private draw
+            if not bom_draw.is_shared():
+                bom_draw.toss()
+
             mongodb.save_draw(bom_draw)
             logger.info("Updated draw: {0}".format(bom_draw))
             messages.error(request, _('Draw updated successfully'))
