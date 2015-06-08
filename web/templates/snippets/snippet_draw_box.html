@@ -9,7 +9,7 @@
         - help
 {% endcomment %}
 
-<a class="draw-link" {% if is_public == 'True'%}
+<a class="draw-link" {% if is_public%}
                         href="{% url 'create_public_draw' draw_type=draw_type%}">
                     {% else %}
                         href="{% url 'create_draw' draw_type=draw_type%}">
