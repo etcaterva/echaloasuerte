@@ -183,7 +183,7 @@ def create_draw(request, draw_type, is_public):
 
     model_name = URL_TO_DRAW_MAP[draw_type]
     form_name = model_name + "Form"
-    is_public = is_public == 'True'
+    is_public = is_public or is_public == 'True'
 
     if request.method == 'GET':
         logger.debug("Serving view to create a draw. Form: {0}".format(form_name))
