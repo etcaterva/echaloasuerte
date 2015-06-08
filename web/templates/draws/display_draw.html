@@ -153,10 +153,19 @@
             setTimeout(get_draw_details,2000);
         })();
 
-
+        PublicDraw.lock_fields();
+    {% else %}
+        $("#draw-form :input").change(function(changed_input) {
+            draw_updated_flag = true; //marks the draw as updated
+        });
     {% endif %}
-    PublicDraw.lock_fields();
+
+    var draw_updated_flag = false;
     $("#toss-button").click( function() {
+        if (draw_updated_flag) {
+            $("#edit-draw-save").click();
+            return;
+        }
         $.ajax({
             method : "GET",
             url   : "{% url 'ws_toss_draw' %}",
