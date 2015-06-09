@@ -86,7 +86,7 @@
 
         $(document).ready(function () {
            $('#language-dropdown li a').click(function () {
-                var lang_code = $(this).attr('title');
+                var lang_code = $(this).attr('data-code');
                 $("#language-option"). attr("value",lang_code);
                 $("#change_language_but").click();
             });
@@ -320,7 +320,7 @@
                 </a>
                 <ul id="language-dropdown" class="dropdown-menu pull-right drop-up" role="menu">
                     {% for language in languages %}
-                        <li><a href="#" {% if language.code == LANGUAGE_CODE %} class="selected"{% endif %} title="{{ language.code }}">
+                        <li><a href="#" {% if language.code == LANGUAGE_CODE %} class="selected"{% endif %} data-code="{{ language.code }}">
                             {{ language.name_local }} ({{ language.code }})</a></li>
                     {% endfor %}
                 </ul>
