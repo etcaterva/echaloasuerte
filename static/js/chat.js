@@ -93,7 +93,13 @@
             }
         },
 
-
+        enable: function (enabled) {
+            if(enabled) {
+                this.$element.removeClass("chat-disabled");
+            } else {
+                this.$element.addClass("chat-disabled");
+            }
+        },
 
         // Given a chat entry generates and returns the html code necessarry to be rendered
         formatChatEntry: function (chat_entry){

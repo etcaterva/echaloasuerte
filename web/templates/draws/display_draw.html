@@ -102,7 +102,10 @@
                 chat_containers.addClass("chat-disabled");
             }
         };
-        show_chat({{bom.enable_chat|yesno:"true,false"}});
+
+        $.each(chats, function(){
+            this.enable({{bom.enable_chat|yesno:"true,false"}});
+        });
 
         /*
             SETTINGS OPTION: Change privacy
