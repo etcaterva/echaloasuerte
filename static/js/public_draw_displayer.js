@@ -205,7 +205,7 @@ PublicDraw.check_draw_changes = function () {
     setTimeout(PublicDraw.check_draw_changes,2000);
 };
 PublicDraw.save_settings = function (){
-    $('button#save-settings, button#save-change-privacy2').click(function() {
+    $('button#save-settings, button#save-change-privacy').click(function() {
         console.log("Save");
             $('div#settings-privacy div.feedback').addClass('hide');
             PublicDraw.update_privacy_fields();
