@@ -5,7 +5,6 @@
         defaults = {
             is_disabled: true,
             url_send_message: "",
-            url_get_messages: "",
             draw_id: "",
             msg_type_your_message: "",
             msg_chat: "",
