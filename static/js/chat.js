@@ -93,20 +93,6 @@
             }
         },
 
-        // Get all the messages of a public draw and refresh the chat board
-        get_messages: function (){
-            var that = this;
-            $.ajax({
-                url : this.options.url_get_messages,
-                method : "GET",
-                data: { draw_id : this.options.draw_id},
-                success : function(data){
-                    that.messages = data.messages;
-                }
-            });
-
-        },
-
         // Given a chat entry generates and returns the html code necessarry to be rendered
         formatChatEntry: function (chat_entry){
             var user = chat_entry.user;
