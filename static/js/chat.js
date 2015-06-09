@@ -3,9 +3,9 @@
     // Set the defaults
     var pluginName = 'EASchat',
         defaults = {
-            is_disabled: true,
+            is_enabled: true,
+            authorized: false,
             url_send_message: "",
-            url_get_messages: "",
             draw_id: "",
             msg_type_your_message: "",
             msg_chat: "",
@@ -30,12 +30,12 @@
             this.options = $.extend( {}, defaults, options) ;
 
             this.$element.removeClass("hidden");
+            this.enable(this.options.is_enabled);
 
             this.renderChat();
 
             // Toggle chat when click on it header
             this.$element.find('.panel-heading').click(function (){
-                console.log('collapsed '+$(this).parent());
                 that.$element.find(".panel-body").toggle(150);
             });
 
@@ -93,38 +93,20 @@
             }
         },
 
-        // Get all the messages of a public draw and refresh the chat board
-        get_messages: function (){
-            var that = this;
-            $.ajax({
-                url : this.options.url_get_messages,
-                method : "GET",
-                data: { draw_id : this.options.draw_id},
-                success : function(data){
-                    that.messages = data.messages;
-                }
-            });
-
+        enable: function (enabled) {
+            if(enabled) {
+                this.$element.removeClass("chat-disabled");
+            } else {
+                this.$element.addClass("chat-disabled");
+            }
         },
 
         // Given a chat entry generates and returns the html code necessarry to be rendered
         formatChatEntry: function (chat_entry){
             var user = chat_entry.user;
             var content = chat_entry.content;
-            var time = moment.utc(chat_entry.creation_time).fromNow();;
-            var html = '<li class="right clearfix"><span class="chat-img pull-left">' +
-                '    <img src="http://placehold.it/40/FA6F57/fff&text=' + user.toUpperCase().charAt(0) + '" alt="User Avatar" class="img-circle" />' +
-                '</span>' +
-                '    <div class="chat-line clearfix">' +
-                '        <div class="header">' +
-                '            <small class=" text-muted"><i class="fa fa-clock-o"></i> ' + time + '</small>' +
-                '            <strong class="pull-right primary-font">' + user + '</strong>' +
-                '        </div>' +
-                '        <p>' + content + '</p>' +
-                '    </div>' +
-                '</li>';
-
-            var html2 = '<li class="clearfix">' +
+            var time = moment.utc(chat_entry.creation_time).fromNow();
+            var html = '<li class="clearfix">' +
                         '    <p class="chatline-details text-muted small">' + user + '<span class="chatline-datetime"><i class="fa fa-clock-o"></i> ' + time + '</span></p>' +
                         '	<span class="chat-img pull-left">' +
                         '		<img src="http://placehold.it/30/FA6F57/fff&text=' + user.toUpperCase().charAt(0) + '" alt="User Avatar" class="img-circle">' +
@@ -133,18 +115,18 @@
                         '	</div>' +
                         '</li>';
 
-            return html2    ;
+            return html    ;
         },
 
         renderChat: function (){
              var html_input = '<input id="chat-message-box" type="text" class="form-control input-sm" placeholder="'+this.options.msg_type_your_message+'"';
-             if (this.options.is_disabled) {
+             if (this.options.authorized) {
                  html_input += 'disabled="disabled"';
              }
              html_input += '/>';
 
             var html_button = '<button class="btn btn-success btn-sm" id="chat-send" ';
-             if (this.options.is_disabled) {
+             if (this.options.authorized) {
                  html_button += 'title="' + this.options.msg_login_first + '"';
              }
              html_button += '>'+this.options.msg_send+'</button>';

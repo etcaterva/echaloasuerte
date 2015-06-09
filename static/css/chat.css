@@ -59,7 +59,7 @@
         display: none;
     }
 }
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 1439px) {
     .chat-outside {
         display: none;
     }

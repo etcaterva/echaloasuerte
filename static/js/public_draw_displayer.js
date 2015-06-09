@@ -1,37 +1,5 @@
 var PublicDraw = {};
 
-// Updates the breadcrumb to show the steps that have been already done
-PublicDraw.update_breadcrumb = function (current_step){
-    // However we reached here, the step "choose it" has already been done
-    $('.info-public-draw #choose').addClass('done');
-    if (current_step == "spread"){
-        $('.info-public-draw #configure').addClass('done');
-    }
-    else{
-        if (current_step == "configure"){
-            // If the step "spread" has already been done, add the CSS class "done"
-            // This part will be filled when the step backward is implemented
-        }
-    }
-}
-
-// Store the step we are in (when creating a public draw) to send it in the POST
-PublicDraw.set_submition_type = function (current_step){
-    var submit_type = "public_toss";
-    if (current_step == "configure"){
-        submit_type = "go_to_spread";
-    } else if (current_step == "spread"){
-        submit_type = "publish";
-    }
-    $("input[name=submit-type]").val(submit_type);
-
-    // If "Try" button is clicked, the type of submition changes
-    $('#try').click(function() {
-        $("input[name=submit-type]").val("try");
-        return true;
-    });
-}
-
 // This function runs when the user make changes in the privacy of a public draw and click "Save" button
 // It store the corresponding values in the input field which will be POSTed
 PublicDraw.update_privacy_fields = function (){
@@ -144,9 +112,10 @@ PublicDraw.settings = function () {
     If the has edited a public draw so the configuration is submited to the server
     */
     $('button#edit-draw-save').click(function() {
-        $("input[name=submit-type]").val("edit_public_draw");
+        $("#draw-form").attr("action", PublicDraw.url_update_draw);
         return true;
     });
+
 
     /*
     SETTINGS OPTION: Invite users
@@ -187,6 +156,12 @@ PublicDraw.settings = function () {
         $('#settings-privacy').removeClass("hide");
     });
 
+    /*
+        SAVE SETTINGS
+        Send the changes to the server
+    */
+
+
 }
 
 PublicDraw.lock_fields = function () {
@@ -207,35 +182,75 @@ PublicDraw.unlock_fields = function () {
     $('.protected').parent('.tokenfield').removeAttr('readonly');
 }
 
-PublicDraw.prepare_invitation_fields = function () {
-    $('#publish').click(function () {
-        var users_to_invite = $('#invite-emails').val();
-        $('#users').val(users_to_invite);
+
+PublicDraw.bom_last_updated = "";
+// Make a request to the server to check whether the draw has changed
+// If so, reload the page.
+PublicDraw.check_draw_changes = function () {
+    $.ajax({
+        url : PublicDraw.url_get_draw_details,
+        method : "GET",
+        data: { draw_id : PublicDraw.draw_id }
+    }).done(function(data) {
+        if(PublicDraw.bom_last_updated < moment.utc(data.last_updated_time)){
+            window.location.reload();
+        }
+        for(var i=0; i<PublicDraw.chats.length; i++) {
+            PublicDraw.chats[i].messages = data.messages;
+        }
+    }).fail (function() {
+        console.log("Error when retrieving draw details");
+    });
+
+    setTimeout(PublicDraw.check_draw_changes,2000);
+};
+PublicDraw.save_settings = function (){
+    $('button#save-settings, button#save-change-privacy').click(function() {
+        console.log("Save");
+            $('div#settings-privacy div.feedback').addClass('hide');
+            PublicDraw.update_privacy_fields();
+            var shared_type = $('input#id_shared_type').val();
+            var new_password = $('input#draw_password').val();
+            var enable = $("#settings-chat-enabled").prop( "checked");
+            var show_in_public_list = $("#settings-show-in-public-list").prop( "checked");
+            $.get(PublicDraw.url_update_settings, {
+                    draw_id: PublicDraw.draw_id,
+                    password: PublicDraw.bom_password,
+                    new_password: new_password,
+                    shared_type: shared_type,
+                    enable_chat: enable,
+                    show_in_public_list: show_in_public_list
+            }).done(function(data){
+                // TODO show feedback to indicate that the changes were applied
+                PublicDraw.bom_password = new_password;
+                PublicDraw.enable_chat(enable);
+                PublicDraw.bom_last_updated = new Date();
+            })
+            .fail(function() {
+                // TODO Show feedback when the change could not be done
+                console.log("Error when updating the draw details");
+            });
+        });
+
+}
+
+PublicDraw.enable_chat = function (enable){
+    $.each(PublicDraw.chats, function(){
+        this.enable(enable);
     });
 };
 
 // Initialize the interface for a public draw
 PublicDraw.setup = function(current_step){
-    PublicDraw.set_submition_type(current_step);
     //Initialize the UI to select the level of privacy for the draw
     PublicDraw.prepare_privacy_selection();
-
-    PublicDraw.prepare_invitation_fields();
 
     // Initialize input to submit emails to be shown as a tokenField
     $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
 
-    if (current_step == ""){
-        // If the draw has already been published
-        PublicDraw.settings();
-        PublicDraw.lock_fields();
-    } else{
-        // If the the user is creating the draw
-        PublicDraw.update_breadcrumb(current_step);
-        if (current_step == "spread"){
-            $('.step-configure').hide();
-        } else if (current_step == "configure"){
-            $('.step-spread').hide();
-        }
-    }
+    PublicDraw.settings();
+    PublicDraw.lock_fields();
+
+    PublicDraw.check_draw_changes();
+    PublicDraw.save_settings();
 }
