@@ -94,15 +94,7 @@
             "msg_send": "{% trans 'Send' %}"
         });
 
-
-        var show_chat = function (enable_chat) {
-            if(enable_chat) {
-                chat_containers.removeClass("chat-disabled");
-            } else {
-                chat_containers.addClass("chat-disabled");
-            }
-        };
-
+        // Enable or disable the chat
         $.each(chats, function(){
             this.enable({{bom.enable_chat|yesno:"true,false"}});
         });
@@ -134,7 +126,7 @@
                 bom_last_updated = new Date();
             })
             .fail(function() {
-                $('div#alert-level-privacy-failed').removeClass('hide',100);
+                // TODO Show feedback when the change could not be done
             });
         });
 
