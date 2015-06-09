@@ -93,24 +93,14 @@
             }
         },
 
+
+
         // Given a chat entry generates and returns the html code necessarry to be rendered
         formatChatEntry: function (chat_entry){
             var user = chat_entry.user;
             var content = chat_entry.content;
-            var time = moment.utc(chat_entry.creation_time).fromNow();;
-            var html = '<li class="right clearfix"><span class="chat-img pull-left">' +
-                '    <img src="http://placehold.it/40/FA6F57/fff&text=' + user.toUpperCase().charAt(0) + '" alt="User Avatar" class="img-circle" />' +
-                '</span>' +
-                '    <div class="chat-line clearfix">' +
-                '        <div class="header">' +
-                '            <small class=" text-muted"><i class="fa fa-clock-o"></i> ' + time + '</small>' +
-                '            <strong class="pull-right primary-font">' + user + '</strong>' +
-                '        </div>' +
-                '        <p>' + content + '</p>' +
-                '    </div>' +
-                '</li>';
-
-            var html2 = '<li class="clearfix">' +
+            var time = moment.utc(chat_entry.creation_time).fromNow();
+            var html = '<li class="clearfix">' +
                         '    <p class="chatline-details text-muted small">' + user + '<span class="chatline-datetime"><i class="fa fa-clock-o"></i> ' + time + '</span></p>' +
                         '	<span class="chat-img pull-left">' +
                         '		<img src="http://placehold.it/30/FA6F57/fff&text=' + user.toUpperCase().charAt(0) + '" alt="User Avatar" class="img-circle">' +
@@ -119,7 +109,7 @@
                         '	</div>' +
                         '</li>';
 
-            return html2    ;
+            return html    ;
         },
 
         renderChat: function (){
