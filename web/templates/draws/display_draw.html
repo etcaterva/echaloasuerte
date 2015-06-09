@@ -78,15 +78,12 @@
     {% if bom.is_shared %}
         var bom_last_updated = moment.utc("{{bom.last_updated_time.isoformat}}");
         PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
-        $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
-        PublicDraw.prepare_privacy_selection();
-        PublicDraw.settings();
+        PublicDraw.setup();
 
         var chat_containers = $('#chat-frame, #chat-column');
 		var chats = chat_containers.chat({
             "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
             "url_send_message": "{% url 'chat_add_message' %}",
-            "url_get_messages": "{% url 'ws_get_draw_details' %}",
             "draw_id": "{{ bom.pk }}",
             "msg_type_your_message": "{% trans 'Type your message here...' %}",
             "msg_login_first": "{% trans 'Please, login or register to be able to use the chat'%}",
@@ -95,42 +92,48 @@
         });
 
         // Enable or disable the chat
-        $.each(chats, function(){
-            this.enable({{bom.enable_chat|yesno:"true,false"}});
-        });
+        function enable_chat(enable){
+            $.each(chats, function(){
+                this.enable(enable);
+            });
+        };
+        enable_chat({{bom.enable_chat|yesno:"true,false"}});
 
         /*
             SETTINGS OPTION: Change privacy
             Confirmation after editing privacy settings
         */
         var bom_password = "{{bom.password}}";
-        $('button#save-settings').click(function() {
+        $('button#save-settings, button#save-change-privacy2').click(function() {
+        console.log("Save");
             $('div#settings-privacy div.feedback').addClass('hide');
             PublicDraw.update_privacy_fields();
             var shared_type = $('input#id_shared_type').val();
             var new_password = $('input#draw_password').val();
-            var enable_chat = $("#settings-chat-enabled").prop( "checked");
+            var enable = $("#settings-chat-enabled").prop( "checked");
             var show_in_public_list = $("#settings-show-in-public-list").prop( "checked");
             $.get("{% url 'ws_update_share_settings' %}", {
                     draw_id: "{{bom.pk}}",
                     password: bom_password,
                     new_password: new_password,
                     shared_type: shared_type,
-                    enable_chat: enable_chat,
+                    enable_chat: enable,
                     show_in_public_list: show_in_public_list
             }).done(function(data){
-                /* The delay has the purpose to show "refresh" feedback when a to consecutive changes success */
-                $('div#alert-level-privacy-success').removeClass('hide',100);
+                // TODO show feedback to indicate that the changes were applied
                 bom_password = new_password;
-                show_chat(enable_chat);
+                enable_chat(enable);
                 bom_last_updated = new Date();
             })
             .fail(function() {
                 // TODO Show feedback when the change could not be done
+                console.log("Error when updating the draw details");
             });
         });
 
-        (function get_draw_details() {
+        // Make a request to the server to check whether the draw has changed
+        // If so, reload the page.
+        (function check_draw_changes() {
             $.ajax({
                 url : "{% url 'ws_get_draw_details' %}",
                 method : "GET",
@@ -146,10 +149,9 @@
                 console.log("Error when retrieving draw details");
             });
 
-            setTimeout(get_draw_details,2000);
+            setTimeout(check_draw_changes,2000);
         })();
 
-        PublicDraw.lock_fields();
     {% else %}
         $("#draw-form :input").change(function(changed_input) {
             draw_updated_flag = true; //marks the draw as updated
@@ -363,6 +365,7 @@
                         </div>
                         <div class="modal-footer">
                             <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
+                            <button id="save-change-privacy2" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
                         </div>
                     </div>
                 </div>
