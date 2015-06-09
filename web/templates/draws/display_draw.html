@@ -14,6 +14,7 @@
     <script src="{% static 'js/slideSelector.js' %}"></script>
     <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
     <script src="{% static 'js/public_draw_manager.js' %}"></script>
+    <script src="{% static 'js/public_draw_manager.js' %}"></script>
     <script src="{% static 'js/chat.js' %}"></script>
     <link href="{% static 'css/chat.css' %}" rel="stylesheet" />
 
@@ -163,7 +164,7 @@
     var draw_updated_flag = false;
     $("#toss-button").click( function() {
         if (draw_updated_flag) {
-            $("#edit-draw-save").click();
+            edit_draw();
             return;
         }
         $.ajax({
@@ -178,9 +179,12 @@
         });
     });
     $("#edit-draw-save").click( function() {
+        edit_draw();
+    });
+    function edit_draw() {
         $("#draw-form").attr("action", "{% url 'update_draw' draw_id=bom.pk %}");
         $("#draw-form").submit();
-    });
+    }
 
 
     $('.tokenfield').tokenfield({createTokensOnBlur:true});
@@ -238,19 +242,23 @@
             <div class="col-xs-12 text-center">
                 <!-- Button to toss -->
                 <div class="row btn-row">
-                    {%if not bom.owner or bom.owner == user.pk %}
+                    {% if not bom.is_shared %}
                         <button id="toss-button" type="button" class="btn btn-success">{% trans 'Toss' %}</button>
-                        {# Buttons to save changes when editing an already published public draw #}
-                        <div id="edit-draw-save-changes" class="hide">
-                            <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
-                            <button type="button" id="edit-draw-save" class="col-xs-6 btn btn-primary">{% trans 'Save changes' %}</button>
-                        </div>
-                    {%else%}
-                        <button id="toss-disabled-button" type="button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</button>
-                        <div class="alert alert-warning alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
-                        </div>
+                    {% else %}
+                        {%if not bom.owner or bom.owner == user.pk %}
+                            <button id="toss-button" type="button" class="btn btn-success">{% trans 'Toss' %}</button>
+                            {# Buttons to save changes when editing an already published public draw #}
+                            <div id="edit-draw-save-changes" class="hide">
+                                <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
+                                <button type="button" id="edit-draw-save" class="col-xs-6 btn btn-primary">{% trans 'Save changes' %}</button>
+                            </div>
+                        {%else%}
+                            <button id="toss-disabled-button" type="button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</button>
+                            <div class="alert alert-warning alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
+                            </div>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
