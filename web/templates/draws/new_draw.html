@@ -58,6 +58,8 @@
         PublicDrawCreator.url_validate = "{% url 'ws_validate_draw' %}";
         PublicDrawCreator.setup();
     {% endif %}
+
+    $('.tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
