@@ -42,6 +42,29 @@
     }
     );
 
+    // Hide or show columns based on the size of the table
+    set_table_size = function(){
+        var public_draw_table = $("#public-draws").width();
+        var public_draw_wrapper = $("#public-draws_wrapper").width();
+        var column = $public_draws.column(4); // Fourth column (number of participants)
+        if (public_draw_table > public_draw_wrapper){
+            column.visible(false);
+        }else{
+            column.visible(true);
+            public_draw_table = $("#public-draws").width();
+            if (public_draw_table > public_draw_wrapper){
+                column.visible(false);
+            }
+        }
+    };
+
+    // Set the table size the first time the page loads
+    set_table_size();
+    $( window ).resize(function() {
+        // Hide & show columns when the window is resized
+        set_table_size();
+    });
+
 
     // Dialog to request the password to access a protected public draw
     dialog = $( "#password-dialog" ).dialog({
@@ -134,8 +157,7 @@
 {% endblock extra_jq_ready %}
 
 {% block content %}
-    <div class="col-xs-12">
-        {%if public_draws %}<p class="h1 text-center">{% trans "Public draws" %}</p>
+    {%if public_draws %}<p class="h1 text-center">{% trans "Public draws" %}</p>
         <table id="public-draws" class="draw-list data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
@@ -160,7 +182,7 @@
                             {%endif%}
                         {%endif%}
                     </td>
-                    <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
+                    <td>{{ d.title }}</td>
                     <td>{% if user.is_authenticated and d.owner == user.pk %} {% trans "Me" %} {% else %}{{ d.owner|default:"" }} {% endif %}</td>
                     <td>{{ d.creation_time|naturaltime}}</td>
                     <td>{{ d.users|length }}</td>
@@ -169,8 +191,7 @@
             {% endfor %}
             </tbody>
         </table>
-        {% endif %}
-    </div>
+    {% endif %}
     <div id="password-dialog" title="{% trans "This draw is protected" %}">
         <p>{% trans "Type the password to access the draw" %}</p>
         <form autocomplete="off">

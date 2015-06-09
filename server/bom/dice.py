@@ -1,12 +1,9 @@
-from django.utils.translation import ugettext_lazy as _
-import random
 from server.bom.draw_base import *
 
 class DiceDraw(BaseDraw):
     """
     Stores the content of a draw of Dice
     """
-    DEFAULT_TITLE = _("""Roll dice""")
 
     def __init__(self, **kwargs):
         super(DiceDraw, self).__init__(**kwargs)

@@ -54,7 +54,7 @@
             <tbody>
             {% for d in draws.owner reversed%}
                 <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" style="cursor: pointer;">
-                    <td>{{ d.title|default:d.DEFAULT_TITLE }}</td>
+                    <td>{{ d.title }}</td>
                     <td>{{d.creation_time|date:" Y/m/d G:i:s "}}</td>
                     <td>{{d.results | length}}</td>
                 </tr>

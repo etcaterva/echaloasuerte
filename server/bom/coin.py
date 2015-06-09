@@ -1,5 +1,3 @@
-from django.utils.translation import ugettext_lazy as _
-import random
 from server.bom.draw_base import *
 
 
@@ -7,7 +5,6 @@ class CoinDraw(BaseDraw):
     """
     Stores the content of a draw of Coin
     """
-    DEFAULT_TITLE = _("""Flip a Coin""")
 
     def __init__(self, **kwargs):
         super(CoinDraw, self).__init__(**kwargs)

@@ -1,7 +1,7 @@
-from server.bom.user import *
 from server.mongodb.driver import *
 import logging
 logger = logging.getLogger("echaloasuerte")
+
 
 class EchaloasuerteAuthBE(object):
     """

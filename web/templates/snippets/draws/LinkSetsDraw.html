@@ -1,0 +1,9 @@
+<ul class="list-group">
+    {% for link in results %}
+        <li class="list-group-item col-xs-12">
+            {% for item in link %}
+                <b>{{ item }}</b> {%if not forloop.last %} - {%endif%}
+            {% endfor %}
+        </li>
+    {% endfor %}
+</ul>

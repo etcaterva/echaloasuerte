@@ -41,6 +41,13 @@ class RandomNumberDrawTest(TestCase):
         tested_item = RandomNumberDraw(range_max=2, range_min=4)
         self.assertFalse(tested_item.is_feasible())
 
+    def audits_are_added_test(self):
+        """RandomNumberDraw: Range requested is not feasible"""
+        tested_item = RandomNumberDraw(range_max=2, range_min=4)
+        self.assertFalse(tested_item.audit)
+        tested_item.add_audit("Something changed")
+        self.assertTrue(tested_item.audit)
+
     def is_feasible_not_enough_results_ko_test(self):
         """RandomNumberDraw: Number of numbers requested less than one is not feasible"""
         tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=0, allow_repeat=False)
