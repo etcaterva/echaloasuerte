@@ -139,7 +139,6 @@ class BaseDraw(object):
         """Adds an audit message for the modification of a draw
         The latest audit are at the begining
         the type of audits are:
-        SETTINGS_CONFIG: Something changed related to the config of the draw
         DRAW_PARAMETERS: one or more of the basic parameters of the draw changed
         """
         self.audit.insert(0, {

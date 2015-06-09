@@ -222,7 +222,6 @@ def update_share_settings(request):
         bom_draw.show_in_public_list = False
         bom_draw.enable_chat = False
 
-    bom_draw.add_audit("SETTINGS_CONFIG")
     MONGO.save_draw(bom_draw)
     LOG.info("Draw {0} updated to {1}".format(
         bom_draw.pk, bom_draw.share_settings))
