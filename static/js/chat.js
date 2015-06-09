@@ -3,7 +3,8 @@
     // Set the defaults
     var pluginName = 'EASchat',
         defaults = {
-            is_disabled: true,
+            is_enabled: true,
+            authorized: false,
             url_send_message: "",
             draw_id: "",
             msg_type_your_message: "",
@@ -29,12 +30,12 @@
             this.options = $.extend( {}, defaults, options) ;
 
             this.$element.removeClass("hidden");
+            this.enable(this.options.is_enabled);
 
             this.renderChat();
 
             // Toggle chat when click on it header
             this.$element.find('.panel-heading').click(function (){
-                console.log('collapsed '+$(this).parent());
                 that.$element.find(".panel-body").toggle(150);
             });
 
@@ -119,13 +120,13 @@
 
         renderChat: function (){
              var html_input = '<input id="chat-message-box" type="text" class="form-control input-sm" placeholder="'+this.options.msg_type_your_message+'"';
-             if (this.options.is_disabled) {
+             if (this.options.authorized) {
                  html_input += 'disabled="disabled"';
              }
              html_input += '/>';
 
             var html_button = '<button class="btn btn-success btn-sm" id="chat-send" ';
-             if (this.options.is_disabled) {
+             if (this.options.authorized) {
                  html_button += 'title="' + this.options.msg_login_first + '"';
              }
              html_button += '>'+this.options.msg_send+'</button>';

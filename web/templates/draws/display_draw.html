@@ -4,6 +4,7 @@
 {% load i18n %}
 {% block title %}{{ bom.title }} | {% endblock title %}
 {#
+{# TODO What's that? #}
     MAKE THE EDITION OF SHARE CONFIG WORK
     CLEANUP
 #}
@@ -13,8 +14,7 @@
     <script src="{% static 'js/moment.js' %}"></script>
     <script src="{% static 'js/slideSelector.js' %}"></script>
     <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
-    <script src="{% static 'js/public_draw_manager.js' %}"></script>
-    <script src="{% static 'js/public_draw_manager.js' %}"></script>
+    <script src="{% static 'js/public_draw_displayer.js' %}"></script>
     <script src="{% static 'js/chat.js' %}"></script>
     <link href="{% static 'css/chat.css' %}" rel="stylesheet" />
 
@@ -76,13 +76,10 @@
             "msg_toss": "Click on the 'Toss' button to try the draw first"
     });
     {% if bom.is_shared %}
-        var bom_last_updated = moment.utc("{{bom.last_updated_time.isoformat}}");
-        PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
-        PublicDraw.setup();
-
-        var chat_containers = $('#chat-frame, #chat-column');
-		var chats = chat_containers.chat({
-            "is_disabled": {%if user.is_anonymous%} true {% else %} false {% endif %},
+        var $chat_containers = $('#chat-frame, #chat-column');
+		var $chats = $chat_containers.chat({
+            "authorized": {%if user.is_anonymous%} false {% else %} true {% endif %},
+            "is_enabled": {{bom.enable_chat|yesno:"true,false"}},
             "url_send_message": "{% url 'chat_add_message' %}",
             "draw_id": "{{ bom.pk }}",
             "msg_type_your_message": "{% trans 'Type your message here...' %}",
@@ -91,66 +88,15 @@
             "msg_send": "{% trans 'Send' %}"
         });
 
-        // Enable or disable the chat
-        function enable_chat(enable){
-            $.each(chats, function(){
-                this.enable(enable);
-            });
-        };
-        enable_chat({{bom.enable_chat|yesno:"true,false"}});
-
-        /*
-            SETTINGS OPTION: Change privacy
-            Confirmation after editing privacy settings
-        */
-        var bom_password = "{{bom.password}}";
-        $('button#save-settings, button#save-change-privacy2').click(function() {
-        console.log("Save");
-            $('div#settings-privacy div.feedback').addClass('hide');
-            PublicDraw.update_privacy_fields();
-            var shared_type = $('input#id_shared_type').val();
-            var new_password = $('input#draw_password').val();
-            var enable = $("#settings-chat-enabled").prop( "checked");
-            var show_in_public_list = $("#settings-show-in-public-list").prop( "checked");
-            $.get("{% url 'ws_update_share_settings' %}", {
-                    draw_id: "{{bom.pk}}",
-                    password: bom_password,
-                    new_password: new_password,
-                    shared_type: shared_type,
-                    enable_chat: enable,
-                    show_in_public_list: show_in_public_list
-            }).done(function(data){
-                // TODO show feedback to indicate that the changes were applied
-                bom_password = new_password;
-                enable_chat(enable);
-                bom_last_updated = new Date();
-            })
-            .fail(function() {
-                // TODO Show feedback when the change could not be done
-                console.log("Error when updating the draw details");
-            });
-        });
-
-        // Make a request to the server to check whether the draw has changed
-        // If so, reload the page.
-        (function check_draw_changes() {
-            $.ajax({
-                url : "{% url 'ws_get_draw_details' %}",
-                method : "GET",
-                data: { draw_id : "{{bom.pk}}" },
-            }).done(function(data) {
-                if(bom_last_updated < moment.utc(data.last_updated_time)){
-                    window.location.reload();
-                }
-                for(var i=0; i<chats.length; i++) {
-                    chats[i].messages = data.messages;
-                }
-            }).fail (function() {
-                console.log("Error when retrieving draw details");
-            });
-
-            setTimeout(check_draw_changes,2000);
-        })();
+        PublicDraw.draw_id = "{{ bom.pk }}";
+        PublicDraw.bom_password = "{{bom.password}}";
+        PublicDraw.bom_last_updated = moment.utc("{{bom.last_updated_time.isoformat}}");
+        PublicDraw.chats = $chats;
+        PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
+        PublicDraw.url_get_draw_details = "{% url 'ws_get_draw_details' %}";
+        PublicDraw.url_update_draw = "{% url 'update_draw' draw_id=bom.pk %}";
+        PublicDraw.url_update_settings = "{% url 'ws_update_share_settings' %}";
+        PublicDraw.setup();
 
     {% else %}
         $("#draw-form :input").change(function(changed_input) {
@@ -161,7 +107,8 @@
     var draw_updated_flag = false;
     $("#toss-button").click( function() {
         if (draw_updated_flag) {
-            edit_draw();
+            $("#draw-form").attr("action", "{% url 'update_draw' draw_id=bom.pk %}");
+            $("#draw-form").submit();
             return;
         }
         $.ajax({
@@ -175,14 +122,6 @@
             alert("{% trans 'There was an issue when tossing the draw :(' %}");
         });
     });
-    $("#edit-draw-save").click( function() {
-        edit_draw();
-    });
-    function edit_draw() {
-        $("#draw-form").attr("action", "{% url 'update_draw' draw_id=bom.pk %}");
-        $("#draw-form").submit();
-    }
-
 
     $('.tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
@@ -247,7 +186,7 @@
                             {# Buttons to save changes when editing an already published public draw #}
                             <div id="edit-draw-save-changes" class="hide">
                                 <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
-                                <button type="button" id="edit-draw-save" class="col-xs-6 btn btn-primary">{% trans 'Save changes' %}</button>
+                                <button type="submit" id="edit-draw-save" class="col-xs-6 btn btn-primary">{% trans 'Save changes' %}</button>
                             </div>
                         {%else%}
                             <button id="toss-disabled-button" type="button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</button>
