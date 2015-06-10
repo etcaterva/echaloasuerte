@@ -39,10 +39,11 @@
 
             // Set the action of the checkbox
             this.$element.find('#only-your-draws').click(function(){
+                var dataTable = that.options.dataTable_plugin.api();
                 if ($(this).prop('checked')){
-                    that.options.dataTable_plugin.column(5).search("y").draw();
+                    dataTable.column(5).search("y").draw();
                 } else{
-                    that.options.dataTable_plugin.column(5).search("").draw();
+                    dataTable.column(5).search("").draw();
                 }
             });
         },
