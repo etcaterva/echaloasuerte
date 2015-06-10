@@ -16,7 +16,6 @@ PublicDrawCreator.setup_breadcrumb = function (){
         PublicDrawCreator.show_spread_step();
     })
     $('.breadcrumb-public-draw #choose').click(function(){
-        // TODO Ask for confimation, as the process done will be lost
         $( "#confirmation-change-draw-type" ).dialog( "open" );
     })
 };
@@ -45,16 +44,33 @@ PublicDrawCreator.update_breadcrumb = function (current_step){
 PublicDrawCreator.update_privacy_fields = function (){
     var $shared_type_field = $('input#id_shared_type');
     var mode = $('#privacy-selector').attr('data-selected');
+    var $privacy_icon = $('#privacy-level .fa');
+    var $privacy_label = $('#public-mode-selected');
     if (mode == "invited"){
         $('#id_password').val("");
         $shared_type_field.attr('value','Invite');
+        $privacy_icon.removeClass('fa-unlock');
+        $privacy_icon.addClass('fa-lock')
+        $privacy_label.empty();
+        // TODO translate this
+        $privacy_label.append('Only invited users');
     }else if (mode == "password"){
         var password = $('#draw-password').val();
         $('#id_password').val(password);
         $shared_type_field.attr('value','Public');
+        $privacy_icon.removeClass('fa-unlock');
+        $privacy_icon.addClass('fa-lock')
+        $privacy_label.empty();
+        // TODO translate this
+        $privacy_label.append('Password or Invitation');
     }else{ // Everyone
         $('#id_password').val("");
         $shared_type_field.attr('value','Public');
+        $privacy_icon.removeClass('fa-lock');
+        $privacy_icon.addClass('fa-unlock')
+        $privacy_label.empty();
+        // TODO translate this
+        $privacy_label.append('Everyone');
     }
 }
 
@@ -139,7 +155,6 @@ PublicDrawCreator.setup = function(){
         }
         else{
             if (current_step == "configure") {
-                // TODO Ask for confimation, as the process done will be lost
                 $( "#dialog" ).dialog( "open" );
                 return true; // Go to the index (setup in href in <a> tag)
             }

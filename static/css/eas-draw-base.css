@@ -80,9 +80,15 @@ a.fa:focus {
     margin-bottom: 10px;
 }
 
+#privacy-level {
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
 .public-draw-restriction #recently-created {
     border-top: 1px #D7D7D7 solid;
     padding-top: 10px;
+    margin-bottom: 7px;
 }
 
 
@@ -93,6 +99,7 @@ a.fa:focus {
 .settings-option {
     cursor: pointer;
 }
+
 
 /***** INDIVIDUAL DRAWS *****/
 /* Makes the text be inline with the checkbox */
