@@ -6,7 +6,7 @@
             maxWidth: 100,
             minWidth: 30,
             comfortZone: 7000,
-            title: "Default title"
+            title: "Public Draw"
         }, o);
 
         this.filter('textarea').each(function(){
@@ -27,7 +27,6 @@
                 }),
                 check = function() {
                     if (val === (val = input.val())) {return;}
-                     console.log("js: " + o.maxWidth);
                     // Enter new content into testSubject
                     var escaped = val.replace(/&/g, '&amp;').replace(/\s/g,'&nbsp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     testSubject.html(escaped);
@@ -56,15 +55,17 @@
             $(this).off('update');
             $(this).bind('keyup keydown update', check);
             $(this).focus(function() {
-                if ($(this).val() == o.title)
-                    $(this).attr("size", 3);
+                var is_protected = $(this).hasClass('protected');
+                if (!is_protected && $(this).val() == o.title )
                     $(this).val('');
             });
             $(this).blur(function() {
-                if ($(this).val() == '')
+                console.log("blur");
+                if ($(this).val() == '') {
                     $(this).val(o.title);
-                    var max_width = $("#draw-title-container").width()*2/3;
-                    $(this).width(max_width);
+                }
+                var max_width = $("#draw-title-container").width()*2/3;
+                $(this).width(max_width);
             });
 
         });
