@@ -16,7 +16,6 @@ PublicDrawCreator.setup_breadcrumb = function (){
         PublicDrawCreator.show_spread_step();
     })
     $('.breadcrumb-public-draw #choose').click(function(){
-        // TODO Ask for confimation, as the process done will be lost
         $( "#confirmation-change-draw-type" ).dialog( "open" );
     })
 };
@@ -149,7 +148,6 @@ PublicDrawCreator.setup = function(){
     $('input#id_shared_type').val("Public");
 
     $('a.back-arrow').click(function () {
-        // TODO why there is still here "current_step"?
         var current_step = $('.breadcrumb-public-draw').attr('data-current-step');
         if (current_step == "spread"){ // If step is spread
             PublicDrawCreator.show_configure_step();
@@ -157,7 +155,6 @@ PublicDrawCreator.setup = function(){
         }
         else{
             if (current_step == "configure") {
-                // TODO Ask for confimation, as the process done will be lost
                 $( "#dialog" ).dialog( "open" );
                 return true; // Go to the index (setup in href in <a> tag)
             }
