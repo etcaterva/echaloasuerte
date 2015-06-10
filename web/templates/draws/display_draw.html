@@ -37,7 +37,6 @@
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
         var attr = $(this).hasClass('protected');
-        console.log(attr);
         if (typeof attr === typeof undefined || attr === false) {
             $(this).select();
         }
@@ -160,7 +159,7 @@
                     </a>
             {% endif %}
             <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
-                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ bom.title }}</textarea>
+                <textarea name="title" class="form-control protected autogrow draw-title-area text-center" rows="1">{{ bom.title }}</textarea>
             </div>
         </div>
         <!-- End Draw Heading -->
