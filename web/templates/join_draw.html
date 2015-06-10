@@ -4,7 +4,7 @@
 {% load eas_humanize %}
 {% block extra_jq_ready %}
     // Fill the datatable
-    var $public_draws = $('#public-draws').DataTable(
+    var $public_draws = $('#public-draws').dataTable(
     {
         "bJQueryUI": true,
         "language" : {
@@ -29,7 +29,7 @@
                 "sortDescending": "{% trans ': activate to sort column descending'%}"
             }
         },
-        "order": [[ 2, "desc" ]],
+        "order": [[ 6, "desc" ]],
         "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "{%trans 'All' %}"]],
         "columnDefs": [
         { "width": "1px", "targets": 0, "sortable": true },
@@ -37,23 +37,29 @@
         { "targets": 2, "serchable": true },
         { "targets": 3, "serchable": true },
         { "width": "5px", "targets": 4, "sortable": false },
-        { "targets": 5, "serchable": true, "visible": false }
+        { "targets": 5, "serchable": true, "visible": false },
+        { "targets": 6, "visible": false }
         ]
     }
     );
+
+    // Workaround to sort the table by date correctly
+    $('#public-draws th:nth-child(4)').click(function (){
+        $public_draws.fnSort( [ [6,'desc'] ] );
+    });
 
     // Hide or show columns based on the size of the table
     set_table_size = function(){
         var public_draw_table = $("#public-draws").width();
         var public_draw_wrapper = $("#public-draws_wrapper").width();
-        var column = $public_draws.column(4); // Fourth column (number of participants)
+        var participants_column = 4; // Fourth column (number of participants)
         if (public_draw_table > public_draw_wrapper){
-            column.visible(false);
+            $public_draws.fnSetColumnVis( participants_column, false );
         }else{
-            column.visible(true);
+            $public_draws.fnSetColumnVis( participants_column, true );
             public_draw_table = $("#public-draws").width();
             if (public_draw_table > public_draw_wrapper){
-                column.visible(false);
+                $public_draws.fnSetColumnVis( participants_column, false );
             }
         }
     };
@@ -167,6 +173,7 @@
                     <th>{%trans 'Created' %}</th>
                     <th><span title="{% trans "Number of spectators" %}" class="fa fa-users"></span></th>
                     <th>is_participant</th>
+                    <th>creation_ts</th>
                 </tr>
             </thead>
             <tbody>
@@ -187,6 +194,7 @@
                     <td>{{ d.creation_time|naturaltime}}</td>
                     <td>{{ d.users|length }}</td>
                     <td>{% if user.pk in d.owner or user.pk in d.users %}y{% endif %}</td>
+                    <td>{{ d.creation_time|date:"YmdHms" }}</td>
                 </tr>
             {% endfor %}
             </tbody>
