@@ -131,7 +131,7 @@
         <!-- Draw Heading -->
         <div class="clearfix draw-heading">
             <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
-                <img src="{% static "img/back_arrow.png" %}"/>
+                <img src="{% static "img/back_arrow.png" %}" alt="{% trans "back" %}"/>
             </a>
             <div class="col-xs-8 visible-xs"></div>
             {% if bom.is_shared %}
@@ -152,9 +152,9 @@
                     href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favourites col-xs-2 col-sm-2 col-sm-push-8 text-center ">
                         <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x hide"></span>
                     {% if bom.pk in user.favourites %}
-                        <img src="{% static "img/star.png" %}"/>
+                        <img src="{% static "img/star.png" %}" alt="{% trans "Remove from favourites" %}"/>
                     {% else %}
-                        <img src="{% static "img/star-o.png" %}"/>
+                        <img src="{% static "img/star-o.png" %}" alt="{% trans "Add to favourites" %}"/>
                     {% endif %}
                     </a>
             {% endif %}

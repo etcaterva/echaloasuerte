@@ -30,7 +30,7 @@ Card.draw = function(){
     document.write("<div class='row'>");
     for (i = 0; i < Card.results.length; i++) {
         var img_path = Card.baseUrl + Card.results[i] + ".png";
-        var html = "<div class='" + Card.css_class + "'><img src='" + img_path + "'/></div>";
+        var html = "<div class='" + Card.css_class + "'><img src='" + img_path + "' alt='card"+Card.results[i]+"'/></div>";
         document.write(html);
     }
     document.write("</div>");

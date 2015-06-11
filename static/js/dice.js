@@ -343,7 +343,7 @@ D6AnimBuilder.prototype.genDiceHtml = function(layout, callback, callbackData) {
 			++dieCount;
 			if (dieCount > numTotalImgs) break;
 			if (this.useImages) {
-				genHtml += "<img id='" + this.id + dieCount + "' class='die' src='" + this.baseUrl + "blank.gif' />";
+				genHtml += "<img id='" + this.id + dieCount + "' class='die' src='" + this.baseUrl + "blank.gif' alt='dice'/>";
 			} else {
 				genHtml += "<span id='" + this.id + dieCount + "' class='dieNumber'>&nbsp;</span> ";
 			}
@@ -465,7 +465,7 @@ D6.showPastResult = function(results) {
     for (var i=0;i<results.length;i++){
         var result = "die"+ results[i];
         var src = this.builder.animGroups[0].animators[0][result].die.src;
-        html = "<img id='dice"+"' class='die' src='"+ src + "' alt='"+"'></img>";
+        html = "<img id='dice"+"' class='die' src='"+ src + "' alt='dice "+result+"'></img>";
         document.write(html);
     }
 }

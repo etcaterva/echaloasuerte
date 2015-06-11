@@ -3,14 +3,14 @@
 {% block content %}
     <div class="row">
         <a href="{% url 'index' %}" class="back-arrow col-xs-2 text-center">
-            <img src="{% static "img/back_arrow.png" %}"/>
+            <img src="{% static "img/back_arrow.png" %}" alt="{% trans "back" %}"/>
         </a>
         <div class="col-xs-10">
                 <h1 class="text-center"> Section under construction</h1>
 
         </div>
             <div class="col-sm-4 col-sm-offset-4">
-                <img class="img-responsive" src="{% static "img/under_construction.jpg" %}"/>
+                <img class="img-responsive" src="{% static "img/under_construction.jpg" %}" alt="{% trans "Under construction" %}"/>
             </div>
     </div>
 {% endblock %}
