@@ -43,6 +43,14 @@
     }
     );
 
+    // Add eas_datatable plugin to the table
+    $('#public-draws_wrapper').easDataTable({
+        "type": "public_draw",
+        "dataTable_plugin": $public_draws,
+        "msg_your_draws": "{% trans "Show only the draws you take part in" %}",
+        "msg_search": "{% trans "Search" %}..."
+    });
+
     // Workaround to sort the table by date correctly
     $('#public-draws th:nth-child(4)').click(function (){
         $public_draws.fnSort( [ [6,'desc'] ] );
@@ -153,12 +161,6 @@
         target_url += "?password=";
         target_url += password;
         access_draw(draw_id, password, target_url);
-    });
-
-    $('#public-draws_wrapper').easDataTable({
-        "dataTable_plugin": $public_draws,
-        "msg_your_draws": "{% trans "Show only the draws you take part in" %}",
-        "msg_search": "{% trans "Search" %}..."
     });
 {% endblock extra_jq_ready %}
 

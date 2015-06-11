@@ -3,11 +3,10 @@
     // Set the defaults
     var pluginName = 'EASDataTable',
         defaults = {
+            type: "profile", // Can be "profile" or "public_draw"
             dataTable_plugin: null,
             msg_your_draws: "",
-            msg_search: "",
-            msg_show: "Show",
-            msg_entries: "entries"
+            msg_search: ""
         };
 
     /*********************************
@@ -26,7 +25,13 @@
             this.$element = $(element);
             this.options = $.extend( {}, defaults, options) ;
 
-            this.checkbox_filter_your_draws();
+            if (this.options.type == "public_draw" ){
+                this.checkbox_filter_your_draws();
+            }
+            else{ // Then is the datatable for the profile
+                this.checkbox_filter_public_draws();
+                        console.log("ey");
+            }
             this.add_bootstrap();
         },
 
@@ -48,14 +53,32 @@
             });
         },
 
+        checkbox_filter_public_draws: function(){
+            var that = this;
+            // Render checkbox and label
+            var html_only_public_draws = '<div class="checkbox"><label><input id="only-public-draws" type="checkbox">' +
+                            this.options.msg_your_draws + '</label></div>';
+            var $el = this.$element.find('.dataTables_length');
+            $el.append(html_only_public_draws);
+
+            // Set the action of the checkbox
+            this.$element.find('#only-public-draws').click(function(){
+                var dataTable = that.options.dataTable_plugin.api();
+                if ($(this).prop('checked')){
+                    dataTable.column(4).search("y").draw();
+                } else{
+                    dataTable.column(4).search("").draw();
+                }
+            });
+        },
+
         add_bootstrap: function(){
             var $search_input = this.$element.find(".dataTables_filter input");
             // Remove the content of the label, and the label itself
             this.$element.find(".dataTables_filter label").contents().filter(function(){ return this.nodeType != 1; }).remove();
             $search_input.unwrap();
-
             $search_input.addClass("form-control");
-            $search_input.prop("id","public-draw-search" );
+            $search_input.prop("id","search-draw" );
             $search_input.prop("placeholder",this.options.msg_search );
             $search_input.parent().addClass("col-xs-12");
             $search_input.wrap( "<div class='input-group'></div>" );
