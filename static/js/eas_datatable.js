@@ -30,7 +30,6 @@
             }
             else{ // Then is the datatable for the profile
                 this.checkbox_filter_public_draws();
-                        console.log("ey");
             }
             this.add_bootstrap();
         },
