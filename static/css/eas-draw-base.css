@@ -36,6 +36,7 @@ a.fa:focus {
     display: block;
     margin-left: auto;
     margin-right: auto;
+    padding: 0;
 
     height: auto !important;
 }
