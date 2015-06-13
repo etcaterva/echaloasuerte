@@ -3,6 +3,7 @@
     $.fn.autoGrowInput = function(o) {
 
         o = $.extend({
+            numRows: 1,
             maxWidth: 100,
             minWidth: 30,
             comfortZone: 7000,
@@ -44,7 +45,11 @@
                         input.prop('rows', 1);
                     }
                     else{
-                        input.prop('rows', 2);
+                        if (newWidth < 2*o.maxWidth){
+                            input.prop('rows', 2);
+                        }else{ // The title can have maximum 3 rows
+                            input.prop('rows', 3);
+                        }
                     }
 
                 };
@@ -64,7 +69,7 @@
                 if ($(this).val() == '') {
                     $(this).val(o.title);
                 }
-                var max_width = $("#draw-title-container").width()*2/3;
+                var max_width = $("#draw-title-container").width();
                 $(this).width(max_width);
             });
 
