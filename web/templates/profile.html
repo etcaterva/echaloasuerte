@@ -2,8 +2,9 @@
 {% load url from future %}
 {% load i18n %}
 {% block extra_jq_ready %}
-    $('.data-table').DataTable(
+    var $user_draws = $('#my-draws').dataTable(
         {
+            "bJQueryUI": true,
             "language" : {
                 "emptyTable":     "{% trans 'No data available in table'%}",
                 "info":           "{% trans 'Showing _START_ to _END_ of _TOTAL_ entries'%}",
@@ -26,11 +27,25 @@
                     "sortDescending": "{% trans ': activate to sort column descending'%}"
                 }
             },
-            "order": [[ 1, "desc" ]]
+            "order": [[ 1, "desc" ]],
+            "columnDefs": [
+                { "targets": 0, "width": 12, "sortable": true },
+                { "targets": 1, "sortable": true },
+                { "targets": 2, "width": 120 },
+                { "targets": 3, "width": 80 },
+                { "targets": 4, "visible": false}
+            ]
         }
     );
 
-    $('.data-table').on( 'click', 'tr', function () {
+    $('#my-draws_wrapper').easDataTable({
+        "type": "profile",
+        "dataTable_plugin": $user_draws,
+        "msg_your_draws": "{% trans "Show only your public draws" %}",
+        "msg_search": "{% trans "Search" %}..."
+    });
+
+    $('#my-draws').on( 'click', 'tr', function () {
         if(!($(this).attr('alt')))
             return true;
 
@@ -43,20 +58,29 @@
     <div id="profile">
         <h1>{{user}}</h1>
         {%if draws.owner %}<h3>{% trans "Draws" %}:</h3>{% endif %}
-        <table class="data-table" width="100%" cellspacing="0">
+        <table id="my-draws" class="data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
+                    <th></th>
                     <th>{%trans 'Draw Name' %}</th>
                     <th>{%trans 'Created on' %}</th>
                     <th>{%trans '# results' %}</th>
+                    <th>is_public</th>
                 </tr>
             </thead>
             <tbody>
             {% for d in draws.owner reversed%}
                 <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" style="cursor: pointer;">
+                    <td class="text-right">{% if not d.shared_type  %}
+                            <span class="fa fa-user" title="{% trans 'Private draw' %}"></span>
+                        {% else %}
+                            <span class="fa fa-globe" title="{% trans 'Public draw' %}"></span>
+                        {% endif %}
+                    </td>
                     <td>{{ d.title }}</td>
-                    <td>{{d.creation_time|date:" Y/m/d G:i:s "}}</td>
+                    <td>{{d.creation_time|date:" Y/m/d G:i "}}</td>
                     <td>{{d.results | length}}</td>
+                    <td>{% if d.shared_type  %}y{% endif %}</td>
                 </tr>
             {% endfor %}
             </tbody>
