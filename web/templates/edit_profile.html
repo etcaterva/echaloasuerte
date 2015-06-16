@@ -2,11 +2,11 @@
 {% load i18n %}
 {% block extra_jq_ready %}
     $('.settings-item-link').click(function (){
-        $(this).parent().addClass('open-settings-panel');
+        $(this).parent().addClass('opened-settings-panel');
     });
 
     $('.cancel-edition').click(function (){
-        $('#settings-password').removeClass('open-settings-panel');
+        $(this).closest('li').removeClass('opened-settings-panel');
     });
 {% endblock extra_jq_ready %}
 
@@ -21,30 +21,30 @@
                 <span class="settings-edit-icon pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
             </a>
         </li>
-        <li id="settings-password" class="">
+        <li id="settings-panel-password" class="">
             <a href="#" class="settings-item-link">
                 <h2 class="settings-item-label">{% trans "Password" %}</h2>
                 <span class="settings-item-content">*********</span>
                 <span class="settings-edit-icon pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
             </a>
-            <div id="change-user-password" class="edit-panel">
+            <div class="edit-panel">
                 <ul>
                     <li>
-                        <div>
-                            <div class="settings-edit-label col-md-4 text-right">{% trans "Current" %}</div>
-                            <div class="col-md-8 text-left"><input type="text"/></div>
+                        <div class="row">
+                            <div class="settings-edit-label col-xs-4 text-right">{% trans "Current" %}</div>
+                            <div class="col-xs-8 text-left"><input type="text"/></div>
                         </div>
                     </li>
                     <li>
-                        <div>
-                            <div class="settings-edit-label col-md-4 text-right">{% trans "New" %}</div>
-                            <div class="col-md-8 text-left"><input type="text"/></div>
+                        <div class="row">
+                            <div class="settings-edit-label col-xs-4 text-right">{% trans "New" %}</div>
+                            <div class="col-xs-8 text-left"><input type="text"/></div>
                         </div>
                     </li>
                     <li>
-                        <div>
-                            <div class="settings-edit-label col-md-4 text-right">{% trans "Repeat new" %}</div>
-                            <div class="col-md-8 text-left"><input type="text"/></div>
+                        <div class="row">
+                            <div class="settings-edit-label col-xs-4 text-right">{% trans "Repeat new" %}</div>
+                            <div class="col-xs-8 text-left"><input type="text"/></div>
                         </div>
                     </li>
                 </ul>
@@ -54,12 +54,35 @@
                 </div>
             </div>
         </li>
-        <li>
-            <a href="">
+        <li id="settings-panel-email" class="opened-settings-panel">
+            <a href="#" class="settings-item-link">
                 <h2 class="settings-item-label">{% trans "Email" %}</h2>
                 <span class="settings-item-content">{{ user.get_email }}</span>
                 <span class="settings-edit-icon pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
             </a>
+            <div id="change-user-email" class="edit-panel">
+                <ul>
+                    <li>
+                        <div  class="row">
+                            <div class="settings-edit-label col-xs-4 text-right">{% trans "Email" %}</div>
+                            <div class="col-xs-8 text-left"><input type="text"/></div>
+                        </div>
+                    </li>
+                    <li>
+
+                        <div  class="row">
+                                <p id="info-change-user-email">{% trans "For your security, you must re-enter your password to continue." %}
+                                <a href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a></p>
+                                <div class="settings-edit-label col-xs-4 text-right">{% trans "Password" %}</div>
+                                <div class="col-xs-8 text-left"><input type="text"/></div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="col-xs-12 text-center">
+                    <a href="" class="btn btn-primary btn-settings">{% trans "Save changes" %}</a>
+                    <a href="#" class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</a>
+                </div>
+            </div>
         </li>
         <li id="item-avatar">
             <a href="">

@@ -37,7 +37,7 @@ body {
     opacity: 0.5;
 }
 
-#footer a {
+#footer{
     color: #D3D3D3;
 }
 
@@ -575,26 +575,39 @@ a#back-old-version:hover {
     display: none;
 }
 
-.open-settings-panel {
-    height: 150px !important;
+.settings-item-link {
+    height: 60px;
+}
+
+/* Settings panel (when they are opened) */
+.opened-settings-panel {
     background-color: rgba(255, 255, 255, 0.4) !important;
 }
 
-.open-settings-panel .settings-item-content{
+.opened-settings-panel#settings-panel-password {
+    height: 150px !important;
+}
+
+.opened-settings-panel#settings-panel-email {
+    height: 160px !important;
+}
+
+
+.opened-settings-panel .settings-item-content{
     visibility: hidden;
 }
 
-.open-settings-panel .settings-edit-icon{
+.opened-settings-panel .settings-edit-icon{
     visibility: hidden;
 }
 
-.open-settings-panel .edit-panel {
+.opened-settings-panel .edit-panel {
     display: block;
 }
 
 
 
-#settings-password li{
+.edit-panel li{
     list-style-type: none;
     margin-bottom: 5px;
 }
@@ -605,16 +618,19 @@ a#back-old-version:hover {
     font-size: 11px;
 }
 
-#change-user-password {
-    height: 73px;
-}
-#change-user-password ul{
+.edit-panel ul{
     height: 100%;
 }
-#change-user-password li{
+.edit-panel li{
     height: 20px;
 }
 
 .settings-edit-label {
-    padding-right: 0px;
+    padding-right: 0;
+}
+
+#info-change-user-email {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: rgb(87, 87, 95);
 }
