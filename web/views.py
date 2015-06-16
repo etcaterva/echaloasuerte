@@ -272,9 +272,11 @@ def display_draw(request, draw_id):
     bom_draw = mongodb.retrieve_draw(draw_id)
     model_name = bom_draw.draw_type
     form_name = model_name + "Form"
-    user_can_read_draw(request.user, bom_draw,request.GET.get("password"))
-    draw_form = globals()[form_name](initial=bom_draw.__dict__)
-    return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
+    if bom_draw.user_can_read(request.user, request.GET.get("password")):
+        draw_form = globals()[form_name](initial=bom_draw.__dict__)
+        return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
+    else:
+        return render(request, "draws/secure_draw.html", {"bom": bom_draw})
 
 @time_it
 def under_construction(request):
