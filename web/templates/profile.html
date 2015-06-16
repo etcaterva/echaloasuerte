@@ -56,8 +56,9 @@
 
 {% block content %}
     <div id="profile">
-        <h1>{{user}}</h1>
-        {%if draws.owner %}<h3>{% trans "Draws" %}:</h3>{% endif %}
+        <h1>{% trans "Control Panel" %}</h1>
+        <a id="edit-profile" href="{% url 'edit_profile' %}" class="btn btn-default">{% trans "Edit Profile" %}</a>
+        {%if draws.owner %}<h2>{% trans "Draws' history" %}:</h2>{% endif %}
         <table id="my-draws" class="data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
@@ -86,6 +87,6 @@
             </tbody>
         </table>
         <hr/>
-        <a id="sign-out" href="{% url 'login' %}"><button type="button" class="btn">{% trans "Sign out" %}</button></a>
+        <a id="sign-out" href="{% url 'login' %}" class="btn btn-default">{% trans "Sign out" %}</a>
     </div>
 {% endblock %}

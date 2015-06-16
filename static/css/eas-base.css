@@ -182,11 +182,6 @@ ul.nav.navbar-nav {
   border: 1px solid #d6d6d6;
 }
 
-.navbar-default .navbar-nav > li > a {
-    color: #3f3f3f;
-    line-height: 30px;
-    font-size: 14px;
-}
 .navbar-default:before{
     content: ' ';
     display: block;
@@ -478,3 +473,148 @@ a#back-old-version:hover {
     background-image: url('../img/back_to_old_version/corner_old_version_hover.png');
 }
 
+/************************** Edit Profile ****************************/
+.settings-list > li{
+    padding: 10px 0 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 0 solid rgb(233, 234, 237);
+    border-top-width: 1px;
+    color: rgb(20, 24, 35);
+    direction: ltr;
+    display: list-item;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    height: 36px;
+    line-height: 16px;
+    list-style-type: none;
+    text-align: left;
+    width: 80%;
+    word-wrap: break-word;
+    zoom: 1;
+}
+.settings-list > li#item-avatar {
+    height: 56px;
+}
+
+.settings-list > li:hover{
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.settings-list > li:hover a{
+    text-decoration: none;
+}
+
+
+.settings-item-label {
+    font-size: 12px;
+    color: rgb(51, 51, 51);
+    cursor: pointer;
+    direction: ltr;
+    display: block;
+    float: left;
+    font-family: helvetica, arial, sans-serif;
+    font-weight: bold;
+    height: 14px;
+    line-height: 14px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 0 5px;
+    text-align: left;
+    width: 165px;
+    word-wrap: break-word;
+
+}
+
+.settings-item-content {
+    color: rgb(87, 87, 95);
+    cursor: pointer;
+    direction: ltr;
+    display: block;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    height: 16px;
+    line-height: 16px;
+    list-style-type: none;
+    margin-left: 175px;
+    padding-left: 0px;
+    text-align: left;
+    width: 300px;
+    word-wrap: break-word;
+
+}
+
+.settings-edit-icon {
+    color: rgb(59, 89, 152);
+    cursor: pointer;
+    direction: ltr;
+    display: block;
+    float: right;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    height: 16px;
+    line-height: 16px;
+    list-style-type: none;
+    padding-left: 23px;
+    padding-right: 5px;
+    position: relative;
+    text-align: right;
+    word-wrap: break-word;
+    zoom: 1;
+    margin: -17px 5px;
+}
+
+.settings-edit-icon .fa{
+    display: none;
+}
+
+.settings-list > li:hover .fa{
+    display: inline-block;
+}
+
+.edit-panel {
+    display: none;
+}
+
+.open-settings-panel {
+    height: 150px !important;
+    background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.open-settings-panel .settings-item-content{
+    visibility: hidden;
+}
+
+.open-settings-panel .settings-edit-icon{
+    visibility: hidden;
+}
+
+.open-settings-panel .edit-panel {
+    display: block;
+}
+
+
+
+#settings-password li{
+    list-style-type: none;
+    margin-bottom: 5px;
+}
+
+.btn-settings {
+    margin: 15px 1px;
+    padding: 3px 6px 3px 6px;
+    font-size: 11px;
+}
+
+#change-user-password {
+    height: 73px;
+}
+#change-user-password ul{
+    height: 100%;
+}
+#change-user-password li{
+    height: 20px;
+}
+
+.settings-edit-label {
+    padding-right: 0px;
+}

@@ -23,6 +23,7 @@ urlpatterns += patterns(
     url(r'^accounts/forgot_password/$', views.under_construction, name='forgot_password'),
     url(r'^accounts/login/$', views.login_user, name='login'),
     url(r'^accounts/profile/$', views.profile, name='profile'),
+    url(r'^accounts/edit_profile/$', views.edit_profile, name='edit_profile'),
 
     #web services
     url(r'^ws/draw/toss/$', ws.toss_draw, name="ws_toss_draw"),

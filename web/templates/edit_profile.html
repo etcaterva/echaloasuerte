@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block extra_jq_ready %}
+    $('.settings-item-link').click(function (){
+        $(this).parent().addClass('open-settings-panel');
+    });
+
+    $('.cancel-edition').click(function (){
+        $('#settings-password').removeClass('open-settings-panel');
+    });
+{% endblock extra_jq_ready %}
+
+{% block content %}
+    <h1>{% trans "Edit profile" %}</h1>
+
+    <ul class="settings-list">
+        <li>
+            <a href="">
+                <h2 class="settings-item-label">{% trans "Username" %}</h2>
+                <span class="settings-item-content">{{ user }}</span>
+                <span class="settings-edit-icon pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
+            </a>
+        </li>
+        <li id="settings-password" class="">
+            <a href="#" class="settings-item-link">
+                <h2 class="settings-item-label">{% trans "Password" %}</h2>
+                <span class="settings-item-content">*********</span>
+                <span class="settings-edit-icon pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
+            </a>
+            <div id="change-user-password" class="edit-panel">
+                <ul>
+                    <li>
+                        <div>
+                            <div class="settings-edit-label col-md-4 text-right">{% trans "Current" %}</div>
+                            <div class="col-md-8 text-left"><input type="text"/></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="settings-edit-label col-md-4 text-right">{% trans "New" %}</div>
+                            <div class="col-md-8 text-left"><input type="text"/></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="settings-edit-label col-md-4 text-right">{% trans "Repeat new" %}</div>
+                            <div class="col-md-8 text-left"><input type="text"/></div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="col-xs-12 text-center">
+                    <a href="" class="btn btn-primary btn-settings">{% trans "Save changes" %}</a>
+                    <a href="#" class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</a>
+                </div>
+            </div>
+        </li>
+        <li>
+            <a href="">
+                <h2 class="settings-item-label">{% trans "Email" %}</h2>
+                <span class="settings-item-content">{{ user.get_email }}</span>
+                <span class="settings-edit-icon pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
+            </a>
+        </li>
+        <li id="item-avatar">
+            <a href="">
+                <h2 class="settings-item-label">{% trans "Avatar" %}</h2>
+                <span class="settings-item-content"><span class="fa fa-user fa-3x"></span></span>
+                <span class="settings-edit-icon pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
+            </a>
+        </li>
+    </ul>
+
+
+{% endblock content %}
