@@ -93,4 +93,9 @@ a[disabled] {
     height: auto;
 }
 
+.container-draws {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 
