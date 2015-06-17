@@ -10,6 +10,21 @@ from server.bom import *
 LOG = logging.getLogger("echaloasuerte")
 MONGO = MongoDriver.instance()
 
+@login_required
+@time_it
+def update_user(request):
+    """updates the details of a user"""
+    user = MONGO.retrieve_user(request.user.pk)
+
+    if "email" in request.POST:
+        pass # user._id = request.POST["email"]
+    if "password" in request.POST:
+        user.set_password(request.POST["password"])
+    if "alias" in request.POST:
+        user.alias = request.POST["alias"]
+    if "avatar" in request.POST:
+        user.avatar = request.POST["avatar"]
+    MONGO.save_user(user)
 
 @time_it
 def toss_draw(request):

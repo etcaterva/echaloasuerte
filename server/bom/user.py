@@ -23,7 +23,7 @@ class User(object):
     def save(self,**args):
         pass
 
-    def __init__(self, _id, password = None, favourites = None ):
+    def __init__(self, _id, password = None, favourites = None, alias=None, avatar=None):
         self._id = _id
         """Email of the user"""
 
@@ -32,6 +32,12 @@ class User(object):
 
         self.favourites = favourites if favourites is not None else []
         """List of favourites of a user"""
+
+        self.alias = alias if alias else self._id
+        """Alias of the user (name it appears for the public)"""
+
+        self.avatar = avatar
+        """Picture that represents the user"""
 
     def get_email(self):
         return self._id
