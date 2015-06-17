@@ -1,7 +1,17 @@
 from django.contrib.auth.hashers import (check_password, make_password)
 
 import logging
+import urllib
+import hashlib
 logger = logging.getLogger("echaloasuerte")
+
+def gravatar(email):
+    default = "http://example.com/static/images/defaultavatar.jpg"
+    size = 100
+    gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() + "?"
+    gravatar_url += urllib.urlencode({'d':default, 's':str(size)})
+    return gravatar_url
+
 
 class User(object):
     """
@@ -22,6 +32,15 @@ class User(object):
 
     def save(self,**args):
         pass
+
+    @property
+    def user_image(self):
+        """Returns a picture that identifies the usre
+        Either the self.avatar url or a gravatar one"""
+        if self.avatar:
+            return self.avatar
+        else:
+            return gravatar(self.get_email())
 
     def __init__(self, _id, password = None, favourites = None, alias=None, avatar=None):
         self._id = _id
