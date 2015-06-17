@@ -37,17 +37,17 @@
         <div id="user-settings" class="row text-center accordion">
             {# Edit Username #}
             <p class="h3 text-left">
-                <span class="user-settings-label">{% trans "Username" %}</span>
+                <span class="user-settings-label">{% trans "Alias" %}</span>
                 <span class="user-settings-content">{{ user }}</span>
                 <span class="user-settings-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
             </p>
             <div class="panel">
                 <div class="row">
-                    <div class="user-settings-label col-xs-4 text-right">{% trans "New Username" %}</div>
+                    <div class="user-settings-label col-xs-4 text-right">{% trans "New alias" %}</div>
                     <div class="col-xs-8 text-left"><input type="text"/></div>
                 </div>
                 <div class="col-xs-12 text-center">
-                    <button class="btn btn-primary btn-settings">{% trans "Check availability" %}</button>
+                    <button class="btn btn-primary btn-settings">{% trans "Save alias" %}</button>
                     <button class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</button>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                 <div id="btn-upload-image" class="col-xs-6 text-center">
                     <input id="upload-image" type="file" class="filestyle" data-classButton="btn btn-primary" data-badge="false" data-input="false" data-classIcon="icon-plus" data-buttonText="{% trans "Choose an image" %}"  onchange="PreviewImage();">
                 </div>
-                <div class="col-xs-6 text-center">
+                <div id="div-upload-preview" class="col-xs-6 text-center">
                     <img id="upload-preview" />
                 </div>
                 <script type="text/javascript">
