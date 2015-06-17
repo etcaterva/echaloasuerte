@@ -474,163 +474,83 @@ a#back-old-version:hover {
 }
 
 /************************** Edit Profile ****************************/
-.settings-list > li{
-    padding: 10px 0 5px;
-    background-color: rgba(255, 255, 255, 0.2);
-    border: 0 solid rgb(233, 234, 237);
-    border-top-width: 1px;
-    color: rgb(20, 24, 35);
-    direction: ltr;
-    display: list-item;
+#user-settings {
     font-family: helvetica, arial, sans-serif;
     font-size: 12px;
-    height: 36px;
-    line-height: 16px;
-    list-style-type: none;
-    text-align: left;
-    width: 80%;
-    word-wrap: break-word;
-    zoom: 1;
-}
-.settings-list > li#item-avatar {
-    height: 56px;
 }
 
-.settings-list > li:hover{
+#user-settings .ui-icon {
+    display: none;
+}
+
+#user-settings .ui-accordion-header {
+    padding: 8px 10px 8px 10px;
+}
+
+/* Remove outline on active elements for Chrome */
+#user-settings .ui-accordion-header:focus {
+    text-decoration:none;
+}
+#user-settings .ui-accordion-header:focus,
+#user-settings .ui-accordion-header:active:focus {
+    outline:none;
+}
+
+#user-settings .ui-state-default {
+    background: rgba(255, 255, 255, 0.2) none;
+    border: 0 solid rgb(233, 234, 237);
+    border-top-width: 1px;
+    border-radius: 0;
+    margin-top: 0 !important;
+}
+
+#user-settings .ui-state-active,
+#user-settings .ui-state-hover {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
-.settings-list > li:hover a{
-    text-decoration: none;
-}
 
-
-.settings-item-label {
-    font-size: 12px;
-    color: rgb(51, 51, 51);
-    cursor: pointer;
-    direction: ltr;
-    display: block;
-    float: left;
-    font-family: helvetica, arial, sans-serif;
-    font-weight: bold;
-    height: 14px;
-    line-height: 14px;
-    list-style-type: none;
-    margin: 0;
-    padding: 0 0 0 5px;
-    text-align: left;
-    width: 165px;
-    word-wrap: break-word;
-
-}
-
-.settings-item-content {
+.s-content {
     color: rgb(87, 87, 95);
-    cursor: pointer;
-    direction: ltr;
-    display: block;
-    font-family: helvetica, arial, sans-serif;
-    font-size: 12px;
-    height: 16px;
-    line-height: 16px;
-    list-style-type: none;
-    margin-left: 175px;
-    padding-left: 0px;
-    text-align: left;
-    width: 300px;
-    word-wrap: break-word;
-
+    left: 170px;
+    position: absolute;
 }
 
-.settings-edit-icon {
+.s-label {
+    color: rgb(51, 51, 51);
+    font-weight: bold;
+}
+
+.s-edit {
     color: rgb(59, 89, 152);
-    cursor: pointer;
-    direction: ltr;
-    display: block;
-    float: right;
-    font-family: helvetica, arial, sans-serif;
-    font-size: 12px;
-    height: 16px;
-    line-height: 16px;
-    list-style-type: none;
-    padding-left: 23px;
-    padding-right: 5px;
-    position: relative;
-    text-align: right;
-    word-wrap: break-word;
-    zoom: 1;
-    margin: -17px 5px;
 }
 
-.settings-edit-icon .fa{
+.ui-state-active .s-content,
+.ui-state-active .s-edit {
+    visibility: hidden;
+}
+
+.s-edit .fa {
     display: none;
 }
 
-.settings-list > li:hover .fa{
+.ui-state-hover .s-edit .fa {
     display: inline-block;
 }
 
-.edit-panel {
-    display: none;
+.panel {
+    background: rgba(255, 255, 255, 0.4) none;
+    border-radius: 0;
+    border-color: transparent;
 }
 
-.settings-item-link {
-    height: 60px;
-}
-
-/* Settings panel (when they are opened) */
-.opened-settings-panel {
-    background-color: rgba(255, 255, 255, 0.4) !important;
-}
-
-.opened-settings-panel#settings-panel-password {
-    height: 150px !important;
-}
-
-.opened-settings-panel#settings-panel-email {
-    height: 160px !important;
-}
-
-
-.opened-settings-panel .settings-item-content{
-    visibility: hidden;
-}
-
-.opened-settings-panel .settings-edit-icon{
-    visibility: hidden;
-}
-
-.opened-settings-panel .edit-panel {
-    display: block;
-}
-
-
-
-.edit-panel li{
+.panel li{
     list-style-type: none;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
 .btn-settings {
-    margin: 15px 1px;
+    margin: 15px 1px 3px 0;
     padding: 3px 6px 3px 6px;
-    font-size: 11px;
-}
-
-.edit-panel ul{
-    height: 100%;
-}
-.edit-panel li{
-    height: 20px;
-}
-
-.settings-edit-label {
-    padding-right: 0;
-}
-
-#info-change-user-email {
-    margin-top: 15px;
-    margin-bottom: 10px;
-    color: rgb(87, 87, 95);
+    font-size: 11px !important;
 }

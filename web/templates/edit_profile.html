@@ -6,28 +6,43 @@
     });
 
     $('.cancel-edition').click(function (){
-        $(this).closest('li').removeClass('opened-settings-panel');
+        $("#user-settings").accordion({active: false}).click();
     });
+
+    $('.accordion').accordion({collapsible: true, active: false, heightStyle: "content", animate: false});
+
 {% endblock extra_jq_ready %}
 
 {% block content %}
+
     <h1>{% trans "Edit profile" %}</h1>
 
-    <ul class="settings-list">
-        <li>
-            <a href="">
-                <h2 class="settings-item-label">{% trans "Username" %}</h2>
-                <span class="settings-item-content">{{ user }}</span>
-                <span class="settings-edit-icon pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
-            </a>
-        </li>
-        <li id="settings-panel-password" class="">
-            <a href="#" class="settings-item-link">
-                <h2 class="settings-item-label">{% trans "Password" %}</h2>
-                <span class="settings-item-content">*********</span>
-                <span class="settings-edit-icon pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
-            </a>
-            <div class="edit-panel">
+    <div class="col-sm-8 col-sm-offset-2">
+        <div id="user-settings" class="row text-center accordion">
+            {# Edit Username #}
+            <p class="h3 text-left">
+                <span class="s-label">{% trans "Username" %}</span>
+                <span class="s-content">{{ user }}</span>
+                <span class="s-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
+            </p>
+            <div class="panel">
+                <div class="row">
+                    <div class="settings-edit-label col-xs-4 text-right">{% trans "New Username" %}</div>
+                    <div class="col-xs-8 text-left"><input type="text"/></div>
+                </div>
+                <div class="col-xs-12 text-center">
+                    <button class="btn btn-primary btn-settings">{% trans "Check availability" %}</button>
+                    <button class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</button>
+                </div>
+            </div>
+
+            {# Edit Password #}
+            <p class="h3 text-left">
+                <span class="s-label">{% trans "Password" %}</span>
+                <span class="s-content">*********</span>
+                <span class="s-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
+            </p>
+            <div class="panel">
                 <ul>
                     <li>
                         <div class="row">
@@ -49,49 +64,31 @@
                     </li>
                 </ul>
                 <div class="col-xs-12 text-center">
-                    <a href="" class="btn btn-primary btn-settings">{% trans "Save changes" %}</a>
-                    <a href="#" class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</a>
+                    <button class="btn btn-primary btn-settings">{% trans "Save changes" %}</button>
+                    <button class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</button>
                 </div>
             </div>
-        </li>
-        <li id="settings-panel-email" class="opened-settings-panel">
-            <a href="#" class="settings-item-link">
-                <h2 class="settings-item-label">{% trans "Email" %}</h2>
-                <span class="settings-item-content">{{ user.get_email }}</span>
-                <span class="settings-edit-icon pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
-            </a>
-            <div id="change-user-email" class="edit-panel">
-                <ul>
-                    <li>
-                        <div  class="row">
-                            <div class="settings-edit-label col-xs-4 text-right">{% trans "Email" %}</div>
-                            <div class="col-xs-8 text-left"><input type="text"/></div>
-                        </div>
-                    </li>
-                    <li>
 
-                        <div  class="row">
-                                <p id="info-change-user-email">{% trans "For your security, you must re-enter your password to continue." %}
-                                <a href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a></p>
-                                <div class="settings-edit-label col-xs-4 text-right">{% trans "Password" %}</div>
-                                <div class="col-xs-8 text-left"><input type="text"/></div>
-                        </div>
-                    </li>
-                </ul>
-                <div class="col-xs-12 text-center">
-                    <a href="" class="btn btn-primary btn-settings">{% trans "Save changes" %}</a>
-                    <a href="#" class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</a>
-                </div>
+            {# Edit Email #}
+            <p class="h3 text-left">
+                <span class="s-label">{% trans "Email" %}</span>
+                <span class="s-content">{{ user.get_email }}</span>
+                <span class="s-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
+            </p>
+            <div class="panel">
+                email
             </div>
-        </li>
-        <li id="item-avatar">
-            <a href="">
-                <h2 class="settings-item-label">{% trans "Avatar" %}</h2>
-                <span class="settings-item-content"><span class="fa fa-user fa-3x"></span></span>
-                <span class="settings-edit-icon pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
-            </a>
-        </li>
-    </ul>
 
+            {# Edit Avatar #}
+            <p class="h3 text-left">
+                <span class="s-label">{% trans "Avatar" %}</span>
+                <span class="s-content">Avatar</span>
+                <span class="s-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
+            </p>
+            <div class="panel">
+                <span class="fa fa-user fa-3x"></span>
+            </div>
+        </div>
+    </div>
 
 {% endblock content %}
