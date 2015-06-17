@@ -477,6 +477,7 @@ a#back-old-version:hover {
 #user-settings {
     font-family: helvetica, arial, sans-serif;
     font-size: 12px;
+    margin-bottom: 50px;
 }
 
 #user-settings .ui-icon {
@@ -510,31 +511,33 @@ a#back-old-version:hover {
 }
 
 
-.s-content {
+.user-settings-content {
     color: rgb(87, 87, 95);
     left: 170px;
     position: absolute;
 }
 
-.s-label {
+.user-settings-label {
     color: rgb(51, 51, 51);
     font-weight: bold;
+    padding-right: 0;
+    padding-top: 3px;
 }
 
-.s-edit {
+.user-settings-edit {
     color: rgb(59, 89, 152);
 }
 
-.ui-state-active .s-content,
-.ui-state-active .s-edit {
+.ui-state-active .user-settings-content,
+.ui-state-active .user-settings-edit {
     visibility: hidden;
 }
 
-.s-edit .fa {
+.user-settings-edit .fa {
     display: none;
 }
 
-.ui-state-hover .s-edit .fa {
+.ui-state-hover .user-settings-edit .fa {
     display: inline-block;
 }
 
@@ -553,4 +556,26 @@ a#back-old-version:hover {
     margin: 15px 1px 3px 0;
     padding: 3px 6px 3px 6px;
     font-size: 11px !important;
+}
+
+#info-change-user-email {
+    margin-top: 10px !important;
+    color: rgb(87, 87, 95);
+}
+
+#info-change-user-email a {
+    color: rgb(59, 89, 152);
+}
+
+#change-email-password {
+}
+
+#btn-upload-image {
+    margin-top: 30px;
+}
+
+#upload-preview {
+    border: 1px #3c3c3c solid;
+    width: 100px;
+    height: 100px;
 }
