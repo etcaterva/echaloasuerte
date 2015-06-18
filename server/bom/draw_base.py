@@ -23,7 +23,7 @@ class BaseDraw(object):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
-        self.results = results if results is not None else []
+        self.results = results if results else []
         """List of results (list of list of items)"""
 
         self._id = _id
@@ -44,7 +44,7 @@ class BaseDraw(object):
         self.prev_draw = prev_draw
         """Id of the prev draw that was modified creating this one"""
 
-        self.users = users if users is not None else []
+        self.users = users if users else []
         """List of users with access to the draw"""
 
         self.title = title
@@ -53,7 +53,7 @@ class BaseDraw(object):
         self.password = password
         """Password of the public draw"""
 
-        self.audit = audit if audit is not None else []
+        self.audit = audit if audit else []
         """List of changes in the draw main config, user add_audit to add items"""
 
         self.show_in_public_list = show_in_public_list

@@ -250,7 +250,7 @@ def update_draw(request, draw_id):
         if not bom_draw.is_feasible(): # This should actually go in the form validation
             logger.info("Draw {0} is not feasible".format(bom_draw))
             messages.error(request, _('The draw is not feasible'))
-            draw_form = globals()[form_name](initial=bom_draw.__dict__)
+            draw_form = globals()[form_name](initial=bom_draw.__dict__.copy())
             return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
         else:
             bom_draw.add_audit("DRAW_PARAMETERS")
@@ -273,7 +273,7 @@ def display_draw(request, draw_id):
     model_name = bom_draw.draw_type
     form_name = model_name + "Form"
     if bom_draw.user_can_read(request.user, request.GET.get("password")):
-        draw_form = globals()[form_name](initial=bom_draw.__dict__)
+        draw_form = globals()[form_name](initial=bom_draw.__dict__.copy())
         return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
     else:
         return render(request, "draws/secure_draw.html", {"bom": bom_draw})
