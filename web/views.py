@@ -92,6 +92,12 @@ def profile(request):
     context = {'draws': draws}
     return render(request, 'profile.html', context)
 
+@login_required
+@time_it
+def edit_profile(request):
+    context = {}
+    return render(request, 'edit_profile.html', context)
+
 @time_it
 def join_draw(request):
     """view to show the list of draws a user can join"""

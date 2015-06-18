@@ -37,7 +37,7 @@ body {
     opacity: 0.5;
 }
 
-#footer a {
+#footer{
     color: #D3D3D3;
 }
 
@@ -150,9 +150,8 @@ ul.nav.navbar-nav {
 }
 
 
-/* To avoid the separation with the favourites panel */
 .navbar-brand{
-    padding: 5px;
+    padding: 0;
 }
 
 .navbar-brand img {
@@ -182,11 +181,6 @@ ul.nav.navbar-nav {
   border: 1px solid #d6d6d6;
 }
 
-.navbar-default .navbar-nav > li > a {
-    color: #3f3f3f;
-    line-height: 30px;
-    font-size: 14px;
-}
 .navbar-default:before{
     content: ' ';
     display: block;
@@ -478,3 +472,116 @@ a#back-old-version:hover {
     background-image: url('../img/back_to_old_version/corner_old_version_hover.png');
 }
 
+/************************** Edit Profile ****************************/
+#user-settings {
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    margin-bottom: 50px;
+}
+
+#user-settings .ui-icon {
+    display: none;
+}
+
+#user-settings .ui-accordion-header {
+    padding: 8px 10px 8px 10px;
+}
+
+/* Remove outline on active elements for Chrome */
+#user-settings .ui-accordion-header:focus {
+    text-decoration:none;
+}
+#user-settings .ui-accordion-header:focus,
+#user-settings .ui-accordion-header:active:focus {
+    outline:none;
+}
+
+#user-settings .ui-state-default {
+    background: rgba(255, 255, 255, 0.2) none;
+    border: 0 solid rgb(233, 234, 237);
+    border-top-width: 1px;
+    border-radius: 0;
+    margin-top: 0 !important;
+}
+
+#user-settings .ui-state-active,
+#user-settings .ui-state-hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+
+.user-settings-content {
+    color: rgb(87, 87, 95);
+    left: 170px;
+    position: absolute;
+}
+
+.user-settings-label {
+    color: rgb(51, 51, 51);
+    font-weight: bold;
+    padding-right: 0;
+    padding-top: 3px;
+}
+
+.user-settings-edit {
+    color: rgb(59, 89, 152);
+}
+
+.ui-state-active .user-settings-content,
+.ui-state-active .user-settings-edit {
+    visibility: hidden;
+}
+
+.user-settings-edit .fa {
+    display: none;
+}
+
+.ui-state-hover .user-settings-edit .fa {
+    display: inline-block;
+}
+
+.panel {
+    background: rgba(255, 255, 255, 0.4) none;
+    border-radius: 0;
+    border-color: transparent;
+}
+
+.panel li{
+    list-style-type: none;
+    margin-bottom: 8px;
+}
+
+.btn-settings {
+    margin: 15px 1px 3px 0;
+    padding: 3px 6px 3px 6px;
+    font-size: 11px !important;
+}
+
+#info-change-user-email {
+    margin-top: 10px !important;
+    color: rgb(87, 87, 95);
+}
+
+#info-change-user-email a {
+    color: rgb(59, 89, 152);
+}
+
+#change-email-password {
+}
+
+#btn-upload-image {
+    margin-top: 30px;
+}
+
+#upload-preview {
+    width: 100px;
+    height: 100px;
+}
+#div-upload-preview {
+    border: 1px #3c3c3c solid;
+    width: 100px;
+    height: 100px;
+}
+.back-arrow {
+    padding: 10px 0 0 0;
+}
