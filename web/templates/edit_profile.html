@@ -30,8 +30,12 @@
 {% endblock extra_jq_ready %}
 
 {% block content %}
-
-    <h1 class="text-center">{% trans "Edit profile" %}</h1>
+    <div class="col-xs-12 text-center" >
+        <a href="{% url 'index' %}" class="back-arrow pull-left col-xs-2">
+            <img src="{% static "img/back_arrow.png" %}" alt="{% trans "back" %}"/>
+        </a>
+        <h1 class="col-xs-8">{% trans "Edit profile" %}</h1>
+    </div>
 
     <div class="col-sm-8 col-sm-offset-2">
         <div id="user-settings" class="row text-center accordion">

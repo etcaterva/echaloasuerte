@@ -582,3 +582,6 @@ a#back-old-version:hover {
     width: 100px;
     height: 100px;
 }
+.back-arrow {
+    padding: 10px 0 0 0;
+}
