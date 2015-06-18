@@ -90,7 +90,7 @@
                 $("#language-option"). attr("value",lang_code);
                 $("#change_language_but").click();
             });
-            <!---->
+            // Collapsed navbar
             var sideslider = $('[data-toggle=collapse-side]');
             var sel = sideslider.attr('data-target');
             var sel2 = sideslider.attr('data-target-2');
@@ -98,7 +98,12 @@
                 $(sel).toggleClass('in');
                 $(sel2).toggleClass('out');
             });
-            <!---->
+
+            // Closes collapsed navbar when items are clicked
+            $('.nav a').on('click', function(){
+                $(".navbar-toggle").click();
+            });
+            
             // Resize the window to avoid problems with wrong width
             $(window).resize();
             place_right_column();
