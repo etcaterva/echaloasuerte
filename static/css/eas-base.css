@@ -530,13 +530,13 @@ a#back-old-version:hover {
     display: inline-block;
 }
 
-.panel {
+#user-settings .panel {
     background: rgba(255, 255, 255, 0.4) none;
     border-radius: 0;
     border-color: transparent;
 }
 
-.panel li{
+#user-settings .panel li{
     list-style-type: none;
     margin-bottom: 8px;
 }
