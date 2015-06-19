@@ -196,7 +196,7 @@
                     <td>{{ d.creation_time|naturaltime}}</td>
                     <td>{{ d.users|length }}</td>
                     <td>{% if user.pk in d.owner or user.pk in d.users %}y{% endif %}</td>
-                    <td>{{ d.creation_time|date:"YmdHms" }}</td>
+                    <td>{{ d.creation_time|date:"YmdHis" }}</td>
                 </tr>
             {% endfor %}
             </tbody>
