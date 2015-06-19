@@ -85,17 +85,6 @@ PublicDrawCreator.prepare_privacy_selection = function (){
     });
 };
 
-
-PublicDrawCreator.prepare_invitation_fields = function () {
-    // Initialize input to submit emails to be shown as a tokenField
-    $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
-
-    $('#publish').click(function () {
-        var users_to_invite = $('#invite-emails').val();
-        $('#users').val(users_to_invite);
-    });
-};
-
 PublicDrawCreator.show_spread_step = function () {
     PublicDrawCreator.update_breadcrumb("spread");
     $('.step-configure').addClass('hidden');
@@ -140,7 +129,8 @@ PublicDrawCreator.setup = function(){
     //Initialize the UI to select the level of privacy for the draw
     PublicDrawCreator.prepare_privacy_selection();
 
-    PublicDrawCreator.prepare_invitation_fields();
+    // Initialize input to submit emails to be shown as a tokenField
+    $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
 
     PublicDrawCreator.setup_breadcrumb("configure");
 

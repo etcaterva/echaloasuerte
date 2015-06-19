@@ -28,7 +28,7 @@ class RandomItemDrawForm(FormBase):
             Row(
                 HTML(_("<div class='alert alert-info' role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>")),
                 Row('number_of_results'),
-                Field('items', css_class="tokenfield"),
+                Field('items', css_class="eas-tokenfield"),
                 'allow_repeat',
             ),
         )
