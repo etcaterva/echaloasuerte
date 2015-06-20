@@ -83,6 +83,7 @@ class User(object):
         self.password = make_password(raw_password)
 
     def __str__(self):
+
         return self.get_username()
 
 

@@ -55,7 +55,7 @@ def try_draw(request, draw_id):
 def add_user_to_draw(request):
     """Add an user to a draw and sends a mail to inform him"""
     draw_id = request.GET.get('draw_id')
-    users_to_add = request.GET.get('emails', [])
+    users_to_add = request.GET.get('emails', "")
 
     if draw_id is None:
         return HttpResponseBadRequest()
@@ -218,8 +218,7 @@ def update_share_settings(request):
         LOG.warning("Empty draw_id")
         return HttpResponseBadRequest()
     bom_draw = MONGO.retrieve_draw(draw_id)
-    user_can_write_draw(request.user, bom_draw) #raises 500
-
+    user_can_write_draw(request.user, bom_draw) # raises 500
 
     if shared_type == "Public":
         bom_draw.shared_type = shared_type
