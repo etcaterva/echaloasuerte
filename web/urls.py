@@ -34,6 +34,7 @@ urlpatterns += patterns(
     url(r'^ws/chat/add/$', ws.add_message_to_chat, name="chat_add_message"),
 
     url(r'^ws/draw_add_users/$', ws.add_user_to_draw, name="ws_add_users_to_draw"),
+    url(r'^ws/draw_remove_users/$', ws.remove_user_from_draw, name="ws_remove_users_from_draw"),
     url(r'^ws/favourites/remove/$', ws.remove_favorite, name="ws_remove_favorite"),
     url(r'^ws/check_access_to_draw/$', ws.check_access_to_draw, name="check_access_to_draw"),
 )
