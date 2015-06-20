@@ -16,5 +16,5 @@ install:
   - "python manage.py syncdb --noinput"
 # command to run tests
 script:
-  - nosetests test_init.py server/test -v
+  - nosetests tests/test_init.py tests -v
   - if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" == "false" ]]; then pip install sauceclient && nosetests func_test -v ; fi
