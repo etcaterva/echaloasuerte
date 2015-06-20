@@ -148,17 +148,21 @@
             <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Any configuration you have set up will be lost</p>
         </div>
 
-        <div id="access-level" class="modal fade" tabindex="-1" style="display: none;" data-focus-on="input:first">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{% trans "Restict the access to your draw" %}</h4>
-            </div>
-            <div class="modal-body">
-                {% include "snippets/snippet_public_draw_privacy.html" %}
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Cancel" %}</button>
-                <button id="save-change-privacy" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+        <div id="access-level" class="modal fade" tabindex="-1" data-focus-on="input:first">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">{% trans "Restict the access to your draw" %}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {% include "snippets/snippet_public_draw_privacy.html" %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Cancel" %}</button>
+                        <button id="save-change-privacy" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+                    </div>
+                </div>
             </div>
         </div>
 
