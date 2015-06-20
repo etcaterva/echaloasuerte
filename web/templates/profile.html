@@ -2,6 +2,9 @@
 {% load url from future %}
 {% load static %}
 {% load i18n %}
+{% block extra_head %}
+    <script type="text/javascript" src="{% static "js/bootstrap-filestyle.js" %}"> </script>
+{% endblock extra_head %}
 {% block extra_jq_ready %}
     var $user_draws = $('#my-draws').dataTable(
         {
@@ -75,6 +78,12 @@
             $('#change-email-password').removeClass('hidden');
         }
     });
+
+    $(function() {
+        $(document).tooltip({
+            track: true
+        });
+    });
 {% endblock extra_jq_ready %}
 
 {% block content %}
@@ -144,18 +153,21 @@
                         <span class="user-settings-content">{{ user.get_email }}</span>
                         <span class="user-settings-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
                     </p>
-                    <div class="panel">
+                    <div class="panel" title="{% trans "Sorry, changing your email is not possible yet." %}">
                         <div class="user-settings-label col-xs-4 text-right">{% trans "New email" %}</div>
-                        <div class="col-xs-8 text-left"><input id="new-email" type="email"/></div>
+                        <div class="col-xs-8 text-left">
+                            <input id="new-email" type="email" disabled/>
+                        </div>
                         <div id="change-email-password" class="hidden col-xs-12">
                             <p id="info-change-user-email">{% trans "For your security, you must re-enter your password to continue." %}
                             <a href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a></p>
                             <div class="user-settings-label col-xs-4 text-right">{% trans "Password" %}</div>
-                            <div class="col-xs-8 text-left"><input type="text"/>
-                        </div>
+                            <div class="col-xs-8 text-left">
+                                <input type="text"/>
+                            </div>
                         </div>
                         <div class="col-xs-12 text-center">
-                            <button class="btn btn-primary btn-settings">{% trans "Change email" %}</button>
+                            <button class="btn btn-primary btn-settings" disabled>{% trans "Change email" %}</button>
                             <button class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</button>
                         </div>
                     </div>
