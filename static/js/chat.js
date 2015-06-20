@@ -120,13 +120,13 @@
 
         renderChat: function (){
              var html_input = '<input id="chat-message-box" type="text" class="form-control input-sm" placeholder="'+this.options.msg_type_your_message+'"';
-             if (this.options.authorized) {
+             if (!this.options.authorized) {
                  html_input += 'disabled="disabled"';
              }
              html_input += '/>';
 
             var html_button = '<button class="btn btn-success btn-sm" id="chat-send" ';
-             if (this.options.authorized) {
+             if (!this.options.authorized) {
                  html_button += 'title="' + this.options.msg_login_first + '"';
              }
              html_button += '>'+this.options.msg_send+'</button>';

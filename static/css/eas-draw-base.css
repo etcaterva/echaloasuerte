@@ -78,6 +78,20 @@ a.fa:focus {
     margin-bottom: 10px;
 }
 
+#url-share {
+    border: 1px solid #ebebeb;
+    padding: 6px;
+    background-color: #f5f5f5;
+    color: #3B5998;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.invite-people-option {
+    font-weight: bold;
+    font-size: 18px;
+}
+
 #privacy-level {
     margin-top: 7px;
     margin-bottom: 7px;
@@ -98,6 +112,15 @@ a.fa:focus {
     cursor: pointer;
 }
 
+#send-emails {
+    margin-top: 10px;
+}
+
+.invited-users {
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+}
 
 /***** INDIVIDUAL DRAWS *****/
 /* Makes the text be inline with the checkbox */
