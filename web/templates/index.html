@@ -3,6 +3,12 @@
 {% load bootstrap %}
 {% load i18n %}
 
+{% block extra_jq_ready %}
+    {% if not user.is_authenticated and is_public %}
+        $('#warning-sigin').modal('show');
+    {% endif %}
+{% endblock extra_jq_ready %}
+
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
     {% include "snippets/snippet_breadcrumb.html" %}
@@ -16,6 +22,36 @@
             {% include "snippets/snippet_draw_box.html" with draw_type="number" draw_icon="img/random_number.png" title="Random number" help="Doing a raffle? Luck will decide who is the winner" %}
             {% include "snippets/snippet_draw_box.html" with draw_type="item" draw_icon="img/random_item.png" title="Pick random items from a list" help="Doing a raffle? Luck will decide who is the winner" %}
             {% include "snippets/snippet_draw_box.html" with draw_type="link_sets" draw_icon="img/item_association.png" title="Associate items from two lists" help="Cleaning the house? Allocate the tasks within your housemates" %}
+        </div>
+    </div>
+
+    <!-- Warning "Sign in" modal -->
+    <div class="modal fade" id="warning-sigin" tabindex="-1" role="dialog" aria-labelledby="WarningSignin">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans "May I say something?" %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% trans "I've seen that you are not signed in.<br> Signing in has several benefits when creating a public draw:" %}
+                    <ul>
+                        <li>{% trans "Only you can to toss" %}</li>
+                        <li>{% trans "Only you can edit the details of the draw" %}</li>
+                        <li>{% trans "Only you can change the level of privacy, invite or remove people" %}</li>
+                        <li>{% trans "It will be in your history for future access" %}</li>
+                    </ul>
+                    <div class="text-center" >
+                        <p>{% trans "Don't you have an account yet?" %}</p>
+                        <p><strong>{% trans "It takes only 30 seconds, and it's FREE!" %}</strong></p>
+                        <a href="{% url 'register' %}" type="button" class="btn btn-success">{% trans "Sign up" %}</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "No thanks, I know what I'm doing" %}</button>
+                    <a href="{% url 'login' %}" type="button" class="btn btn-primary">{% trans "Sign in" %}</a>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
