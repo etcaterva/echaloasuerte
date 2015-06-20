@@ -165,7 +165,8 @@
 {% endblock extra_jq_ready %}
 
 {% block content %}
-    {%if public_draws %}<p class="h1 text-center">{% trans "Public draws" %}</p>
+    {%if public_draws %}
+        <p class="h1 text-center">{% trans "Public draws" %}</p>
         <table id="public-draws" class="draw-list data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
@@ -189,10 +190,18 @@
                             {% elif d.password %}
                                 <span title="{% trans "This draw is protected with a password" %}" class="fa fa-key"></span>
                             {%endif%}
+                        {%elif d.password%}
+                            <span title="{% trans "This draw is protected with a password" %}" class="fa fa-key"></span>
                         {%endif%}
                     </td>
                     <td>{{ d.title }}</td>
-                    <td>{% if user.is_authenticated and d.owner == user.pk %} {% trans "Me" %} {% else %}{{ d.owner|default:"" }} {% endif %}</td>
+                    <td>
+                        {% if user.is_authenticated and d.owner == user.pk %}
+                            {% trans "Me" %}
+                        {% else %}
+                            {{ d.owner|default:_('No owner')}}
+                        {% endif %}
+                    </td>
                     <td>{{ d.creation_time|naturaltime}}</td>
                     <td>{{ d.users|length }}</td>
                     <td>{% if user.pk in d.owner or user.pk in d.users %}y{% endif %}</td>
