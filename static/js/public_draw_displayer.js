@@ -247,6 +247,11 @@ PublicDraw.setup = function(current_step){
 
     // Initialize input to submit emails to be shown as a tokenField
     $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
+    $('input#invited-users').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
+
+    $(".invited-users-spoiler").click(function() {
+		$(this).parent().next().collapse('toggle');
+	});
 
     PublicDraw.settings();
     PublicDraw.lock_fields();
