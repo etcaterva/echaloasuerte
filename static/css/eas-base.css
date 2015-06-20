@@ -564,13 +564,15 @@ a#back-old-version:hover {
 }
 
 #upload-preview {
-    width: 100px;
-    height: 100px;
+    width: 98px;
+    height: 98px;
+
 }
 #div-upload-preview {
     border: 1px #3c3c3c solid;
     width: 100px;
     height: 100px;
+    padding: 0;
 }
 .back-arrow {
     padding: 10px 0 0 0;
