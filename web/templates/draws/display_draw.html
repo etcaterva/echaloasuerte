@@ -270,7 +270,11 @@
                         <h4 class="modal-title">{% trans "Invite people" %}</h4>
                     </div>
                     <div class="modal-body">
-                        <p>{% trans "An invitation will arrive to the emails you introduce below" %}</p>
+                        <span class="invite-people-option">{% trans "Option 1)" %}</span>
+                        <p>{% trans "Share the link to the draw:" %}</p>
+                        <input id="url-share" class="text-center" readonly>
+                        <span class="invite-people-option">{% trans "Option 2)" %}</span>
+                        <p>{% trans "Send an invitation to the emails below" %}</p>
                         <div id="alert-invitation-failed" class="alert feedback alert-danger hide" role="alert">
                             <strong>{% trans "Ops!" %}</strong> {% trans "One or more emails contain errors..." %}
                         </div>
@@ -278,48 +282,23 @@
                             <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
                         </div>
                         <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
-                        <a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a>
-                        <p>{% trans "OR" %}</p>
-                        <p data-toggle="tooltip" data-placement="top">{% trans "Share the link to the draw:" %}
-                        <a>{% url 'retrieve_draw' draw_id=bom.pk %}</a>
-                        </p>
+                        <div class="text-center"><a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a></div>
+
+                        <div class="clearfix">
+                            <div class="invited-users">
+                                <span class="invited-users-spoiler" data-toggle="collapse">{% trans "Who is already invited?" %} <span class="fa fa-chevron-down"></span></span>
+                            </div>
+                            <div class="collapse out">
+                              <div>
+                                <input type="text" id="invited-users" class="form-control" value="{% for user in bom.users %}{{ user }} {% endfor %}">
+                              </div>
+                            </div>
+                        </div>
+
                     </div>
-                    <div id="settings-invite" class="settings-submenu hide">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">{% trans "Invite people" %}</h4>
-                        </div>
-                        <div class="modal-body">
-                            <span class="invite-people-option">{% trans "Option 1)" %}</span>
-                            <p>{% trans "Share the link to the draw:" %}</p>
-                            <input id="url-share" class="text-center" readonly>
-                            <span class="invite-people-option">{% trans "Option 2)" %}</span>
-                            <p>{% trans "Send an invitation to the emails below" %}</p>
-                            <div id="alert-invitation-failed" class="alert feedback alert-danger hide" role="alert">
-                                <strong>{% trans "Ops!" %}</strong> {% trans "One or more emails contain errors..." %}
-                            </div>
-                            <div id="alert-invitation-success" class="alert feedback alert-success hide" role="alert">
-                                <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
-                            </div>
-                            <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
-                            <div class="text-center"><a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a></div>
-
-                            <div class="clearfix">
-                                <div class="invited-users">
-                                    <span class="invited-users-spoiler" data-toggle="collapse">{% trans "Who is already invited?" %} <span class="fa fa-chevron-down"></span></span>
-                                </div>
-                                <div class="collapse out">
-                                  <div>
-                                    <input type="text" id="invited-users" class="form-control" value="{% for user in bom.users %}{{ user }} {% endfor %}">
-                                  </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
-                            <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Close" %}</button>
-                        </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
+                        <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Close" %}</button>
                     </div>
                 </div>
 
