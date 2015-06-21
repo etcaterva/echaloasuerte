@@ -19,9 +19,9 @@ urlpatterns += patterns(
     url(r'^draw/new/(?P<draw_type>[^/]+)/public/$', views.create_draw, {'is_public': True}, name="create_public_draw"),
     url(r'^draw/new/(?P<draw_type>[^/]+)/$', views.create_draw, {'is_public': False}, name="create_draw"),
     url(r'^draw/try/(?P<draw_type>[^/]+)/$', views.try_draw, name="try_draw"),
-    url(r'^accounts/register/$', views.register, name='register'),
+    url(r'^accounts/signup/$', views.register, name='register'),
     url(r'^accounts/forgot_password/$', views.under_construction, name='forgot_password'),
-    url(r'^accounts/login/$', views.login_user, name='login'),
+    url(r'^accounts/sigin/$', views.login_user, name='login'),
     url(r'^accounts/profile/$', views.profile, name='profile'),
 
     #web services
