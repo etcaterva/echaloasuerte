@@ -54,11 +54,19 @@
     display: none;
 }
 
+
+/* Chat placed inside the main frame */
 @media screen and (min-width: 1440px) {
     .chat-inline {
         display: none;
     }
 }
+
+/* Lateral chat placed out of the main frame */
+.chat-outside {
+    padding-right: 10px;
+}
+
 @media screen and (max-width: 1439px) {
     .chat-outside {
         display: none;

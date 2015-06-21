@@ -57,27 +57,41 @@
         // Replaced default tooltip by the one from JQueryUI
         $(document).tooltip();
 
-
-        function place_right_column(){
-            var chat = {};
+        function place_lateral_columns(){
             var $site_frame = $('#site-frame');
-            var pos = $site_frame.offset();
-            var width = $site_frame.outerWidth();
-            var extra = 10; // 5px border + 5px padding from site-frame
-            chat.left = pos.left + width + extra;
+            var site_frame_pos = $site_frame.offset();
+            var site_frame_width = $site_frame.outerWidth();
             var window_width = $(window).width();
-            chat.width = window_width - chat.left - 20;
+
+            // Left lateral column
+            var left_column = {};
+            left_column.left = 0;
+            left_column.top = site_frame_pos.top;
+            left_column.width = site_frame_pos.left;
+            $("#column-left").css({
+                position: "absolute",
+                width: left_column.width + "px",
+                top: left_column.top + "px",
+                left: left_column.left + "px"
+            });
+
+            // Right lateral column
+            var right_column = {};
+            right_column.left = site_frame_pos.left + site_frame_width;
+            right_column.top = site_frame_pos.top;
+            right_column.width = window_width - right_column.left;
             $("#column-right").css({
                 position: "absolute",
-                width: chat.width + "px",
-                top: pos.top + "px",
-                left: (pos.left + width + extra) + "px"
+                width: right_column.width + "px",
+                top: right_column.top + "px",
+                left: right_column.left + "px"
             });
         }
 
 
         $( window ).resize(function() {
-            place_right_column();
+            //place_right_column();
+            place_lateral_columns();
         });
 
         $(document).ready(function () {
@@ -102,7 +116,7 @@
             
             // Resize the window to avoid problems with wrong width
             $(window).resize();
-            place_right_column();
+            place_lateral_columns();
             {% block extra_jq_ready %}{% endblock extra_jq_ready %}
         });
         window.onload = function (){
@@ -369,7 +383,12 @@
     </div><!-- #footer -->
 </div>
 <!-- end container -->
-<div id="column-right">
+<div id="column-left" class="lateral-column">
+    {% block left_column %}
+    {% endblock left_column %}
+</div>
+
+<div id="column-right" class="lateral-column">
     {% block right_column %}
     {% endblock right_column %}
 </div>
