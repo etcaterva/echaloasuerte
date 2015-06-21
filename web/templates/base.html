@@ -130,15 +130,25 @@
             $('.nav a').on('click', function(){
                 $(".navbar-toggle").click();
             });
-            
+
             // Resize the window to avoid problems with wrong width
             $(window).resize();
             place_lateral_columns();
+
+            $("#keep-logged").click(function(){
+                var cookie_value = $(this).prop('checked');
+                setCookie("keep-logged", cookie_value || "");
+            });
+
+            $("#keep-logged").attr('checked', getCookie("keep-logged") != "");
+
             {% block extra_jq_ready %}{% endblock extra_jq_ready %}
         });
         window.onload = function (){
             {% block extra_js_onload %}{% endblock extra_js_onload %}
         }
+
+
     </script>
     <style>
         {% block extra_css %}{% endblock extra_css %}
