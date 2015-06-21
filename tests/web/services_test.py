@@ -6,7 +6,7 @@ from server.bom.user import User
 from server.bom import RandomNumberDraw
 from server.mongodb.driver import MongoDriver
 from web.web_services import update_user, toss_draw, try_draw, \
-    add_user_to_draw, add_favorite, remove_favorite
+    add_user_to_draw, add_favorite, remove_favorite, remove_user_from_draw
 
 
 
@@ -170,7 +170,7 @@ class TestAddUser(TestServices):
             len(self.retrieve_draw().users)
         )
 
-    def add_one_email_test(self):
+    def add_two_email_test(self):
         self.assertEqual(
             0,
             len(self.retrieve_draw().users)
@@ -182,6 +182,30 @@ class TestAddUser(TestServices):
         add_user_to_draw(self.req)
         self.assertEqual(
             2,
+            len(self.retrieve_draw().users)
+        )
+
+    def add_remove_test(self):
+        self.assertEqual(
+            0,
+            len(self.retrieve_draw().users)
+        )
+        self.req.GET = {
+            "draw_id": self.test_draw._id,
+            "emails": "mail1@gmail.com, mail2@gmail.es"
+        }
+        add_user_to_draw(self.req)
+        self.assertEqual(
+            2,
+            len(self.retrieve_draw().users)
+        )
+        self.req.GET = {
+            "draw_id": self.test_draw._id,
+            "emails": "mail1@gmail.com, "
+        }
+        remove_user_from_draw(self.req)
+        self.assertEqual(
+            1,
             len(self.retrieve_draw().users)
         )
 
@@ -214,6 +238,7 @@ class TestAddUser(TestServices):
             0,
             len(self.retrieve_draw().users)
         )
+
 
 class TestFavourites(TestServices):
     """ Test the adding/removing favourites

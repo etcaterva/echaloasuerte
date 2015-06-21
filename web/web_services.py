@@ -87,6 +87,29 @@ def add_user_to_draw(request):
 
 @login_required
 @time_it
+def remove_user_from_draw(request):
+    """Remove an user from a draw"""
+    draw_id = request.GET.get('draw_id')
+    users = request.GET.get('emails', "")
+
+    if draw_id is None:
+        return HttpResponseBadRequest()
+
+    LOG.info("Removing {0} from draw {1}".format(users, draw_id))
+    bom_draw = MONGO.retrieve_draw(draw_id)
+
+    user_can_write_draw(request.user, bom_draw) # Raises 500
+
+    remove_users = users.replace(',', ' ').split()
+    bom_draw.users = [email for email in bom_draw.users
+                      if email not in remove_users]
+    MONGO.save_draw(bom_draw)
+
+    return HttpResponse()
+
+
+@login_required
+@time_it
 def add_favorite(request):
     """Add a draw to the list of favourites of an user"""
     draw_id = request.GET.get('draw_id')
