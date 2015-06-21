@@ -446,7 +446,7 @@ table.draw-list tr{
 }
 
 @media screen and (max-width: 1300px) {
-    #column-right {
+    .lateral-column {
         display: none;
     }
 }
