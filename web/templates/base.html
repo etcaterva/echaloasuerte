@@ -168,8 +168,22 @@
                 var suggestion_type = $('input[type=radio][name=suggestion-type]:checked').val();;
                 var comment = $('#suggestion-comment').val();
                 var email = $('#suggestion-email').val();
-                // TODO send this to the server
-                alert(browser + " - " + suggestion_type + " - " + comment + " - " + email);
+                $.ajax({
+                    method : "POST",
+                    url   : "{% url 'ws_feedback' %}",
+                    data  : {
+                         email : email,
+                         type : suggestion_type,
+                         browser : browser,
+                         comment : comment,
+                         csrfmiddlewaretoken : "{{csrf_token}}"
+                    }
+                }).done(function (){
+                    //DAVID?
+                })
+                .fail(function () {
+                    alert("There was an error when sending the feedback :(")
+                });
 
                 $('.suggestion-step-email').addClass('hidden');
                 $('.suggestion-step-final').removeClass('hidden');
@@ -496,7 +510,7 @@
                     <p>{% trans "If you want, you can give us your email so we can contact you in case we need further information." %}</p>
                     <label for="suggestion-email" class="col-sm-4 control-label text-right">{% trans "Email (optional)" %}</label>
                     <div class="col-sm-6">
-                      <input type="email" class="form-control" id="suggestion-email">
+                      <input type="email" class="form-control" id="suggestion-email" name="email">
                     </div>
                 </div>
                 <div class="alert alert-success col-md-10 col-md-offset-1 text-center suggestion-step-final hidden">
