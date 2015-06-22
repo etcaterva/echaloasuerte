@@ -24,7 +24,8 @@ urlpatterns += patterns(
     url(r'^accounts/login/$', views.login_user, name='login'),
     url(r'^accounts/profile/$', views.profile, name='profile'),
 
-    #web services
+    # web services
+    url(r'^ws/feedback/$', ws.feedback, name="ws_feedback"),
     url(r'^ws/draw/toss/$', ws.toss_draw, name="ws_toss_draw"),
     url(r'^ws/draw/try/$', ws.try_draw, name="ws_try_draw"),
     url(r'^ws/draw/validate/$', ws.validate_draw, name="ws_validate_draw"),
