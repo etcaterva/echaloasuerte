@@ -56,9 +56,15 @@ a.fa:focus {
 
 .draw-heading .back-arrow img,
 .draw-heading .add-favourites img {
-    /*display: block;*/
-    width: 40px;
+    width: 35px;
     height: auto;
+}
+
+@media (min-width: 992px) {
+    .draw-heading .back-arrow img,
+    .draw-heading .add-favourites img {
+        width: 40px;
+    }
 }
 
 .draw-heading .access-level {
