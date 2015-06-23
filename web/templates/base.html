@@ -214,12 +214,15 @@
                     </li>
                     <li class="nav-divider visible-xs"></li>
                     <li class="visible-xs"><a class="public-draw-create" href="{% url 'publish_draw' %}"><span class="fa fa-rocket" aria-hidden="true"></span> {% trans "Create public draw" %}</a></li>
-                    <li class="nav-divider visible-xs"></li>
-                    <li class="visible-xs">
-                    <a id="sign-out-xs" href="{% url 'login' %}">
-                        <span class="fa fa-sign-out" aria-hidden="true"></span>
-                        {% trans "Sign out" %}
-                    </a>
+                    {% if user.is_authenticated %}
+                        <li class="nav-divider visible-xs"></li>
+                        <li class="visible-xs">
+                        <a id="sign-out-xs" href="{% url 'login' %}">
+                            <span class="fa fa-sign-out" aria-hidden="true"></span>
+                            {% trans "Sign out" %}
+                        </a>
+                        </li>
+                    {% endif %}
                     </li>
                     <li id="public-draw-dropdown" class="hidden-xs dropdown">
                         <a id="public-draw" href="#" class="dropdown-toggle" data-toggle="dropdown">
