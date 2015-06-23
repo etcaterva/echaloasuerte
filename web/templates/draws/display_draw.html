@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% load eas_humanize %}
 {% block title %}{{ bom.title }} | {% endblock title %}
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
@@ -211,7 +212,7 @@
                     {% if results %}
                         <p class="h3">
                             {%trans 'Result' %}{{results|length|pluralize}}
-                            <small class="visible-xs-inline">{{result.datetime|date:"d/m/y H:i:s"}}</small>
+                            <small class="visible-xs-inline">{{result.datetime|naturaltime}}</small>
                             <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
                             {% if bom.audit and bom.audit.0 and bom.audit.0.datetime > result.datetime %}
                             <i class="fa fa-exclamation-triangle" title="Warning! The draw was modified after the generation of this result."></i>
