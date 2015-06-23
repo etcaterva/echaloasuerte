@@ -27,19 +27,16 @@
     $('.form-control').click(function() {
         $(this).select();
     });
-
     // Hide the "allow repeat" checkbox (since by default the number of results is 1)
-    $('#div_id_allow_repeat').addClass('hidden');
-    // Show/hide "allow repeat" option if the number of results is higher than 1)
-    $('#id_number_of_results').bind('keyup change', function() {
-        var number_of_results = $(this).val();
-        var $allow_repeat = $('#div_id_allow_repeat');
-        if (number_of_results > 1){
-            $allow_repeat.removeClass('hidden');
-        } else {
-            $allow_repeat.addClass('hidden');
+    (toggle_allow_repeat = function (){
+        if ($('#id_number_of_results').val() > 1){
+            $('#div_id_allow_repeat').removeClass('hidden');
+        }else{
+            $('#div_id_allow_repeat').addClass('hidden');
         }
-    });
+    })();
+    // Show/hide "allow repeat" option if the number of results is higher than 1)
+    $('#id_number_of_results').bind('keyup change', toggle_allow_repeat);
 
     // Autoresize the title box when window is resized
     autosize = function(){
