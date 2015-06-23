@@ -95,6 +95,8 @@ PublicDraw.settings = function () {
         $('#public-draw-settings').modal('hide');
         // Disable Settings button
         $('settings-button').prop( "disabled", true );
+        // Show the information div ("Separate items by commas...")
+        $('#info-comma-separated').removeClass('hidden');
     });
 
     /*
@@ -242,6 +244,9 @@ PublicDraw.enable_chat = function (enable){
 
 // Initialize the interface for a public draw
 PublicDraw.setup = function(current_step){
+    // Hide the information div ("Separate items by commas...") when displaying a public draw
+    $('#info-comma-separated').addClass('hidden');
+
     //Initialize the UI to select the level of privacy for the draw
     PublicDraw.prepare_privacy_selection();
 

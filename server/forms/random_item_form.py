@@ -26,7 +26,7 @@ class RandomItemDrawForm(FormBase):
         self.helper.field_class = 'col-xs-6'
         self.helper.layout = Layout(
             Row(
-                HTML(_("<div class='alert alert-info' role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>")),
+                HTML(_("<div id='info-comma-separated' class='alert alert-info' role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>")),
                 Row('number_of_results'),
                 Field('items', css_class="eas-tokenfield"),
                 'allow_repeat',

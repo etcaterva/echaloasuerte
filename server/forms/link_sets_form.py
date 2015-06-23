@@ -24,7 +24,7 @@ class LinkSetsDrawForm(FormBase):
         self.helper.field_class = 'col-xs-9'
         self.helper.layout = Layout(
             Row(
-                HTML(_("<div class='alert alert-info' role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>")),
+                HTML(_("<div id='info-comma-separated' class='alert alert-info' role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>")),
                 Field('set_1', css_class="eas-tokenfield"),
                 Field('set_2', css_class="eas-tokenfield"),
             ),
