@@ -215,6 +215,7 @@
                     <li class="nav-divider visible-xs"></li>
                     <li class="visible-xs"><a class="public-draw-create" href="{% url 'publish_draw' %}"><span class="fa fa-rocket" aria-hidden="true"></span> {% trans "Create public draw" %}</a></li>
                     {% if user.is_authenticated %}
+                        <li class="nav-divider visible-xs"></li>
                         <li class="visible-xs">
                         <a id="sign-out-xs" href="{% url 'login' %}">
                             <span class="fa fa-sign-out" aria-hidden="true"></span>
