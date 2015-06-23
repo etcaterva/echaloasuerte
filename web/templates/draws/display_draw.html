@@ -29,13 +29,14 @@
 {% endblock extra_js %}
 {% block extra_jq_ready %}
     // Hide/show the "allow repeat" checkbox based on the number of results
-    (toggle_allow_repeat = function (){
+     var toggle_allow_repeat = function (){
         if ($('#id_number_of_results').val() > 1){
             $('#div_id_allow_repeat').removeClass('hidden');
         }else{
             $('#div_id_allow_repeat').addClass('hidden');
         }
-    })();
+    };
+    toggle_allow_repeat();
     // Show/hide "allow repeat" option if the number of results is higher than 1)
     $('#id_number_of_results').bind('keyup change', toggle_allow_repeat);
 

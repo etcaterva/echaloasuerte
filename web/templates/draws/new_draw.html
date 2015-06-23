@@ -28,13 +28,14 @@
         $(this).select();
     });
     // Hide the "allow repeat" checkbox (since by default the number of results is 1)
-    (toggle_allow_repeat = function (){
+     var toggle_allow_repeat = function (){
         if ($('#id_number_of_results').val() > 1){
             $('#div_id_allow_repeat').removeClass('hidden');
         }else{
             $('#div_id_allow_repeat').addClass('hidden');
         }
-    })();
+    };
+    toggle_allow_repeat();
     // Show/hide "allow repeat" option if the number of results is higher than 1)
     $('#id_number_of_results').bind('keyup change', toggle_allow_repeat);
 
