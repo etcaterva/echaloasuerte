@@ -1,5 +1,6 @@
 """definition of basic web services"""
 from django.contrib.auth.decorators import login_required
+from django.core.mail import mail_admins
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.core.validators import validate_email
 from server.mongodb.driver import MongoDriver
@@ -25,6 +26,15 @@ def update_user(request):
     if "avatar" in request.POST:
         user.avatar = request.POST["avatar"]
     MONGO.save_user(user)
+
+@time_it
+def feedback(request):
+    """sends the feedback data to the users"""
+    subject = """[Echaloasuerte] Feedback ({0})""".format(request.POST["type"])
+    message = """{0}\n By {1} on {2}""".format(request.POST["comment"],
+                                               request.POST.get("email", "anonymous"),
+                                               request.POST.get("browser"))
+    mail_admins(subject, message, True)
 
 @time_it
 def toss_draw(request):
