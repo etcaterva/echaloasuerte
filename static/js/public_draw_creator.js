@@ -130,7 +130,7 @@ PublicDrawCreator.setup = function(){
     PublicDrawCreator.prepare_privacy_selection();
 
     // Initialize input to submit emails to be shown as a tokenField
-    $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
+    $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 150});
 
     PublicDrawCreator.setup_breadcrumb("configure");
 
