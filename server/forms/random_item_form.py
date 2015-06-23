@@ -19,7 +19,7 @@ class RandomItemDrawForm(FormBase):
 
         # Add "protected" class to the input that will be read-only when the draw is public
         self.fields['number_of_results'].widget.attrs.update({'class': 'protected'})
-        self.fields['items'].widget.attrs.update({'class': 'protected'})
+        self.fields['items'].widget.attrs.update({'class': 'protected eas-tokenfield'})
         self.fields['allow_repeat'].widget.attrs.update({'class': 'protected'})
 
         self.helper.label_class = 'col-xs-6 text-right'
@@ -27,8 +27,8 @@ class RandomItemDrawForm(FormBase):
         self.helper.layout = Layout(
             Row(
                 HTML(_("<div class='alert alert-info' role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>")),
+                'items',
                 Row('number_of_results'),
-                Field('items', css_class="eas-tokenfield"),
                 'allow_repeat',
             ),
         )

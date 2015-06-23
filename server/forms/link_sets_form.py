@@ -17,16 +17,16 @@ class LinkSetsDrawForm(FormBase):
         super(LinkSetsDrawForm, self).__init__(*args, **kwargs)
 
         # Add "protected" class to the input that will be read-only when the draw is public
-        self.fields['set_1'].widget.attrs.update({'class': 'protected'})
-        self.fields['set_2'].widget.attrs.update({'class': 'protected'})
+        self.fields['set_1'].widget.attrs.update({'class': 'protected eas-tokenfield'})
+        self.fields['set_2'].widget.attrs.update({'class': 'protected eas-tokenfield'})
 
         self.helper.label_class = 'col-xs-3'
         self.helper.field_class = 'col-xs-9'
         self.helper.layout = Layout(
             Row(
                 HTML(_("<div class='alert alert-info' role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>")),
-                Field('set_1', css_class="eas-tokenfield"),
-                Field('set_2', css_class="eas-tokenfield"),
+                'set_1',
+                'set_2',
             ),
         )
 
