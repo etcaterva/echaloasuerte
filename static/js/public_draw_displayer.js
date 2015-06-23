@@ -243,7 +243,7 @@ PublicDraw.enable_chat = function (enable){
 };
 
 // Initialize the interface for a public draw
-PublicDraw.setup = function(current_step){
+PublicDraw.setup = function(){
     // Hide the information div ("Separate items by commas...") when displaying a public draw
     $('#info-comma-separated').addClass('hidden');
 
