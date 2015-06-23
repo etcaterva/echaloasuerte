@@ -149,7 +149,7 @@ a.fa:focus {
 }
 
 /* Padding for the checkbox "allow repeat" in draws */
-.allow-repeat {
+.checkbox-div {
     padding-top: 3px;
     padding-left: 25px;
 }
