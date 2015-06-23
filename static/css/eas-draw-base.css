@@ -141,6 +141,7 @@ a.fa:focus {
 /* Place the input boxes closer to the labels */
 .controls {
     padding-left: 5px;
+    padding-right: 0;
 }
 
 /* Padding for the checkbox "allow repeat" in draws */
