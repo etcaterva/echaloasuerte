@@ -129,7 +129,8 @@ a.fa:focus {
 
 /* Makes the text be inline with the checkbox */
 .checkbox_label {
-   line-height: 26px;
+    line-height: 26px;
+    font-weight: bold;
 }
 
 .btn-row {
