@@ -626,3 +626,53 @@ a#back-old-version:hover {
 .text-separator span:after {
   left: 100%;
 }
+#suggestion-box {
+    width: 210px;
+    height: 100px;
+    position: absolute;
+    top: 300px;
+    left: -150px;
+}
+
+#suggestion-box-text {
+    padding-top: 5px;
+    color: #fff;
+    width: 150px;
+    height: 100px;
+    background: rgba(153, 153, 153, 0.51);
+    border-bottom-right-radius: 3px;
+}
+
+#suggestion-box-text p {
+    margin-bottom: 20px;
+}
+
+#suggestion-box-text > span {
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#suggestion-box a:hover {
+    text-decoration: none;
+}
+
+#suggestion-box-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    padding: 15px 10px 15px 0;
+    background: rgba(153, 153, 153, 0.51);
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+#suggestion-box img{
+    width: 50px;
+}
+
+#suggestion-email-form {
+    margin-top: 15px;
+}

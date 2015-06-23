@@ -78,7 +78,7 @@
             var right_column = {};
             right_column.left = site_frame_pos.left + site_frame_width;
             right_column.top = site_frame_pos.top;
-            right_column.width = window_width - right_column.left;
+            right_column.width = window_width - right_column.left - 3; // 3 pixels to avoid crossing the window edge
             $("#column-right").css({
                 position: "absolute",
                 width: right_column.width + "px",
@@ -111,7 +111,7 @@
         });
 
         $(document).ready(function () {
-           $('#language-dropdown li a').click(function () {
+            $('#language-dropdown li a').click(function () {
                 var lang_code = $(this).attr('data-code');
                 $("#language-option"). attr("value",lang_code);
                 $("#change_language_but").click();
@@ -140,6 +140,77 @@
             });
 
             $("#keep-logged").attr('checked', getCookie("keep-logged") != "");
+
+                        // Returns the browser's version
+            navigator.sayswho= (function(){
+                var ua= navigator.userAgent, tem,
+                M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+                if(/trident/i.test(M[1])){
+                    tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+                    return 'IE '+(tem[1] || '');
+                }
+                if(M[1]=== 'Chrome'){
+                    tem= ua.match(/\bOPR\/(\d+)/);
+                    if(tem!= null) return 'Opera '+tem[1];
+                }
+                M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+                if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+                return M.join(' ');
+            })();
+
+            // Add animation to suggestion box
+            $('#suggestion-box').mouseenter(function(){
+                $('#suggestion-box').stop(true,false).animate({
+                    left: 0
+                    }, 500 );
+                });
+            $('#suggestion-box').mouseleave(function(){
+                $('#suggestion-box').stop(true,false).animate({
+                    left: -150
+                    }, 500 );
+                });
+
+            $('input[type=radio][name=suggestion-type]').change(function() {
+                if (this.value == 'suggestion') {
+                    $('#info-suggestion-idea').removeClass('hidden');
+                    $('#info-suggestion-bug').addClass('hidden');
+                }
+                else if (this.value == 'bug') {
+                    $('#info-suggestion-idea').addClass('hidden');
+                    $('#info-suggestion-bug').removeClass('hidden');
+                }
+            });
+
+            $('#send-suggestion').click(function(){
+                $('.suggestion-step-form').addClass('hidden');
+                $('.suggestion-step-email').removeClass('hidden');
+            });
+
+            $('#send-suggestion-finish').click(function(){
+                var browser = navigator.sayswho;
+                var suggestion_type = $('input[type=radio][name=suggestion-type]:checked').val();;
+                var comment = $('#suggestion-comment').val();
+                var email = $('#suggestion-email').val();
+                $.ajax({
+                    method : "POST",
+                    url   : "{% url 'ws_feedback' %}",
+                    data  : {
+                         email : email,
+                         type : suggestion_type,
+                         browser : browser,
+                         comment : comment,
+                         csrfmiddlewaretoken : "{{csrf_token}}"
+                    }
+                }).done(function (){
+                    //DAVID?
+                })
+                .fail(function () {
+                    alert("There was an error when sending the feedback :(")
+                });
+
+                $('.suggestion-step-email').addClass('hidden');
+                $('.suggestion-step-final').removeClass('hidden');
+            });
 
             {% block extra_jq_ready %}{% endblock extra_jq_ready %}
         });
@@ -414,6 +485,17 @@
 <!-- end container -->
 <div id="column-left" class="lateral-column">
     {% block left_column %}
+        <div id="suggestion-box">
+            <a data-toggle="modal" href="#suggestion-box-panel">
+                <div id="suggestion-box-text" class="text-center">
+                    <p>{% trans "Do you have any suggestion?" %}</p>
+                    <span>Tell us!</span>
+                </div>
+            </a>
+            <div id="suggestion-box-icon">
+                <img src="{% static 'img/suggestion_box.png' %}" alt="{% trans 'Suggestion box' %}"/>
+            </div>
+        </div>
     {% endblock left_column %}
 </div>
 
@@ -421,6 +503,61 @@
     {% block right_column %}
     {% endblock right_column %}
 </div>
+
+<!-- Suggestion box modal -->
+<div class="modal fade" id="suggestion-box-panel" tabindex="-1" role="dialog" aria-labelledby="SuggestionBox">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title suggestion-step-form suggestion-step-final">{% trans "Suggestion box" %}</h4>
+                <h4 class="modal-title suggestion-step-email hidden">{% trans "Just one more thing" %}</h4>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="suggestion-step-form">
+                    <div class="col-md-10 col-md-offset-1">
+                        <p>{% trans "First of all, thank you for taking the time to help us to improve." %}</p>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="suggestion-type" id="suggestion-idea" value="suggestion" checked>
+                                {% trans "I want to give a suggestion or idea" %}
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="suggestion-type" id="suggestion-bug" value="bug">
+                                {% trans "I want to report a bug" %}
+                            </label>
+                        </div>
+                        <div id="info-suggestion-idea" class="alert alert-info">{% trans "Please, describe your idea. Give us links, images... whatever you consider that may be helpful." %}</div>
+                        <div id="info-suggestion-bug" class="alert alert-info hidden">{% trans "Please, give us details about the bug. How can we reproduce it?" %}</div>
+                        <textarea id="suggestion-comment" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="form-group col-md-10 col-md-offset-1 suggestion-step-email hidden">
+                    <p>{% trans "If you want, you can give us your email so we can contact you in case we need further information." %}</p>
+                    <label for="suggestion-email" class="col-sm-4 control-label text-right">{% trans "Email (optional)" %}</label>
+                    <div class="col-sm-6">
+                      <input type="email" class="form-control" id="suggestion-email" name="email">
+                    </div>
+                </div>
+                <div class="alert alert-success col-md-10 col-md-offset-1 text-center suggestion-step-final hidden">
+                    {% trans "Your message has been sent!" %}<br>
+                    {%trans "Once again, thank you for your help. Your feedback will be very usefull! :D" %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="suggestion-step-form">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                    <a id="send-suggestion" href="#" type="button" class="btn btn-primary">{% trans "Send" %}</a>
+                </div>
+                <a id="send-suggestion-finish" href="#" type="button" class="btn btn-primary suggestion-step-email hidden">{% trans "Send" %}</a>
+                <a href="#" type="button" data-dismiss="modal" class="btn btn-primary suggestion-step-final hidden">{% trans "Finish" %}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% block extra_body %}
 {% endblock extra_body %}
 <script>
