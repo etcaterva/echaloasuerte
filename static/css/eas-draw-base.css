@@ -123,6 +123,10 @@ a.fa:focus {
 }
 
 /***** INDIVIDUAL DRAWS *****/
+.checkbox {
+    margin-top: 0;
+}
+
 /* Makes the text be inline with the checkbox */
 .checkbox_label {
    line-height: 26px;
@@ -188,8 +192,9 @@ a.fa:focus {
     user-select: none;
 }
 
-.protected.checkbox {
+.protected.checkbox[readonly]{
     pointer-events: none;
+
 }
 
 /* When trying a public draw, the results tag seemed to be not centered */
