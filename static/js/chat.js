@@ -131,8 +131,7 @@
              }
              html_button += '>'+this.options.msg_send+'</button>';
 
-             var html = '<div class="col-md-12">' +
-                        '    <div class="panel panel-success">' +
+             var html = '    <div class="panel panel-success">' +
                         '        <div class="panel-heading">' +
                         '            <span class="fa fa-comment"></span>'+this.options.msg_chat +
                         '        </div>' +
@@ -148,8 +147,7 @@
                         '                </span>' +
                         '            </div>' +
                         '        </div>' +
-                        '    </div>' +
-                        '</div>';
+                        '    </div>';
              this.$element.append(html);
         }
     };
