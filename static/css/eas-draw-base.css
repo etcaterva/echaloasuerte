@@ -209,3 +209,78 @@ a.fa:focus {
 #header-try-result {
     padding-right: 30px;
 }
+
+/* ======================  CHAT  ======================== */
+#chat-board
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#chat-board li
+{
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #B3A9A9;
+}
+
+#chat-board .chatline-content {
+    margin-left: 40px;
+    margin-right: 40px;
+    color: #777777;
+}
+
+
+#chat-board .chatline-details{
+    margin-bottom: 0;
+}
+
+
+#chat-board .chatline-datetime {
+    margin-left: 10px;
+    display: none;
+}
+
+#chat-board li:hover .chatline-datetime{
+    display: inline-block;
+
+}
+
+#chat-board .panel-heading {
+    cursor:pointer;
+}
+
+.chat .panel-body {
+    background-color: #fbfbfb;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 250px;
+}
+
+.chat .panel-body {
+    height: 400px;
+}
+
+.chat-disabled {
+    display: none;
+}
+
+
+/* Chat placed inside the main frame */
+@media screen and (min-width: 1440px) {
+    .chat-inline {
+        display: none;
+    }
+}
+
+/* Lateral chat placed out of the main frame */
+.chat-outside {
+    padding-right: 10px;
+}
+
+@media screen and (max-width: 1439px) {
+    .chat-outside {
+        display: none;
+    }
+}
