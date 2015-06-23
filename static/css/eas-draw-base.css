@@ -129,9 +129,14 @@ a.fa:focus {
 }
 
 /***** INDIVIDUAL DRAWS *****/
+.checkbox {
+    margin-top: 0;
+}
+
 /* Makes the text be inline with the checkbox */
 .checkbox_label {
-   line-height: 26px;
+    line-height: 26px;
+    font-weight: bold;
 }
 
 .btn-row {
@@ -151,7 +156,7 @@ a.fa:focus {
 }
 
 /* Padding for the checkbox "allow repeat" in draws */
-.allow-repeat {
+.checkbox-div {
     padding-top: 3px;
     padding-left: 25px;
 }
@@ -195,8 +200,9 @@ a.fa:focus {
     user-select: none;
 }
 
-.protected.checkbox {
+.protected.checkbox[readonly]{
     pointer-events: none;
+
 }
 
 /* When trying a public draw, the results tag seemed to be not centered */
