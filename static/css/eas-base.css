@@ -581,3 +581,48 @@ a#back-old-version:hover {
 .back-arrow {
     padding: 10px 0 0 0;
 }
+
+/* ================  LOGIN PAGE  ==================  */
+#login-button {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+#register-button {
+    margin-top: 20px;
+}
+
+.alert-login {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+/* Separator line with text */
+/* Something like: "----------  SOME TEXT  -----------" */
+.text-separator {
+    overflow: hidden;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.text-separator span {
+    display: inline-block;
+    padding: 0 15px;
+    position: relative;
+}
+.text-separator span:before,
+.text-separator span:after {
+    background: #b7b7b7;
+    content: "";
+    display: block;
+    height: 1px;
+    position: absolute;
+    top: 50%;
+    width: 400%;
+}
+.text-separator span:before {
+  right: 100%;
+}
+.text-separator span:after {
+  left: 100%;
+}
