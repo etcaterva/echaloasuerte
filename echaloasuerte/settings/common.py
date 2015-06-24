@@ -40,6 +40,7 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     ('David Naranjo', 'dnaranjo89@gmail.com'),
     ('Mario Corchero', 'mariocj89@gmail.com'),
+    ('Facebook', 'echaloasuerte.admins@groups.facebook.com'),
 )
 
 MANAGERS = ADMINS
