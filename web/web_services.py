@@ -4,7 +4,7 @@ from django.core.mail import mail_admins
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.core.validators import validate_email
 from server.mongodb.driver import MongoDriver
-from web.common import user_can_read_draw, user_can_write_draw, time_it
+from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user
 from server.forms import *
 from server.bom import *
 
@@ -87,8 +87,7 @@ def add_user_to_draw(request):
     bom_draw.users += new_users
     MONGO.save_draw(bom_draw)
 
-    # TODO send emails to the users in the list "new_users"
-    # invite_user(new_users, draw_id, request.user.get_email())
+    invite_user(new_users, draw_id, request.user.get_email())
 
     LOG.info("{0} users added to draw {1}".format(len(new_users), draw_id))
 
