@@ -26,15 +26,17 @@ def update_user(request):
     if "avatar" in request.POST:
         user.avatar = request.POST["avatar"]
     MONGO.save_user(user)
+    return HttpResponse()
 
 @time_it
 def feedback(request):
     """sends the feedback data to the users"""
     subject = """[Echaloasuerte] Feedback ({0})""".format(request.POST["type"])
-    message = """{0}\n By {1} on {2}""".format(request.POST["comment"],
+    message = """{0}\nBy {1} on {2}""".format(request.POST["comment"],
                                                request.POST.get("email", "anonymous"),
                                                request.POST.get("browser"))
     mail_admins(subject, message, True)
+    return HttpResponse()
 
 @time_it
 def toss_draw(request):
