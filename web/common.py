@@ -3,12 +3,30 @@
 from django.core.exceptions import PermissionDenied
 from contextlib import contextmanager
 from django.http import HttpRequest
+from django.utils.translation import ugettext_lazy as _
+from django.core.mail import send_mail
 
 import logging
 import time
 
 
 LOG = logging.getLogger("echaloasuerte")
+
+
+INVITE_EMAIL_TEMPLATE = _("""
+Hi!
+
+You have been invited to a draw in echaloasuerte by {0}
+Your link is http://www.echaloasuerte.com/draw/{1}/ .
+
+Good Luck,
+Echaloasuerte.com Team
+""")
+
+def invite_user(user_email, draw_id, owner_user):
+    LOG.info("Inviting user {0} to draw {1}".format(user_email,draw_id))
+    send_mail('Echaloasuerte', INVITE_EMAIL_TEMPLATE.format(owner_user,draw_id),
+             'draws@echaloasuerte.com', user_email, fail_silently=True)
 
 
 def user_can_read_draw(user, draw, password=None):
