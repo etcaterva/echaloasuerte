@@ -9,10 +9,9 @@ from server.forms.form_base import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from django.core.mail import send_mail
 from django.contrib import messages
 from django.templatetags.static import static
-from web.common import user_can_read_draw, user_can_write_draw, time_it
+from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user
 import logging
 
 logger = logging.getLogger("echaloasuerte")
@@ -63,22 +62,6 @@ def register(request):
         except Exception as e:
             context = {'error': _("The email is already registered.")}
     return render(request, 'register.html', context)
-
-
-INVITE_EMAIL_TEMPLATE = _("""
-Hi!
-
-You have been invited to a draw in echaloasuerte by {0}
-Your link is <a href="http://www.echaloasuerte.com/draw/{1}/">http://www.echaloasuerte.com/draw/{1}/</a> .
-
-Good Luck,
-Echaloasuerte.com Team
-""")
-
-def invite_user(user_emails,draw_id,owner_user):
-    logger.info("Inviting user {0} to draw {1}".format(user_email,draw_id))
-    send_mail('Echaloasuerte', INVITE_EMAIL_TEMPLATE.format(owner_user,draw_id),
-             'draws@echaloasuerte.com', user_email, fail_silently=True)
 
 
 @login_required
@@ -244,6 +227,12 @@ def create_draw(request, draw_type, is_public):
                 mongodb.save_draw(bom_draw)
                 logger.info("Generated draw: {0}".format(bom_draw))
                 messages.info(request, _('Draw created successfully'))
+
+                #notify users if any
+                if bom_draw.users:
+                    owner = bom_draw.owner if bom_draw.owner else "Annon"
+                    invite_user(bom_draw.users, bom_draw.pk, owner)
+
                 return redirect('retrieve_draw', draw_id=bom_draw.pk)
 
 

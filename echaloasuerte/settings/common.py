@@ -40,6 +40,7 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     ('David Naranjo', 'dnaranjo89@gmail.com'),
     ('Mario Corchero', 'mariocj89@gmail.com'),
+    ('Facebook', 'echaloasuerte.admins@groups.facebook.com'),
 )
 
 MANAGERS = ADMINS
@@ -208,9 +209,11 @@ ALLOWED_HOSTS = [
 
 
 #EMAIL settings
-DEFAULT_FROM_EMAIL="admin@echaloasuerte.com"
-EMAIL_HOST="localhost"
-EMAIL_PORT=25
+DEFAULT_FROM_EMAIL="echaloasuerte@gmail.com"
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_HOST_USER="echaloasuerte@gmail.com"
+EMAIL_HOST_PASSWORD=''#FIXME @pedro, how do we do this??? varenv? how do we set it in ansible?
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX="[django][echaloasuerte] "#for admin mails
-SERVER_EMAIL="automation@echaloasuerte.com"
-
+SERVER_EMAIL="echaloasuerte@gmail.com"

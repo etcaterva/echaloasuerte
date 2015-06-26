@@ -4,7 +4,7 @@ from django.core.mail import mail_admins
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.core.validators import validate_email
 from server.mongodb.driver import MongoDriver
-from web.common import user_can_read_draw, user_can_write_draw, time_it
+from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user
 from server.forms import *
 from server.bom import *
 
@@ -26,15 +26,17 @@ def update_user(request):
     if "avatar" in request.POST:
         user.avatar = request.POST["avatar"]
     MONGO.save_user(user)
+    return HttpResponse()
 
 @time_it
 def feedback(request):
     """sends the feedback data to the users"""
     subject = """[Echaloasuerte] Feedback ({0})""".format(request.POST["type"])
-    message = """{0}\n By {1} on {2}""".format(request.POST["comment"],
+    message = """{0}\nBy {1} on {2}""".format(request.POST["comment"],
                                                request.POST.get("email", "anonymous"),
                                                request.POST.get("browser"))
     mail_admins(subject, message, True)
+    return HttpResponse()
 
 @time_it
 def toss_draw(request):
@@ -87,8 +89,7 @@ def add_user_to_draw(request):
     bom_draw.users += new_users
     MONGO.save_draw(bom_draw)
 
-    # TODO send emails to the users in the list "new_users"
-    # invite_user(new_users, draw_id, request.user.get_email())
+    invite_user(new_users, draw_id, request.user.get_email())
 
     LOG.info("{0} users added to draw {1}".format(len(new_users), draw_id))
 
