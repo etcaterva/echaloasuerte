@@ -110,21 +110,8 @@ def index(request, is_public=None):
 #TODO:
 # - Wrap the creation of draws and form through a factory. No more global
 # - Move is_feasible to the form validation
-# - Wrap "draw" config data in group so we can check in a single instruction if
 #       a draw changed
 # - Change user_can_read and write to methods
-
-@time_it
-def toss_draw(request):
-    """generates and saves a result
-    The id of the draw to toss is present as a POST attribute
-    redirects to the draw to display
-    """
-    bom_draw = mongodb.retrieve_draw(draw_id)
-    user_can_write_draw(request.user, bom_draw)
-    bom_draw.toss()
-    mongodb.save_draw(bom_draw)
-    return redirect('retrieve_draw', draw_id=bom_draw.pk)
 
 
 @time_it
