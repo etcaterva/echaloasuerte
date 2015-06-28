@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.templatetags.static import static
 from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user
 import logging
 
@@ -111,12 +112,40 @@ def join_draw(request):
     context = {'public_draws': public_draws}
     return render(request, 'join_draw.html', context)
 
+
+# stores pairs of sentences and image url undder static/img/sentences/
+SENTENCES = (
+    (_("10 seconds, which wire should you cut?"), "dinamite.png"),
+    (_("Who takes care of the trash?"), "basura.gif"),
+    (_("Not sure what to answer in the IQ test?"), "personalidad.gif"),
+    (_("Dont reach an agrement with the name of the dog?"), "perro.gif"),
+    (_("Not sure about inviting her/him to the weeding?"), "boda.gif"),
+    (_("What should you cook today?"), "cocinero.gif"),
+    (_("Who is paing this round?"), "cerveza.gif"),
+    (_("Who will take the best bed?"), "cama.gif"),
+    (_("Not enaugh cake for everybody?"), "tarta.gif"),
+    (_("Who are you meeting tonight?"), "beso.gif"),
+    (_("What game are you playing today?"), "juego.gif"),
+    (_("Whose fault is it?"), "enfado.gif"),
+    (_("What subject are you failing this year?"), "asignatura.gif"),
+    (_("Should you quite smoking?"), "cigarrillo.gif"),
+    (_("Who drinks next?"), "tequila.gif"),
+    (_("Charmander, bulbasaur or Squirtle??"), "pokemon.gif"),
+    (_("What cell to start?"), "buscaminas.gif"),
+)
+
 @time_it
 def index(request, is_public=None):
     """landpage"""
     context = {}
     if is_public:
         context['is_public'] = True
+    sentence = random.choice(SENTENCES)
+    context["sentence"] = {
+        "image": static("img/sentences/" + str(sentence[1])),
+        "alt": sentence[1],
+        "text": sentence[0]
+    }
     return render(request, 'index.html', context)
 
 #TODO:
