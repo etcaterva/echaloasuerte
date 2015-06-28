@@ -24,5 +24,5 @@ class EchaloasuerteAuthBE(object):
         try:
             return MongoDriver.instance().retrieve_user(user_id)
         except Exception as e:
-            logger.debug("When retrieving user {0}, Exception: ".format(user_id,e))
+            logger.debug("When retrieving user {0}, Exception: {1}".format(user_id,e))
             return None
