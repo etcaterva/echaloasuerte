@@ -2,7 +2,9 @@ from server.bom.draw_base import *
 from random import shuffle
 from itertools import cycle
 import logging
+
 logger = logging.getLogger("echaloasuerte")
+
 
 class LinkSetsDraw(BaseDraw):
     """
@@ -22,29 +24,29 @@ class LinkSetsDraw(BaseDraw):
         - If needed, items will be added to the others set or ignoted to match the length of the first
     """
 
-    def __init__(self, sets = None, **kwargs):
+    def __init__(self, sets=None, **kwargs):
         super(LinkSetsDraw, self).__init__(**kwargs)
 
         self.sets = sets if sets else []
         """List of sets of items to asociate"""
 
-        self.number_of_results = None #Override as meaningless
+        self.number_of_results = None  # Override as meaningless
 
-        #validation
+        # validation
         try:
             if sets:
                 for i in sets:
-                    i[0] #validate is a list and has at least 1 element
+                    i[0]  #validate is a list and has at least 1 element
         except Exception as e:
-            logger.error("Issue when creating a AsociationListDraw. Items: {0}, exception: {1}".format(sets,e))
+            logger.error("Issue when creating a AsociationListDraw. Items: {0}, exception: {1}".format(sets, e))
 
     def is_feasible(self):
         return self.sets and len(self.sets[0]) > 0 and len(self.sets) > 1
 
     def generate_result(self):
-        sets = [list(self.sets[0])] # No changes to the first
-        sets[1:] = [list(x) for x in self.sets[1:] ] # Copy
-        for s in sets[1:]: shuffle(s) # Shuffle change in place
-        sets[1:] = [cycle(x) for x in sets[1:] ] # create iterator
-        return list(zip(*sets)) # list needed for python 3
+        sets = [list(self.sets[0])]  # No changes to the first
+        sets[1:] = [list(x) for x in self.sets[1:]]  # Copy
+        for s in sets[1:]: shuffle(s)  # Shuffle change in place
+        sets[1:] = [cycle(x) for x in sets[1:]]  # create iterator
+        return list(zip(*sets))  # list needed for python 3
 

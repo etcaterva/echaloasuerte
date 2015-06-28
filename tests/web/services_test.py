@@ -9,9 +9,9 @@ from web.web_services import update_user, toss_draw, try_draw, \
     add_user_to_draw, add_favorite, remove_favorite, remove_user_from_draw
 
 
-
 class TestServices(TestCase):
     """ Tests for the services """
+
     def setUp(self):
         django.setup()
         self._driver = MongoDriver.instance()
@@ -20,6 +20,7 @@ class TestServices(TestCase):
 class TestUpdateUserProfile(TestServices):
     """ Test the update user service
     """
+
     def setUp(self):
         super(TestUpdateUserProfile, self).setUp()
         self.tested_user = User("test_mail@yop.tu", password="fake_hashed_pwd")
@@ -36,7 +37,7 @@ class TestUpdateUserProfile(TestServices):
         update_user(self.req)
         self.assertEqual(
             "test_mail@yop.tu",
-            #"new_email@y.x",
+            # "new_email@y.x",
             self._driver.retrieve_user(self.tested_user._id).pk
         )
 
@@ -61,7 +62,7 @@ class TestUpdateUserProfile(TestServices):
 
     def update_avatar_test(self):
         """Test updating the avatar of an user"""
-        self.req.POST = {}# {"avatar": "NOT IMPLEMENTED YET"}
+        self.req.POST = {}  # {"avatar": "NOT IMPLEMENTED YET"}
         update_user(self.req)
         self.assertEqual(
             None,
@@ -72,6 +73,7 @@ class TestUpdateUserProfile(TestServices):
 class TestToss(TestServices):
     """ Test the toss service
     """
+
     def setUp(self):
         super(TestToss, self).setUp()
         self.test_user = User("test_mail@yop.tu", password="fake_hashed_pwd")
@@ -142,6 +144,7 @@ class TestToss(TestServices):
 class TestAddUser(TestServices):
     """ Test the adding a user to a public draw
     """
+
     def setUp(self):
         super(TestAddUser, self).setUp()
         self.test_user = User("test_mail@yop.tu", password="fake_hashed_pwd")
@@ -243,6 +246,7 @@ class TestAddUser(TestServices):
 class TestFavourites(TestServices):
     """ Test the adding/removing favourites
     """
+
     def setUp(self):
         super(TestFavourites, self).setUp()
         self.test_user = User("test_mail@yop.tu", password="fake_hashed_pwd")

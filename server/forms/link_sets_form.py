@@ -13,7 +13,7 @@ class LinkSetsDrawForm(FormBase):
     def __init__(self, *args, **kwargs):
         if 'initial' in kwargs:
             for i in range(0, len(kwargs['initial']['sets'])):
-                kwargs['initial']['set_{0}'.format(i+1)] = ','.join(kwargs['initial']['sets'][i])
+                kwargs['initial']['set_{0}'.format(i + 1)] = ','.join(kwargs['initial']['sets'][i])
         super(LinkSetsDrawForm, self).__init__(*args, **kwargs)
 
         # Add "protected" class to the input that will be read-only when the draw is public
@@ -24,7 +24,8 @@ class LinkSetsDrawForm(FormBase):
         self.helper.field_class = 'col-xs-9'
         self.helper.layout = Layout(
             Row(
-                HTML(_("<div id='info-comma-separated' class='alert alert-info' role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>")),
+                HTML(_(
+                    "<div id='info-comma-separated' class='alert alert-info' role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>")),
                 'set_1',
                 'set_2',
             ),
@@ -37,7 +38,7 @@ class LinkSetsDrawForm(FormBase):
             raw_set2 = cleaned_data.get('set_2')
             proc_set1 = raw_set1.split(",") if ',' in raw_set1 else raw_set1.split()
             proc_set2 = raw_set2.split(",") if ',' in raw_set2 else raw_set2.split()
-            cleaned_data['sets'] = [proc_set1,proc_set2]
+            cleaned_data['sets'] = [proc_set1, proc_set2]
             cleaned_data.pop('set_1')
             cleaned_data.pop('set_2')
         return cleaned_data

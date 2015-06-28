@@ -1,6 +1,5 @@
 """Common settings and globals."""
 
-
 import sys
 from os.path import abspath, basename, dirname, join, normpath
 from django.utils.translation import ugettext_lazy as _
@@ -60,9 +59,9 @@ TIME_ZONE = 'UTC'
 # http://www.i18nguy.com/unicode/language-identifiers.html.
 LANGUAGE_CODE = 'en'
 LANGUAGES = (
-          ('es', _('Spanish')),
-          ('en', _('English')),
-            )
+    ('es', _('Spanish')),
+    ('en', _('English')),
+)
 
 # The ID, as an integer, of the current site in the django_site database table.
 # This is used so that application data can hook into specific site(s) and a
@@ -81,8 +80,8 @@ USE_TZ = True
 ########## END GENERAL CONFIGURATION
 
 LOCALE_PATHS = (
-        normpath(join(SITE_ROOT, 'locale')),
-            )
+    normpath(join(SITE_ROOT, 'locale')),
+)
 
 
 ########## MEDIA CONFIGURATION
@@ -116,7 +115,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 ########## END STATIC FILE CONFIGURATION
 
@@ -126,7 +125,7 @@ STATICFILES_FINDERS = (
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    #'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 # Directories to search when loading templates.
@@ -149,7 +148,7 @@ MIDDLEWARE_CLASSES = (
 )
 ########## END MIDDLEWARE CONFIGURATION
 
-AUTHENTICATION_BACKENDS=('server.backends.authentication.EchaloasuerteAuthBE',)
+AUTHENTICATION_BACKENDS = ('server.backends.authentication.EchaloasuerteAuthBE',)
 
 ########## APP CONFIGURATION
 INSTALLED_APPS = (
@@ -167,12 +166,12 @@ INSTALLED_APPS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
-        "django.core.context_processors.debug",
-        "django.core.context_processors.i18n",
-        "django.core.context_processors.media",
-        "django.core.context_processors.static",
-        "django.core.context_processors.tz",
-        "django.contrib.messages.context_processors.messages")
+                               "django.core.context_processors.debug",
+                               "django.core.context_processors.i18n",
+                               "django.core.context_processors.media",
+                               "django.core.context_processors.static",
+                               "django.core.context_processors.tz",
+                               "django.contrib.messages.context_processors.messages")
 
 ########## END APP CONFIGURATION
 
@@ -194,7 +193,7 @@ SECRET_KEY = '$a3e(-u8)4m4*(vfnfnfjba@bd13-2u#=(i$*7(p!(6ck0ugd='
 # Fixing 1_6.W001
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-#Allowed host to be used
+# Allowed host to be used
 ALLOWED_HOSTS = [
     '.etcaterva.com',
     '.etcaterva.com.',
@@ -209,11 +208,11 @@ ALLOWED_HOSTS = [
 
 
 #EMAIL settings
-DEFAULT_FROM_EMAIL="echaloasuerte@gmail.com"
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_HOST_USER="echaloasuerte@gmail.com"
-EMAIL_HOST_PASSWORD=''#FIXME @pedro, how do we do this??? varenv? how do we set it in ansible?
+DEFAULT_FROM_EMAIL = "echaloasuerte@gmail.com"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = "echaloasuerte@gmail.com"
+EMAIL_HOST_PASSWORD = ''  #FIXME @pedro, how do we do this??? varenv? how do we set it in ansible?
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_SUBJECT_PREFIX="[django][echaloasuerte] "#for admin mails
-SERVER_EMAIL="echaloasuerte@gmail.com"
+EMAIL_SUBJECT_PREFIX = "[django][echaloasuerte] "  #for admin mails
+SERVER_EMAIL = "echaloasuerte@gmail.com"
