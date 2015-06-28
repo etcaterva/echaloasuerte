@@ -22,12 +22,12 @@ class FormDrawConsistencyTest(TestCase):
             data2[field_name] = initial_form.initial[field_name]
         sec_form = form_class(data=data2)
         self.assertTrue(sec_form.is_valid(),
-                    str(sec_form.errors) + str(sec_form.data))
+            str(sec_form.errors) + str(sec_form.data))
         sec_bom = draw_class(**sec_form.cleaned_data)
-        for k,v in first_bom.__dict__.items():
+        for k, v in first_bom.__dict__.items():
             if k not in ["creation_time", "last_updated_time"]:
                 msg = "Failed in key {0}, first '{1}', sec '{2}'".format(
-                        k, v, sec_bom.__dict__[k])
+                    k, v, sec_bom.__dict__[k])
                 self.assertEqual(v, sec_bom.__dict__[k], msg)
 
     def base_test(self):
@@ -52,15 +52,15 @@ class FormDrawConsistencyTest(TestCase):
 
     def link_sets_test(self):
         """Consistency test: LinkSetsDrawForm"""
-        data = {"set_1": "1 2 3", "set_2":"a,b,c"}
+        data = {"set_1": "1 2 3", "set_2": "a,b,c"}
         self.validate(data, 'LinkSetsDraw')
 
     def item_test(self):
         """Consistency test: RandomItemDrawForm"""
-        data = {"number_of_results":2, "items": "1 2 3"}
+        data = {"number_of_results": 2, "items": "1 2 3"}
         self.validate(data, 'RandomItemDraw')
 
     def number_test(self):
         """Consistency test: RandomNumberDrawForm"""
-        data = {"number_of_results":2, "range_min": "1", "range_max":5}
+        data = {"number_of_results": 2, "range_min": "1", "range_max": 5}
         self.validate(data, 'RandomNumberDraw')

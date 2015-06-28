@@ -3,11 +3,14 @@ import random
 import datetime
 from abc import ABCMeta, abstractmethod
 import logging
+
 logger = logging.getLogger("echaloasuerte")
 import pytz
 
+
 def get_utc_now():
-    return datetime.datetime.utcnow().replace(tzinfo = pytz.utc)
+    return datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+
 
 class BaseDraw(object):
     """
@@ -15,11 +18,11 @@ class BaseDraw(object):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, creation_time = None, owner = None, number_of_results = 1,
-                  results= None, _id = None, draw_type = None, prev_draw = None,
-                  users = None, title = None, password=None, shared_type = None,
-                  show_in_public_list = True, enable_chat = True, last_updated_time=None,
-                  audit = None):
+    def __init__(self, creation_time=None, owner=None, number_of_results=1,
+                 results=None, _id=None, draw_type=None, prev_draw=None,
+                 users=None, title=None, password=None, shared_type=None,
+                 show_in_public_list=True, enable_chat=True, last_updated_time=None,
+                 audit=None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -35,7 +38,8 @@ class BaseDraw(object):
         self.draw_type = type(self).__name__
         """Type of the draw"""
 
-        self.creation_time = creation_time if creation_time is not None else datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+        self.creation_time = creation_time if creation_time is not None else datetime.datetime.utcnow().replace(
+            tzinfo=pytz.utc)
         """Time the draw was created"""
 
         self.last_updated_time = last_updated_time if last_updated_time else self.creation_time
@@ -74,13 +78,13 @@ class BaseDraw(object):
         Public       Y          Either users or password
         '''
 
-        #TODO: remove me in the future, PLEASE
+        # TODO: remove me in the future, PLEASE
         if self.shared_type == "None" or self.shared_type == "":
             self.shared_type = None
         if draw_type and draw_type != self.draw_type:
             logger.warning("A draw was built with type {0} but type {1} was "
                            "passed as argument! Fix it!".format(
-                               draw_type, self.draw_type))
+                draw_type, self.draw_type))
         if self.last_updated_time.tzinfo is None:
             self.last_updated_time.replace(tzinfo=pytz.utc)
         if self.creation_time.tzinfo is None:
@@ -96,19 +100,19 @@ class BaseDraw(object):
     @property
     def share_settings(self):
         return {
-                "shared_type" : self.shared_type,
-                "password" : bool(self.password),
-                "show_in_public_list" : self.show_in_public_list,
-                "enable_chat" : self.enable_chat
-                }
+            "shared_type": self.shared_type,
+            "password": bool(self.password),
+            "show_in_public_list": self.show_in_public_list,
+            "enable_chat": self.enable_chat
+        }
 
     def user_can_read(self, user, password=None):
         '''Checks for read access'''
         if self.shared_type is None:
-            #Only owner can access
+            # Only owner can access
             return self.user_can_write(user)
         else:
-            #Listed users/owner can access
+            # Listed users/owner can access
             if user.is_authenticated():
                 if user.pk == self.owner:
                     return True

@@ -6,7 +6,7 @@ class RandomItemDraw(BaseDraw):
     Stores the content of a draw of random items
     """
 
-    def __init__(self, items = None, allow_repeat=False, **kwargs):
+    def __init__(self, items=None, allow_repeat=False, **kwargs):
         super(RandomItemDraw, self).__init__(**kwargs)
 
         self.items = items if items else []
@@ -22,7 +22,7 @@ class RandomItemDraw(BaseDraw):
 
     def generate_result(self):
         result = []
-        for i in range(0,self.number_of_results):
+        for i in range(0, self.number_of_results):
             while True:
                 random_value = random.choice(self.items)
                 if (self.allow_repeat or random_value not in result):

@@ -10,6 +10,7 @@ from django.utils.translation import ugettext, ungettext_lazy
 
 register = template.Library()
 
+
 def timesince(d, now=None, reversed=False):
     """
     Takes two datetime objects and returns the time between d and now
@@ -59,6 +60,7 @@ def timesince(d, now=None, reversed=False):
         if count2 != 0:
             result += ugettext(', ') + avoid_wrapping(name2 % count2)
     return result
+
 
 # This filter doesn't require expects_localtime=True because it deals properly
 # with both naive and aware datetimes. Therefore avoid the cost of conversion.

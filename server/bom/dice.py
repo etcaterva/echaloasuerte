@@ -1,5 +1,6 @@
 from server.bom.draw_base import *
 
+
 class DiceDraw(BaseDraw):
     """
     Stores the content of a draw of Dice
@@ -12,4 +13,4 @@ class DiceDraw(BaseDraw):
         return 0 < self.number_of_results < 20
 
     def generate_result(self):
-        return [random.randint(1,6) for x in range(0,self.number_of_results)]
+        return [random.randint(1, 6) for x in range(0, self.number_of_results)]

@@ -60,12 +60,11 @@ class SauceTest(LiveServerTestCase):
 
         self.setUpSauce()
 
-        #load index
+        # load index
         self.driver.get(self.base_url + "/")
 
         #if something is not found give it 10 seconds to load
         self.driver.implicitly_wait(10)
-
 
 
     def tearDown(self):
@@ -302,13 +301,15 @@ class SauceTest(LiveServerTestCase):
         driver.find_element_by_id("fav-button").click()
 
         # Check that it has been dynamically removed
-        is_present = self.is_element_present("xpath", "//*[@id='favourites-panel']//a[contains(@href,'" + draw_id + "')]")
+        is_present = self.is_element_present("xpath",
+                                             "//*[@id='favourites-panel']//a[contains(@href,'" + draw_id + "')]")
         self.assertFalse(is_present)
 
         # Check that is correctly removed from the DB
         driver.get(self.base_url + "/")
         driver.find_element_by_id("favourites").click()
-        is_present = self.is_element_present("xpath", "//*[@id='favourites-panel']//a[contains(@href,'" + draw_id + "')]")
+        is_present = self.is_element_present("xpath",
+                                             "//*[@id='favourites-panel']//a[contains(@href,'" + draw_id + "')]")
         self.assertFalse(is_present)
 
     def public_draw_everyone_test(self):

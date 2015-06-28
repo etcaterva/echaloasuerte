@@ -88,6 +88,7 @@ def profile(request):
     context = {'draws': draws}
     return render(request, 'profile.html', context)
 
+
 @time_it
 def join_draw(request):
     """view to show the list of draws a user can join"""
@@ -95,15 +96,15 @@ def join_draw(request):
     user_draws = []
     if request.user.is_authenticated():
         user_draws = MONGO.get_draws_with_filter({
-            "$and" : [
-                { "$or" : [{"shared_type" : "Public"},  {"shared_type" : "Invite"} ] },
-                { "$or" : [{"owner" : request.user.pk}, {"user": request.user.pk}  ] }
+            "$and": [
+                {"$or": [{"shared_type": "Public"}, {"shared_type": "Invite"}]},
+                {"$or": [{"owner": request.user.pk}, {"user": request.user.pk}]}
             ]
         })
     try:
         public_draws = MONGO.get_draws_with_filter(
-                {"shared_type": "Public","show_in_public_list": True},
-            )
+            {"shared_type": "Public", "show_in_public_list": True},
+        )
     except Exception as e:
         LOG.error("There was an issue when retrieving public draws. {0}".format(e))
     user_draws_pk = [draw.pk for draw in user_draws]
@@ -134,6 +135,7 @@ SENTENCES = (
     (_("What cell to start?"), "buscaminas.gif"),
 )
 
+
 @time_it
 def index(request, is_public=None):
     """landpage"""
@@ -148,7 +150,8 @@ def index(request, is_public=None):
     }
     return render(request, 'index.html', context)
 
-#TODO:
+
+# TODO:
 # - Wrap the creation of draws and form through a factory. No more global
 # - Move is_feasible to the form validation
 #       a draw changed
@@ -168,18 +171,21 @@ def try_draw(request, draw_type):
     if not draw_form.is_valid():
         LOG.info("Form not valid: {0}".format(draw_form.errors))
         messages.error(request, _('Invalid values provided'))
-        return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name })
+        return render(request, 'draws/new_draw.html', {"draw": draw_form, "is_public": True, "draw_type": model_name})
     else:
         raw_draw = draw_form.cleaned_data
         LOG.debug("Form cleaned data: {0}".format(raw_draw))
         bom_draw = globals()[model_name](**raw_draw)
-        if not bom_draw.is_feasible(): # This should actually go in the form validation
+        if not bom_draw.is_feasible():  # This should actually go in the form validation
             LOG.info("Draw {0} is not feasible".format(bom_draw))
             messages.error(request, _('The draw is not feasible'))
-            return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name })
+            return render(request, 'draws/new_draw.html',
+                          {"draw": draw_form, "is_public": True, "draw_type": model_name})
         else:
             bom_draw.toss()
-            return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": True, "draw_type": model_name, "bom": bom_draw})
+            return render(request, 'draws/new_draw.html',
+                          {"draw": draw_form, "is_public": True, "draw_type": model_name, "bom": bom_draw})
+
 
 @time_it
 def create_draw(request, draw_type, is_public):
@@ -199,25 +205,28 @@ def create_draw(request, draw_type, is_public):
     if request.method == 'GET':
         LOG.debug("Serving view to create a draw. Form: {0}".format(form_name))
         draw_form = globals()[form_name]()
-        return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": is_public, "draw_type": model_name, "default_title": "New Draw"})
+        return render(request, 'draws/new_draw.html',
+                      {"draw": draw_form, "is_public": is_public, "draw_type": model_name, "default_title": "New Draw"})
     else:
         LOG.debug("Received post data: {0}".format(request.POST))
         draw_form = globals()[form_name](request.POST)
         if not draw_form.is_valid():
             LOG.info("Form not valid: {0}".format(draw_form.errors))
             messages.error(request, _('Invalid values provided'))
-            return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": is_public, "draw_type": model_name })
+            return render(request, 'draws/new_draw.html',
+                          {"draw": draw_form, "is_public": is_public, "draw_type": model_name})
         else:
             raw_draw = draw_form.cleaned_data
             LOG.debug("Form cleaned data: {0}".format(raw_draw))
             # Create a draw object with the data coming in the POST
             bom_draw = globals()[model_name](**raw_draw)
-            bom_draw._id = None # Ensure we have no id
+            bom_draw._id = None  # Ensure we have no id
             set_owner(bom_draw, request)
-            if not bom_draw.is_feasible(): # This should actually go in the form validation
+            if not bom_draw.is_feasible():  # This should actually go in the form validation
                 LOG.info("Draw {0} is not feasible".format(bom_draw))
                 messages.error(request, _('The draw is not feasible'))
-                return render(request, 'draws/new_draw.html', {"draw" : draw_form, "is_public": is_public, "draw_type": model_name })
+                return render(request, 'draws/new_draw.html',
+                              {"draw": draw_form, "is_public": is_public, "draw_type": model_name})
             else:
                 # generate a result if a private draw
                 if not bom_draw.is_shared():
@@ -264,7 +273,7 @@ def update_draw(request, draw_id):
         for key, value in raw_draw.items():
             if key not in ("_id", "pk") and value != "":
                 setattr(bom_draw, key, value)
-        if not bom_draw.is_feasible(): # This should actually go in the form validation
+        if not bom_draw.is_feasible():  # This should actually go in the form validation
             LOG.info("Draw {0} is not feasible".format(bom_draw))
             messages.error(request, _('The draw is not feasible'))
             draw_form = globals()[form_name](initial=bom_draw.__dict__.copy())
@@ -294,6 +303,7 @@ def display_draw(request, draw_id):
         return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
     else:
         return render(request, "draws/secure_draw.html", {"bom": bom_draw})
+
 
 @time_it
 def under_construction(request):

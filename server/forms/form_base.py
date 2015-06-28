@@ -12,7 +12,7 @@ URL_TO_DRAW_MAP = {
     'link_sets': 'LinkSetsDraw',
 }
 
-DRAW_TO_URL_MAP ={ v:k for k,v in URL_TO_DRAW_MAP.items()}
+DRAW_TO_URL_MAP = {v: k for k, v in URL_TO_DRAW_MAP.items()}
 
 
 class FormBase(forms.Form):

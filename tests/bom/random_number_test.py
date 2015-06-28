@@ -1,8 +1,10 @@
 from django.test import TestCase
 from server.bom.random_number import *
 
+
 class RandomNumberDrawTest(TestCase):
     """ Basic sanity test for mongodb driver"""
+
     def setUp(self):
         self.dummy_draw = RandomNumberDraw()
 
@@ -13,14 +15,14 @@ class RandomNumberDrawTest(TestCase):
     def serialization_test(self):
         """RandomNumberDraw: Serialization"""
         raw = RandomNumberDraw(range_min=0).__dict__
-        self.assertEqual(raw["range_min"],0)
+        self.assertEqual(raw["range_min"], 0)
 
     def deserialization_test(self):
         """RandomNumberDraw: Deserialization"""
-        raw = {"range_min":5,"range_max":10}
+        raw = {"range_min": 5, "range_max": 10}
         item = RandomNumberDraw(**raw)
-        self.assertEqual(item.range_min,5)
-        self.assertEqual(item.range_max,10)
+        self.assertEqual(item.range_min, 5)
+        self.assertEqual(item.range_max, 10)
 
     def is_feasible_test(self):
         """RandomNumberDraw: Is Feasible"""
@@ -76,32 +78,33 @@ class RandomNumberDrawTest(TestCase):
     def toss_once_test(self):
         """RandomNumberDraw: Toss once"""
         tested_item = RandomNumberDraw(range_max=0, range_min=0)
-        self.assertEqual(0,len(tested_item.results))
-        self.assertEqual(0,tested_item.toss()["items"][0])
-        self.assertEqual(1,len(tested_item.results))
-        self.assertEqual(1,len(tested_item.results[0]["items"]))
+        self.assertEqual(0, len(tested_item.results))
+        self.assertEqual(0, tested_item.toss()["items"][0])
+        self.assertEqual(1, len(tested_item.results))
+        self.assertEqual(1, len(tested_item.results[0]["items"]))
 
     def toss_same_twice_test(self):
         """RandomNumberDraw: Toss same twice"""
         tested_item2 = RandomNumberDraw(range_max=0, range_min=0)
-        self.assertEqual(0,len(tested_item2.results))
-        self.assertEqual(0,tested_item2.toss()["items"][0])
-        self.assertEqual(0,tested_item2.toss()["items"][0])
-        self.assertEqual(2,len(tested_item2.results))
-        self.assertEqual(1,len(tested_item2.results[0]["items"]))
-        self.assertEqual(1,len(tested_item2.results[1]["items"]))
+        self.assertEqual(0, len(tested_item2.results))
+        self.assertEqual(0, tested_item2.toss()["items"][0])
+        self.assertEqual(0, tested_item2.toss()["items"][0])
+        self.assertEqual(2, len(tested_item2.results))
+        self.assertEqual(1, len(tested_item2.results[0]["items"]))
+        self.assertEqual(1, len(tested_item2.results[1]["items"]))
 
     def toss_two_items_test(self):
         """RandomNumberDraw: Toss generate two items"""
-        tested_item2 = RandomNumberDraw(range_max=0, range_min=0, number_of_results=2,allow_repeat=True)
-        self.assertEqual(0,len(tested_item2.results))
-        self.assertEqual(0,tested_item2.toss()["items"][0])
-        self.assertEqual(1,len(tested_item2.results))
-        self.assertEqual(2,len(tested_item2.results[0]["items"]))
+        tested_item2 = RandomNumberDraw(range_max=0, range_min=0, number_of_results=2, allow_repeat=True)
+        self.assertEqual(0, len(tested_item2.results))
+        self.assertEqual(0, tested_item2.toss()["items"][0])
+        self.assertEqual(1, len(tested_item2.results))
+        self.assertEqual(2, len(tested_item2.results[0]["items"]))
 
     def toss_on_existing_test(self):
         """RandomNumberDraw: Toss when list created with results already"""
-        tested_item2 = RandomNumberDraw(range_max=0, range_min=0, number_of_results=2,allow_repeat=True,results=[{"items":[0]}])
-        self.assertEqual(1,len(tested_item2.results))
-        self.assertEqual(0,tested_item2.toss()["items"][0])
-        self.assertEqual(2,len(tested_item2.results))
+        tested_item2 = RandomNumberDraw(range_max=0, range_min=0, number_of_results=2, allow_repeat=True,
+                                        results=[{"items": [0]}])
+        self.assertEqual(1, len(tested_item2.results))
+        self.assertEqual(0, tested_item2.toss()["items"][0])
+        self.assertEqual(2, len(tested_item2.results))
