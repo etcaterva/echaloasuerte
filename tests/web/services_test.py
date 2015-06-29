@@ -62,11 +62,11 @@ class TestUpdateUserProfile(TestServices):
 
     def update_avatar_test(self):
         """Test updating the avatar of an user"""
-        self.req.POST = {}  # {"avatar": "NOT IMPLEMENTED YET"}
+        self.req.POST = {"use_gravatar" : "true"}
         update_user(self.req)
         self.assertEqual(
-            None,
-            self._driver.retrieve_user(self.tested_user._id).avatar
+            True,
+            self._driver.retrieve_user(self.tested_user._id).use_gravatar
         )
 
 
