@@ -201,6 +201,14 @@ def get_draw_details(request):
     except MongoDriver.NotFoundError:
         messages = []
 
+    try:
+        users = set([message["user"] for message in messages])
+        users_map = {name: MONGO.retrieve_user(name).user_image for name in users}
+        for message in messages:
+            message["avatar"] = users_map[message["user"]]
+    except Exception as exception:
+        LOG.exception(exception)
+
     return JsonResponse({
         "messages": messages,
         "settings": draw.share_settings,

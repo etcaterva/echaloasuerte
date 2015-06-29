@@ -110,7 +110,7 @@
             var html = '<li class="clearfix">' +
                         '    <p class="chatline-details text-muted small">' + user + '<span class="chatline-datetime"><i class="fa fa-clock-o"></i> ' + time + '</span></p>' +
                         '	<span class="chat-img pull-left">' +
-                        '		<img src="' + avatar + '" alt="User Avatar" class="img-circle chat-avatar">' +
+                        '		<img width="10px" src="' + avatar + '" alt="User Avatar" class="img-circle chat-avatar">' +
                         '	</span>' +
                         '	<div class="chatline-content">' + content +
                         '	</div>' +
