@@ -2,9 +2,6 @@
 {% load url from future %}
 {% load static %}
 {% load i18n %}
-{% block extra_head %}
-    <script type="text/javascript" src="{% static "js/bootstrap-filestyle.js" %}"> </script>
-{% endblock extra_head %}
 {% block extra_jq_ready %}
     var $user_draws = $('#my-draws').dataTable(
         {
@@ -175,27 +172,27 @@
                     {# Edit Avatar #}
                     <p class="h3 text-left">
                         <span class="user-settings-label">{% trans "Avatar" %}</span>
-                        <span class="user-settings-content">Avatar</span>
+                        <span class="user-settings-content">{% if user.use_gravatar %}Gravatar{% else %}{% trans "Random avatar" %}{% endif %}</span>
                         <span class="user-settings-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
                     </p>
                     <div class="panel">
-                        <div id="btn-upload-image" class="col-xs-6 text-center">
-                            <input id="upload-image" type="file" class="filestyle" data-classButton="btn btn-primary" data-badge="false" data-input="false" data-classIcon="icon-plus" data-buttonText="{% trans "Choose an image" %}"  onchange="PreviewImage();">
+                        <div id="choose-avatar-option" class="col-md-6 text-left">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="option-avatar" id="avatar-gravatar" value="gravatar" checked>
+                                    Use Gravatar
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="option-avatar" id="avatar-random" value="random">
+                                    {% trans "Use my random monster!" %}
+                                </label>
+                            </div>
                         </div>
-                        <div id="div-upload-preview" class="col-xs-6 text-center">
-                            <img id="upload-preview" />
+                        <div id="div-upload-preview" class="col-md-6 text-center">
+                            <img id="upload-preview" src="{{ user.user_image }}"/>
                         </div>
-                        <script type="text/javascript">
-                          function PreviewImage() {
-                              $('#confirm-avatar').removeClass('hidden');
-                            var oFReader = new FileReader();
-                            oFReader.readAsDataURL(document.getElementById("upload-image").files[0]);
-
-                            oFReader.onload = function(oFREvent) {
-                              document.getElementById("upload-preview").src = oFREvent.target.result;
-                            };
-                          };
-                        </script>
                         <div class="col-xs-12 text-center">
                             <button id="confirm-avatar" class="btn btn-primary btn-settings hidden">{% trans "Confirm avatar" %}</button>
                             <button class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</button>
