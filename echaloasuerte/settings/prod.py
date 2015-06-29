@@ -1,6 +1,6 @@
 from echaloasuerte.settings.common import *
 
-#WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
+# WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 
 
 ########## DEBUG CONFIGURATION
@@ -39,7 +39,7 @@ LOGGING = {
         },
         'standard': {
             'format': '[%(asctime)s] %(levelname)s %(name)s.%(module)s.%(funcName)s | %(message)s',
-            'datefmt' : '%Y%m%d %H:%M:%S',
+            'datefmt': '%Y%m%d %H:%M:%S',
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
@@ -55,25 +55,25 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
-            },
+        },
         'log_file': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': BASE_LOG_PATH +'echaloasuerte_log.txt',
-            },
+            'filename': BASE_LOG_PATH + 'echaloasuerte_log.txt',
+        },
         'error_log_file': {
             'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': BASE_LOG_PATH +'echaloasuerte_err.txt',
-            },
+            'filename': BASE_LOG_PATH + 'echaloasuerte_err.txt',
+        },
         'debug_log_file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': BASE_LOG_PATH +'echaloasuerte_debug.txt',
-            },
+            'filename': BASE_LOG_PATH + 'echaloasuerte_debug.txt',
+        },
     },
     'loggers': {
         'django.request': {
@@ -82,18 +82,18 @@ LOGGING = {
             'propagate': False,
         },
         'echaloasuerte': {
-            'handlers': ['log_file','error_log_file','debug_log_file','mail_admins'],
+            'handlers': ['log_file', 'error_log_file', 'debug_log_file', 'mail_admins'],
             'level': 'DEBUG',
             'propagate': False,
-            },
+        },
     }
 }
 ########## END LOGGING CONFIGURATION
 
 #Mongo db configuration list
 MONGO_END_POINTS = [
-        {'host':'localhost', 'port':27017, 'database':'prod'},
-        ]
+    {'host': 'localhost', 'port': 27017, 'database': 'prod'},
+]
 
 # Template caching
 TEMPLATE_LOADERS = (
@@ -106,6 +106,6 @@ TEMPLATE_LOADERS = (
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'TIMEOUT': 60 # 1 MINUTE
+        'TIMEOUT': 60  # 1 MINUTE
     }
 }

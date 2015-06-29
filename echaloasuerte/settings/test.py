@@ -1,6 +1,6 @@
 from echaloasuerte.settings.common import *
 
-#WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
+# WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 
 
 ########## DEBUG CONFIGURATION
@@ -31,7 +31,7 @@ LOGGING = {
     'formatters': {
         'standard': {
             'format': '[%(asctime)s] %(levelname)s %(name)s.%(module)s.%(funcName)s | %(message)s',
-            'datefmt' : '%Y%m%d %H:%M:%S',
+            'datefmt': '%Y%m%d %H:%M:%S',
         },
     },
     'handlers': {
@@ -39,7 +39,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
-            },
+        },
     },
     'loggers': {
         'django.request': {
@@ -51,12 +51,12 @@ LOGGING = {
             'handlers': [],
             'level': 'DEBUG',
             'propagate': False,
-            },
+        },
     }
 }
 ########## END LOGGING CONFIGURATION
 
 #Mongo db configuration list
 MONGO_END_POINTS = [
-        {'host':'localhost', 'port':27017, 'database':'testing'},
-        ]
+    {'host': 'localhost', 'port': 27017, 'database': 'testing'},
+]

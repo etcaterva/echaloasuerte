@@ -5,10 +5,11 @@ import django
 
 class SanityMongo(TestCase):
     """ Basic sanity test for mongodb driver"""
+
     def setUp(self):
         django.setup()
         self._driver = MongoDriver.instance()
-        self.dummy_doc = {"test-id":"SINGLE TEST ID"}
+        self.dummy_doc = {"test-id": "SINGLE TEST ID"}
 
     def connection_test(self):
         """MongoDB: Basic construction"""

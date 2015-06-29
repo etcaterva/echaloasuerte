@@ -8,12 +8,12 @@ from server.forms import FormBase
 
 DECKS_CHOICES = (('french', _("French")),
                  ('spanish', _("Spanish")),
-)
+                 )
 
 
 class CardDrawForm(FormBase):
     number_of_results = forms.IntegerField(label=_("Number of cards to draw"), required=True, initial=1, max_value=20)
-    #type_of_deck = forms.ChoiceField(required=True, initial="french", choices=DECKS_CHOICES)
+    # type_of_deck = forms.ChoiceField(required=True, initial="french", choices=DECKS_CHOICES)
 
     DEFAULT_TITLE = _("Draw a Card")
 

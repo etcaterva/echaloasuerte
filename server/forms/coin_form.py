@@ -5,12 +5,13 @@ from server.forms.form_base import FormBase
 
 
 class CoinDrawForm(FormBase):
-
     DEFAULT_TITLE = _("Flip a Coin")
 
     def __init__(self, *args, **kwargs):
         super(CoinDrawForm, self).__init__(*args, **kwargs)
 
         self.helper.layout = Layout(
-            HTML('<div class="text-center"><input type="image" id="img-coin" src="{0}" name="coin"><p>{1}</p></div>'.format(static('img/img_coin/head.png'), _("Tap the coin to flip it.")))
+            HTML(
+                '<div class="text-center"><input type="image" id="img-coin" src="{0}" name="coin"><p>{1}</p></div>'.format(
+                    static('img/img_coin/head.png'), _("Tap the coin to flip it.")))
         )

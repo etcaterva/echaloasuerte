@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import (check_password, make_password)
 import logging
 from django.utils.http import urlencode
 import hashlib
+
 logger = logging.getLogger("echaloasuerte")
 
 
@@ -17,13 +18,14 @@ class User(object):
             rd = server.mongodb.driver.MongoDriver.instance().retrieve_draw
             return [rd(f) for f in self.favourites]
         except Exception as e:
-            logger.error("Error when retrieving the list of favourites for user {0}. {1}".format(self.pk,e))
+            logger.error("Error when retrieving the list of favourites for user {0}. {1}".format(self.pk, e))
             return []
+
     @property
     def pk(self):
         return str(self._id)
 
-    def save(self,**args):
+    def save(self, **args):
         pass
 
     @property
@@ -75,10 +77,10 @@ class User(object):
     def is_authenticated(self):
         return True
 
-    def check_password(self,raw_password):
+    def check_password(self, raw_password):
         return check_password(raw_password, self.password)
 
-    def set_password(self,raw_password):
+    def set_password(self, raw_password):
         self.password = make_password(raw_password)
 
     def __str__(self):

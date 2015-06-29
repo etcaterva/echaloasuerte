@@ -32,8 +32,10 @@ DRAW_SCHELETON_5 = '''
 
 import argparse
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Generates the scheleton of a draw", usage='%(prog)s DrawName attr1 [attr2 ...] ')
+    parser = argparse.ArgumentParser(description="Generates the scheleton of a draw",
+                                     usage='%(prog)s DrawName attr1 [attr2 ...] ')
     parser.add_argument("-c", nargs=1, type=str, help="Name of the draw. (eg: RandomItem)")
     parser.add_argument("attr", nargs=argparse.REMAINDER, help="list of attributes to generate")
     args = parser.parse_args()
@@ -43,7 +45,6 @@ def main():
 
     print("Draw name: {0}".format(args.c[0]))
     print("Attributes: {0}".format(args.attr))
-
 
     result = ""
     result += DRAW_SCHELETON_1.format(args.c[0])
@@ -55,15 +56,16 @@ def main():
     result += DRAW_SCHELETON_5
 
     print "Generated file:"
-    print " -*- "  * 5
+    print " -*- " * 5
     print result
-    print " -*- "  * 5
+    print " -*- " * 5
 
-    filename = raw_input( "Enter a filename to store the result: ")
+    filename = raw_input("Enter a filename to store the result: ")
     with open(filename, "w") as f:
         f.write(result)
 
     print "Done, enjoy.. ;)"
+
 
 if __name__ == "__main__":
     main()

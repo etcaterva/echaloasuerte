@@ -1,6 +1,6 @@
 from server.bom.draw_base import *
 
-#This should be used for the API
+# This should be used for the API
 decks = {'french': ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10", "hj", "hq", "hk",
                     "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "tj", "tq", "tk",
                     "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "cj", "cq", "ck",

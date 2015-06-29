@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
+from django.views.generic.base import RedirectView
 from web import views
 from web import web_services as ws
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -38,6 +39,12 @@ urlpatterns += patterns(
     url(r'^ws/draw_remove_users/$', ws.remove_user_from_draw, name="ws_remove_users_from_draw"),
     url(r'^ws/favourites/remove/$', ws.remove_favorite, name="ws_remove_favorite"),
     url(r'^ws/check_access_to_draw/$', ws.check_access_to_draw, name="check_access_to_draw"),
+
+    # redirect
+    url(r'index.php', RedirectView.as_view(url="/", permanent=True)),
+    url(r'elegirSalas.php', RedirectView.as_view(url="/", permanent=True)),
+    url(r'contacto.php', RedirectView.as_view(url="/", permanent=True)),
+    url(r'acerca.php', RedirectView.as_view(url="about.html", permanent=True)),
 )
 
 urlpatterns += staticfiles_urlpatterns()

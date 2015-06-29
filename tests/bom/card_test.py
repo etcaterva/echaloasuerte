@@ -1,8 +1,10 @@
 from django.test import TestCase
 from server.bom.card import *
 
+
 class DiceDrawTest(TestCase):
     """ Basic sanity test for mongodb driver"""
+
     def setUp(self):
         self.dummy_draw = CardDraw()
 
