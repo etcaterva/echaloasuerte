@@ -86,7 +86,7 @@
         var url = 'http://www.gravatar.com/avatar/' + hex_md5(email);
         url += '?d=' + avatar_default;
         // If "random" is selected, the default random image is forced
-        else if (this.value == 'random') {
+        if (this.value == 'random') {
             url += '&f=y';
         }
         $('#avatar-preview').attr("src", url);
@@ -195,13 +195,13 @@
                         <div id="choose-avatar-option" class="col-md-6 text-left">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="option-avatar" id="avatar-gravatar" value="gravatar" checked>
+                                    <input type="radio" name="option-avatar" id="avatar-gravatar" value="gravatar" {% if "&f=y" not in user.user_image %}checked="checked"{% endif %}>
                                     Use Gravatar
                                 </label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="option-avatar" id="avatar-random" value="random">
+                                    <input type="radio" name="option-avatar" id="avatar-random" value="random" {% if "&f=y" in user.user_image %}checked="checked"{% endif %}>
                                     {% trans "Use my random monster!" %}
                                 </label>
                             </div>
