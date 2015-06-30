@@ -106,6 +106,13 @@
         var share_url = document.domain + "{% url 'retrieve_draw' draw_id=bom.pk %}";
         $('#url-share').val(share_url);
 
+        {% if bom.owner == user.pk %}
+            var drawDate = moment.utc("{{bom.creation_time.isoformat}}");
+            drawDate.add(2, 'minutes');
+            if(drawDate > moment.utc()) {
+                alert("David is gonna fix this!");
+            }
+        {% endif %}
     {% else %}
         $("#draw-form :input").change(function(changed_input) {
             draw_updated_flag = true; //marks the draw as updated
