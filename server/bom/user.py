@@ -35,7 +35,7 @@ class User(object):
         default = "monsterid"
         size = 85
         email = self.get_email().lower()
-        gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.encode('utf-8')).hexdigest() + "?"
+        gravatar_url = "//www.gravatar.com/avatar/" + hashlib.md5(email.encode('utf-8')).hexdigest() + "?"
         parameters = {'d':default,
                       's':str(size)}
         if not self.use_gravatar:
