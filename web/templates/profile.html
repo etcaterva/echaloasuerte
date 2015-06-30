@@ -2,6 +2,9 @@
 {% load url from future %}
 {% load static %}
 {% load i18n %}
+{% block extra_head %}
+    <script src="{% static 'js/md5.js' %}"></script>
+{% endblock extra_head %}
 {% block extra_jq_ready %}
     var $user_draws = $('#my-draws').dataTable(
         {
@@ -74,6 +77,19 @@
         if (email_valid){
             $('#change-email-password').removeClass('hidden');
         }
+    });
+
+    // Preview Gravatar change
+    $('input[type=radio][name=option-avatar]').change(function() {
+        var avatar_default = "monsterid";
+        var email = "dnaranjo89@gmail.com";
+        var url = 'http://www.gravatar.com/avatar/' + hex_md5(email);
+        url += '?d=' + avatar_default;
+        // If "random" is selected, the default random image is forced
+        else if (this.value == 'random') {
+            url += '&f=y';
+        }
+        $('#avatar-preview').attr("src", url);
     });
 
     $(function() {
@@ -190,8 +206,8 @@
                                 </label>
                             </div>
                         </div>
-                        <div id="div-upload-preview" class="col-md-6 text-center">
-                            <img id="upload-preview" src="{{ user.user_image }}"/>
+                        <div id="div-avatar-preview" class="col-md-6 text-center">
+                            <img id="avatar-preview" src="{{ user.user_image }}"/>
                         </div>
                         <div class="col-xs-12 text-center">
                             <button id="confirm-avatar" class="btn btn-primary btn-settings hidden">{% trans "Confirm avatar" %}</button>

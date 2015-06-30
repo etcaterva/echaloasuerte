@@ -699,12 +699,12 @@ a#back-old-version:hover {
     margin-top: 30px;
 }
 
-#upload-preview {
+#avatar-preview {
     width: 98px;
     height: 98px;
 
 }
-#div-upload-preview {
+#div-avatar-preview {
     border: 1px #3c3c3c solid;
     width: 100px;
     height: 100px;
