@@ -672,9 +672,30 @@ a#back-old-version:hover {
     border-color: transparent;
 }
 
+#user-settings .panel label {
+    padding-right: 0;
+}
+#user-settings .panel .has-error label {
+    color: #a94442;
+    font-weight: bold;
+}
+#user-settings .panel .has-error input {
+    border-color: #a94442;
+}
+
+#user-settings .has-error .control-label {
+    padding-right: 0;
+    line-height: 22px;
+}
+
 #user-settings .panel li{
     list-style-type: none;
     margin-bottom: 8px;
+}
+
+#user-settings .info-error {
+    text-align: left;
+    color: #a94442;
 }
 
 .btn-settings {

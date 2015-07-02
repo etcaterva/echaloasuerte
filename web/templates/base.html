@@ -142,7 +142,7 @@
 
             $("#keep-logged").attr('checked', getCookie("keep-logged") != "");
 
-                        // Returns the browser's version
+            // Returns the browser's version
             navigator.sayswho= (function(){
                 var ua= navigator.userAgent, tem,
                 M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
@@ -203,6 +203,7 @@
                          csrfmiddlewaretoken : "{{csrf_token}}"
                     }
                 }).done(function (){
+                    // TODO some feedback here
                     //DAVID?
                 })
                 .fail(function () {

@@ -57,10 +57,6 @@
     } );
 
     // ------------- Edit profile table -----------------------
-        $('.settings-item-link').click(function (){
-        $(this).parent().addClass('opened-settings-panel');
-    });
-
     $('.cancel-edition').click(function (){
         $("#user-settings").accordion({active: false}).click();
     });
@@ -79,6 +75,41 @@
         }
     });
 
+    // ------------- Edit password -----------------------
+    $('#save-password').click(function (){
+        var current_password = $('#current_password').val();
+        var new_password = $('#new_password').val();
+        var new_password_repeat = $('#new_password_repeat').val();
+        if (new_password != new_password_repeat){
+            $("#group-new-password").addClass('has-error');
+            $("#group-new-password-repeat").addClass('has-error');
+            $("#group-new-password-repeat .info-error").removeClass("hidden");
+            return;
+        }
+        $.ajax({
+            method : "POST",
+            url   : "{% url 'update_profile' %}",
+            data  : {
+                 current_password : current_password,
+                 password : new_password,
+                 csrfmiddlewaretoken : "{{csrf_token}}"
+            }
+        }).done(function (){
+            var label_password = $('#profile-edit-password .user-settings-content');
+            label_password.empty();
+            label_password.append("<strong>{% trans "Password updated" %}</strong>");
+
+            $('#user-settings').accordion({
+                active: false,
+                collapsible: true
+            });
+        })
+        .fail(function () {
+            console.log("Couldn't change password");
+        });
+    });
+
+    // ------------- Edit avatar -----------------------
     // Preview Gravatar change
     $('input[type=radio][name=option-avatar]').change(function() {
         var avatar_default = "monsterid";
@@ -90,6 +121,36 @@
             url += '&f=y';
         }
         $('#avatar-preview').attr("src", url);
+    });
+
+
+    $('#confirm-avatar').click(function (){
+        var avatar_option = $('input[type=radio][name=option-avatar]:checked').val();
+        use_gravatar = avatar_option == 'gravatar';
+        $.ajax({
+            method : "POST",
+            url   : "{% url 'update_profile' %}",
+            data  : {
+                 use_gravatar : use_gravatar,
+                 csrfmiddlewaretoken : "{{csrf_token}}"
+            }
+        }).done(function (){
+            console.log("password changed");
+            var label_avatar = $('#profile-edit-password .user-settings-content');
+            label_avatar.empty();
+            if (use_gravatar){
+                label_avatar.append("<strong>{% trans "Use gravatar" %}</strong>");
+            }else{
+                label_avatar.append("<strong>{% trans "Use random monster" %}</strong>");
+            }
+            $('#user-settings').accordion({
+                active: false,
+                collapsible: true
+            });
+        })
+        .fail(function () {
+            console.log("Couldn't change password");
+        });
     });
 
     $(function() {
@@ -128,7 +189,7 @@
                     </div>
 
                     {# Edit Password #}
-                    <p class="h3 text-left">
+                    <p id="profile-edit-password" class="h3 text-left">
                         <span class="user-settings-label">{% trans "Password" %}</span>
                         <span class="user-settings-content">*********</span>
                         <span class="user-settings-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
@@ -136,26 +197,29 @@
                     <div class="panel">
                         <ul>
                             <li>
-                                <div class="row">
-                                    <div class="user-settings-label col-xs-4 text-right">{% trans "Current" %}</div>
-                                    <div class="col-xs-8 text-left"><input type="text"/></div>
+                                <div id="group-current-password" class="row">
+                                    <label class="user-settings-label col-xs-4 text-right">{% trans "Current" %}</label>
+                                    <div class="col-xs-8 text-left"><input id="current_password" type="password"/></div>
                                 </div>
                             </li>
                             <li>
-                                <div class="row">
-                                    <div class="user-settings-label col-xs-4 text-right">{% trans "New" %}</div>
-                                    <div class="col-xs-8 text-left"><input type="text"/></div>
+                                <div id="group-new-password" class="row">
+                                    <label class="user-settings-label col-xs-4 text-right">{% trans "New" %}</label>
+                                    <div class="col-xs-8 text-left"><input id="new_password" type="password"/></div>
                                 </div>
                             </li>
                             <li>
-                                <div class="row">
-                                    <div class="user-settings-label col-xs-4 text-right">{% trans "Repeat new" %}</div>
-                                    <div class="col-xs-8 text-left"><input type="text"/></div>
+                                <div id="group-new-password-repeat" class="row">
+                                    <label class="user-settings-label col-xs-4 text-right">{% trans "Repeat new" %}</label>
+                                    <div class="col-xs-8 text-left">
+                                        <input id="new_password_repeat" type="password"/>
+                                        <div class="info-error hidden">{% trans "The passwords didn't match" %}</div>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
                         <div class="col-xs-12 text-center">
-                            <button class="btn btn-primary btn-settings">{% trans "Change password" %}</button>
+                            <button id="save-password" class="btn btn-primary btn-settings">{% trans "Change password" %}</button>
                             <button class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</button>
                         </div>
                     </div>
@@ -186,7 +250,7 @@
                     </div>
 
                     {# Edit Avatar #}
-                    <p class="h3 text-left">
+                    <p id="profile-edit-avatar" class="h3 text-left">
                         <span class="user-settings-label">{% trans "Avatar" %}</span>
                         <span class="user-settings-content">{% if user.use_gravatar %}Gravatar{% else %}{% trans "Random avatar" %}{% endif %}</span>
                         <span class="user-settings-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
@@ -195,13 +259,13 @@
                         <div id="choose-avatar-option" class="col-md-6 text-left">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="option-avatar" id="avatar-gravatar" value="gravatar" {% if "&f=y" not in user.user_image %}checked="checked"{% endif %}>
+                                    <input type="radio" name="option-avatar" id="avatar-gravatar" value="gravatar" {% if user.use_gravatar == True %}checked="checked"{% endif %}>
                                     Use Gravatar
                                 </label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="option-avatar" id="avatar-random" value="random" {% if "&f=y" in user.user_image %}checked="checked"{% endif %}>
+                                    <input type="radio" name="option-avatar" id="avatar-random" value="random" {% if user.use_gravatar == False %}checked="checked"{% endif %}>
                                     {% trans "Use my random monster!" %}
                                 </label>
                             </div>
@@ -210,7 +274,7 @@
                             <img id="avatar-preview" src="{{ user.user_image }}"/>
                         </div>
                         <div class="col-xs-12 text-center">
-                            <button id="confirm-avatar" class="btn btn-primary btn-settings hidden">{% trans "Confirm avatar" %}</button>
+                            <button id="confirm-avatar" class="btn btn-primary btn-settings">{% trans "Save" %}</button>
                             <button class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</button>
                         </div>
                     </div>
