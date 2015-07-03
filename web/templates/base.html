@@ -24,7 +24,7 @@
 
 
     <!-- Bootstrap -->
-    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
     <script src="{% static 'js/bootstrap.js' %}"></script>
 
     <!-- Bootstrap TokenField -->
@@ -324,7 +324,7 @@
                                         <div class="row">
                                             <div class="col-lg-4">
                                                 <p class="text-center">
-                                                    <span class="user-picture fa fa-user fa-5x"></span>
+                                                    <img src="{{ user.user_image }}" alt="User avatar"/>
                                                 </p>
                                             </div>
                                             <div class="col-lg-8">

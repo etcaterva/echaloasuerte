@@ -266,6 +266,11 @@ a.fa:focus {
     display: none;
 }
 
+.chat-avatar {
+    width: 30px;
+    height: auto;
+}
+
 
 /* Chat placed inside the main frame */
 @media screen and (min-width: 1440px) {

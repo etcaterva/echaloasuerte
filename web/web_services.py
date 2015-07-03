@@ -24,8 +24,8 @@ def update_user(request):
         user.set_password(request.POST["password"])
     if "alias" in request.POST:
         user.alias = request.POST["alias"]
-    if "avatar" in request.POST:
-        user.avatar = request.POST["avatar"]
+    if "use_gravatar" in request.POST:
+        user.use_gravatar= request.POST["use_gravatar"] == "true"
     MONGO.save_user(user)
     return HttpResponse()
 
@@ -200,6 +200,14 @@ def get_draw_details(request):
         messages = MONGO.retrieve_chat_messages(draw_id)
     except MongoDriver.NotFoundError:
         messages = []
+
+    try:
+        users = set([message["user"] for message in messages])
+        users_map = {name: MONGO.retrieve_user(name).user_image for name in users}
+        for message in messages:
+            message["avatar"] = users_map[message["user"]]
+    except Exception as exception:
+        LOG.exception(exception)
 
     return JsonResponse({
         "messages": messages,

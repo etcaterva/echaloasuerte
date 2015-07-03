@@ -7,14 +7,6 @@ import hashlib
 logger = logging.getLogger("echaloasuerte")
 
 
-def gravatar(email):
-    default = "http://example.com/static/images/defaultavatar.jpg"
-    size = 100
-    gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.lower().encode('utf-8')).hexdigest() + "?"
-    gravatar_url += urlencode({'d': default, 's': str(size)})
-    return gravatar_url
-
-
 class User(object):
     """
     Main user within echaloasuerte
@@ -38,14 +30,20 @@ class User(object):
 
     @property
     def user_image(self):
-        """Returns a picture that identifies the usre
-        Either the self.avatar url or a gravatar one"""
-        if self.avatar:
-            return self.avatar
-        else:
-            return gravatar(self.get_email())
+        """Returns a picture that identifies the user
+        If the user doesn't use Gravatar, a random image based on it's email will be shown"""
+        default = "monsterid"
+        size = 85
+        email = self.get_email().lower()
+        gravatar_url = "//www.gravatar.com/avatar/" + hashlib.md5(email.encode('utf-8')).hexdigest() + "?"
+        parameters = {'d':default,
+                      's':str(size)}
+        if not self.use_gravatar:
+            parameters['f'] = 'y'
+        gravatar_url += urlencode(parameters)
+        return gravatar_url
 
-    def __init__(self, _id, password=None, favourites=None, alias=None, avatar=None):
+    def __init__(self, _id, password = None, favourites = None, alias=None, use_gravatar=True):
         self._id = _id
         """Email of the user"""
 
@@ -58,8 +56,8 @@ class User(object):
         self.alias = alias if alias else self._id
         """Alias of the user (name it appears for the public)"""
 
-        self.avatar = avatar
-        """Picture that represents the user"""
+        self.use_gravatar = use_gravatar
+        """Permission from the user to use his Gravatar"""
 
     def get_email(self):
         return self._id
