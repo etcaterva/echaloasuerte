@@ -55,7 +55,9 @@
 
     // Disable submit button after submitting
     $('form').submit(function() {
-        $(this).find("button[type='submit']").prop('disabled',true);
+        var $submit_btn = $(this).find("button[type='submit']");
+        $submit_btn.prop('disabled',true);
+        $submit_btn.text('{% trans "Loading..." %}');
         return true;
     });
 
@@ -116,7 +118,7 @@
                         </a>
                     </div>
                     <div id="recently-created" class="col-xs-12 form-group">
-                        <p data-toggle="tooltip" data-placement="top" title="{% trans "It will help your friends to find your draw faster" %}">
+                        <p title="{% trans "It will help your friends to find your draw faster" %}">
                             <input type="checkbox" name="show_in_public_list" checked>{% trans "Show the draw in the list 'Recently created'." %}
                         </p>
                     </div>

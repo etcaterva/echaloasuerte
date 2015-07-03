@@ -252,6 +252,10 @@ h2,
     margin: 0 0 0;
 }
 
+.navbar-nav > .open > a {
+    background: rgba(194, 194, 194, 0.3) !important;
+}
+
 ul.nav.navbar-nav {
     margin-top: 0;
     margin-bottom: 0;
