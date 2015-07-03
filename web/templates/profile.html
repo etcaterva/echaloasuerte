@@ -77,6 +77,10 @@
 
     // ------------- Edit password -----------------------
     $('#save-password').click(function (){
+        // Clean errors (if exist)
+        $('.has-error').removeClass('has-error');
+        $('.info-error').addClass('hidden');
+
         var current_password = $('#current_password').val();
         var new_password = $('#new_password').val();
         var new_password_repeat = $('#new_password_repeat').val();
@@ -94,15 +98,22 @@
                  password : new_password,
                  csrfmiddlewaretoken : "{{csrf_token}}"
             }
-        }).done(function (){
-            var label_password = $('#profile-edit-password .user-settings-content');
-            label_password.empty();
-            label_password.append("<strong>{% trans "Password updated" %}</strong>");
+        }).done(function (data){
+            if (data=="ok"){
+                var label_password = $('#profile-edit-password .user-settings-content');
+                label_password.empty();
+                label_password.append("<strong>{% trans "Password updated" %}</strong>");
 
-            $('#user-settings').accordion({
-                active: false,
-                collapsible: true
-            });
+                $('#user-settings').accordion({
+                    active: false,
+                    collapsible: true
+                });
+            }else {
+                $("#group-current-password").addClass('has-error');
+                $("#group-current-password .info-error").removeClass("hidden");
+                return;
+            }
+
         })
         .fail(function () {
             console.log("Couldn't change password");
@@ -199,7 +210,10 @@
                             <li>
                                 <div id="group-current-password" class="row">
                                     <label class="user-settings-label col-xs-4 text-right">{% trans "Current" %}</label>
-                                    <div class="col-xs-8 text-left"><input id="current_password" type="password"/></div>
+                                    <div class="col-xs-8 text-left">
+                                        <input id="current_password" type="password"/>
+                                        <div class="info-error hidden">{% trans "That's not your current password, try again." %}</div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
