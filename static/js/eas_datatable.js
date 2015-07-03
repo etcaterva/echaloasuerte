@@ -10,7 +10,7 @@
         };
 
     /*********************************
-     *     SLIDESELECTOR CLASS DEFINITION
+     *     EASDATATABLE CLASS DEFINITION
      ********************************/
     var EASDataTable = function (element, options){
         this.init(element, options);
@@ -86,7 +86,7 @@
     };
 
     /*********************************
-     *     SLIDESELECTOR PLUGIN DEFINITION
+     *     EASDATATABLE PLUGIN DEFINITION
      ********************************/
     $.fn.easDataTable = function (option, param) {
         this.each(function () {
