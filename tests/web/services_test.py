@@ -23,7 +23,8 @@ class TestUpdateUserProfile(TestServices):
 
     def setUp(self):
         super(TestUpdateUserProfile, self).setUp()
-        self.tested_user = User("test_mail@yop.tu", password="fake_hashed_pwd")
+        self.tested_user = User("test_mail@yop.tu")
+        self.tested_user.set_password("fake_pwd")
         self.user_id = self._driver.save_user(self.tested_user)
         self.req = lambda: None
         self.req.user = self.tested_user
@@ -41,11 +42,23 @@ class TestUpdateUserProfile(TestServices):
             self._driver.retrieve_user(self.tested_user._id).pk
         )
 
-    def update_password_test(self):
+    def update_password_ok_test(self):
         """Test updating the password of an user"""
-        self.req.POST = {"password": "new_awesome_password"}
+        self.req.POST = {"current_password": "fake_pwd",
+                         "new_password": "new_awesome_password"}
         update_user(self.req)
         self.assertTrue(
+            self._driver.retrieve_user(self.tested_user._id).check_password(
+                "new_awesome_password"
+            )
+        )
+
+    def update_password_ko_test(self):
+        """Test updating the password of an user"""
+        self.req.POST = {"current_password": "wrong_pwd",
+                         "new_password": "new_awesome_password"}
+        update_user(self.req)
+        self.assertFalse(
             self._driver.retrieve_user(self.tested_user._id).check_password(
                 "new_awesome_password"
             )

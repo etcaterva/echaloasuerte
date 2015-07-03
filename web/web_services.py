@@ -21,9 +21,9 @@ def update_user(request):
 
     if "email" in request.POST:
         pass  # user._id = request.POST["email"]
-    if "password" in request.POST:
+    if "new_password" in request.POST:
         if "current_password" in request.POST and user.check_password(request.POST["current_password"]):
-            user.set_password(request.POST["password"])
+            user.set_password(request.POST["new_password"])
             result = "ok"
     if "alias" in request.POST:
         user.alias = request.POST["alias"]
