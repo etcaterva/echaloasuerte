@@ -17,17 +17,22 @@ MONGO = MongoDriver.instance()
 def update_user(request):
     """updates the details of a user"""
     user = MONGO.retrieve_user(request.user.pk)
+    result = "ko"
 
     if "email" in request.POST:
         pass  # user._id = request.POST["email"]
-    if "password" in request.POST:
-        user.set_password(request.POST["password"])
+    if "new_password" in request.POST:
+        if "current_password" in request.POST and user.check_password(request.POST["current_password"]):
+            user.set_password(request.POST["new_password"])
+            result = "ok"
     if "alias" in request.POST:
         user.alias = request.POST["alias"]
+        result = "ok"
     if "use_gravatar" in request.POST:
         user.use_gravatar= request.POST["use_gravatar"] == "true"
+        result = "ok"
     MONGO.save_user(user)
-    return HttpResponse()
+    return HttpResponse(result)
 
 
 @time_it
