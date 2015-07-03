@@ -62,7 +62,7 @@ PublicDraw.settings = function () {
     }
 
     // Open settings panel
-    $('#settings-button').click(function (){
+    $('#edit-settings-button').click(function (){
         init_settings_panel();
     });
 
@@ -94,7 +94,7 @@ PublicDraw.settings = function () {
         // Close settings panel
         $('#public-draw-settings').modal('hide');
         // Disable Settings button
-        $('settings-button').prop( "disabled", true );
+        $('#edit-settings-button').addClass( "hidden" );
         // Show the information div ("Separate items by commas...")
         $('#info-comma-separated').removeClass('hidden');
     });
@@ -104,9 +104,8 @@ PublicDraw.settings = function () {
     If the user cancel the draw edition, the page is reloaded.
     */
     $('a#edit-draw-cancel').click(function() {
-        // using replace instead on reload to avoid unintentional form submissions
-        var url = window.location.href;
-        window.location.replace(url);
+        // Don't use reload to avoid unintentional form submissions
+        window.location.href = String( window.location.href ).replace( "/#", "" );
     });
 
     /*

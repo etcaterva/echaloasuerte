@@ -60,6 +60,10 @@ a.fa:focus {
     height: auto;
 }
 
+#edit-settings-button {
+    color: #4B7599;
+}
+
 @media (min-width: 992px) {
     .draw-heading .back-arrow img,
     .draw-heading .add-favourites img {
