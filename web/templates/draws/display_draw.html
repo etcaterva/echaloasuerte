@@ -28,6 +28,11 @@
     {% endif %}
 {% endblock extra_js %}
 {% block extra_jq_ready %}
+    $(document).tooltip({
+        items: ".protected",
+        show: {delay: 500}
+    });
+
     // Hide/show the "allow repeat" checkbox based on the number of results
      var toggle_allow_repeat = function (){
         if ($('#id_number_of_results').val() > 1){
@@ -101,6 +106,7 @@
         PublicDraw.url_get_draw_details = "{% url 'ws_get_draw_details' %}";
         PublicDraw.url_update_draw = "{% url 'update_draw' draw_id=bom.pk %}";
         PublicDraw.url_update_settings = "{% url 'ws_update_share_settings' %}";
+        PublicDraw.msg_tooltip_protected = "{% trans "To edit the details go to Settings" %}";
         PublicDraw.setup();
 
         var share_url = document.domain + "{% url 'retrieve_draw' draw_id=bom.pk %}";
@@ -114,6 +120,8 @@
 
     var draw_updated_flag = false;
     $("#toss-button").click( function() {
+        $('#toss-button').prop('disabled',true);
+        $(this).text('{% trans "Loading..." %}');
         if (draw_updated_flag) {
             $("#draw-form").attr("action", "{% url 'update_draw' draw_id=bom.pk %}");
             $("#draw-form").submit();
@@ -174,11 +182,6 @@
         <!-- End Draw Heading -->
 
         <div class="col-sm-8 col-sm-offset-2">
-            {# pre-draw #}
-                {% if bom.draw_type == "LinksSetsDraw" %}
-                    <div class='alert alert-info' role='alert'>{%trans 'Separate items by commas. e.g: David S, Maria, Leo, ...'%}</div>
-                {% endif %}
-            {# end pre-draw #}
             <!-- Display Form -->
             {% crispy draw draw.helper %}
             <div class="col-xs-12 text-center">

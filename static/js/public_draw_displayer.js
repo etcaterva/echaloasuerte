@@ -169,6 +169,7 @@ PublicDraw.settings = function () {
 PublicDraw.lock_fields = function () {
     // Add read-only property to the inputs of the draw
     $('.protected').prop('readonly', true);
+    $('.protected').prop('title', PublicDraw.msg_tooltip_protected);
 
     // Add read-only property to inputs with tokenField
     $('.protected').tokenfield('readonly');
