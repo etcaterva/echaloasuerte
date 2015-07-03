@@ -60,6 +60,10 @@ a.fa:focus {
     height: auto;
 }
 
+#edit-settings-button {
+    color: #4B7599;
+}
+
 @media (min-width: 992px) {
     .draw-heading .back-arrow img,
     .draw-heading .add-favourites img {
@@ -126,6 +130,11 @@ a.fa:focus {
     cursor: pointer;
     text-align: center;
     margin-top: 20px;
+}
+
+#draw-form [type=submit]:disabled,
+#toss-button:disabled {
+    cursor: default
 }
 
 /***** INDIVIDUAL DRAWS *****/

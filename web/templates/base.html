@@ -55,7 +55,9 @@
     <script>
         {% block extra_js %}{% endblock extra_js %}
         // Replaced default tooltip by the one from JQueryUI
-        $(document).tooltip();
+        $(document).tooltip({
+            track: true
+        });
 
         function place_lateral_columns(){
             var $site_frame = $('#site-frame');
