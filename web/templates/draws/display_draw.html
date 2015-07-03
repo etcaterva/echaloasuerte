@@ -207,15 +207,10 @@
         </div>
     </form>
     <!-- End Input Form -->
-    <!-- Chat -->
-    {% if bom.is_shared %}
-        <div id="chat-frame" class="chat chat-inline hidden row col-md-8 col-md-offset-2" ></div>
-    {% endif %}
-    <!-- End Chat -->
 
     <!-- Results -->
     {% if bom.results  %}
-        <div class="col-sm-8 col-sm-offset-2">
+        <div id="results" class="col-sm-8 col-sm-offset-2">
             <div class="row text-center accordion">
                 {% for result in bom.results reversed %}
                 {% with result.items as results%}
@@ -238,6 +233,12 @@
         </div>
     {% endif %}
     <!-- End Results -->
+
+    <!-- Chat -->
+    {% if bom.is_shared %}
+        <div id="chat-frame" class="chat chat-inline hidden row col-md-8 col-md-offset-2" ></div>
+    {% endif %}
+    <!-- End Chat -->
 
     <!-- Modal settings Panel -->
     <div id="public-draw-settings" class="modal fade" tabindex="-1" role="dialog" data-focus-on="input:first">
