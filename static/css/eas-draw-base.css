@@ -79,6 +79,11 @@ a.fa:focus {
     color: #404b6f;
 }
 
+#results {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 /* Box containing the selected level of restriction when creating a public draw */
 .public-draw-restriction,
 #public-draw-invite {
