@@ -128,6 +128,11 @@ a.fa:focus {
     margin-top: 20px;
 }
 
+#draw-form [type=submit]:disabled,
+#toss-button:disabled {
+    cursor: default
+}
+
 /***** INDIVIDUAL DRAWS *****/
 .checkbox {
     margin-top: 0;
