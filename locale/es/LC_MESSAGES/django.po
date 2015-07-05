@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-28 17:46+0000\n"
+"POT-Creation-Date: 2015-07-05 21:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mario Corchero\n"
 "Language: Spanish\n"
@@ -78,8 +78,8 @@ msgid ""
 "<div id='info-comma-separated' class='alert alert-info' "
 "role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>"
 msgstr ""
-"<div id='info-comma-separated' class='alert alert-info' "
-"role='alert'>Separa los elementos por comas. e.g: Maria, David S, Leo, ...</div>"
+"<div id='info-comma-separated' class='alert alert-info' role='alert'>Separa "
+"los elementos por comas. e.g: Maria, David S, Leo, ...</div>"
 
 #: server/forms/random_item_form.py:9 server/forms/random_number_form.py:11
 msgid "Number of results"
@@ -166,12 +166,13 @@ msgstr ""
 "        <h1 class=\"h2\">Acerca de EchaloASuerte.com</h1>\n"
 "        <p>¿Cansado de pasar horas para tomar una decision con tus amigos? "
 "¡Esta es tu pagina web!.</p>\n"
-"        <p>EchaloASuerte te proporciona valores aleatorios "
-"liberandote de tomar decisiones y tomar responsabilidad por ellas</p> \n"
+"        <p>EchaloASuerte te proporciona valores aleatorios liberandote de "
+"tomar decisiones y tomar responsabilidad por ellas</p> \n"
 "        <p>Esta web te permite crear lo que llamamos una \"tirada publica\". "
-"Donde tus amigos podran ver todos a la misma vez resultados que tu generes "
-", asegurando que tu no hagas trampas!</p>\n""        <p>Por ultimo, la web esta  "
-"optimizada para mobiles, asi que puedes crear y administrar tiradas en cualquier sitio!</p>\n"
+"Donde tus amigos podran ver todos a la misma vez resultados que tu generes , "
+"asegurando que tu no hagas trampas!</p>\n"
+"        <p>Por ultimo, la web esta  optimizada para mobiles, asi que puedes "
+"crear y administrar tiradas en cualquier sitio!</p>\n"
 "    "
 
 #: web/templates/about.html:13
@@ -210,24 +211,25 @@ msgid ""
 msgstr ""
 "\n"
 "    <h2>Historia</h2>\n"
-"        <p>Echaloasuerte lleva activo desde 2010, cuando era una simple pagina "
-" que permitia a varios usuarios tomar deiciones sin tener que estar juntos. "
-" Era una pagina bastante cruda escrita en PHP/HTML/mysql.</p>\n"
-"        <p>A mitad de 2012 aprendimos a usar AJAX y JQuery, ¿y que mejor sitio para ponerlo en practica que la web? "
-" La web se volvio mas dinamica y facil de usar"
-".</p>\n"
-"        <p>A finales de 2014 el trafico en la web empezo a crecer por encima de "
-"13.000 visitas al mes de todas las partes del mundo, lo que nos hizo darnos cuenta "
-"que el sitio merecia un rediseño. Dos amigos se unieron al projecto, David y Pedro.\n"
-"        Empezamos a reescribirlo todo usando directamente un VPS. "
-"Teniamos dos objetivos, aprender y mejorar la pagina, Hemos usado las siguientes tecnologias/herramientas "
-"jquery, django, github, jenkins, travis, kibana, mongodb, ansible, unix, "
-"apache, bootstrap, cloudflare.</p>\n"
-"        <p>En resumen, Echaloasuerte es una web que nos dio la oportunidad de aprender "
-"y poner en practica lo aprendido a la vez que los usuarios la encontraban atractiva "
-"ya que ofrecia soluciones que ninguna otra pagina daba (como las tiradas publicas).</p>\n"
+"        <p>Echaloasuerte lleva activo desde 2010, cuando era una simple "
+"pagina  que permitia a varios usuarios tomar deiciones sin tener que estar "
+"juntos.  Era una pagina bastante cruda escrita en PHP/HTML/mysql.</p>\n"
+"        <p>A mitad de 2012 aprendimos a usar AJAX y JQuery, ¿y que mejor "
+"sitio para ponerlo en practica que la web?  La web se volvio mas dinamica y "
+"facil de usar.</p>\n"
+"        <p>A finales de 2014 el trafico en la web empezo a crecer por encima "
+"de 13.000 visitas al mes de todas las partes del mundo, lo que nos hizo "
+"darnos cuenta que el sitio merecia un rediseño. Dos amigos se unieron al "
+"projecto, David y Pedro.\n"
+"        Empezamos a reescribirlo todo usando directamente un VPS. Teniamos "
+"dos objetivos, aprender y mejorar la pagina, Hemos usado las siguientes "
+"tecnologias/herramientas jquery, django, github, jenkins, travis, kibana, "
+"mongodb, ansible, unix, apache, bootstrap, cloudflare.</p>\n"
+"        <p>En resumen, Echaloasuerte es una web que nos dio la oportunidad "
+"de aprender y poner en practica lo aprendido a la vez que los usuarios la "
+"encontraban atractiva ya que ofrecia soluciones que ninguna otra pagina daba "
+"(como las tiradas publicas).</p>\n"
 "    "
-
 
 #: web/templates/about.html:81
 msgid ""
@@ -253,14 +255,15 @@ msgstr ""
 "            <p>Esta pagina es gratuita y libre.</p>\n"
 "            <h3>Libre</h3>\n"
 "                <p>El código de la pagina es abierto, puedes entrar en <a "
-"href=\"https://github.com/etcaterva/EchaloASuerte\">nuestro repositorio</a> y "
-"contribuir. </p>\n"
+"href=\"https://github.com/etcaterva/EchaloASuerte\">nuestro repositorio</a> "
+"y contribuir. </p>\n"
 "            <h3>Gratis</h3>\n"
-"                <p>Gratuita y sin anuncios, asi es como queremos que la pagina funcione. "
-"Nostros asumimos el coste de desarrollo, servidores y mantenimiento para que disfrutes del sitio :)</p>\n"
-"                <p>Sin embargo, si quieres agradecer "
-"nuestro esfuerzo puedes <a>pagarnos una cerveza</a>, vamos a necesitar muchas para seguir mejorando la web.</"
-"p>\n"
+"                <p>Gratuita y sin anuncios, asi es como queremos que la "
+"pagina funcione. Nostros asumimos el coste de desarrollo, servidores y "
+"mantenimiento para que disfrutes del sitio :)</p>\n"
+"                <p>Sin embargo, si quieres agradecer nuestro esfuerzo puedes "
+"<a>pagarnos una cerveza</a>, vamos a necesitar muchas para seguir mejorando "
+"la web.</p>\n"
 "    "
 
 #: web/templates/base.html:246 web/templates/base.html.py:247
@@ -371,8 +374,7 @@ msgstr "Quiero informar sobre un error"
 msgid ""
 "Please, describe your idea. Give us links, images... whatever you consider "
 "that may be helpful."
-msgstr ""
-"Por favor, describe la idea, puedes darnos enlaces, imagenes, ..."
+msgstr "Por favor, describe la idea, puedes darnos enlaces, imagenes, ..."
 
 #: web/templates/base.html:530
 msgid "Please, give us details about the bug. How can we reproduce it?"
@@ -383,7 +385,8 @@ msgid ""
 "If you want, you can give us your email so we can contact you in case we "
 "need further information."
 msgstr ""
-"Si deseas, puedes darnos tu correo en caso de que tengamos alguna duda, o para agradecerte :)"
+"Si deseas, puedes darnos tu correo en caso de que tengamos alguna duda, o "
+"para agradecerte :)"
 
 #: web/templates/base.html:536
 msgid "Email (optional)"
@@ -396,8 +399,7 @@ msgstr "El mensaje ha sido enviado!"
 #: web/templates/base.html:543
 msgid ""
 "Once again, thank you for your help. Your feedback will be very usefull! :D"
-msgstr ""
-"De nuevo, gracias por tu ayuda. Nos es muy útil"
+msgstr "De nuevo, gracias por tu ayuda. Nos es muy útil"
 
 #: web/templates/base.html:548 web/templates/draws/display_draw.html:312
 msgid "Close"
@@ -522,8 +524,8 @@ msgid ""
 "If you modify the draw's configuration the spectator will be notified about "
 "these changes. Are you sure you want to continue?"
 msgstr ""
-"Si modificas la configuracion de la tirada, el resto de usuarios seran notificados "
-"¿Estas seguro de continuar?"
+"Si modificas la configuracion de la tirada, el resto de usuarios seran "
+"notificados ¿Estas seguro de continuar?"
 
 #: web/templates/draws/display_draw.html:274
 #: web/templates/draws/display_draw.html:311
@@ -663,6 +665,56 @@ msgstr "Registro"
 msgid "Only the owner of the draw can grant access to it:"
 msgstr "Solo el propietario puede darte acceso:"
 
+#: web/templates/index.html:17
+#, fuzzy
+#| msgid "Flip a Coin"
+msgid "Flip a coin"
+msgstr "Tira una moneda"
+
+#: web/templates/index.html:17
+msgid "Afraid of taking the wrong decision? Don't hesitate and throw the coin!"
+msgstr ""
+
+#: web/templates/index.html:18
+msgid "Take a card"
+msgstr ""
+
+#: web/templates/index.html:18
+msgid "Let's play some drinking games!"
+msgstr ""
+
+#: web/templates/index.html:19
+#, fuzzy
+#| msgid "Roll dice"
+msgid "Roll a dice"
+msgstr "Tira un dado"
+
+#: web/templates/index.html:19
+msgid "Didn't you have a dice? Just roll this one"
+msgstr ""
+
+#: web/templates/index.html:22
+#, fuzzy
+#| msgid "Random Number"
+msgid "Random number"
+msgstr "Numero Aleatorio"
+
+#: web/templates/index.html:22 web/templates/index.html.py:23
+msgid "Doing a raffle? Luck will decide who is the winner"
+msgstr ""
+
+#: web/templates/index.html:23
+msgid "Pick random items from a list"
+msgstr ""
+
+#: web/templates/index.html:24
+msgid "Associate items from two lists"
+msgstr ""
+
+#: web/templates/index.html:24
+msgid "Cleaning the house? Allocate the tasks within your housemates"
+msgstr ""
+
 #: web/templates/index.html:34
 msgid "May I say something?"
 msgstr "¿Puedo dar un consejo?"
@@ -672,8 +724,8 @@ msgid ""
 "I've seen that you are not signed in.<br> Signing in has several benefits "
 "when creating a public draw:"
 msgstr ""
-"Parece que no estas registrado.<br> Los usuarios registrados tienen varios beneficios "
-"cuando crear tiradas publicas: "
+"Parece que no estas registrado.<br> Los usuarios registrados tienen varios "
+"beneficios cuando crear tiradas publicas: "
 
 #: web/templates/index.html:39
 msgid "Only you can to toss"
@@ -993,8 +1045,8 @@ msgid ""
 "Tip: Use this mode for informal and fast draws. Neither invitation nor "
 "password will be required!"
 msgstr ""
-"Consejo: Usa este modo para tiradas informales y rapidas."
-" No se pedira invitacion o contraseña."
+"Consejo: Usa este modo para tiradas informales y rapidas. No se pedira "
+"invitacion o contraseña."
 
 #: web/templates/snippets/snippet_public_draw_privacy.html:38
 msgid "Only those who know the password will be able to access the draw."
@@ -1005,8 +1057,8 @@ msgid ""
 "Tip: You don't know exactly who is going to join the draw but still want "
 "some restriction? This is your draw!"
 msgstr ""
-"Consejo: ¿No tienes una lista de quien va a entrar pero aun así quieres "
-"un poco de control? ¡Esta es tu tirada!"
+"Consejo: ¿No tienes una lista de quien va a entrar pero aun así quieres un "
+"poco de control? ¡Esta es tu tirada!"
 
 #: web/templates/snippets/snippet_public_draw_privacy.html:48
 msgid "You can invite people from the settings panel."
@@ -1209,7 +1261,9 @@ msgid "Who drinks next?"
 msgstr "¿Quien bebe?"
 
 #: web/views.py:134
-msgid "Charmander, Bulbasaur or Squirtle?"
+#, fuzzy
+#| msgid "Charmander, Bulbasaur or Squirtle?"
+msgid "Charmander, bulbasaur or Squirtle??"
 msgstr "¿Charmander, Bulbasaur or Squirtle?"
 
 #: web/views.py:135
