@@ -23,4 +23,5 @@ class ExceptionMiddleware(object):
             return page_not_found(request)
 
         logger.info("Exception not handled, propagating...")
+        logger.exception(exception)
 
