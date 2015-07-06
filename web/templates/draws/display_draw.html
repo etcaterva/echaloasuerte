@@ -103,16 +103,17 @@
         PublicDraw.url_update_settings = "{% url 'ws_update_share_settings' %}";
         PublicDraw.setup();
 
-        var share_url = document.domain + "{% url 'retrieve_draw' draw_id=bom.pk %}";
-        $('#url-share').val(share_url);
+        var url_draw = location.protocol + "//" + location.host + "{% url "retrieve_draw" draw_id=bom.pk %}";
+        $('.url-share').val(url_draw);
 
         {% if bom.owner == user.pk %}
             var drawDate = moment.utc("{{bom.creation_time.isoformat}}");
-            drawDate.add(2, 'minutes');
+            drawDate.add(1, 'minutes');
             if(drawDate > moment.utc()) {
-                alert("David is gonna fix this!");
+                $('#well-done-modal').modal('show');
             }
         {% endif %}
+
     {% else %}
         $("#draw-form :input").change(function(changed_input) {
             draw_updated_flag = true; //marks the draw as updated
@@ -290,7 +291,7 @@
                     <div class="modal-body">
                         <span class="invite-people-option">{% trans "Option 1)" %}</span>
                         <p>{% trans "Share the link to the draw:" %}</p>
-                        <input id="url-share" class="text-center" readonly>
+                        <input class="url-share text-center" readonly>
                         <span class="invite-people-option">{% trans "Option 2)" %}</span>
                         <p>{% trans "Send an invitation to the emails below" %}</p>
                         <div id="alert-invitation-failed" class="alert feedback alert-danger hide" role="alert">
@@ -337,6 +338,25 @@
         </div>
     </div>
 
+    <!-- "Well done & sharing link" modal -->
+    <div id="well-done-modal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="WellDone">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans "Well done!" %}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans "You have created a public draw." %}</p>
+                    <p>{% trans "You can invite people using this link:" %}</p>
+                    <input class="url-share text-center" readonly>
+                </div>
+                <div class="modal-footer text-center ">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Take me to the draw" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block right_column %}
