@@ -170,7 +170,7 @@
     });
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
-    $('.datetimepicker').datetimepicker();
+    $('.datetimepicker').datetimepicker({value:moment().format()});
 {% endblock extra_jq_ready %}
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
