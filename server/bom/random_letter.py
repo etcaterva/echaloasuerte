@@ -24,4 +24,4 @@ class RandomLetterDraw(BaseDraw):
 
     def generate_result(self):
         """Carries out the toss"""
-        return [random.choice(string.letters) for _ in range(self.number_of_results)]
+        return [random.choice(string.ascii_letters) for _ in range(self.number_of_results)]

@@ -54,7 +54,7 @@ class RandomLetterDrawTest(TestCase):
         """RandomLetterDraw: Toss once"""
         tested_item = RandomLetterDraw()
         self.assertEqual(0, len(tested_item.results))
-        self.assertTrue(tested_item.toss()["items"][0] in string.letters)
+        self.assertTrue(tested_item.toss()["items"][0] in string.ascii_letters)
         self.assertEqual(1, len(tested_item.results))
         self.assertEqual(1, len(tested_item.results[0]["items"]))
 
@@ -62,8 +62,8 @@ class RandomLetterDrawTest(TestCase):
         """RandomLetterDraw: Toss same twice"""
         tested_item2 = RandomLetterDraw()
         self.assertEqual(0, len(tested_item2.results))
-        self.assertTrue(tested_item2.toss()["items"][0] in string.letters)
-        self.assertTrue(tested_item2.toss()["items"][0] in string.letters)
+        self.assertTrue(tested_item2.toss()["items"][0] in string.ascii_letters)
+        self.assertTrue(tested_item2.toss()["items"][0] in string.ascii_letters)
         self.assertEqual(2, len(tested_item2.results))
         self.assertEqual(1, len(tested_item2.results[0]["items"]))
         self.assertEqual(1, len(tested_item2.results[1]["items"]))
@@ -72,7 +72,7 @@ class RandomLetterDrawTest(TestCase):
         """RandomLetterDraw: Toss generate two items"""
         tested_item2 = RandomLetterDraw(number_of_results=2)
         self.assertEqual(0, len(tested_item2.results))
-        self.assertTrue(tested_item2.toss()["items"][0] in string.letters)
+        self.assertTrue(tested_item2.toss()["items"][0] in string.ascii_letters)
         self.assertEqual(1, len(tested_item2.results))
         self.assertEqual(2, len(tested_item2.results[0]["items"]))
 
@@ -80,5 +80,5 @@ class RandomLetterDrawTest(TestCase):
         """RandomLetterDraw: Toss when list created with results already"""
         tested_item2 = RandomLetterDraw(number_of_results=2, results=[{"items": ['a']}])
         self.assertEqual(1, len(tested_item2.results))
-        self.assertTrue(tested_item2.toss()["items"][0] in string.letters)
+        self.assertTrue(tested_item2.toss()["items"][0] in string.ascii_letters)
         self.assertEqual(2, len(tested_item2.results))
