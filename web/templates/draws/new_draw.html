@@ -71,11 +71,6 @@
         PublicDrawCreator.url_validate = "{% url 'ws_validate_draw' %}";
         PublicDrawCreator.setup();
 
-        $("#draw-title-container").tooltip({track: false}).tooltip("open");
-        setTimeout(function () {
-            $("#draw-title-container").tooltip("close").tooltip({track: true});
-        }, 1000);
-
     {% endif %}
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}

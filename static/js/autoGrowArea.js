@@ -65,7 +65,6 @@
                     $(this).val('');
             });
             $(this).blur(function() {
-                console.log("blur");
                 if ($(this).val() == '') {
                     $(this).val(o.title);
                 }
