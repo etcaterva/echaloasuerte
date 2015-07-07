@@ -152,10 +152,24 @@ class BaseDraw(object):
         self.mark_updated()
 
     def toss(self):
+        """Generates a new result for the draw"""
         result = {"datetime": get_utc_now(), "items": self.generate_result()}
         self.results.append(result)
         logger.debug("Tossed draw: {0}".format(self))
         return result
+
+    def timed_toss(self, publication_datetime):
+        """Adds a result with a publication time"""
+        result = {
+                    "datetime": get_utc_now(),
+                    "items": self.generate_result(),
+                    "publication_datetime": publication_datetime
+                }
+        self.results.append(result)
+        logger.debug("Scheduled draw toss: {0} ({1})".format(
+                     self, publication_datetime))
+        return result
+
 
     @abstractmethod
     def generate_result(self):
