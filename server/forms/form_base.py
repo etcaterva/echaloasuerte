@@ -8,6 +8,7 @@ URL_TO_DRAW_MAP = {
     'dice': 'DiceDraw',
     'card': 'CardDraw',
     'number': 'RandomNumberDraw',
+    'letter': 'RandomLetterDraw',
     'item': 'RandomItemDraw',
     'link_sets': 'LinkSetsDraw',
 }
