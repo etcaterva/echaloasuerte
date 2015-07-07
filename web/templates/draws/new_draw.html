@@ -70,8 +70,13 @@
         PublicDrawCreator.url_create_public_draw = "{% url 'create_public_draw' draw_type=draw.NAME_IN_URL %}";
         PublicDrawCreator.url_validate = "{% url 'ws_validate_draw' %}";
         PublicDrawCreator.setup();
-    {% endif %}
 
+        $("#draw-title-container").tooltip({track: false}).tooltip("open");
+        setTimeout(function () {
+            $("#draw-title-container").tooltip("close").tooltip({track: true});
+        }, 1000);
+
+    {% endif %}
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
 {% block content %}
@@ -85,7 +90,7 @@
             </a>
             <div class="col-xs-8 visible-xs"></div>
             <div class="hidden-xs col-xs-2 col-sm-2 col-sm-push-8"></div>
-            <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
+            <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center" title="{% trans 'Click on the draw title to change it' %}">
                 <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ default_title }}</textarea>
             </div>
         </div>
