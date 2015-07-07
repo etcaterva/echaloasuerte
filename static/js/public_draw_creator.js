@@ -124,8 +124,33 @@ PublicDrawCreator.validate = function (){
         });
 };
 
+PublicDrawCreator.title_changed = false;
+PublicDrawCreator.shake_title = function(){
+    if (!PublicDrawCreator.title_changed) {
+        $('#draw-title-container').effect('shake',{ direction: "right", times: 3, distance: 20},1000);
+       setTimeout(PublicDrawCreator.shake_title, 5000);
+    }
+};
+
 // Initialize the interface for a public draw
 PublicDrawCreator.setup = function(){
+    var $title_container = $("#draw-title-container");
+    $("textarea.autogrow").click( function() {
+        PublicDrawCreator.title_changed = true;
+        // Stop the shaking animation
+        $title_container.stop(true,true);
+        // Remove residual div of shake effect
+        if ($title_container.parent().is('.ui-effects-wrapper')){
+            $title_container.unwrap();
+            // If we remove the parent, the click won't be propagated, need to "re-click" it
+            $("textarea.autogrow").click();
+        }
+        // Remove residual CSS class from shake effect
+        $title_container.removeAttr('style');
+    });
+
+    PublicDrawCreator.shake_title();
+
     //Initialize the UI to select the level of privacy for the draw
     PublicDrawCreator.prepare_privacy_selection();
 
