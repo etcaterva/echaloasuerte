@@ -209,28 +209,28 @@ PublicDraw.check_draw_changes = function () {
 
 PublicDraw.save_settings = function (){
     $('button#save-settings, button#save-change-privacy').click(function() {
-        $('div#settings-privacy div.feedback').addClass('hide');
-        PublicDraw.update_privacy_fields();
-        var shared_type = $('input#id_shared_type').val();
-        var new_password = $('input#draw_password').val();
-        var enable = $("#settings-chat-enabled").prop( "checked");
-        var show_in_public_list = $("#settings-show-in-public-list").prop( "checked");
-        $.get(PublicDraw.url_update_settings, {
-                draw_id: PublicDraw.draw_id,
-                password: PublicDraw.bom_password,
-                new_password: new_password,
-                shared_type: shared_type,
-                enable_chat: enable,
-                show_in_public_list: show_in_public_list
-        }).done(function(data){
-            // TODO show feedback to indicate that the changes were applied
-            PublicDraw.bom_password = new_password;
-            PublicDraw.enable_chat(enable);
-            PublicDraw.bom_last_updated = new Date();
-        })
-        .fail(function() {
-            // TODO Show feedback when the change could not be done
-            console.log("Error when updating the draw details");
+            $('div#settings-privacy div.feedback').addClass('hide');
+            PublicDraw.update_privacy_fields();
+            var shared_type = $('input#id_shared_type').val();
+            var new_password = $('input#draw-password').val();
+            var enable = $("#settings-chat-enabled").prop( "checked");
+            var show_in_public_list = $("#settings-show-in-public-list").prop( "checked");
+            $.get(PublicDraw.url_update_settings, {
+                    draw_id: PublicDraw.draw_id,
+                    new_password: new_password,
+                    shared_type: shared_type,
+                    enable_chat: enable,
+                    show_in_public_list: show_in_public_list
+            }).done(function(data){
+                // TODO show feedback to indicate that the changes were applied
+                PublicDraw.bom_password = new_password;
+                PublicDraw.enable_chat(enable);
+                PublicDraw.bom_last_updated = new Date();
+            })
+            .fail(function() {
+                // TODO Show feedback when the change could not be done
+                console.log("Error when updating the draw details");
+            });
         });
     });
 };
