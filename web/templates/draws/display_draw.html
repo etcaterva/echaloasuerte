@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% load eas_humanize %}
+{% load is_future %}
 {% block title %}{{ bom.title }} | {% endblock title %}
 {% block extra_head %}
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
@@ -146,8 +147,30 @@
             alert("{% trans 'There was an issue when tossing the draw :(' %}");
         });
     });
+    $("#confirm-schedule-button").click( function() {
+        var schedule = new Date($("#toss-schedule").val());
+        $('#confirm-schedule-button').prop('disabled',true);
+        $.ajax({
+            method : "GET",
+            url   : "{% url 'ws_schedule_toss_draw' %}",
+            data  : {
+                draw_id : "{{bom.pk}}",
+                draw_pass : "{{bom.password}}",
+                schedule: moment.utc(schedule).format()
+            }
+        }).done(function (){
+            window.location.reload();
+        })
+        .fail(function () {
+            alert("{% trans 'There was an issue when scheduling the tossing :(' %}");
+        });
+    });
+    $('#schedule-toss-button').click(function() {
+        $('#schedule-toss-modal').modal('show');
+    });
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
+    $('.datetimepicker').datetimepicker({value:moment().format()});
 {% endblock extra_jq_ready %}
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
@@ -201,6 +224,9 @@
                     {% else %}
                         {%if not bom.owner or bom.owner == user.pk %}
                             <button id="toss-button" type="button" class="btn btn-success">{% trans 'Toss' %}</button>
+                            <button id="schedule-toss-button" type="button" class="btn" title="{% trans 'Schedule Toss' %}">
+                                <i class="fa fa-clock-o" ></i>
+                            </button>
                             {# Buttons to save changes when editing an already published public draw #}
                             <div id="edit-draw-save-changes" class="hide">
                                 <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
@@ -229,14 +255,23 @@
                     {% if results %}
                         <p class="h3">
                             {%trans 'Result' %}{{results|length|pluralize}}
-                            <small class="visible-xs-inline">{{result.datetime|naturaltime}}</small>
-                            <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                            {% if result.publication_datetime and not result.publication_datetime|is_future %}
+                                <small class="visible-xs-inline">{{result.publication_datetime|naturaltime}}</small>
+                                <small class="result-timestamp hidden-xs">{%trans ' published on '%}{{result.publication_datetime|date:"d M Y, H:i:s"}}</small>
+                            {%else%}
+                                <small class="visible-xs-inline">{{result.datetime|naturaltime}}</small>
+                                <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                            {%endif%}
                             {% if bom.audit and bom.audit.0 and bom.audit.0.datetime > result.datetime %}
                             <i class="fa fa-exclamation-triangle" title="Warning! The draw was modified after the generation of this result."></i>
                             {% endif %}
                         </p>
                         <div class="result">
-                            {% include draw.TEMPLATE_PATH %}
+                            {% if result.publication_datetime and result.publication_datetime|is_future %}
+                                <p>{% trans 'This result will be available in '%}{{result.publication_datetime|naturaltime}}</p>
+                            {% else %}
+                                {% include draw.TEMPLATE_PATH %}
+                            {% endif %}
                         </div>
                     {% endif %}
                 {% endwith %}
@@ -338,6 +373,26 @@
                         <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
                         <button id="save-change-privacy" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- "Scheduling toss" modal -->
+    <div id="schedule-toss-modal" class="modal fade"  tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans "Schedule Toss" %}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans "Do you want to schedule the generation of a result?" %}</p>
+                    <p>{% trans "This way it will appear automatically." %}</p>
+                    <input id="toss-schedule" class="datetimepicker" type="text" >
+                </div>
+                <div class="modal-footer text-center ">
+                    <button type="button" class="btn btn-primary" id="confirm-schedule-button">{% trans "Schedule it!" %}</button>
                 </div>
             </div>
         </div>

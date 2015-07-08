@@ -7,6 +7,7 @@ from server.mongodb.driver import MongoDriver
 from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user
 from server.forms import *
 from server.bom import *
+import dateutil.parser
 
 LOG = logging.getLogger("echaloasuerte")
 MONGO = MongoDriver.instance()
@@ -56,6 +57,22 @@ def toss_draw(request):
     bom_draw = MONGO.retrieve_draw(draw_id)
     user_can_write_draw(request.user, bom_draw)  # raises 500
     result = bom_draw.toss()
+    MONGO.save_draw(bom_draw)
+    return JsonResponse({
+        "result": result
+    })
+
+@time_it
+def schedule_toss_draw(request):
+    """generates a result and returns it"""
+    draw_id = request.GET.get("draw_id")
+    schedule = request.GET.get("schedule")
+    if draw_id is None or schedule is None:
+        return HttpResponseBadRequest()
+    schedule = dateutil.parser.parse(schedule)
+    bom_draw = MONGO.retrieve_draw(draw_id)
+    user_can_write_draw(request.user, bom_draw)  # raises 500
+    result = bom_draw.timed_toss(schedule)
     MONGO.save_draw(bom_draw)
     return JsonResponse({
         "result": result
