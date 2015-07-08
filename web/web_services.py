@@ -276,7 +276,6 @@ def update_share_settings(request):
     input POST {draw_id, shared_type, password}
     """
     draw_id = request.GET.get('draw_id')
-    password = request.GET.get('password')
     new_password = request.GET.get('new_password')
     shared_type = request.GET.get('shared_type')
     enable_chat = request.GET.get('enable_chat') == "true"

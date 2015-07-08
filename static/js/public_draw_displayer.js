@@ -212,12 +212,11 @@ PublicDraw.save_settings = function (){
             $('div#settings-privacy div.feedback').addClass('hide');
             PublicDraw.update_privacy_fields();
             var shared_type = $('input#id_shared_type').val();
-            var new_password = $('input#draw_password').val();
+            var new_password = $('input#draw-password').val();
             var enable = $("#settings-chat-enabled").prop( "checked");
             var show_in_public_list = $("#settings-show-in-public-list").prop( "checked");
             $.get(PublicDraw.url_update_settings, {
                     draw_id: PublicDraw.draw_id,
-                    password: PublicDraw.bom_password,
                     new_password: new_password,
                     shared_type: shared_type,
                     enable_chat: enable,
