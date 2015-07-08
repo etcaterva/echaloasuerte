@@ -115,7 +115,6 @@
      * Check whether an user can access and, if possible, access to it
     **/
     function access_draw(draw_id, password, target_url){
-        console.log(draw_id +" "+password);
         $.ajax({
             method : "GET",
             url   : "{% url 'check_access_to_draw' %}",

@@ -146,7 +146,6 @@
                  csrfmiddlewaretoken : "{{csrf_token}}"
             }
         }).done(function (){
-            console.log("password changed");
             var label_avatar = $('#profile-edit-password .user-settings-content');
             label_avatar.empty();
             if (use_gravatar){

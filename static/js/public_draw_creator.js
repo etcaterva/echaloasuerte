@@ -72,7 +72,7 @@ PublicDrawCreator.update_privacy_fields = function (){
         // TODO translate this
         $privacy_label.append('Everyone');
     }
-}
+};
 
 //Initialize the UI to select the level of privacy for the draw
 PublicDrawCreator.prepare_privacy_selection = function (){
