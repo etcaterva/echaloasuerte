@@ -28,7 +28,6 @@
             var that = this
             this.$element = $(element);
             this.options = $.extend({}, defaults, options);
-            console.log("hola");
             this.$element.click(function () {
                 if (that.options.user_authenticated == false) {
                     alert("You need an account to save your favourite draws");

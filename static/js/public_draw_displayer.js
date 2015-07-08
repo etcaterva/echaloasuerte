@@ -16,7 +16,7 @@ PublicDraw.update_privacy_fields = function (){
         $('#id_password').val("");
         $shared_type_field.attr('value','Public');
     }
-}
+};
 
 //Initialize the UI to select the level of privacy for the draw
 PublicDraw.prepare_privacy_selection = function (){
@@ -27,7 +27,7 @@ PublicDraw.prepare_privacy_selection = function (){
     $('button#save-change-privacy').click(function () {
         PublicDraw.update_privacy_fields();
     });
-}
+};
 
 PublicDraw.settings = function () {
     // Update the slide selector to show the current level of privacy
@@ -163,7 +163,7 @@ PublicDraw.settings = function () {
     */
 
 
-}
+};
 
 PublicDraw.lock_fields = function () {
     // Add read-only property to the inputs of the draw
@@ -173,7 +173,7 @@ PublicDraw.lock_fields = function () {
     // Add read-only property to inputs with tokenField
     $('.protected').tokenfield('readonly');
     $('.protected').parent('.tokenfield').attr('readonly', "true");
-}
+};
 
 PublicDraw.unlock_fields = function () {
     // Add read-only property to the inputs of the draw
@@ -182,7 +182,7 @@ PublicDraw.unlock_fields = function () {
     // Add read-only property to inputs with tokenField
     $('.protected').tokenfield('writeable');
     $('.protected').parent('.tokenfield').removeAttr('readonly');
-}
+};
 
 
 PublicDraw.bom_last_updated = "";
@@ -206,35 +206,34 @@ PublicDraw.check_draw_changes = function () {
 
     setTimeout(PublicDraw.check_draw_changes,2000);
 };
+
 PublicDraw.save_settings = function (){
     $('button#save-settings, button#save-change-privacy').click(function() {
-        console.log("Save");
-            $('div#settings-privacy div.feedback').addClass('hide');
-            PublicDraw.update_privacy_fields();
-            var shared_type = $('input#id_shared_type').val();
-            var new_password = $('input#draw_password').val();
-            var enable = $("#settings-chat-enabled").prop( "checked");
-            var show_in_public_list = $("#settings-show-in-public-list").prop( "checked");
-            $.get(PublicDraw.url_update_settings, {
-                    draw_id: PublicDraw.draw_id,
-                    password: PublicDraw.bom_password,
-                    new_password: new_password,
-                    shared_type: shared_type,
-                    enable_chat: enable,
-                    show_in_public_list: show_in_public_list
-            }).done(function(data){
-                // TODO show feedback to indicate that the changes were applied
-                PublicDraw.bom_password = new_password;
-                PublicDraw.enable_chat(enable);
-                PublicDraw.bom_last_updated = new Date();
-            })
-            .fail(function() {
-                // TODO Show feedback when the change could not be done
-                console.log("Error when updating the draw details");
-            });
+        $('div#settings-privacy div.feedback').addClass('hide');
+        PublicDraw.update_privacy_fields();
+        var shared_type = $('input#id_shared_type').val();
+        var new_password = $('input#draw_password').val();
+        var enable = $("#settings-chat-enabled").prop( "checked");
+        var show_in_public_list = $("#settings-show-in-public-list").prop( "checked");
+        $.get(PublicDraw.url_update_settings, {
+                draw_id: PublicDraw.draw_id,
+                password: PublicDraw.bom_password,
+                new_password: new_password,
+                shared_type: shared_type,
+                enable_chat: enable,
+                show_in_public_list: show_in_public_list
+        }).done(function(data){
+            // TODO show feedback to indicate that the changes were applied
+            PublicDraw.bom_password = new_password;
+            PublicDraw.enable_chat(enable);
+            PublicDraw.bom_last_updated = new Date();
+        })
+        .fail(function() {
+            // TODO Show feedback when the change could not be done
+            console.log("Error when updating the draw details");
         });
-
-}
+    });
+};
 
 PublicDraw.enable_chat = function (enable){
     $.each(PublicDraw.chats, function(){
@@ -263,4 +262,4 @@ PublicDraw.setup = function(){
 
     PublicDraw.check_draw_changes();
     PublicDraw.save_settings();
-}
+};

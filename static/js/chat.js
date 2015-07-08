@@ -42,7 +42,6 @@
 
             // Submit message when click on "Send" button
             this.$element.find('#chat-send').click(function () {
-                    console.log('send msg');
                     var message = that.get_message_and_clean();
                     that.submit_message(message);
                 }
