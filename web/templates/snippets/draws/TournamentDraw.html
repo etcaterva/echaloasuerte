@@ -1,0 +1,32 @@
+{% with iteration=forloop.counter%}
+<div id="bracket-result{{iteration}}"></div>
+<script>
+    var teams{{iteration}} = [];
+    {% for team in results %}
+        teams{{iteration}}.push([
+        {% for participant in team %}
+          "{{participant}}",
+        {% endfor %}
+        ]);
+    {% endfor %}
+
+    function cleanBracketDisplay(){
+        $('.team .label').css('color', 'black')
+                        .css('text-align','left')
+                        .css('position','relative');
+        $('.jQBracket .tools span').css('display','none');
+    }
+
+    $(function() {
+        $('#bracket-result{{iteration}}').bracket({
+            init: {teams: teams{{forloop.counter}}},
+            save: cleanBracketDisplay,
+        });
+    });
+    $(window).load(function(){
+        $('.result').css('height','auto','important');
+        cleanBracketDisplay();
+    });
+
+</script>
+{%endwith%}
