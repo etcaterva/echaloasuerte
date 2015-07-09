@@ -232,7 +232,6 @@ PublicDraw.save_settings = function (){
                 console.log("Error when updating the draw details");
             });
         });
-    });
 };
 
 PublicDraw.enable_chat = function (enable){
