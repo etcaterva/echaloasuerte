@@ -10,7 +10,7 @@
         {% endif %}
         <{% if tag %}{{ tag }}{% else %}div{% endif %} id="div_{{ field.auto_id }}" {% if not field|is_checkbox %}class="form-group clearfix{% else %}class="checkbox{% endif %}{% if wrapper_class %} {{ wrapper_class }}{% endif %}{% if form_show_errors and field.errors %} has-error {% endif %}{% if field.css_classes %} {{ field.css_classes }}{% endif %}">
             {% if field.label and not field|is_checkbox and form_show_labels %}
-                <label for="{{ field.id_for_label }}" class="control-label {% if 'eas-tokenfield' in css_classes %} col-sm-2 {% else %}{{ label_class }}{% endif %}{% if field.field.required %} requiredField{% endif %}">
+                <label for="{{ field.id_for_label }}" class="control-label {% if 'eas-tokenfield' in css_classes %} col-sm-3 text-right {% else %}{{ label_class }}{% endif %}{% if field.field.required %} requiredField{% endif %}">
                     {{ field.label|safe }}{% if not field.field.required %}<span class="optionalField">{% trans "(optional)" %}</span>{% endif %}
                 </label>
             {% endif %}
@@ -35,7 +35,7 @@
                         {% include 'bootstrap3/layout/help_text_and_errors.html' %}
                     </div>
                 {% else %}
-                    <div class="controls {% if 'eas-tokenfield' in css_classes %} col-sm-10 {% else %}{{ field_class }}{% endif %}">
+                    <div class="controls {% if 'eas-tokenfield' in css_classes %} col-sm-9 {% else %}{{ field_class }}{% endif %}">
                         {% crispy_field field %}
                         {% include 'bootstrap3/layout/help_text_and_errors.html' %}
                     </div>
