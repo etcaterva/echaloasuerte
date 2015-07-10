@@ -21,5 +21,5 @@ class TournamentDraw(BaseDraw):
         random.shuffle(source)
         while not is_power_of_two(len(source)):
             source.append("-")
-        groups = zip(*(iter(source),) * 2)
+        groups = list(zip(*(iter(source),) * 2))
         return groups
