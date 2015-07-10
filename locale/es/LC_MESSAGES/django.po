@@ -739,7 +739,7 @@ msgstr ""
 "beneficios cuando crear tiradas publicas: "
 
 #: web/templates/index.html:39
-msgid "Only you can to toss"
+msgid "Only you can toss"
 msgstr "Solo tu puedes tirar"
 
 #: web/templates/index.html:40
@@ -754,19 +754,19 @@ msgstr "Solo tu puedes cambiar detalles de la tirada, invitar usuarios, etc..."
 msgid "It will be in your history for future access"
 msgstr "Permanecera en tu historial de tiradas para facilitar el acceso"
 
-#: web/templates/index.html:45
+#: web/templates/index.html:48
 msgid "Don't you have an account yet?"
 msgstr "¿Aún no tienes cuenta?"
 
-#: web/templates/index.html:46
-msgid "It takes only 30 seconds, and it's FREE!"
-msgstr "Solo tardarás 30 segundos, y es GRATIS!"
+#: web/templates/index.html:49
+msgid "It takes only 30 seconds, and <strong>it's totally FREE!</strong>"
+msgstr "Solo tardarás 30 segundos, y <strong>es totalmente GRATIS!</strong>"
 
-#: web/templates/index.html:51
+#: web/templates/index.html:55
 msgid "No thanks, I know what I'm doing"
 msgstr "No gracias, sé lo que hago"
 
-#: web/templates/index.html:64
+#: web/templates/index.html:67
 msgid "Let the luck decide!"
 msgstr "¡Deja que la suerte decida!"
 

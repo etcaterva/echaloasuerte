@@ -37,20 +37,22 @@
                 <div class="modal-body">
                     {% trans "I've seen that you are not signed in.<br> Signing in has several benefits when creating a public draw:" %}
                     <ul>
-                        <li>{% trans "Only you can to toss" %}</li>
+                        <li>{% trans "Only you can toss" %}</li>
                         <li>{% trans "Only you can edit the details of the draw" %}</li>
                         <li>{% trans "Only you can change the level of privacy, invite or remove people" %}</li>
-                        <li>{% trans "It will be in your history for future access" %}</li>
+                        <li>{% trans "The draw will be in your history for future access" %}</li>
                     </ul>
                     <div class="text-center" >
-                        <p>{% trans "Don't you have an account yet?" %}</p>
-                        <p><strong>{% trans "It takes only 30 seconds, and it's FREE!" %}</strong></p>
-                        <a href="{% url 'register' %}" type="button" class="btn btn-success">{% trans "Sign up" %}</a>
+                        <a href="{% url 'login' %}" type="button" class="btn btn-success">{% trans "Sign in" %}</a>
+                        <div id="create-account">
+                            <p>{% trans "Don't you have an account yet?" %}<br/>
+                            {% trans "It takes only 30 seconds, and <strong>it's totally FREE!</strong>" %}</p>
+                            <a href="{% url 'register' %}" type="button" >{% trans "Create an account" %}</a>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "No thanks, I know what I'm doing" %}</button>
-                    <a href="{% url 'login' %}" type="button" class="btn btn-primary">{% trans "Sign in" %}</a>
                 </div>
             </div>
         </div>
