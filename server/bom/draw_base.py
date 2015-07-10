@@ -156,6 +156,7 @@ class BaseDraw(object):
         result = {"datetime": get_utc_now(), "items": self.generate_result()}
         self.results.append(result)
         logger.debug("Tossed draw: {0}".format(self))
+        logger.info("Generated result: {0}".format(result))
         return result
 
     def timed_toss(self, publication_datetime):

@@ -5,3 +5,4 @@ from server.forms.coin_form import *
 from server.forms.dice_form import *
 from server.forms.card_form import *
 from server.forms.link_sets_form import *
+from server.forms.tournament_form import *
