@@ -695,13 +695,11 @@ msgid "Let's play some drinking games!"
 msgstr "¡Juegos para beber!"
 
 #: web/templates/index.html:19
-#, fuzzy
-#| msgid "Roll dice"
-msgid "Roll a dice"
+msgid "Roll a die"
 msgstr "Tira un dado"
 
 #: web/templates/index.html:19
-msgid "Didn't you have a dice? Just roll this one"
+msgid "Don't you have a die? Just roll this one"
 msgstr "¿No tienes un dado a mano? ¡Tira este!"
 
 #: web/templates/index.html:22
