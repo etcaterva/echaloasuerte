@@ -5,7 +5,7 @@
 
 {% block extra_jq_ready %}
     {% if not user.is_authenticated and is_public %}
-        $('#warning-sigin').modal('show');
+        $('#warning-login').modal('show');
     {% endif %}
 {% endblock extra_jq_ready %}
 
@@ -26,8 +26,8 @@
         </div>
     </div>
 
-    <!-- Warning "Sign in" modal -->
-    <div class="modal fade" id="warning-sigin" tabindex="-1" role="dialog" aria-labelledby="WarningSignin">
+    <!-- Warning "Log in" modal -->
+    <div class="modal fade" id="warning-login" tabindex="-1" role="dialog" aria-labelledby="WarningLogin">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -35,7 +35,7 @@
                     <h4 class="modal-title" id="myModalLabel">{% trans "May I say something?" %}</h4>
                 </div>
                 <div class="modal-body">
-                    {% trans "I've seen that you are not signed in.<br> Signing in has several benefits when creating a public draw:" %}
+                    {% trans "I've seen that you are not logged in.<br> Logging in has several benefits when creating a public draw:" %}
                     <ul>
                         <li>{% trans "Only you can toss" %}</li>
                         <li>{% trans "Only you can edit the details of the draw" %}</li>
@@ -43,7 +43,7 @@
                         <li>{% trans "The draw will be in your history for future access" %}</li>
                     </ul>
                     <div class="text-center" >
-                        <a href="{% url 'login' %}" type="button" class="btn btn-success">{% trans "Sign in" %}</a>
+                        <a href="{% url 'login' %}" type="button" class="btn btn-success">{% trans "Log in" %}</a>
                         <div id="create-account">
                             <p>{% trans "Don't you have an account yet?" %}<br/>
                             {% trans "It takes only 30 seconds, and <strong>it's totally FREE!</strong>" %}</p>

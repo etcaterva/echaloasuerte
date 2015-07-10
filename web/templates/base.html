@@ -269,7 +269,7 @@
                         {% else %}
                             <a id="login-dropdown-link" href="{% url 'login' %}">
                                 <span class="fa fa-user"></span>
-                                {% trans "Sign in" %}
+                                {% trans "Log in" %}
                             </a>
                         {% endif %}
                         <li class="nav-divider"></li>
@@ -362,7 +362,7 @@
                             <!-- End account dropdown panel -->
                         {% else %}
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <span class="fa fa-user" aria-hidden="true"></span> {% trans "Sign in" %}<b class="caret"></b>
+                                <span class="fa fa-user" aria-hidden="true"></span> {% trans "Log in" %}<b class="caret"></b>
                             </a>
                             <!-- Login panel -->
                             <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
@@ -381,11 +381,11 @@
                                                 </div>
                                                 <div class="form-group checkbox">
                                                     <label>
-                                                        <input type="checkbox" class="checkboxinput checkbox" id="keep-logged" name="keep-logged"> {% trans "Keep me signed in" %}
+                                                        <input type="checkbox" class="checkboxinput checkbox" id="keep-logged" name="keep-logged"> {% trans "Keep me logged in" %}
                                                     </label>
                                                 </div>
                                                 <div class="form-group">
-                                                    <button id="login-button" type="submit" class="btn btn-success btn-block">{% trans "Sign in"%}
+                                                    <button id="login-button" type="submit" class="btn btn-success btn-block">{% trans "Log in"%}
                                                     </button>
                                                     <a class="forgot-password"
                                                        href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a>

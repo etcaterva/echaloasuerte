@@ -4,7 +4,7 @@
 {% block content %}
     <div id="login" class="row">
         <div class="col-sm-6 col-sm-offset-3 text-center">
-            <h1>{% trans "Sign in" %}</h1>
+            <h1>{% trans "Log in" %}</h1>
             <form class="form-horizontal" name="LoginForm" action="{% url 'login' %}" method="post">
             {% csrf_token %}
             {% if next %}
@@ -31,7 +31,7 @@
             {% endif %}
             <div class="row control-group">
                 <div class="controls text-center">
-                    <button id="login-button" type="submit" class="btn btn-success">{% trans "Sign in" %}</button>
+                    <button id="login-button" type="submit" class="btn btn-success">{% trans "Log in" %}</button>
                 </div>
                 <a href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a>
             </div>
