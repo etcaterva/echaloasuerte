@@ -789,3 +789,12 @@ a[disabled] {
     color: gray;
 }
 
+#create-account {
+    margin-top: 15px;
+}
+
+#create-account a {
+    font-weight: bold;
+}
+
+

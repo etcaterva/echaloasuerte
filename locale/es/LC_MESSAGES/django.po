@@ -270,11 +270,11 @@ msgstr ""
 msgid "PickForMe"
 msgstr "EchaloASuerte"
 
-#: web/templates/base.html:268 web/templates/base.html.py:361
-#: web/templates/base.html:384 web/templates/index.html:52
+#: web/templates/base.html:272 web/templates/base.html.py:365
+#: web/templates/base.html:388 web/templates/index.html:46
 #: web/templates/login.html:7 web/templates/login.html.py:34
-msgid "Sign in"
-msgstr "Registro"
+msgid "Log in"
+msgstr "Acceder"
 
 #: web/templates/base.html:278
 msgid "favourites"
@@ -314,8 +314,8 @@ msgid "Password"
 msgstr "Contraseña"
 
 #: web/templates/base.html:380
-msgid "Keep me signed in"
-msgstr "Recuérdame"
+msgid "Keep me logged in"
+msgstr "No cerrar sesión"
 
 #: web/templates/base.html:387 web/templates/login.html:36
 #: web/templates/profile.html:248
@@ -418,11 +418,11 @@ msgstr "Terminar"
 msgid "Type your message here..."
 msgstr "Escribe tu mensaje aquí..."
 
-#: web/templates/draws/display_draw.html:96
-msgid "Please, sign in to be able to use the chat"
+#: web/templates/draws/display_draw.html:97
+msgid "Please, log in to be able to use the chat"
 msgstr "Por favor, inicia sesión para usar el chat"
 
-#: web/templates/draws/display_draw.html:97
+#: web/templates/draws/display_draw.html:98
 msgid "Chat"
 msgstr "Chat"
 
@@ -730,16 +730,16 @@ msgstr "¿Toca limpiar la casa? Reparte las tareas con tus compañeros"
 msgid "May I say something?"
 msgstr "¿Puedo dar un consejo?"
 
-#: web/templates/index.html:37
+#: web/templates/index.html:38
 msgid ""
-"I've seen that you are not signed in.<br> Signing in has several benefits "
+"I've seen that you are not logged in.<br> Logging in has several benefits "
 "when creating a public draw:"
 msgstr ""
 "Parece que no estas registrado.<br> Los usuarios registrados tienen varios "
 "beneficios cuando crear tiradas publicas: "
 
 #: web/templates/index.html:39
-msgid "Only you can to toss"
+msgid "Only you can toss"
 msgstr "Solo tu puedes tirar"
 
 #: web/templates/index.html:40
@@ -754,19 +754,19 @@ msgstr "Solo tu puedes cambiar detalles de la tirada, invitar usuarios, etc..."
 msgid "It will be in your history for future access"
 msgstr "Permanecera en tu historial de tiradas para facilitar el acceso"
 
-#: web/templates/index.html:45
+#: web/templates/index.html:48
 msgid "Don't you have an account yet?"
 msgstr "¿Aún no tienes cuenta?"
 
-#: web/templates/index.html:46
-msgid "It takes only 30 seconds, and it's FREE!"
-msgstr "Solo tardarás 30 segundos, y es GRATIS!"
+#: web/templates/index.html:49
+msgid "It takes only 30 seconds, and <strong>it's totally FREE!</strong>"
+msgstr "Solo tardarás 30 segundos, y <strong>es totalmente GRATIS!</strong>"
 
-#: web/templates/index.html:51
+#: web/templates/index.html:55
 msgid "No thanks, I know what I'm doing"
 msgstr "No gracias, sé lo que hago"
 
-#: web/templates/index.html:64
+#: web/templates/index.html:67
 msgid "Let the luck decide!"
 msgstr "¡Deja que la suerte decida!"
 
