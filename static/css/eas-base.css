@@ -217,7 +217,7 @@ h2,
 }
 
 /* =================== HEADING =================== */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
     .side-collapse-container{
         width:100%;
         position:relative;
