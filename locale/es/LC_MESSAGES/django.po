@@ -273,6 +273,7 @@ msgstr "EchaloASuerte"
 #: web/templates/base.html:272 web/templates/base.html.py:365
 #: web/templates/base.html:388 web/templates/index.html:46
 #: web/templates/login.html:7 web/templates/login.html.py:34
+#: web/templates/draws/secure_draw.html:17
 msgid "Log in"
 msgstr "Acceder"
 
@@ -662,10 +663,6 @@ msgstr "Contraseña de la tirada"
 #: web/templates/draws/secure_draw.html:16
 msgid "You need to log in to be able to access this draw."
 msgstr "Necesitas iniciar sesión para acceder a la tirada."
-
-#: web/templates/draws/secure_draw.html:17
-msgid "Log in"
-msgstr "Iniciar Sesion"
 
 #: web/templates/draws/secure_draw.html:18 web/templates/index.html:47
 #: web/templates/login.html:41 web/templates/register.html:31
