@@ -103,9 +103,8 @@ msgid "Any result?"
 msgstr "¿Algun resultado?"
 
 #: server/forms/random_letter_form.py:11
-#| msgid "Random Item"
-msgid "Random Item"
-msgstr "Elemento aleatorio"
+msgid "Random Letter"
+msgstr "Lettra aleatoria"
 
 #: server/forms/random_letter_form.py:29 server/forms/random_number_form.py:39
 msgid "Between 1 and 50"
@@ -469,9 +468,8 @@ msgid "There was an issue when tossing the draw :("
 msgstr "Hubo un problema al generar un resultado :("
 
 #: web/templates/draws/display_draw.html:165
-#| msgid "There was an issue when tossing the draw :("
 msgid "There was an issue when scheduling the tossing :("
-msgstr "Hubo un problema al programar la tirada :("`
+msgstr "Hubo un problema al programar la tirada :("
 
 #: web/templates/draws/display_draw.html:182 web/templates/profile.html:171
 #: web/templates/under_construction.html:7
