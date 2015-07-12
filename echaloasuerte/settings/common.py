@@ -204,6 +204,9 @@ ALLOWED_HOSTS = [
     '.echaloasuerte.com',
     '.echaloasuerte.com.',
     '92.222.219.42',
+    'vps71464.ovh.net',
+    'vps162180.ovh.net',
+    '92.222.28.167',
 ]
 
 
