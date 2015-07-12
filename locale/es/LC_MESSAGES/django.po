@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-12 12:28+0000\n"
+"POT-Creation-Date: 2015-07-12 15:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mario Corchero\n"
 "Language: Spanish\n"
@@ -139,9 +139,6 @@ msgid "Tournament"
 msgstr "Torneo"
 
 #: server/forms/tournament_form.py:26
-#| msgid ""
-#| "<div id='info-comma-separated' class='alert alert-info' "
-#| "role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>"
 msgid ""
 "<div id='info-comma-separated' class='alert alert-info' "
 "role='alert'>Separate participants by commas. e.g: Maria, David S, Leo, ...</"
@@ -453,7 +450,6 @@ msgid "Chat"
 msgstr "Chat"
 
 #: web/templates/draws/display_draw.html:110
-#| msgid "Only you can edit the details of the draw"
 msgid "To edit the details go to Settings"
 msgstr "Para editar la tirada ve al panel de configuracion"
 
