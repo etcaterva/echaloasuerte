@@ -103,9 +103,8 @@ msgid "Any result?"
 msgstr "¿Algun resultado?"
 
 #: server/forms/random_letter_form.py:11
-#, fuzzy
 #| msgid "Random Item"
-msgid "Random Letter"
+msgid "Random Item"
 msgstr "Elemento aleatorio"
 
 #: server/forms/random_letter_form.py:29 server/forms/random_number_form.py:39
@@ -455,10 +454,9 @@ msgid "Chat"
 msgstr "Chat"
 
 #: web/templates/draws/display_draw.html:110
-#, fuzzy
 #| msgid "Only you can edit the details of the draw"
 msgid "To edit the details go to Settings"
-msgstr "Nadie más puede editar los detalles de la tirada"
+msgstr "Para editar la tirada ve al panel de configuracion"
 
 #: web/templates/draws/display_draw.html:133
 #: web/templates/draws/new_draw.html:60 web/templates/join_draw.html:17
@@ -471,10 +469,9 @@ msgid "There was an issue when tossing the draw :("
 msgstr "Hubo un problema al generar un resultado :("
 
 #: web/templates/draws/display_draw.html:165
-#, fuzzy
 #| msgid "There was an issue when tossing the draw :("
 msgid "There was an issue when scheduling the tossing :("
-msgstr "Hubo un problema al generar un resultado :("
+msgstr "Hubo un problema al programar la tirada :("`
 
 #: web/templates/draws/display_draw.html:182 web/templates/profile.html:171
 #: web/templates/under_construction.html:7
@@ -662,21 +659,16 @@ msgid "Well done!"
 msgstr "¡Buen trabajo!"
 
 #: web/templates/draws/display_draw.html:410
-#| msgid "You have created this draw"
 msgid "You have created a public draw."
-msgstr "Tu has creado esta tirada"
+msgstr "Has creado una tirada pública"
 
 #: web/templates/draws/display_draw.html:411
-#, fuzzy
-#| msgid "You can invite people from the settings panel."
 msgid "You can invite people using this link:"
-msgstr "Puedes invitar usando el panel de control a continuación"
+msgstr "Puedes invitar a gente usando este link:"
 
 #: web/templates/draws/display_draw.html:415
-#, fuzzy
-#| msgid "Share the link to the draw:"
 msgid "Take me to the draw"
-msgstr "Comparte el enlace de la tirada:"
+msgstr "Llévame a la tirada"
 
 #: web/templates/draws/eas_crispy_field.html:14
 msgid "(optional)"
@@ -688,7 +680,7 @@ msgstr "Nueva Tirada"
 
 #: web/templates/draws/new_draw.html:88
 msgid "Click on the draw title to change it"
-msgstr "Ha click en el titulo de la tirada para cambiarlo"
+msgstr "Haz click en el titulo de la tirada para cambiarlo"
 
 #: web/templates/draws/new_draw.html:113
 msgid "Who can access your draw?"
@@ -757,8 +749,6 @@ msgid "Only the owner of the draw can grant access to it:"
 msgstr "Solo el propietario puede darte acceso:"
 
 #: web/templates/index.html:17
-#, fuzzy
-#| msgid "Flip a Coin"
 msgid "Flip a coin"
 msgstr "Tira una moneda"
 
@@ -788,7 +778,6 @@ msgid "Organising a competition? This is your draw!"
 msgstr "¿Quieres organizar una competicion? ¡Esta es tu tirada!"
 
 #: web/templates/index.html:23
-#| msgid "Random Number"
 msgid "Random number"
 msgstr "Numero Aleatorio"
 
@@ -797,10 +786,8 @@ msgid "Doing a raffle? Luck will decide who is the winner"
 msgstr "¿Una rifa? Deja que la suerte elija el ganador"
 
 #: web/templates/index.html:24
-#, fuzzy
-#| msgid "Random Item"
 msgid "Random letter"
-msgstr "Elemento aleatorio"
+msgstr "Letra aleatorio"
 
 #: web/templates/index.html:24
 msgid "Not sure what letter to start the lis with? Just click here :)"
@@ -843,10 +830,8 @@ msgid "Only you can change the level of privacy, invite or remove people"
 msgstr "Solo tu puedes cambiar detalles de la tirada, invitar usuarios, etc..."
 
 #: web/templates/index.html:44
-#, fuzzy
-#| msgid "It will be in your history for future access"
 msgid "The draw will be in your history for future access"
-msgstr "Permanecera en tu historial de tiradas para facilitar el acceso"
+msgstr "La tirada permanecerá en tu historial para facilitar el acceso"
 
 #: web/templates/index.html:49
 msgid "Don't you have an account yet?"
@@ -857,10 +842,8 @@ msgid "It takes only 30 seconds, and <strong>it's totally FREE!</strong>"
 msgstr "Solo tardarás 30 segundos, y <strong>es totalmente GRATIS!</strong>"
 
 #: web/templates/index.html:51
-#, fuzzy
-#| msgid "Don't have an account?"
 msgid "Create an account"
-msgstr "¿Aún no tienes cuenta?"
+msgstr "Crea una cuenta"
 
 #: web/templates/index.html:56
 msgid "No thanks, I know what I'm doing"
@@ -1011,10 +994,8 @@ msgid "Show only your public draws"
 msgstr "Mostar solo tiradas públicas"
 
 #: web/templates/profile.html:105
-#, fuzzy
-#| msgid "Password"
 msgid "Password updated"
-msgstr "Contraseña"
+msgstr "Contraseña actualizada"
 
 #: web/templates/profile.html:152
 msgid "Use gravatar"
@@ -1062,10 +1043,8 @@ msgid "Repeat new"
 msgstr "Repetir nueva"
 
 #: web/templates/profile.html:223
-#, fuzzy
-#| msgid "The password is not correct"
 msgid "The passwords didn't match"
-msgstr "La contraseña no es correcta"
+msgstr "Las contraseñas no coinciden"
 
 #: web/templates/profile.html:229
 msgid "Change password"
@@ -1077,7 +1056,7 @@ msgstr "Lo sentimos, pero aun no esta disponible."
 
 #: web/templates/profile.html:241
 msgid "New email"
-msgstr "Nuevo correo"
+msgstr "Nuevo email"
 
 #: web/templates/profile.html:246
 msgid "For your security, you must re-enter your password to continue."
@@ -1092,10 +1071,8 @@ msgid "Avatar"
 msgstr "Avatar"
 
 #: web/templates/profile.html:262
-#, fuzzy
-#| msgid "Confirm avatar"
 msgid "Random avatar"
-msgstr "Confirmar avatar"
+msgstr "Avatar aleatorio"
 
 #: web/templates/profile.html:276
 msgid "Use my random monster!"
@@ -1394,8 +1371,6 @@ msgid "Who drinks next?"
 msgstr "¿Quien bebe?"
 
 #: web/views.py:134
-#, fuzzy
-#| msgid "Charmander, Bulbasaur or Squirtle?"
 msgid "Charmander, bulbasaur or Squirtle??"
 msgstr "¿Charmander, Bulbasaur or Squirtle?"
 
