@@ -132,7 +132,9 @@ h2,
 
 @media (min-width: 992px) {
     .draw-box img {
-        height: 56px;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        height: 50px;
         width: auto;
     }
     .draw-link:hover .fa-question{
