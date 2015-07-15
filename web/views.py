@@ -14,6 +14,7 @@ from django.contrib import messages
 from django.templatetags.static import static
 from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user
 import logging
+from web.google_analytics import ga_track_event
 
 LOG = logging.getLogger("echaloasuerte")
 MONGO = MongoDriver.instance()
@@ -235,7 +236,8 @@ def create_draw(request, draw_type, is_public):
                 MONGO.save_draw(bom_draw)
                 LOG.info("Generated draw: {0}".format(bom_draw))
                 messages.info(request, _('Draw created successfully'))
-
+                shared_type = 'public' if bom_draw.is_shared() else 'private'
+                ga_track_event(category="create_draw", action=bom_draw.draw_type, label=shared_type)
                 # notify users if any
                 if bom_draw.users:
                     owner = bom_draw.owner if bom_draw.owner else "Annon"
