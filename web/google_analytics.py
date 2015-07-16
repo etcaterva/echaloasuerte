@@ -1,7 +1,11 @@
 import logging
 from django.utils.http import urlencode
-import http.client
 from django.conf import settings
+try:
+    from httplib import HTTPConnection
+except ImportError:
+    from http.client import HTTPConnection
+import http.client
 
 LOG = logging.getLogger("echaloasuerte")
 
