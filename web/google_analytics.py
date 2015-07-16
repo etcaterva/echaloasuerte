@@ -6,7 +6,8 @@ from django.conf import settings
 LOG = logging.getLogger("echaloasuerte")
 
 def ga_track_event(category, action, label=None, value=None):
-    if not settings.GOOGLE_ANALYTICS_PROPERTY_ID:
+    ga_prop_id = getattr(settings, 'GOOGLE_ANALYTICS_PROPERTY_ID', False)
+    if not ga_prop_id:
         return
     if not action or not category:
         LOG.warning("Error sending event to Google Analytics (Category={0}, Action={1})".format(category, action))
