@@ -5,7 +5,7 @@ from django.conf import settings
 
 LOG = logging.getLogger("echaloasuerte")
 
-def ga_track_event(category, action, event=None, label=None, value=None):
+def ga_track_event(category, action, label=None, value=None):
     if not settings.GOOGLE_ANALYTICS_PROPERTY_ID:
         return
     if not action or not category:
@@ -23,8 +23,6 @@ def ga_track_event(category, action, event=None, label=None, value=None):
     }
     if label:
         params_dict['el'] = label
-    if event:
-        params_dict['t'] = event
     if value:
         params_dict['ev'] = value
 
