@@ -5,7 +5,6 @@ try:
     from httplib import HTTPConnection
 except ImportError:
     from http.client import HTTPConnection
-import http.client
 
 LOG = logging.getLogger("echaloasuerte")
 
@@ -33,5 +32,5 @@ def ga_track_event(category, action, label=None, value=None):
 
 
     params = urlencode(params_dict)
-    connection = http.client.HTTPConnection('www.google-analytics.com')
+    connection = HTTPConnection('www.google-analytics.com')
     connection.request('POST', '/collect', params)
