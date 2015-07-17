@@ -30,7 +30,9 @@ def ga_track_event(category, action, label=None, value=None):
     if value:
         params_dict['ev'] = value
 
-
-    params = urlencode(params_dict)
-    connection = HTTPConnection('www.google-analytics.com')
-    connection.request('POST', '/collect', params)
+    try:
+        params = urlencode(params_dict)
+        connection = HTTPConnection('www.google-analytics.com')
+        connection.request('POST', '/collect', params)
+    except Exception as e:
+        LOG.error("Error: The event has not been send to Google Analytics. {0}".format(e))
