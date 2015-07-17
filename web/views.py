@@ -70,6 +70,7 @@ def register(request):
         u.set_password(password)
         try:
             MONGO.create_user(u)
+            ga_track_event(category="user", action="registration")
             return login_user(request)
         except Exception:
             context = {'error': _("The email is already registered.")}
