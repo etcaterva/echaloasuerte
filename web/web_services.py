@@ -52,7 +52,7 @@ def feedback(request):
         mail_admins(subject, message, True)
         return HttpResponse()
     else:
-        raise HttpResponseBadRequest("Invalid feedback, type or comment missing")
+        return HttpResponseBadRequest("Invalid feedback, type or comment missing")
 
 
 @time_it
@@ -251,7 +251,7 @@ def validate_draw(request):
     """WS to validate a draw"""
     draw_type = request.POST.get("draw_type")
     if not draw_type:
-        raise HttpResponseBadRequest("Missing post argument draw_type")
+        return HttpResponseBadRequest("Missing post argument draw_type")
     model_name = draw_type
     form_name = draw_type + "Form"
 
