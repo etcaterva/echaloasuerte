@@ -40,12 +40,19 @@ def update_user(request):
 @time_it
 def feedback(request):
     """sends the feedback data to the users"""
-    subject = """[Echaloasuerte] Feedback ({0})""".format(request.POST["type"])
-    message = """{0}\nBy {1} on {2}""".format(request.POST["comment"],
-                                              request.POST.get("email", "anonymous"),
-                                              request.POST.get("browser"))
-    mail_admins(subject, message, True)
-    return HttpResponse()
+    type_ = request.POST.get("type")
+    comment = request.POST.get("comment")
+    email = request.POST.get("email", "anonymous")
+    browser = request.POST.get("browser", "Unknown Browser")
+    subject = """[Echaloasuerte] Feedback ({0})""".format(type_)
+    message = """{0}\nBy {1} on {2}""".format(comment,
+                                              email,
+                                              browser)
+    if type_ and comment:
+        mail_admins(subject, message, True)
+        return HttpResponse()
+    else:
+        raise HttpResponseBadRequest("Invalid feedback, type or comment missing")
 
 
 @time_it
@@ -54,7 +61,6 @@ def toss_draw(request):
     draw_id = request.GET.get("draw_id")
     if draw_id is None:
         return HttpResponseBadRequest()
-    password = request.GET.get("password")  # TODO use on user can write
     bom_draw = MONGO.retrieve_draw(draw_id)
     user_can_write_draw(request.user, bom_draw)  # raises 500
     result = bom_draw.toss()
@@ -244,6 +250,8 @@ def get_draw_details(request):
 def validate_draw(request):
     """WS to validate a draw"""
     draw_type = request.POST.get("draw_type")
+    if not draw_type:
+        raise HttpResponseBadRequest("Missing post argument draw_type")
     model_name = draw_type
     form_name = draw_type + "Form"
 
