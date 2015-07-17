@@ -222,6 +222,13 @@
                 $('.suggestion-step-final').removeClass('hidden');
             });
 
+            var old_site_url = location.protocol + "//2011." + location.host;
+            var $old_site_link = $('#back-old-version');
+            $old_site_link.attr('href', old_site_url);
+            $old_site_link.on('click', function() {
+                ga('send', 'event', 'link', 'go to old site');
+            });
+
             {% block extra_jq_ready %}{% endblock extra_jq_ready %}
         });
         window.onload = function (){
@@ -237,7 +244,7 @@
 </head>
 
 <body class="background">
-    <a href="http://www.pickforme.net" id="back-old-version" class="visible-lg"></a>
+    <a href="http://2011.echaloasuerte.com/" id="back-old-version" class="visible-lg"></a>
 {% block pre-content %}
 {% endblock pre-content %}
 <div id="wrapper" class="container">
