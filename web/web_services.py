@@ -70,6 +70,7 @@ def toss_draw(request):
         "result": result
     })
 
+
 @time_it
 def schedule_toss_draw(request):
     """generates a result and returns it"""
