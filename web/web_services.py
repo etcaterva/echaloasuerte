@@ -52,7 +52,7 @@ def feedback(request):
         mail_admins(subject, message, True)
         return HttpResponse()
     else:
-        raise HttpResponseBadRequest("Invalid feedback, type or comment missing")
+        return HttpResponseBadRequest("Invalid feedback, type or comment missing")
 
 
 @time_it
@@ -69,6 +69,7 @@ def toss_draw(request):
     return JsonResponse({
         "result": result
     })
+
 
 @time_it
 def schedule_toss_draw(request):
