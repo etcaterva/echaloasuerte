@@ -937,7 +937,7 @@ msgstr "Propietario"
 
 #: web/templates/join_draw.html:175
 msgid "Created"
-msgstr "Creada el"
+msgstr "Creada"
 
 #: web/templates/join_draw.html:176
 msgid "Number of spectators"
