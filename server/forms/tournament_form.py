@@ -32,5 +32,5 @@ class TournamentDrawForm(FormBase):
         cleaned_data = super(TournamentDrawForm, self).clean()
         if not self._errors:
             raw_participants = cleaned_data.get('participants')
-            cleaned_data['participants'] = raw_participants.split(",") if ',' in raw_participants else raw_participans.split()
+            cleaned_data['participants'] = raw_participants.split(",") if ',' in raw_participants else raw_participants.split()
         return cleaned_data

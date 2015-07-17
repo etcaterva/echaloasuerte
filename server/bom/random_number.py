@@ -1,5 +1,6 @@
 from server.bom.draw_base import *
 
+MAX_TECHNICAL_NUMBER=9223372036854775807
 
 class RandomNumberDraw(BaseDraw):
     """
@@ -36,6 +37,9 @@ class RandomNumberDraw(BaseDraw):
             if self.range_max - self.range_min < self.number_of_results:
                 # Range is too small, do you want to allow repeated numbers?
                 return False
+
+        if self.range_max > MAX_TECHNICAL_NUMBER:
+            return False
 
         return True
 

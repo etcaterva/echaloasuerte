@@ -47,6 +47,8 @@ urlpatterns += patterns(
     url(r'elegirSalas.php', RedirectView.as_view(url="/", permanent=True)),
     url(r'contacto.php', RedirectView.as_view(url="/", permanent=True)),
     url(r'acerca.php', RedirectView.as_view(url="about.html", permanent=True)),
+
+    url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt'))
 )
 
 urlpatterns += staticfiles_urlpatterns()
