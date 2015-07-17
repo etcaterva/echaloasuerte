@@ -7,6 +7,7 @@ from server.mongodb.driver import MongoDriver
 from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user
 from server.forms import *
 from server.bom import *
+from web.google_analytics import ga_track_event
 import dateutil.parser
 
 LOG = logging.getLogger("echaloasuerte")
@@ -58,6 +59,7 @@ def toss_draw(request):
     user_can_write_draw(request.user, bom_draw)  # raises 500
     result = bom_draw.toss()
     MONGO.save_draw(bom_draw)
+    ga_track_event(category="toss", action=bom_draw.draw_type)
     return JsonResponse({
         "result": result
     })
