@@ -3,6 +3,11 @@
 {% load static %}
 {% load i18n %}
 {% block extra_head %}
+    <!-- Datatables -->
+    <link href="{% static 'css/jquery.dataTables.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/eas_datatable.js' %}"></script>
+    <!-- MD5 encryption -->
     <script src="{% static 'js/md5.js' %}"></script>
 {% endblock extra_head %}
 {% block extra_jq_ready %}

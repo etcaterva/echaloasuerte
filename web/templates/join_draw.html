@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load staticfiles %}
 {% load i18n %}
 {% load eas_humanize %}
+{% block extra_head %}
+    <!-- Datatables -->
+    <link href="{% static 'css/jquery.dataTables.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/eas_datatable.js' %}"></script>
+{% endblock extra_head %}
 {% block extra_jq_ready %}
     // Fill the datatable
     var $public_draws = $('#public-draws').dataTable(
