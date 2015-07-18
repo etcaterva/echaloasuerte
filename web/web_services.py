@@ -44,7 +44,7 @@ def feedback(request):
     comment = request.POST.get("comment")
     email = request.POST.get("email", "anonymous")
     browser = request.POST.get("browser", "Unknown Browser")
-    subject = """[Echaloasuerte] Feedback ({0})""".format(type_)
+    subject = """Feedback ({0})""".format(type_)
     message = """{0}\nBy {1} on {2}""".format(comment,
                                               email,
                                               browser)
