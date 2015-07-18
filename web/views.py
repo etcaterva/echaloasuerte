@@ -208,7 +208,7 @@ def create_draw(request, draw_type, is_public):
         LOG.debug("Serving view to create a draw. Form: {0}".format(form_name))
         draw_form = globals()[form_name]()
         return render(request, 'draws/new_draw.html',
-                      {"draw": draw_form, "is_public": is_public, "draw_type": model_name, "default_title": _("New Draw")})
+                      {"draw": draw_form, "is_public": is_public, "draw_type": model_name, "default_title": draw_form.DEFAULT_TITLE})
     else:
         LOG.debug("Received post data: {0}".format(request.POST))
         draw_form = globals()[form_name](request.POST)
