@@ -31,11 +31,11 @@ msgstr "Frances"
 
 #: server/forms/card_form.py:15
 msgid "Number of cards to draw"
-msgstr "Número de cartas a cojer"
+msgstr "Número de cartas a coger"
 
 #: server/forms/card_form.py:18
 msgid "Draw a Card"
-msgstr "Cojer una carta"
+msgstr "Coger una carta"
 
 #: server/forms/card_form.py:40
 msgid "Between 1 and 40"
@@ -51,7 +51,7 @@ msgstr "Toca la moneda para lanzarla"
 
 #: server/forms/dice_form.py:9
 msgid "Number of dice"
-msgstr "Numero de dados"
+msgstr "Número de dados"
 
 #: server/forms/dice_form.py:11
 msgid "Roll dice"
@@ -120,7 +120,7 @@ msgstr "Hasta"
 
 #: server/forms/random_number_form.py:14
 msgid "Random Number"
-msgstr "Numero Aleatorio"
+msgstr "Número Aleatorio"
 
 #: server/forms/random_number_form.py:48
 msgid "Range is too small"
@@ -753,7 +753,7 @@ msgstr ""
 
 #: web/templates/index.html:18
 msgid "Take a card"
-msgstr "Coje una carta"
+msgstr "Coge una carta"
 
 #: web/templates/index.html:18
 msgid "Let's play some drinking games!"
@@ -773,7 +773,7 @@ msgstr "¿Quieres organizar una competicion? ¡Esta es tu tirada!"
 
 #: web/templates/index.html:23
 msgid "Random number"
-msgstr "Numero Aleatorio"
+msgstr "Número Aleatorio"
 
 #: web/templates/index.html:23 web/templates/index.html.py:25
 msgid "Doing a raffle? Luck will decide who is the winner"
@@ -789,7 +789,7 @@ msgstr "No estas segura de con qué letra empezar? ¡Haz click aqui!"
 
 #: web/templates/index.html:25
 msgid "Pick random items from a list"
-msgstr "Escoje elementos de una lista"
+msgstr "Escoge elementos de una lista"
 
 #: web/templates/index.html:26
 msgid "Associate items from two lists"
@@ -941,7 +941,7 @@ msgstr "Creada"
 
 #: web/templates/join_draw.html:176
 msgid "Number of spectators"
-msgstr "Numero de espectadores"
+msgstr "Número de espectadores"
 
 #: web/templates/join_draw.html:186
 msgid "You have created this draw"
