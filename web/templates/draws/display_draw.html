@@ -121,6 +121,30 @@
             }
         {% endif %}
 
+        $('.datetimepicker').datetimepicker({value:moment().format()});
+
+        $("#confirm-schedule-button").click( function() {
+            var schedule = new Date($("#toss-schedule").val());
+            $('#confirm-schedule-button').prop('disabled',true);
+            $.ajax({
+                method : "GET",
+                url   : "{% url 'ws_schedule_toss_draw' %}",
+                data  : {
+                    draw_id : "{{bom.pk}}",
+                    draw_pass : "{{bom.password}}",
+                    schedule: moment.utc(schedule).format()
+                }
+            }).done(function (){
+                window.location.reload();
+            })
+            .fail(function () {
+                alert("{% trans 'There was an issue when scheduling the tossing :(' %}");
+            });
+        });
+
+        $('#schedule-toss-button').click(function() {
+            $('#schedule-toss-modal').modal('show');
+        });
     {% else %}
         $("#draw-form :input").change(function(changed_input) {
             draw_updated_flag = true; //marks the draw as updated
@@ -147,30 +171,8 @@
             alert("{% trans 'There was an issue when tossing the draw :(' %}");
         });
     });
-    $("#confirm-schedule-button").click( function() {
-        var schedule = new Date($("#toss-schedule").val());
-        $('#confirm-schedule-button').prop('disabled',true);
-        $.ajax({
-            method : "GET",
-            url   : "{% url 'ws_schedule_toss_draw' %}",
-            data  : {
-                draw_id : "{{bom.pk}}",
-                draw_pass : "{{bom.password}}",
-                schedule: moment.utc(schedule).format()
-            }
-        }).done(function (){
-            window.location.reload();
-        })
-        .fail(function () {
-            alert("{% trans 'There was an issue when scheduling the tossing :(' %}");
-        });
-    });
-    $('#schedule-toss-button').click(function() {
-        $('#schedule-toss-modal').modal('show');
-    });
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
-    $('.datetimepicker').datetimepicker({value:moment().format()});
 {% endblock extra_jq_ready %}
 {% block content %}
     {# breadcrumb to assist the creation of a public draw #}
@@ -287,137 +289,139 @@
     {% endif %}
     <!-- End Chat -->
 
-    <!-- Modal settings Panel -->
-    <div id="public-draw-settings" class="modal fade" tabindex="-1" role="dialog" data-focus-on="input:first">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div id="settings-general">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">{% trans "Public draw settings" %}</h4>
+    {% if bom.is_shared %}
+        <!-- Modal settings Panel -->
+        <div id="public-draw-settings" class="modal fade" tabindex="-1" role="dialog" data-focus-on="input:first">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div id="settings-general">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Public draw settings" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul id="" class="list-group">
+                                <li id="edit-draw" class="settings-option list-group-item">{% trans "Edit draw configuration" %}</li>
+                                <li id="invite" class="settings-option list-group-item">{% trans "Invite people" %}</li>
+                                <li id="privacy" class="settings-option list-group-item">{% trans "Who can access your draw" %}</li>
+                                <li class="settings-option list-group-item"><input type="checkbox" id="settings-show-in-public-list" {%if bom.show_in_public_list %}checked{%endif%}>{% trans "Show the draw in 'Recently created'" %}</li>
+                                <li class="settings-option list-group-item"><input type="checkbox" id="settings-chat-enabled" {%if bom.enable_chat %}checked{%endif%}>{% trans "Enable chat" %}</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Cancel" %}</button>
+                            <button id="save-settings" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <ul id="" class="list-group">
-                            <li id="edit-draw" class="settings-option list-group-item">{% trans "Edit draw configuration" %}</li>
-                            <li id="invite" class="settings-option list-group-item">{% trans "Invite people" %}</li>
-                            <li id="privacy" class="settings-option list-group-item">{% trans "Who can access your draw" %}</li>
-                            <li class="settings-option list-group-item"><input type="checkbox" id="settings-show-in-public-list" {%if bom.show_in_public_list %}checked{%endif%}>{% trans "Show the draw in 'Recently created'" %}</li>
-                            <li class="settings-option list-group-item"><input type="checkbox" id="settings-chat-enabled" {%if bom.enable_chat %}checked{%endif%}>{% trans "Enable chat" %}</li>
-                        </ul>
+                    <div id="settings-edit-draw" class="settings-submenu hide">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Edit draw configuration" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {% trans "If you modify the draw's configuration the spectator will be notified about these changes. Are you sure you want to continue?" %}
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
+                            <a id="edit-draw-confirmation" class="btn btn-warning">{% trans "Edit draw" %}</a>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Cancel" %}</button>
-                        <button id="save-settings" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+                    <div id="settings-invite" class="settings-submenu hide">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Invite people" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <span class="invite-people-option">{% trans "Option 1)" %}</span>
+                            <p>{% trans "Share the link to the draw:" %}</p>
+                            <input class="url-share text-center" readonly>
+                            <span class="invite-people-option">{% trans "Option 2)" %}</span>
+                            <p>{% trans "Send an invitation to the emails below" %}</p>
+                            <div id="alert-invitation-failed" class="alert feedback alert-danger hide" role="alert">
+                                <strong>{% trans "Ops!" %}</strong> {% trans "One or more emails contain errors..." %}
+                            </div>
+                            <div id="alert-invitation-success" class="alert feedback alert-success hide" role="alert">
+                                <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
+                            </div>
+                            <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
+                            <div class="text-center"><a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a></div>
+
+                            <div class="clearfix">
+                                <div class="invited-users">
+                                    <span class="invited-users-spoiler" data-toggle="collapse">{% trans "Who is already invited?" %} <span class="fa fa-chevron-down"></span></span>
+                                </div>
+                                <div class="collapse out">
+                                  <div>
+                                    <input type="text" id="invited-users" class="form-control" value="{% for user in bom.users %}{{ user }} {% endfor %}">
+                                  </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
+                            <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Close" %}</button>
+                        </div>
+                    </div>
+
+                    <div id="settings-privacy" class="settings-submenu hide">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans "Restrict the access to your draw" %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {% include "snippets/snippet_public_draw_privacy.html" %}
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
+                            <button id="save-change-privacy" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+                        </div>
                     </div>
                 </div>
-                <div id="settings-edit-draw" class="settings-submenu hide">
+            </div>
+        </div>
+
+        <!-- "Scheduling toss" modal -->
+        <div id="schedule-toss-modal" class="modal fade"  tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">{% trans "Edit draw configuration" %}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{% trans "Schedule Toss" %}</h4>
                     </div>
                     <div class="modal-body">
-                        {% trans "If you modify the draw's configuration the spectator will be notified about these changes. Are you sure you want to continue?" %}
+                        <p>{% trans "Do you want to schedule the generation of a result?" %}</p>
+                        <p>{% trans "This way it will appear automatically." %}</p>
+                        <input id="toss-schedule" class="datetimepicker" type="text" >
                     </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
-                        <a id="edit-draw-confirmation" class="btn btn-warning">{% trans "Edit draw" %}</a>
+                    <div class="modal-footer text-center ">
+                        <button type="button" class="btn btn-primary" id="confirm-schedule-button" autocomplete="off">{% trans "Schedule it!" %}</button>
                     </div>
                 </div>
-                <div id="settings-invite" class="settings-submenu hide">
+            </div>
+        </div>
+
+        <!-- "Well done & sharing link" modal -->
+        <div id="well-done-modal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="WellDone">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">{% trans "Invite people" %}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{% trans "Well done!" %}</h4>
                     </div>
                     <div class="modal-body">
-                        <span class="invite-people-option">{% trans "Option 1)" %}</span>
-                        <p>{% trans "Share the link to the draw:" %}</p>
+                        <p>{% trans "You have created a public draw." %}</p>
+                        <p>{% trans "You can invite people using this link:" %}</p>
                         <input class="url-share text-center" readonly>
-                        <span class="invite-people-option">{% trans "Option 2)" %}</span>
-                        <p>{% trans "Send an invitation to the emails below" %}</p>
-                        <div id="alert-invitation-failed" class="alert feedback alert-danger hide" role="alert">
-                            <strong>{% trans "Ops!" %}</strong> {% trans "One or more emails contain errors..." %}
-                        </div>
-                        <div id="alert-invitation-success" class="alert feedback alert-success hide" role="alert">
-                            <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
-                        </div>
-                        <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
-                        <div class="text-center"><a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a></div>
-
-                        <div class="clearfix">
-                            <div class="invited-users">
-                                <span class="invited-users-spoiler" data-toggle="collapse">{% trans "Who is already invited?" %} <span class="fa fa-chevron-down"></span></span>
-                            </div>
-                            <div class="collapse out">
-                              <div>
-                                <input type="text" id="invited-users" class="form-control" value="{% for user in bom.users %}{{ user }} {% endfor %}">
-                              </div>
-                            </div>
-                        </div>
-
                     </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
-                        <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Close" %}</button>
-                    </div>
-                </div>
-
-                <div id="settings-privacy" class="settings-submenu hide">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">{% trans "Restrict the access to your draw" %}</h4>
-                    </div>
-                    <div class="modal-body">
-                        {% include "snippets/snippet_public_draw_privacy.html" %}
-                    </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
-                        <button id="save-change-privacy" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
+                    <div class="modal-footer text-center ">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Take me to the draw" %}</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- "Scheduling toss" modal -->
-    <div id="schedule-toss-modal" class="modal fade"  tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">{% trans "Schedule Toss" %}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>{% trans "Do you want to schedule the generation of a result?" %}</p>
-                    <p>{% trans "This way it will appear automatically." %}</p>
-                    <input id="toss-schedule" class="datetimepicker" type="text" >
-                </div>
-                <div class="modal-footer text-center ">
-                    <button type="button" class="btn btn-primary" id="confirm-schedule-button" autocomplete="off">{% trans "Schedule it!" %}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- "Well done & sharing link" modal -->
-    <div id="well-done-modal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="WellDone">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">{% trans "Well done!" %}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>{% trans "You have created a public draw." %}</p>
-                    <p>{% trans "You can invite people using this link:" %}</p>
-                    <input class="url-share text-center" readonly>
-                </div>
-                <div class="modal-footer text-center ">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Take me to the draw" %}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
+    {% endif %}
+{% endblock content %}
 
 {% block right_column %}
     <div id="chat-column" class="col-xs-12 chat chat-outside hidden"></div>
