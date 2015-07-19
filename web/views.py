@@ -241,7 +241,7 @@ def create_draw(request, draw_type, is_public):
                 ga_track_event(category="create_draw", action=bom_draw.draw_type, label=shared_type)
                 # notify users if any
                 if bom_draw.users:
-                    owner = bom_draw.owner if bom_draw.owner else "Annon"
+                    owner = bom_draw.owner if bom_draw.owner else _("An anonymous user")
                     invite_user(bom_draw.users, bom_draw.pk, owner)
 
                 return redirect('retrieve_draw', draw_id=bom_draw.pk)
