@@ -180,7 +180,7 @@
             </thead>
             <tbody>
             {% for d in public_draws %}
-                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}" data-pwd="{% if user.pk in d.owner %}false{% else %}{{d.password|yesno:"true,false"}}{% endif %}">
+                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}" data-pwd="{% if user.pk == d.owner %}false{% else %}{{d.password|yesno:"true,false"}}{% endif %}">
                     <td>{% if user.is_authenticated %}
                             {% if user.pk == d.owner %}
                                 <span title="{% trans "You have created this draw" %}" class="fa fa-paw"></span>
