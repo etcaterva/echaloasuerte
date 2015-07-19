@@ -9,10 +9,15 @@
     dinamically advance breadcrum
 #}
 {% block extra_head %}
+    <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
-    <script src="{% static 'js/favourites.js' %}"></script>
-    {% if is_public %}
-        <script src="{% static 'js/moment.js' %}"></script>
+    <script src="{% static 'js/moment.js' %}"></script>
+    <link href="{% static 'css/jquery.bracket.css' %}" rel="stylesheet" />
+    <script src="{% static 'js/jquery.bracket.js' %}"></script>
+    <script src="{% static 'js/card.js' %}"></script>
+    <script src="{% static 'js/coin.js' %}"></script>
+    <script src="{% static 'js/dice.js' %}"></script>
+    {% if bom.is_shared %}
         <script src="{% static 'js/slideSelector.js' %}"></script>
         <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
         <script src="{% static 'js/public_draw_creator.js' %}"></script>
