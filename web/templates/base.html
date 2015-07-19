@@ -16,12 +16,14 @@
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}img/favicon.ico"/>
 
+    <link href="{% static 'css/eas-base.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fonts.css' %}" rel="stylesheet">
+
     <!-- FontAwesome -->
     <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
 
     <!-- JQuery -->
     <script src="{% static 'js/jquery-1.11.2.js' %}"></script>
-
 
     <!-- Bootstrap -->
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
@@ -35,23 +37,13 @@
     <link href="{% static 'css/jquery-ui.css' %}" rel="stylesheet" />
     <script src="{% static 'js/jquery-ui.js' %}"></script>
 
-    <!-- Plugins -->
-    <link href="{% static 'css/jquery.datetimepicker.css' %}" rel="stylesheet" />
-    <script src="{% static 'js/jquery.datetimepicker.js' %}"></script>
-    <link href="{% static 'css/jquery.bracket.css' %}" rel="stylesheet" />
-    <script src="{% static 'js/jquery.bracket.js' %}"></script>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="{% static 'css/fonts.css' %}" rel="stylesheet">
-    <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
-    <link href="{% static 'css/eas-base.css' %}" rel="stylesheet">
 
-    <script src="{% static 'js/card.js' %}"></script>
-    <script src="{% static 'js/coin.js' %}"></script>
-    <script src="{% static 'js/dice.js' %}"></script>
+
 
     {% block extra_head %}{% endblock extra_head %}
     <script>

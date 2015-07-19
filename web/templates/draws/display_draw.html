@@ -6,14 +6,20 @@
 {% load is_future %}
 {% block title %}{{ bom.title }} | {% endblock title %}
 {% block extra_head %}
+    <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
+
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/favourites.js' %}"></script>
     <script src="{% static 'js/moment.js' %}"></script>
-    <script src="{% static 'js/slideSelector.js' %}"></script>
-    <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
     <script src="{% static 'js/public_draw_displayer.js' %}"></script>
     <script src="{% static 'js/chat.js' %}"></script>
+    <script src="{% static 'js/slideSelector.js' %}"></script>
+    <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
 
+    <link href="{% static 'css/jquery.datetimepicker.css' %}" rel="stylesheet" />
+    <script src="{% static 'js/jquery.datetimepicker.js' %}"></script>
+    <link href="{% static 'css/jquery.bracket.css' %}" rel="stylesheet" />
+    <script src="{% static 'js/jquery.bracket.js' %}"></script>
     <script src="{% static 'js/card.js' %}"></script>
     <script src="{% static 'js/coin.js' %}"></script>
     <script src="{% static 'js/dice.js' %}"></script>
