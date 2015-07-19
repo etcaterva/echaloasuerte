@@ -1,5 +1,5 @@
 from django import forms
-from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 
 
@@ -33,6 +33,7 @@ class FormBase(forms.Form):
     users = forms.CharField(required=False)
     '''User invited to the draw, in case of been public. It needs to be rendered manually in the templates'''
 
+    DEFAULT_TITLE = _("New Draw")
     TEMPLATE_PATH = None
     NAME_IN_URL = None
 

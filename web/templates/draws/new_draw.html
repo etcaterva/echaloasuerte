@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% block title %}{% trans 'New Draw'  %} | {% endblock title %}
+{% block title %}{{ default_title }} | {% endblock title %}
 {#
     variables: draw_type, is_public, default_title
     add messages from user.messages (puedes meter aqui los info y no te hace falta draw_type)
