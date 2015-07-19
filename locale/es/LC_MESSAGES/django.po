@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-19 21:14+0000\n"
+"POT-Creation-Date: 2015-07-19 21:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mario Corchero\n"
 "Language: Spanish\n"
@@ -1383,6 +1383,10 @@ msgstr "La tirada no es factible"
 #: web/views.py:239
 msgid "Draw created successfully"
 msgstr "Tirada creada con éxito"
+
+#: web/views.py:244
+msgid "An anonymous user"
+msgstr "Un usuario anónimo"
 
 #: web/views.py:292
 msgid "Draw updated successfully"
