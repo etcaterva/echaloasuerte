@@ -96,16 +96,32 @@
             "msg_toss": "Click on the 'Toss' button to try the draw first"
     });
     {% if bom.is_shared %}
+        // Anonimous users
+        {% if user.is_authenticated %}
+            var user_name = "{{ user.pk }}";
+        {% else %}
+            var user_name = getCookie("user_name");
+            if (!user_name) {
+                $('#ask-username-modal').modal('show');
+                $('#anon-username-button').click(function(){
+                    setCookie("user_name", $('#anon-username').val());
+                    window.location.reload();
+                });
+            }
+        {% endif %}
+
         var $chat_containers = $('#chat-frame, #chat-column');
 		var $chats = $chat_containers.chat({
-            "authorized": {%if user.is_anonymous%} false {% else %} true {% endif %},
+            "authorized": {%if user.is_anonymous%} Boolean(user_name) {% else %} true {% endif %},
             "is_enabled": {{bom.enable_chat|yesno:"true,false"}},
             "url_send_message": "{% url 'chat_add_message' %}",
+            "user_name": user_name,
             "draw_id": "{{ bom.pk }}",
             "msg_type_your_message": "{% trans 'Type your message here...' %}",
             "msg_login_first": "{% trans 'Please, log in to be able to use the chat'%}",
             "msg_chat": "{% trans 'Chat' %}",
-            "msg_send": "{% trans 'Send' %}"
+            "msg_send": "{% trans 'Send' %}",
+            "default_avatar": "{% static 'img/anon-user-avatar.png' %}"
         });
 
         PublicDraw.draw_id = "{{ bom.pk }}";
@@ -156,14 +172,6 @@
             $('#schedule-toss-modal').modal('show');
         });
 
-
-        // Anonimous users
-        {% if not user.is_authenticated %}
-            //var user_name = getCookie("user_name");
-            //if (!user_name) {
-                $('#ask-username-modal').modal('show');
-            //}
-        {% endif %}
     {% else %}
         $("#draw-form :input").change(function(changed_input) {
             draw_updated_flag = true; //marks the draw as updated
@@ -453,8 +461,12 @@
                         <p>{% trans "Hi there! You are not logged in." %}</p>
                         <p>{% trans "This limits the actions you are able to perform in the draw." %}</p>
                         <p>{% trans "Do you want to register, log in, or at least give us your name? :)" %}</p>
-                        <div class="text-center ">
-                            <a href="{% url 'login' %}"><button type="button" class="btn btn-primary">{% trans "Log in" %}</button></a>
+                        <div class="text-center">
+                            <input id="anon-username" type="text" placeholder="{% trans 'Type your name here...' %}"/>
+                            <button id="anon-username-button" type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Ok" %}</button>
+                        </div><br />
+                        <div class="text-center" >
+                            <a href="{% url 'login' %}"><button type="button" class="btn">{% trans "Log in" %}</button></a>
                             <a href="{% url 'register' %}"><button type="button" class="btn">{% trans "Register" %}</button></a>
                             <button type="button" class="btn" data-dismiss="modal">{% trans "No thanks" %}</button>
                         </div>

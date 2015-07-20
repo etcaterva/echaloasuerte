@@ -7,10 +7,12 @@
             authorized: false,
             url_send_message: "",
             draw_id: "",
+            user_name: "",
             msg_type_your_message: "",
             msg_chat: "",
             msg_login_first: "",
-            msg_send: ""
+            msg_send: "",
+            default_avatar: ""
         };
 
     /*********************************
@@ -77,6 +79,7 @@
                 method : "GET",
                 data: {
                     draw_id : this.options.draw_id,
+                    user_name : this.options.user_name,
                     message : message
                 }
             });
@@ -103,7 +106,7 @@
         // Given a chat entry generates and returns the html code necessarry to be rendered
         formatChatEntry: function (chat_entry){
             var user = chat_entry.user;
-            var avatar = chat_entry.avatar;
+            var avatar = chat_entry.avatar || this.options.default_avatar;
             var content = chat_entry.content;
             var time = moment.utc(chat_entry.creation_time).fromNow();
             var html = '<li class="clearfix">' +

@@ -217,13 +217,19 @@ def add_message_to_chat(request):
     """Adds a message to a chat"""
     draw_id = request.GET.get('draw_id')
     message = request.GET.get('message')
-    user = request.user.pk
+    user = request.GET.get('user_name')
     MONGO.add_chat_message(draw_id, message, user)
     return HttpResponse()
 
 
 # @time_it
 def get_draw_details(request):
+    def get_user_image(username):
+        """function to get either the user avatar or an empty string"""
+        try:
+            return MONGO.retrieve_user(username).user_image
+        except Exception:
+            return ""
     draw_id = request.GET.get('draw_id')
     draw = MONGO.retrieve_draw(draw_id)
     try:
@@ -233,7 +239,7 @@ def get_draw_details(request):
 
     try:
         users = set([message["user"] for message in messages])
-        users_map = {name: MONGO.retrieve_user(name).user_image for name in users}
+        users_map = {name: get_user_image(name) for name in users}
         for message in messages:
             message["avatar"] = users_map[message["user"]]
     except Exception as exception:
