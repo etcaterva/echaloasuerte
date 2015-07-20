@@ -121,6 +121,7 @@
 
         var url_draw = location.protocol + "//" + location.host + "{% url "retrieve_draw" draw_id=bom.pk %}";
         $('.url-share').val(url_draw);
+        $('#share-fb-icon').attr("data-href", url_draw);
 
         {% if bom.owner == user.pk %}
             var drawDate = moment.utc("{{bom.creation_time.isoformat}}");
@@ -422,6 +423,8 @@
                         <p>{% trans "You have created a public draw." %}</p>
                         <p>{% trans "You can invite people using this link:" %}</p>
                         <input class="url-share text-center" readonly>
+                        <p>{% trans "Or Facebook:" %}</p>
+                        <div id="share-fb-icon" class="fb-share-button" data-href="" data-layout="button"></div>
                     </div>
                     <div class="modal-footer text-center ">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Take me to the draw" %}</button>
