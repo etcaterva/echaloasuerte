@@ -212,6 +212,7 @@ ALLOWED_HOSTS = [
     '92.222.28.167',
 ]
 
+LOGIN_URL = "/accounts/sigin/"
 
 #EMAIL settings
 DEFAULT_FROM_EMAIL = "echaloasuerte@gmail.com"
