@@ -7,9 +7,15 @@
     {% if not user.is_authenticated and is_public %}
         $('#warning-login').modal('show');
     {% endif %}
+<!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+    window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":null,"theme":"light-bottom"};
+
+<!-- End Cookie Consent plugin -->
+
 {% endblock extra_jq_ready %}
 
 {% block content %}
+    <script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
     {# breadcrumb to assist the creation of a public draw #}
     {% include "snippets/snippet_breadcrumb.html" %}
     <div class="container-draws row">
