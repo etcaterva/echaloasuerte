@@ -221,13 +221,14 @@
                     <div class="hidden-xs col-xs-2 col-sm-2 col-sm-push-8"></div>
                 {% endif %}
             {% else %}
+                <div class="col-xs-2 col-sm-2 col-sm-push-8 text-center ">
                     <a id="fav-button"
                     {% if bom.pk in user.favourites %}
                     data-active="y"
                     {% else %}
                     data-active="n"
                     {% endif %}
-                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favourites col-xs-2 col-sm-2 col-sm-push-8 text-center ">
+                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favourites col-sm-push-8 text-center ">
                         <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x hide"></span>
                     {% if bom.pk in user.favourites %}
                         <img src="{% static "img/star.png" %}" alt="{% trans "Remove from favourites" %}"/>
@@ -235,6 +236,10 @@
                         <img src="{% static "img/star-o.png" %}" alt="{% trans "Add to favourites" %}"/>
                     {% endif %}
                     </a>
+                    <a href="{% url 'create_public_draw' draw_type=draw.NAME_IN_URL %}" class="add-favourites" title="{% trans 'Create a public one' %}">
+                        <img src="{% static 'img/share-icon.png' %}" />
+                    </a>
+                </div>
             {% endif %}
             <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
                 <textarea name="title" class="form-control protected autogrow draw-title-area text-center" rows="1">{{ bom.title }}</textarea>
