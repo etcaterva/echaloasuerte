@@ -61,18 +61,24 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
             'filename': BASE_LOG_PATH + 'echaloasuerte_log.txt',
+            'maxBytes': 1024*1024*30, # 30 MB
+            'backupCount': 5,
         },
         'error_log_file': {
             'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
             'filename': BASE_LOG_PATH + 'echaloasuerte_err.txt',
+            'maxBytes': 1024*1024*30, # 30 MB
+            'backupCount': 5,
         },
         'debug_log_file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
             'filename': BASE_LOG_PATH + 'echaloasuerte_debug.txt',
+            'maxBytes': 1024*1024*30, # 30 MB
+            'backupCount': 5,
         },
     },
     'loggers': {
