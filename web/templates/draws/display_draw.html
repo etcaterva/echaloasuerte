@@ -101,18 +101,10 @@
             var user_name = "{{ user.pk }}";
         {% else %}
             var user_name = getCookie("user_name");
-            if (!user_name) {
-                $('#ask-username-modal').modal('show');
-                $('#anon-username-button').click(function(){
-                    setCookie("user_name", $('#anon-username').val());
-                    window.location.reload();
-                });
-            }
         {% endif %}
 
         var $chat_containers = $('#chat-frame, #chat-column');
 		var $chats = $chat_containers.chat({
-            "authorized": {%if user.is_anonymous%} Boolean(user_name) {% else %} true {% endif %},
             "is_enabled": {{bom.enable_chat|yesno:"true,false"}},
             "url_send_message": "{% url 'chat_add_message' %}",
             "user_name": user_name,
@@ -120,6 +112,7 @@
             "msg_type_your_message": "{% trans 'Type your message here...' %}",
             "msg_login_first": "{% trans "To use the chat you should <a href='#'>login</a> or <a href='#'>register</a>" %}",
             "msg_alias": "{% trans "If not, simply type an Alias that allows others to recognize you" %}",
+            "msg_error_alias": "{% trans "The alias mus have between 2 and 20 characters" %}",
             "msg_access_chat": "{% trans "Access chat" %}",
             "msg_chat": "{% trans 'Chat' %}",
             "msg_send": "{% trans 'Send' %}",

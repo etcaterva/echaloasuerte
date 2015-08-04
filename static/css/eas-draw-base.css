@@ -285,7 +285,7 @@ a.fa:focus {
     height: auto;
 }
 
-#login-for-chat {
+.login-for-chat {
     position:absolute;
     color: white;
     left:15px;
@@ -294,22 +294,22 @@ a.fa:focus {
     z-index: 5;
 }
 
-#login-for-chat p:first-of-type a{
+.login-for-chat p:first-of-type a{
     color: #A4D3FE;
 }
 
-#login-for-chat p:first-of-type{
+.login-for-chat p:first-of-type{
     margin-bottom: 60px;
 }
 
-#login-for-chat .form-group {
+.login-for-chat .form-group {
     margin: 0 auto 15px auto;
     float: none;
     width: 80%;
     max-width: 200px;
 }
 
-.chat #login-for-chat ~ .panel-chat:before {
+.chat .login-for-chat ~ .panel-chat:before {
     content: "";
     background-color: #080808;
     z-index: 3;
