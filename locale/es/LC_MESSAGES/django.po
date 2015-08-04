@@ -46,7 +46,7 @@ msgid "Flip a Coin"
 msgstr "Tira una moneda"
 
 #: server/forms/coin_form.py:16
-msgid "Tap the coin to flip it."
+msgid "Tap the coin to flip it"
 msgstr "Toca la moneda para lanzarla"
 
 #: server/forms/dice_form.py:9
@@ -131,7 +131,7 @@ msgid "Range is too small"
 msgstr "Rango demasiado pequeño"
 
 #: server/forms/random_number_form.py:52
-msgid "Range is too small, may be you want to allow repeated numbers?"
+msgid "Range is too small, maybe you want to allow repeated numbers?"
 msgstr "El rango es demasiado pequeño, quizas quiera permitir repeticiones."
 
 #: server/forms/tournament_form.py:9
@@ -177,7 +177,7 @@ msgid ""
 "\n"
 "        <h1 class=\"h2\">About EchaloASuerte.com</h1>\n"
 "        <p>Tired of taking hours to agree with your friends on something? "
-"This is your web page.</p>\n"
+"This is your web page!</p>\n"
 "        <p>EchaloASuerte provides you with guaranteed random values "
 "releasing you from having to take hard decisions and get all the "
 "responsibility for them.</p>\n"
@@ -612,7 +612,7 @@ msgid "Send an invitation to the emails below"
 msgstr "Enviar una invitación a los correos siguientes:"
 
 #: web/templates/draws/display_draw.html:373 web/templates/join_draw.html:231
-msgid "Ops!"
+msgid "Oops!"
 msgstr "Ups!"
 
 #: web/templates/draws/display_draw.html:373
@@ -814,7 +814,7 @@ msgid "Let's play some drinking games!"
 msgstr "¡Juegos para beber!"
 
 #: web/templates/index.html:25
-msgid "Roll a die"
+msgid "Roll a dice"
 msgstr "Tira un dado"
 
 #: web/templates/index.html:25
@@ -1379,7 +1379,7 @@ msgid "What should you cook today?"
 msgstr "¿Que cocinas hoy?"
 
 #: web/views.py:127
-msgid "Who is paing this round?"
+msgid "Who is paying this round?"
 msgstr "¿Quien paga esta ronda?"
 
 #: web/views.py:128
@@ -1387,7 +1387,7 @@ msgid "Who will take the best bed?"
 msgstr "¿Quien se queda con la mejor cama?"
 
 #: web/views.py:129
-msgid "Not enaugh cake for everybody?"
+msgid "Not enough cake for everybody?"
 msgstr "¿No hay suficiente tarta para todos?"
 
 #: web/views.py:130
