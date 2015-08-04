@@ -23,11 +23,11 @@ msgstr "Español"
 
 #: echaloasuerte/settings/common.py:63
 msgid "English"
-msgstr "Ingles"
+msgstr "Inglés"
 
 #: server/forms/card_form.py:9
 msgid "French"
-msgstr "Frances"
+msgstr "Francés"
 
 #: server/forms/card_form.py:15
 msgid "Number of cards to draw"
@@ -83,7 +83,7 @@ msgid ""
 "role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>"
 msgstr ""
 "<div id='info-comma-separated' class='alert alert-info' role='alert'>Separa "
-"los elementos por comas. e.g: Maria, David S, Leo, ...</div>"
+"los elementos por comas. p.ej: Maria, David S, Leo, ...</div>"
 
 #: server/forms/random_item_form.py:9 server/forms/random_letter_form.py:9
 #: server/forms/random_number_form.py:11
@@ -104,11 +104,11 @@ msgstr "Elemento aleatorio"
 
 #: server/forms/random_item_form.py:39
 msgid "Any result?"
-msgstr "¿Algun resultado?"
+msgstr "¿Algún resultado?"
 
 #: server/forms/random_letter_form.py:11
 msgid "Random Letter"
-msgstr "Lettra aleatoria"
+msgstr "Letra aleatoria"
 
 #: server/forms/random_letter_form.py:29 server/forms/random_number_form.py:39
 msgid "Between 1 and 50"
@@ -128,7 +128,7 @@ msgstr "Número Aleatorio"
 
 #: server/forms/random_number_form.py:48
 msgid "Range is too small"
-msgstr "Rando demasiado pequeño"
+msgstr "Rango demasiado pequeño"
 
 #: server/forms/random_number_form.py:52
 msgid "Range is too small, may be you want to allow repeated numbers?"
@@ -149,7 +149,7 @@ msgid ""
 "div>"
 msgstr ""
 "<div id='info-comma-separated' class='alert alert-info' role='alert'>Separa "
-"los elementos por comas. e.g: Maria, David S, Leo, ...</div>"
+"los elementos por comas. p.ej: Maria, David S, Leo, ...</div>"
 
 #: web/common.py:15
 #, python-brace-format
@@ -190,14 +190,14 @@ msgid ""
 msgstr ""
 "\n"
 "        <h1 class=\"h2\">Acerca de EchaloASuerte.com</h1>\n"
-"        <p>¿Cansado de pasar horas para tomar una decision con tus amigos? "
-"¡Esta es tu pagina web!.</p>\n"
-"        <p>EchaloASuerte te proporciona valores aleatorios liberandote de "
+"        <p>¿Cansado de pasar horas para tomar una decisión con tus amigos? "
+"¡Esta es tu página web!</p>\n"
+"        <p>EchaloASuerte te proporciona valores aleatorios liberándote de "
 "tomar decisiones y tomar responsabilidad por ellas</p> \n"
 "        <p>Esta web te permite crear lo que llamamos una \"tirada publica\". "
-"Donde tus amigos podran ver todos a la misma vez resultados que tu generes , "
+"Donde tus amigos podrán ver todos a la misma vez resultados que tu generes, "
 "asegurando que tu no hagas trampas!</p>\n"
-"        <p>Por ultimo, la web esta  optimizada para mobiles, asi que puedes "
+"        <p>Por último, la web está optimizada para móviles, así que puedes "
 "crear y administrar tiradas en cualquier sitio!</p>\n"
 "    "
 
@@ -210,7 +210,7 @@ msgid ""
 msgstr ""
 "\n"
 "        <h2>El equipo</h2>\n"
-"        <p>Echaloasuerte esta compuesto por tres personas.</p>\n"
+"        <p>Echaloasuerte está compuesto por tres personas.</p>\n"
 "    "
 
 #: web/templates/about.html:73
@@ -238,23 +238,23 @@ msgstr ""
 "\n"
 "    <h2>Historia</h2>\n"
 "        <p>Echaloasuerte lleva activo desde 2010, cuando era una simple "
-"pagina  que permitia a varios usuarios tomar deiciones sin tener que estar "
-"juntos.  Era una pagina bastante cruda escrita en PHP/HTML/mysql.</p>\n"
+"pagina  que permitía a varios usuarios tomar decisiones sin tener que estar "
+"juntos.  Era una página bastante cruda escrita en PHP/HTML/mysql.</p>\n"
 "        <p>A mitad de 2012 aprendimos a usar AJAX y JQuery, ¿y que mejor "
-"sitio para ponerlo en practica que la web?  La web se volvio mas dinamica y "
+"sitio para ponerlo en practica que la web?  La web se volvió mas dinámica y "
 "facil de usar.</p>\n"
-"        <p>A finales de 2014 el trafico en la web empezo a crecer por encima "
+"        <p>A finales de 2014 el trafico en la web empezó a crecer por encima "
 "de 13.000 visitas al mes de todas las partes del mundo, lo que nos hizo "
-"darnos cuenta que el sitio merecia un rediseño. Dos amigos se unieron al "
-"projecto, David y Pedro.\n"
-"        Empezamos a reescribirlo todo usando directamente un VPS. Teniamos "
-"dos objetivos, aprender y mejorar la pagina, Hemos usado las siguientes "
-"tecnologias/herramientas jquery, django, github, jenkins, travis, kibana, "
-"mongodb, ansible, unix, apache, bootstrap, cloudflare.</p>\n"
+"darnos cuenta que el sitio merecía un rediseño. Dos amigos se unieron al "
+"proyecto, David y Pedro.\n"
+"        Empezamos a reescribirlo todo usando directamente un VPS. Teníamos "
+"dos objetivos, aprender y mejorar la página, Hemos usado las siguientes "
+"tecnologías/herramientas jQuery, Django, GitHub, Jenkins, Travis, Kibana, "
+"MongoDB, Ansible, Unix, Apache, Bootstrap, CloudFlare.</p>\n"
 "        <p>En resumen, Echaloasuerte es una web que nos dio la oportunidad "
 "de aprender y poner en practica lo aprendido a la vez que los usuarios la "
-"encontraban atractiva ya que ofrecia soluciones que ninguna otra pagina daba "
-"(como las tiradas publicas).</p>\n"
+"encontraban atractiva ya que ofrecía soluciones que ninguna otra página daba "
+"(como las tiradas públicas).</p>\n"
 "    "
 
 #: web/templates/about.html:81
@@ -278,14 +278,14 @@ msgid ""
 msgstr ""
 "\n"
 "        <h2>Contribuciones</h2>\n"
-"            <p>Esta pagina es gratuita y libre.</p>\n"
+"            <p>Esta página es gratuita y libre.</p>\n"
 "            <h3>Libre</h3>\n"
-"                <p>El código de la pagina es abierto, puedes entrar en <a "
+"                <p>El código de la página es abierto, puedes entrar en <a "
 "href=\"https://github.com/etcaterva/EchaloASuerte\">nuestro repositorio</a> "
 "y contribuir. </p>\n"
 "            <h3>Gratis</h3>\n"
-"                <p>Gratuita y sin anuncios, asi es como queremos que la "
-"pagina funcione. Nostros asumimos el coste de desarrollo, servidores y "
+"                <p>Gratuita y sin anuncios, así es como queremos que la "
+"página funcione. Nosotros asumimos el coste de desarrollo, servidores y "
 "mantenimiento para que disfrutes del sitio :)</p>\n"
 "                <p>Sin embargo, si quieres agradecer nuestro esfuerzo puedes "
 "<a>pagarnos una cerveza</a>, vamos a necesitar muchas para seguir mejorando "
@@ -309,7 +309,7 @@ msgstr "favoritos"
 
 #: web/templates/base.html:299 web/templates/base.html.py:321
 msgid "Join public draw"
-msgstr "Tiradas Publicas"
+msgstr "Tiradas Públicas"
 
 #: web/templates/base.html:302 web/templates/base.html.py:324
 msgid "Create public draw"
@@ -321,7 +321,7 @@ msgstr "Salir"
 
 #: web/templates/base.html:316
 msgid "Public Draw"
-msgstr "Tirada Publica"
+msgstr "Tirada Pública"
 
 #: web/templates/base.html:351
 msgid "My profile"
@@ -355,7 +355,7 @@ msgstr "¿Aún no tienes cuenta?"
 
 #: web/templates/base.html:404
 msgid "Sign up now!"
-msgstr "¡Registate!"
+msgstr "¡Regístrate!"
 
 #: web/templates/base.html:424
 msgid "Favourites"
@@ -401,7 +401,7 @@ msgstr "Quiero informar sobre un error"
 msgid ""
 "Please, describe your idea. Give us links, images... whatever you consider "
 "that may be helpful."
-msgstr "Por favor, describe la idea, puedes darnos enlaces, imagenes, ..."
+msgstr "Por favor, describe la idea, puedes darnos enlaces, imágenes, ..."
 
 #: web/templates/base.html:545
 msgid "Please, give us details about the bug. How can we reproduce it?"
@@ -538,12 +538,12 @@ msgstr "Este resultado sera visible "
 
 #: web/templates/draws/display_draw.html:332
 msgid "Public draw settings"
-msgstr "Configuracion de la tirada pública"
+msgstr "Configuración de la tirada pública"
 
 #: web/templates/draws/display_draw.html:336
 #: web/templates/draws/display_draw.html:351
 msgid "Edit draw configuration"
-msgstr "Editar configuracion de la tirada"
+msgstr "Editar configuración de la tirada"
 
 #: web/templates/draws/display_draw.html:337
 #: web/templates/draws/display_draw.html:364
@@ -581,15 +581,15 @@ msgid ""
 "If you modify the draw's configuration the spectator will be notified about "
 "these changes. Are you sure you want to continue?"
 msgstr ""
-"Si modificas la configuracion de la tirada, el resto de usuarios seran "
-"notificados ¿Estas seguro de continuar?"
+"Si modificas la configuración de la tirada, el resto de usuarios serán "
+"notificados ¿Estás seguro de continuar?"
 
 #: web/templates/draws/display_draw.html:357
 #: web/templates/draws/display_draw.html:394
 #: web/templates/draws/display_draw.html:408
 #: web/templates/draws/new_draw.html:92
 msgid "Back"
-msgstr "Atras"
+msgstr "Atrás"
 
 #: web/templates/draws/display_draw.html:358
 msgid "Edit draw"
@@ -625,12 +625,12 @@ msgstr "Todo fue como bien!"
 
 #: web/templates/draws/display_draw.html:376
 msgid "The invitation will arrive soon to these emails."
-msgstr "La invitacion llegará en unos momentos a estos correos."
+msgstr "La invitación llegará en unos momentos a estos correos."
 
 #: web/templates/draws/display_draw.html:378
 #: web/templates/draws/new_draw.html:137
 msgid "Type the emails here..."
-msgstr "Lista los correos aqui..."
+msgstr "Lista los correos aquí..."
 
 #: web/templates/draws/display_draw.html:379
 msgid "Send emails"
@@ -638,7 +638,7 @@ msgstr "Enviar emails"
 
 #: web/templates/draws/display_draw.html:383
 msgid "Who is already invited?"
-msgstr "¿Quiéen ha sido invitado?"
+msgstr "¿Quién ha sido invitado?"
 
 #: web/templates/draws/display_draw.html:402
 msgid "Restrict the access to your draw"
@@ -646,15 +646,15 @@ msgstr "Restringir el acceso a la tirada"
 
 #: web/templates/draws/display_draw.html:425
 msgid "Do you want to schedule the generation of a result?"
-msgstr "¿Quieres programar la generacion de un resultado?"
+msgstr "¿Quieres programar la generación de un resultado?"
 
 #: web/templates/draws/display_draw.html:426
 msgid "This way it will appear automatically."
-msgstr "De esta forma aparecera automaticamente."
+msgstr "De esta forma aparecerá automáticamente."
 
 #: web/templates/draws/display_draw.html:430
 msgid "Schedule it!"
-msgstr "¡Prgorama la tirada!"
+msgstr "¡Programa la tirada!"
 
 #: web/templates/draws/display_draw.html:442
 msgid "Well done!"
@@ -682,15 +682,15 @@ msgstr "No cerrar sesión"
 
 #: web/templates/draws/display_draw.html:466
 msgid "Hi there! You are not logged in."
-msgstr "¡Hola! No has iniciado sesion."
+msgstr "¡Hola! No has iniciado sesión."
 
 #: web/templates/draws/display_draw.html:467
 msgid "This limits the actions you are able to perform in the draw."
-msgstr "Esto limita las acciones que puedes tomar en un draw."
+msgstr "Esto limita las acciones que puedes tomar en la tirada."
 
 #: web/templates/draws/display_draw.html:468
 msgid "Do you want to register, log in, or at least give us your name? :)"
-msgstr "¿Deseas registrarte, iniciar sesion o al menos decirnos tu nombre? :)"
+msgstr "¿Deseas registrarte, iniciar sesión o al menos decirnos tu nombre? :)"
 
 #: web/templates/draws/display_draw.html:470
 msgid "Type your name here..."
@@ -714,7 +714,7 @@ msgstr "(opcional)"
 
 #: web/templates/draws/new_draw.html:96
 msgid "Click on the draw title to change it"
-msgstr "Haz click en el titulo de la tirada para cambiarlo"
+msgstr "Haz clic en el título de la tirada para cambiarlo"
 
 #: web/templates/draws/new_draw.html:121
 msgid "Who can access your draw?"
@@ -727,7 +727,7 @@ msgstr "Todo el mundo"
 
 #: web/templates/draws/new_draw.html:129
 msgid "It will help your friends to find your draw faster"
-msgstr "Ayudará a tus amigos a encontrar la tirar antés"
+msgstr "Ayudará a tus amigos a encontrar la tirar antes"
 
 #: web/templates/draws/new_draw.html:130
 msgid "Show the draw in the list 'Recently created'."
@@ -739,7 +739,7 @@ msgstr "Una invitación llegara a los emails introducidos a continuación"
 
 #: web/templates/draws/new_draw.html:148
 msgid "Try it!"
-msgstr "¡Pruebalá!"
+msgstr "¡Pruébala!"
 
 #: web/templates/draws/new_draw.html:154
 msgid "Next step"
@@ -794,7 +794,7 @@ msgstr "Acepto"
 
 #: web/templates/index.html:11
 msgid "More info"
-msgstr "Mas informacion"
+msgstr "Mas información"
 
 #: web/templates/index.html:23
 msgid "Flip a coin"
@@ -803,7 +803,7 @@ msgstr "Tira una moneda"
 #: web/templates/index.html:23
 msgid "Afraid of taking the wrong decision? Don't hesitate and throw the coin!"
 msgstr ""
-"¿Te asusta tomar la decision equivocada? ¡No lo dudes y tira una moneda!"
+"¿Te asusta tomar la decisión equivocada? ¡No lo dudes y tira una moneda!"
 
 #: web/templates/index.html:24
 msgid "Take a card"
@@ -823,7 +823,7 @@ msgstr "¿No tienes un dado a mano? ¡Tira este!"
 
 #: web/templates/index.html:26
 msgid "Organising a competition? This is your draw!"
-msgstr "¿Quieres organizar una competicion? ¡Esta es tu tirada!"
+msgstr "¿Quieres organizar una competición? ¡Esta es tu tirada!"
 
 #: web/templates/index.html:29
 msgid "Random number"
@@ -839,7 +839,7 @@ msgstr "Letra aleatoria"
 
 #: web/templates/index.html:30
 msgid "Not sure what letter to start the lis with? Just click here :)"
-msgstr "No estas segura de con qué letra empezar? ¡Haz click aqui!"
+msgstr "No estás segura de con qué letra empezar? ¡Haz clic aquí!"
 
 #: web/templates/index.html:31
 msgid "Pick random items from a list"
@@ -862,8 +862,8 @@ msgid ""
 "I've seen that you are not logged in.<br> Logging in has several benefits "
 "when creating a public draw:"
 msgstr ""
-"Parece que no estas registrado.<br> Los usuarios registrados tienen varios "
-"beneficios cuando crear tiradas publicas: "
+"Parece que no estás registrado.<br> Los usuarios registrados tienen varios "
+"beneficios cuando crear tiradas públicas: "
 
 #: web/templates/index.html:47
 msgid "Only you can toss"
@@ -943,7 +943,7 @@ msgstr "Primera"
 
 #: web/templates/join_draw.html:30 web/templates/profile.html:30
 msgid "Last"
-msgstr "Ultima"
+msgstr "Última"
 
 #: web/templates/join_draw.html:31 web/templates/profile.html:31
 msgid "Next"
@@ -955,11 +955,11 @@ msgstr "Anterior"
 
 #: web/templates/join_draw.html:35 web/templates/profile.html:35
 msgid ": activate to sort column ascending"
-msgstr ": activar para ordenar la columna en order ascendente"
+msgstr ": activar para ordenar la columna en orden ascendente"
 
 #: web/templates/join_draw.html:36 web/templates/profile.html:36
 msgid ": activate to sort column descending"
-msgstr ": activa para ordenar la columna descendentemente"
+msgstr ": activa para ordenar la columna en orden descendente"
 
 #: web/templates/join_draw.html:40
 msgid "All"
@@ -979,7 +979,7 @@ msgstr "Acceder"
 
 #: web/templates/join_draw.html:175
 msgid "Public draws"
-msgstr "Tiradas publicas"
+msgstr "Tiradas públicas"
 
 #: web/templates/join_draw.html:180 web/templates/profile.html:302
 msgid "Draw Name"
@@ -1039,7 +1039,7 @@ msgstr "O"
 
 #: web/templates/profile.html:53
 msgid "Show only your public draws"
-msgstr "Mostar solo tiradas públicas"
+msgstr "Mostra solo tiradas públicas"
 
 #: web/templates/profile.html:110
 msgid "Password updated"
@@ -1100,7 +1100,7 @@ msgstr "Cambiar contraseña"
 
 #: web/templates/profile.html:245
 msgid "Sorry, changing your email is not possible yet."
-msgstr "Lo sentimos, pero aun no esta disponible."
+msgstr "Lo sentimos, pero aun no está disponible."
 
 #: web/templates/profile.html:246
 msgid "New email"
@@ -1124,7 +1124,7 @@ msgstr "Avatar aleatorio"
 
 #: web/templates/profile.html:281
 msgid "Use my random monster!"
-msgstr "¡Utilizar my monstruo!"
+msgstr "¡Utilizar mi monstruo!"
 
 #: web/templates/profile.html:297
 msgid "Draws history"
@@ -1228,7 +1228,7 @@ msgstr ""
 
 #: web/templates/under_construction.html:14
 msgid "Under construction"
-msgstr "Bajo construccion"
+msgstr "Bajo construcción"
 
 #: web/templatetags/eas_humanize.py:29
 #, python-format
@@ -1255,8 +1255,8 @@ msgstr[1] "%d semanas"
 #, python-format
 msgid "%d day"
 msgid_plural "%d days"
-msgstr[0] "%d dia"
-msgstr[1] "%d dias"
+msgstr[0] "%d día"
+msgstr[1] "%d días"
 
 #: web/templatetags/eas_humanize.py:33
 #, python-format
@@ -1352,7 +1352,7 @@ msgstr[1] "dentro de %(count)s horas"
 
 #: web/views.py:76
 msgid "The email is already registered."
-msgstr "El email ya esta en uso"
+msgstr "El email ya está en uso"
 
 #: web/views.py:121
 msgid "10 seconds, which wire should you cut?"
@@ -1368,11 +1368,11 @@ msgstr "¿No sabes que contestar en el test de inteligencia?"
 
 #: web/views.py:124
 msgid "Dont reach an agrement with the name of the dog?"
-msgstr "¿No os aclarais con el nombre del perro?"
+msgstr "¿No os aclaráis con el nombre del perro?"
 
 #: web/views.py:125
 msgid "Not sure about inviting her/him to the weeding?"
-msgstr "¿No estais seguro de invitarl@ a la boda?"
+msgstr "¿No estáis seguro de invitarl@ a la boda?"
 
 #: web/views.py:126
 msgid "What should you cook today?"
@@ -1424,7 +1424,7 @@ msgstr "¿Con que celda empiezas?"
 
 #: web/views.py:175 web/views.py:217 web/views.py:269
 msgid "Invalid values provided"
-msgstr "Valores invalidos"
+msgstr "Valores inválidos"
 
 #: web/views.py:183 web/views.py:229 web/views.py:281
 msgid "The draw is not feasible"
