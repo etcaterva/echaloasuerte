@@ -449,31 +449,6 @@
                 </div>
             </div>
         </div>
-        <!-- "Who are you?!" modal -->
-        <div id="ask-username-modal" class="modal fade"  tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">{% trans "You are not logged in!" %}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>{% trans "Hi there! You are not logged in." %}</p>
-                        <p>{% trans "This limits the actions you are able to perform in the draw." %}</p>
-                        <p>{% trans "Do you want to register, log in, or at least give us your name? :)" %}</p>
-                        <div class="text-center">
-                            <input id="anon-username" type="text" placeholder="{% trans 'Type your name here...' %}"/>
-                            <button id="anon-username-button" type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Ok" %}</button>
-                        </div><br />
-                        <div class="text-center" >
-                            <a href="{% url 'login' %}"><button type="button" class="btn">{% trans "Log in" %}</button></a>
-                            <a href="{% url 'register' %}"><button type="button" class="btn">{% trans "Register" %}</button></a>
-                            <button type="button" class="btn" data-dismiss="modal">{% trans "No thanks" %}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     {% endif %}
 {% endblock content %}
 
