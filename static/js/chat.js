@@ -11,6 +11,8 @@
             msg_type_your_message: "",
             msg_chat: "",
             msg_login_first: "",
+            msg_alias: "",
+            msg_access_chat: "",
             msg_send: "",
             default_avatar: ""
         };
@@ -122,36 +124,43 @@
         },
 
         renderChat: function (){
-             var html_input = '<input id="chat-message-box" type="text" class="form-control input-sm" placeholder="'+this.options.msg_type_your_message+'"';
-             if (!this.options.authorized) {
-                 html_input += 'disabled="disabled"';
-             }
-             html_input += '/>';
+            var html_input = '<input id="chat-message-box" type="text" class="form-control input-sm" placeholder="'+this.options.msg_type_your_message+'"';
+            if (!this.options.authorized) {
+                html_input += 'disabled="disabled"';
+            }
+            html_input += '/>';
 
-            var html_button = '<button class="btn btn-success btn-sm" id="chat-send" ';
-             if (!this.options.authorized) {
-                 html_button += 'title="' + this.options.msg_login_first + '"';
-             }
-             html_button += '>'+this.options.msg_send+'</button>';
+            var html_button = '<button class="btn btn-success btn-sm" id="chat-send">'+this.options.msg_send+'</button>';
 
-             var html = '    <div class="panel panel-success">' +
-                        '        <div class="panel-heading">' +
-                        '            <span class="fa fa-comment"></span>'+this.options.msg_chat +
-                        '        </div>' +
-                        '        <div class="panel-body">' +
-                        '            <ul id="chat-board">' +
-                        '            </ul>' +
-                        '        </div>' +
-                        '        <div class="panel-footer">' +
-                        '            <div class="input-group">' +
-                        '                '+ html_input +
-                        '                <span class="input-group-btn">' +
-                        '                    '+ html_button +
-                        '                </span>' +
-                        '            </div>' +
-                        '        </div>' +
-                        '    </div>';
-             this.$element.append(html);
+            var html = "";
+            if (!this.options.authorized){
+                // Add grayed out layer to "disable" chat until an alias is given
+                html =  '<div id="login-for-chat" class="text-center"><p>' + this.options.msg_login_first + '</p>' +
+                        '   <p>' + this.options.msg_alias + '</p>' +
+                        '   <div class="form-group"><input type="text" class="form-control" id="alias-chat" placeholder="Type your alias">' +
+                        '   </div>' +
+                        '   <span class="input-group-btn"><a class="btn btn-primary" href="#" role="button">' + this.options.msg_access_chat + '</a></span>' +
+                        '</div>';
+            }
+
+            html += '    <div class="panel panel-success panel-chat">' +
+                    '        <div class="panel-heading">' +
+                    '            <span class="fa fa-comment"></span>'+this.options.msg_chat +
+                    '        </div>' +
+                    '        <div class="panel-body">' +
+                    '            <ul id="chat-board">' +
+                    '            </ul>' +
+                    '        </div>' +
+                    '        <div class="panel-footer">' +
+                    '            <div class="input-group">' +
+                    '                '+ html_input +
+                    '                <span class="input-group-btn">' +
+                    '                    '+ html_button +
+                    '                </span>' +
+                    '            </div>' +
+                    '        </div>' +
+                    '    </div>';
+            this.$element.append(html);
         }
     };
 

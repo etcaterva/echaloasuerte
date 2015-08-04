@@ -118,7 +118,9 @@
             "user_name": user_name,
             "draw_id": "{{ bom.pk }}",
             "msg_type_your_message": "{% trans 'Type your message here...' %}",
-            "msg_login_first": "{% trans 'Please, log in to be able to use the chat'%}",
+            "msg_login_first": "{% trans "To use the chat you should <a href='#'>login</a> or <a href='#'>register</a>" %}",
+            "msg_alias": "{% trans "If not, simply type an Alias that allows others to recognize you" %}",
+            "msg_access_chat": "{% trans "Access chat" %}",
             "msg_chat": "{% trans 'Chat' %}",
             "msg_send": "{% trans 'Send' %}",
             "default_avatar": "{% static 'img/anon-user-avatar.png' %}"
