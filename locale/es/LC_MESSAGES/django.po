@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 19:11+0000\n"
+"POT-Creation-Date: 2015-08-06 17:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mario Corchero\n"
 "Language: Spanish\n"
@@ -449,7 +449,8 @@ msgstr "Escribe tu mensaje aquí..."
 msgid ""
 "To use the chat you should <a href='#'>login</a> or <a href='#'>register</a>"
 msgstr ""
-"Para user el chat debes <a href='#'>iniciar sesión</a> o <a href='#'>registrarte</a>"
+"Para user el chat debes <a href='#'>iniciar sesión</a> o <a "
+"href='#'>registrarte</a>"
 
 #: web/templates/draws/display_draw.html:114
 msgid "If not, simply type an Alias that allows others to recognize you"
@@ -571,7 +572,7 @@ msgstr "Quien puede acceder a la tirada"
 
 #: web/templates/draws/display_draw.html:334
 msgid "Show the draw in 'Recently created'"
-msgstr "Mostrar la tirada en 'Recientemente creadas'"
+msgstr "Muestra la tirada en 'Recientemente creadas'"
 
 #: web/templates/draws/display_draw.html:335
 msgid "Enable chat"
@@ -1427,4 +1428,3 @@ msgstr "Un usuario anónimo"
 #: web/views.py:292
 msgid "Draw updated successfully"
 msgstr "Tirada actualizada con éxito"
-
