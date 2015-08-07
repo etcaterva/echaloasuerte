@@ -101,24 +101,19 @@
             var user_name = "{{ user.pk }}";
         {% else %}
             var user_name = getCookie("user_name");
-            if (!user_name) {
-                $('#ask-username-modal').modal('show');
-                $('#anon-username-button').click(function(){
-                    setCookie("user_name", $('#anon-username').val());
-                    window.location.reload();
-                });
-            }
         {% endif %}
 
         var $chat_containers = $('#chat-frame, #chat-column');
 		var $chats = $chat_containers.chat({
-            "authorized": {%if user.is_anonymous%} Boolean(user_name) {% else %} true {% endif %},
             "is_enabled": {{bom.enable_chat|yesno:"true,false"}},
             "url_send_message": "{% url 'chat_add_message' %}",
             "user_name": user_name,
             "draw_id": "{{ bom.pk }}",
             "msg_type_your_message": "{% trans 'Type your message here...' %}",
-            "msg_login_first": "{% trans 'Please, log in to be able to use the chat'%}",
+            "msg_login_first": "{% trans "To use the chat you should <a href='#'>login</a> or <a href='#'>register</a>" %}",
+            "msg_alias": "{% trans "If not, simply type an Alias that allows others to recognize you" %}",
+            "msg_error_alias": "{% trans "The alias must have between 2 and 20 characters" %}",
+            "msg_access_chat": "{% trans "Access chat" %}",
             "msg_chat": "{% trans 'Chat' %}",
             "msg_send": "{% trans 'Send' %}",
             "default_avatar": "{% static 'img/anon-user-avatar.png' %}"
@@ -221,13 +216,14 @@
                     <div class="hidden-xs col-xs-2 col-sm-2 col-sm-push-8"></div>
                 {% endif %}
             {% else %}
+                <div class="col-xs-2 col-sm-2 col-sm-push-8 text-center ">
                     <a id="fav-button"
                     {% if bom.pk in user.favourites %}
                     data-active="y"
                     {% else %}
                     data-active="n"
                     {% endif %}
-                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favourites col-xs-2 col-sm-2 col-sm-push-8 text-center ">
+                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favourites col-sm-push-8 text-center ">
                         <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x hide"></span>
                     {% if bom.pk in user.favourites %}
                         <img src="{% static "img/star.png" %}" alt="{% trans "Remove from favourites" %}"/>
@@ -235,6 +231,10 @@
                         <img src="{% static "img/star-o.png" %}" alt="{% trans "Add to favourites" %}"/>
                     {% endif %}
                     </a>
+                    <a href="{% url 'create_public_draw' draw_type=draw.NAME_IN_URL %}" class="add-favourites" title="{% trans 'Create a public one' %}">
+                        <img src="{% static 'img/share-icon.png' %}" />
+                    </a>
+                </div>
             {% endif %}
             <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
                 <textarea name="title" class="form-control protected autogrow draw-title-area text-center" rows="1">{{ bom.title }}</textarea>
@@ -365,7 +365,7 @@
                             <span class="invite-people-option">{% trans "Option 2)" %}</span>
                             <p>{% trans "Send an invitation to the emails below" %}</p>
                             <div id="alert-invitation-failed" class="alert feedback alert-danger hide" role="alert">
-                                <strong>{% trans "Ops!" %}</strong> {% trans "One or more emails contain errors..." %}
+                                <strong>{% trans "Oops!" %}</strong> {% trans "One or more emails contain errors..." %}
                             </div>
                             <div id="alert-invitation-success" class="alert feedback alert-success hide" role="alert">
                                 <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
@@ -445,31 +445,6 @@
                     </div>
                     <div class="modal-footer text-center ">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Take me to the draw" %}</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- "Who are you?!" modal -->
-        <div id="ask-username-modal" class="modal fade"  tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">{% trans "You are not logged in!" %}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>{% trans "Hi there! You are not logged in." %}</p>
-                        <p>{% trans "This limits the actions you are able to perform in the draw." %}</p>
-                        <p>{% trans "Do you want to register, log in, or at least give us your name? :)" %}</p>
-                        <div class="text-center">
-                            <input id="anon-username" type="text" placeholder="{% trans 'Type your name here...' %}"/>
-                            <button id="anon-username-button" type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Ok" %}</button>
-                        </div><br />
-                        <div class="text-center" >
-                            <a href="{% url 'login' %}"><button type="button" class="btn">{% trans "Log in" %}</button></a>
-                            <a href="{% url 'register' %}"><button type="button" class="btn">{% trans "Register" %}</button></a>
-                            <button type="button" class="btn" data-dismiss="modal">{% trans "No thanks" %}</button>
-                        </div>
                     </div>
                 </div>
             </div>

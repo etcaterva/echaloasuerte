@@ -12,9 +12,15 @@
     {% if not user.is_authenticated and is_public %}
         $('#warning-login').modal('show');
     {% endif %}
+<!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+window.cookieconsent_options = {"message":"{% trans 'This website uses cookies to ensure you get the best experience on our website' %}","dismiss":"{% trans 'Got it!' %}","learnMore":"{% trans 'More info' %}","link":null,"theme":"light-bottom"};
+
+<!-- End Cookie Consent plugin -->
+
 {% endblock extra_jq_ready %}
 
 {% block content %}
+    <script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
     {# breadcrumb to assist the creation of a public draw #}
     {% include "snippets/snippet_breadcrumb.html" %}
     <div id="select-private-shared" class="text-center">
@@ -27,7 +33,7 @@
         <div class="col-sm-6">
             {% include "snippets/snippet_draw_box.html" with draw_type="coin" draw_icon="img/draw_icons/coin.png" title=_("Flip a coin") help=_("Afraid of taking the wrong decision? Don't hesitate and throw the coin!") %}
             {% include "snippets/snippet_draw_box.html" with draw_type="card" draw_icon="img/draw_icons/cards.png" title=_("Take a card") help=_("Let's play some drinking games!") %}
-            {% include "snippets/snippet_draw_box.html" with draw_type="dice" draw_icon="img/draw_icons/dice.png" title=_("Roll a die") help=_("Don't you have a die? Just roll this one") %}
+            {% include "snippets/snippet_draw_box.html" with draw_type="dice" draw_icon="img/draw_icons/dice.png" title=_("Roll a dice") help=_("Don't you have a die? Just roll this one") %}
             {% include "snippets/snippet_draw_box.html" with draw_type="tournament" draw_icon="img/draw_icons/tournament.png" title=_("Tournament") help=_("Organising a competition? This is your draw!") %}
         </div>
         <div class="col-sm-6">

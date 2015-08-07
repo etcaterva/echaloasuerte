@@ -4,13 +4,15 @@
     var pluginName = 'EASchat',
         defaults = {
             is_enabled: true,
-            authorized: false,
             url_send_message: "",
             draw_id: "",
             user_name: "",
             msg_type_your_message: "",
             msg_chat: "",
             msg_login_first: "",
+            msg_alias: "",
+            msg_error_alias: "",
+            msg_access_chat: "",
             msg_send: "",
             default_avatar: ""
         };
@@ -48,6 +50,19 @@
                     that.submit_message(message);
                 }
             );
+
+            // If the user is not logged in and does not have an alias, setup the button
+            if (!this.options.user_name) {
+                this.$element.find('#access-chat').click(function () {
+                    var valid_alias = that.check_alias_and_enable_chat();
+                    console.log(valid_alias)
+                    if (!valid_alias){
+                        var $form_alias = that.$element.find('.login-for-chat .form-group');
+                        $form_alias.addClass('has-error');
+                        $form_alias.find('.control-label').removeClass('hidden');
+                    }
+                });
+            }
 
             // Submit message when the "enter" key is pressed
             this.$element.find("#chat-message-box").keyup(function (e) {
@@ -121,37 +136,54 @@
             return html    ;
         },
 
+        check_alias_and_enable_chat: function (){
+            var alias = this.$element.find('.alias-chat').val();
+            if (alias.length > 1 && alias.length < 20 ){
+                $('.login-for-chat').remove();
+                setCookie("user_name", alias);
+                this.options.user_name = alias;
+                return true;
+            }
+            return false;
+
+        },
+
         renderChat: function (){
-             var html_input = '<input id="chat-message-box" type="text" class="form-control input-sm" placeholder="'+this.options.msg_type_your_message+'"';
-             if (!this.options.authorized) {
-                 html_input += 'disabled="disabled"';
-             }
-             html_input += '/>';
+            var html_input = '<input id="chat-message-box" type="text" class="form-control input-sm" placeholder="'+this.options.msg_type_your_message+'"/>';
 
-            var html_button = '<button class="btn btn-success btn-sm" id="chat-send" ';
-             if (!this.options.authorized) {
-                 html_button += 'title="' + this.options.msg_login_first + '"';
-             }
-             html_button += '>'+this.options.msg_send+'</button>';
+            var html_button = '<button class="btn btn-success btn-sm" id="chat-send">'+this.options.msg_send+'</button>';
 
-             var html = '    <div class="panel panel-success">' +
-                        '        <div class="panel-heading">' +
-                        '            <span class="fa fa-comment"></span>'+this.options.msg_chat +
-                        '        </div>' +
-                        '        <div class="panel-body">' +
-                        '            <ul id="chat-board">' +
-                        '            </ul>' +
-                        '        </div>' +
-                        '        <div class="panel-footer">' +
-                        '            <div class="input-group">' +
-                        '                '+ html_input +
-                        '                <span class="input-group-btn">' +
-                        '                    '+ html_button +
-                        '                </span>' +
-                        '            </div>' +
-                        '        </div>' +
-                        '    </div>';
-             this.$element.append(html);
+            var html = "";
+            if (!this.options.user_name){
+                // Add grayed out layer to "disable" chat until an alias is given
+                html =  '<div class="login-for-chat text-center"><p>' + this.options.msg_login_first + '</p>' +
+                        '   <p>' + this.options.msg_alias + '</p>' +
+                        '   <div class="form-group">' +
+                        '       <label class="control-label hidden" for="inputError">' + this.options.msg_error_alias + '</label>' +
+                        '       <input type="text" class="alias-chat form-control" placeholder="Type your alias">' +
+                        '   </div>' +
+                        '   <a id="access-chat" class="btn btn-primary" href="javascript:void(0)" role="button">' + this.options.msg_access_chat + '</a>' +
+                        '</div>';
+            }
+
+            html += '    <div class="panel panel-success panel-chat">' +
+                    '        <div class="panel-heading">' +
+                    '            <span class="fa fa-comment"></span>'+this.options.msg_chat +
+                    '        </div>' +
+                    '        <div class="panel-body">' +
+                    '            <ul id="chat-board">' +
+                    '            </ul>' +
+                    '        </div>' +
+                    '        <div class="panel-footer">' +
+                    '            <div class="input-group">' +
+                    '                '+ html_input +
+                    '                <span class="input-group-btn">' +
+                    '                    '+ html_button +
+                    '                </span>' +
+                    '            </div>' +
+                    '        </div>' +
+                    '    </div>';
+            this.$element.append(html);
         }
     };
 

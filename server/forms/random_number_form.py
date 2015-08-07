@@ -49,5 +49,5 @@ class RandomNumberDrawForm(FormBase):
 
             if not cleaned_data.get('allow_repeat', False):
                 if range_max - range_min < cleaned_data.get('number_of_results', 0):
-                    raise ValidationError(_("Range is too small, may be you want to allow repeated numbers?"))
+                    raise ValidationError(_("Range is too small, maybe you want to allow repeated numbers?"))
         return cleaned_data
