@@ -14,10 +14,6 @@ SITE_NAME = basename(DJANGO_ROOT)
 # Absolute filesystem path to the top-level project folder.
 SITE_ROOT = dirname(DJANGO_ROOT)
 
-# Absolute filesystem path to the secret file which holds this project's
-# SECRET_KEY. Will be auto-generated the first time this file is interpreted.
-SECRET_FILE = normpath(join(SITE_ROOT, 'deploy', 'SECRET'))
-
 # Add all necessary filesystem paths to our system path so that we can use
 # python import statements.
 sys.path.append(SITE_ROOT)
@@ -187,11 +183,20 @@ CRISPY_FAIL_SILENTLY = not DEBUG
 ROOT_URLCONF = '%s.urls' % SITE_NAME
 ########## END URL CONFIGURATION
 
-
-########## KEY CONFIGURATION
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$a3e(-u8)4m4*(vfnfnfjba@bd13-2u#=(i$*7(p!(6ck0ugd='
-########## END KEY CONFIGURATION
+# Secret Key Generator
+if not hasattr(globals(), 'SECRET_KEY'):
+    SECRET_FILE = join(SITE_ROOT, 'secret.txt')
+    try:
+        SECRET_KEY = open(SECRET_FILE).read().strip()
+    except IOError:
+        try:
+            from random import choice
+            SECRET_KEY = ''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
+            secret = file(SECRET_FILE, 'w')
+            secret.write(SECRET_KEY)
+            secret.close()
+        except IOError:
+            raise Exception('Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)
 
 # Fixing 1_6.W001
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
