@@ -87,17 +87,18 @@
 {% endblock extra_jq_ready %}
 {% block content %}
     <div class="row shared-draw-status">
-            <span class="col-xs-12 col-sm-10 col-sm-offset-1 title">{%trans 'You are creating a shared draw' %}</span>
+        <span class="col-xs-12 col-sm-10 col-sm-offset-1 step-configure">{%trans 'You are creating a shared draw' %}</span>
+        <span class="col-xs-12 col-sm-10 col-sm-offset-1 hidden step-spread">{%trans 'Your draw has been created!' %}</span>
     </div>
     <form id="draw-form" class="clearfix" method="post">
         <!-- Draw Heading -->
-        <div class="clearfix draw-heading">
-            <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
-                <img src="{% static "img/back_arrow.png" %}" alt="{% trans "Back" %}"/>
-            </a>
-            <div class="col-xs-8 visible-xs"></div>
-            <div class="hidden-xs col-xs-2 col-sm-2 col-sm-push-8"></div>
-            <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center" title="{% trans 'Click on the draw title to change it' %}">
+        <div class="clearfix draw-heading step-configure">
+            {% if not is_public %}
+                <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
+                    <img src="{% static "img/back_arrow.png" %}" alt="{% trans "Back" %}"/>
+                </a>
+            {% endif %}
+            <div id="draw-title-container" class="col-xs-12 col-sm-8 {% if is_public %}col-sm-offset-2 {% endif %}text-center" title="{% trans 'Click on the draw title to change it' %}">
                 <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{% if bom.title %}{{ bom.title }}{% else %}{{ default_title }}{% endif %}</textarea>
             </div>
         </div>
@@ -117,30 +118,25 @@
             <!-- End Input Form -->
         </div>
 
-        {# Only shown when creating a public draw: select the privacy options #}
+        {# Only shown when creating a public draw: show the link to invite users #}
         {% if is_public %}
-            <div class="step-spread hidden">
-                <div class="public-draw-restriction col-xs-12 col-md-8 col-md-offset-2">
-                    <div class="col-xs-6">
-                        <p class="h4">{% trans "Who can access your draw?" %} </p>
-                    </div>
-                    <div id="privacy-level" class="col-xs-6 text-center">
-                        <a data-toggle="modal" href="#access-level" class="access-level">
-                            <span class="fa fa-unlock fa-2x"></span> <div id="public-mode-selected"> {% trans "Everyone" %} </div>
-                        </a>
-                    </div>
-                    <div id="recently-created" class="col-xs-12 form-group">
-                        <p title="{% trans "It will help your friends to find your draw faster" %}">
-                            <input type="checkbox" name="show_in_public_list" checked>{% trans "Show the draw in the list 'Recently created'." %}
-                        </p>
-                    </div>
+            <div class="public-draw-invite step-spread hidden col-xs-12 col-md-8 col-md-offset-2">
+                <p id="shared-draw-created">{% trans "Your draw is online now" %}</p>
+                <p id="shared-draw-smiley">{% trans ":D" %}</p>
+                <p>{% trans "Use any of the methods below to invite people to join and see the results." %}</p>
+                <span class="invite-people-option">{% trans "Option 1)" %}</span>
+                <p>{% trans "Send this link to anyone you wish to invite" %}</p>
+                <input class="url-share text-center" readonly>
+                <span class="invite-people-option">{% trans "Option 2)" %}</span>
+                <p>{% trans "Type their e-mails here to automatically send them an invitation" %}</p>
+                <div id="alert-invitation-failed" class="alert feedback alert-danger hide" role="alert">
+                    <strong>{% trans "Oops!" %}</strong> {% trans "One or more emails contain errors..." %}
                 </div>
-                <div id="public-draw-invite" class="col-xs-12 col-md-8 col-md-offset-2">
-                    <p class="h4"> {% trans "Invite people" %}: </p>
-                        <p>{% trans "An invitation will arrive to the emails you introduce below" %}</p>
-                        <input name="users" type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..." %}">
-                    </p>
+                <div id="alert-invitation-success" class="alert feedback alert-success hide" role="alert">
+                    <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
                 </div>
+                <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
+                <div class="text-center"><a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a></div>
             </div>
         {% endif %}
 
@@ -154,9 +150,9 @@
 
                 {# Buttons "Next Step" and "Cancel" shown when creating a public draw #}
                 <div class="col-sm-8 col-sm-offset-2 btn-row">
-                    <a href="{% url 'index' %}" class="col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
-                    <a id="next" class="step-configure col-xs-6 btn btn-primary">{% trans 'Next step' %}</a>
-                    <button id="publish" type="submit" class="step-spread col-xs-6 btn btn-primary hidden">{% trans 'Publish it' %}</button>
+                    <a href="{% url 'index' %}" class="step-configure col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
+                    <a id="publish" class="step-configure col-xs-6 btn btn-primary">{% trans 'Publish draw' %}</a>
+                    <a id="go-to-draw" class="step-spread col-xs-6 col-xs-offset-3 btn btn-primary hidden">{% trans 'Go to the draw' %}</a>
                 </div>
             {% else %}
                 {# Button to toss the draw (both private and public) #}
@@ -167,30 +163,7 @@
         </div>
     </form>
 
-    {# Hover panel to change the lever of restriction of the public draw #}
     {% if is_public %}
-        <div id="confirmation-change-draw-type" title="Change the type of draw">
-            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Any configuration you have set up will be lost</p>
-        </div>
-
-        <div id="access-level" class="modal fade" tabindex="-1" data-focus-on="input:first">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">{% trans "Restict the access to your draw" %}</h4>
-                    </div>
-                    <div class="modal-body">
-                        {% include "snippets/snippet_public_draw_privacy.html" %}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Cancel" %}</button>
-                        <button id="save-change-privacy" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         {# Show results, in case the user tries the configuration (through the button "Try") #}
         {% if bom.results %}
             <!-- Results -->

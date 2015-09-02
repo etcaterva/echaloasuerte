@@ -1,52 +1,5 @@
 var PublicDrawCreator = {};
 
-
-// This function runs when the user make changes in the privacy of a public draw and click "Save" button
-// It store the corresponding values in the input field which will be POSTed
-PublicDrawCreator.update_privacy_fields = function (){
-    var $shared_type_field = $('input#id_shared_type');
-    var mode = $('#privacy-selector').attr('data-selected');
-    var $privacy_icon = $('#privacy-level .fa');
-    var $privacy_label = $('#public-mode-selected');
-    if (mode == "invited"){
-        $('#id_password').val("");
-        $shared_type_field.attr('value','Invite');
-        $privacy_icon.removeClass('fa-unlock');
-        $privacy_icon.addClass('fa-lock')
-        $privacy_label.empty();
-        // TODO translate this
-        $privacy_label.append('Only invited users');
-    }else if (mode == "password"){
-        var password = $('#draw-password').val();
-        $('#id_password').val(password);
-        $shared_type_field.attr('value','Public');
-        $privacy_icon.removeClass('fa-unlock');
-        $privacy_icon.addClass('fa-lock')
-        $privacy_label.empty();
-        // TODO translate this
-        $privacy_label.append('Password or Invitation');
-    }else{ // Everyone
-        $('#id_password').val("");
-        $shared_type_field.attr('value','Public');
-        $privacy_icon.removeClass('fa-lock');
-        $privacy_icon.addClass('fa-unlock')
-        $privacy_label.empty();
-        // TODO translate this
-        $privacy_label.append('Everyone');
-    }
-};
-
-//Initialize the UI to select the level of privacy for the draw
-PublicDrawCreator.prepare_privacy_selection = function (){
-    // Initialize the UI (slider) to choose the level of restriction of the public draw
-    $("#privacy-selector").slideSelector();
-
-    // Initialize button "Save changes". It stores the selection in the form input
-    $('button#save-change-privacy').click(function () {
-        PublicDrawCreator.update_privacy_fields();
-    });
-};
-
 PublicDrawCreator.show_spread_step = function () {
     $('.step-configure').addClass('hidden');
     $('.step-spread').removeClass('hidden');
@@ -111,9 +64,6 @@ PublicDrawCreator.setup = function(){
 
     PublicDrawCreator.shake_title();
 
-    //Initialize the UI to select the level of privacy for the draw
-    PublicDrawCreator.prepare_privacy_selection();
-
     // Initialize input to submit emails to be shown as a tokenField
     $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 150});
 
@@ -121,7 +71,7 @@ PublicDrawCreator.setup = function(){
     // Initialize the shared_type field to Public
     $('input#id_shared_type').val("Public");
 
-    $('#next').click(function () {
+    $('#publish').click(function () {
         //PublicDrawCreator.show_spread_step();
         PublicDrawCreator.validate();
     });
@@ -129,24 +79,5 @@ PublicDrawCreator.setup = function(){
     $('#try').click(function () {
         //PublicDrawCreator.try_draw();
         $('#draw-form').attr("action", PublicDrawCreator.url_try);
-    });
-
-    // Set up confirmation dialog that will be shown if the user tries to go to the index while he is setting up a public draw
-    $(function() {
-        $( "#confirmation-change-draw-type" ).dialog({
-            resizable: false,
-            autoOpen: false,
-            modal: true,
-            buttons: {
-                // TODO "Change type" has to be tranlated
-                "Change type": function() {
-                    $( this ).dialog( "close" );
-                    window.location.href = PublicDrawCreator.url_index;
-                },
-                Cancel: function() {
-                    $( this ).dialog( "close" );
-                }
-            }
-        });
     });
 };
