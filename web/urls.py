@@ -11,7 +11,6 @@ urlpatterns += patterns(
     '',
     url(r'^$', views.index, name='index'),
 
-    url(r'^publish_draw.html$', views.index, {'is_public': True}, name="publish_draw"),
     url(r'^join_draw.html$', views.join_draw, name="join_public_draw"),
 
     url(r'^about.html$', TemplateView.as_view(template_name='about.html'), name="about"),
