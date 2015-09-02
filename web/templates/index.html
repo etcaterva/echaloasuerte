@@ -38,8 +38,6 @@ window.cookieconsent_options = {"message":"{% trans 'This website uses cookies t
 
 {% block content %}
     <script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
-    {# breadcrumb to assist the creation of a public draw #}
-    {% include "snippets/snippet_breadcrumb.html" %}
     <div title="" id="select-private-shared" class="text-center">
         You are creating a
         <input class='tgl tgl-flip' id='is-shared' type='checkbox'>

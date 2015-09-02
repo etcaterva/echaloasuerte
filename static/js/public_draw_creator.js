@@ -1,43 +1,5 @@
 var PublicDrawCreator = {};
 
-PublicDrawCreator.setup_breadcrumb = function (){
-    // However we reached here, the step "choose it" has already been done
-    $('.breadcrumb-public-draw #choose').addClass('done');
-    $('.breadcrumb-public-draw #choose').removeClass('focus');
-    $('.breadcrumb-public-draw').attr('data-current-step', 'configure');
-
-    PublicDrawCreator.update_breadcrumb("configure");
-
-    $('.breadcrumb-public-draw #configure').click(function(){
-        PublicDrawCreator.show_configure_step();
-    })
-
-    $('.breadcrumb-public-draw #spread').click(function(){
-        PublicDrawCreator.show_spread_step();
-    })
-    $('.breadcrumb-public-draw #choose').click(function(){
-        $( "#confirmation-change-draw-type" ).dialog( "open" );
-    })
-};
-
-// Updates the breadcrumb to show the steps that have been already done
-PublicDrawCreator.update_breadcrumb = function (current_step){
-    if (current_step == "spread"){
-        $('.breadcrumb-public-draw #configure').addClass('done');
-        $('.breadcrumb-public-draw #configure').removeClass('focus');
-        $('.breadcrumb-public-draw #spread').addClass('done');
-        $('.breadcrumb-public-draw #spread').addClass('focus');
-        $('.breadcrumb-public-draw').attr('data-current-step', 'spread');
-    }
-    else{
-        if (current_step == "configure"){
-            $('.breadcrumb-public-draw #configure').addClass('done');
-            $('.breadcrumb-public-draw #configure').addClass('focus');
-            $('.breadcrumb-public-draw #spread').removeClass('focus');
-            $('.breadcrumb-public-draw').attr('data-current-step', 'configure');
-        }
-    }
-};
 
 // This function runs when the user make changes in the privacy of a public draw and click "Save" button
 // It store the corresponding values in the input field which will be POSTed
@@ -86,13 +48,11 @@ PublicDrawCreator.prepare_privacy_selection = function (){
 };
 
 PublicDrawCreator.show_spread_step = function () {
-    PublicDrawCreator.update_breadcrumb("spread");
     $('.step-configure').addClass('hidden');
     $('.step-spread').removeClass('hidden');
 };
 
 PublicDrawCreator.show_configure_step = function () {
-    PublicDrawCreator.update_breadcrumb("configure");
     $('.step-spread').addClass('hidden');
     $('.step-configure').removeClass('hidden');
 };
@@ -157,24 +117,9 @@ PublicDrawCreator.setup = function(){
     // Initialize input to submit emails to be shown as a tokenField
     $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 150});
 
-    PublicDrawCreator.setup_breadcrumb("configure");
 
     // Initialize the shared_type field to Public
     $('input#id_shared_type').val("Public");
-
-    $('a.back-arrow').click(function () {
-        var current_step = $('.breadcrumb-public-draw').attr('data-current-step');
-        if (current_step == "spread"){ // If step is spread
-            PublicDrawCreator.show_configure_step();
-            return false;
-        }
-        else{
-            if (current_step == "configure") {
-                $( "#dialog" ).dialog( "open" );
-                return true; // Go to the index (setup in href in <a> tag)
-            }
-        }
-    });
 
     $('#next').click(function () {
         //PublicDrawCreator.show_spread_step();

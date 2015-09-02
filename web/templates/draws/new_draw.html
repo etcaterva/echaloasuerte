@@ -3,11 +3,9 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% block title %}{{ default_title }} | {% endblock title %}
-{#
+{% comment %}
     variables: draw_type, is_public, default_title
-    add messages from user.messages (puedes meter aqui los info y no te hace falta draw_type)
-    dinamically advance breadcrum
-#}
+{% endcomment %}
 {% block extra_head %}
     <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
@@ -88,8 +86,9 @@
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
 {% block content %}
-    {# breadcrumb to assist the creation of a public draw #}
-    {% include "snippets/snippet_breadcrumb.html" %}
+    <div class="row shared-draw-status">
+            <span class="col-xs-12 col-sm-10 col-sm-offset-1 title">{%trans 'You are creating a shared draw' %}</span>
+    </div>
     <form id="draw-form" class="clearfix" method="post">
         <!-- Draw Heading -->
         <div class="clearfix draw-heading">
