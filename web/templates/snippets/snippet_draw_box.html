@@ -9,11 +9,10 @@
         - help
 {% endcomment %}
 
-<a class="draw-link" {% if is_public%}
-                        href="{% url 'create_public_draw' draw_type=draw_type%}">
-                    {% else %}
-                        href="{% url 'create_draw' draw_type=draw_type%}">
-                    {% endif %}
+<a class="draw-link" href="javascript:void(0);"
+   data-url-normal="{% url 'create_draw' draw_type=draw_type%}"
+   data-url-shared="{% url 'create_public_draw' draw_type=draw_type%}"
+    >
     <div id="{{ draw_type }}-draw" class="draw-box">
         <img src="{% static draw_icon %}" alt="{% trans title %}"/>
         <div class="draw-box-title text-center">{% trans title %}</div>

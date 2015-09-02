@@ -20,6 +20,12 @@
         var $is_shared = $('#is-shared');
         $is_shared.prop("checked", !$is_shared.prop("checked"));
     });
+
+    $('.draw-link').click(function (){
+        var is_shared =$('#is-shared').prop("checked");
+        var create_draw_url = is_shared ? $(this).attr("data-url-shared") : $(this).attr("data-url-normal");
+        window.location.href = create_draw_url;
+    });
     {% if not user.is_authenticated and is_public %}
         $('#warning-login').modal('show');
     {% endif %}
