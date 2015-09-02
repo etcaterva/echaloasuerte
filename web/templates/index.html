@@ -4,6 +4,22 @@
 {% load i18n %}
 
 {% block extra_jq_ready %}
+    var tooltip_text =  "<p><b>Normal Draw:</b> Personal draw in which only you will be able to see the result.</p>" +
+                        "<p><b>Shared Draw: </b> You will be able to invite other users in, see the results in live and discuss in the chat.</p>" +
+                        "<p class='text-center'><i>(Click to switch between modes)</i></p>";
+    $('#select-private-shared' ).tooltip({
+        track: true,
+        items: "div[title]",
+        content: function() {
+            return tooltip_text;
+        }
+    });
+
+    $('#select-private-shared').click(function(){
+    var checked = $('#cb5').is(":checked");
+        var $is_shared = $('#is-shared');
+        $is_shared.prop("checked", !$is_shared.prop("checked"));
+    });
     {% if not user.is_authenticated and is_public %}
         $('#warning-login').modal('show');
     {% endif %}
@@ -18,6 +34,12 @@ window.cookieconsent_options = {"message":"{% trans 'This website uses cookies t
     <script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
     {# breadcrumb to assist the creation of a public draw #}
     {% include "snippets/snippet_breadcrumb.html" %}
+    <div title="" id="select-private-shared" class="text-center">
+        You are creating a
+        <input class='tgl tgl-flip' id='is-shared' type='checkbox'>
+        <label class='tgl-btn' data-tg-off='Normal' data-tg-on='Shared' for='is-shared'></label>
+        draw
+    </div>
     <div class="container-draws row">
         <div class="col-sm-6">
             {% include "snippets/snippet_draw_box.html" with draw_type="coin" draw_icon="img/draw_icons/coin.png" title=_("Flip a coin") help=_("Afraid of taking the wrong decision? Don't hesitate and throw the coin!") %}
