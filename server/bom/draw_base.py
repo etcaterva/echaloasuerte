@@ -22,7 +22,10 @@ class BaseDraw(object):
                  results=None, _id=None, draw_type=None, prev_draw=None,
                  users=None, title=None, shared_type=None,
                  enable_chat=True, last_updated_time=None,
-                 audit=None):
+                 audit=None, **kwargs):
+        if kwargs:
+            logger.info("Unexpected extra args: {0}".format(kwargs))
+
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -92,7 +95,10 @@ class BaseDraw(object):
 
     def user_can_read(self, user):
         """Checks for read access"""
-        return True
+        if self.owner:
+            return self.owner == user.pk or self.is_shared()
+        else:
+            return True
 
     def user_can_write(self, user):
         """Checks whether user can write"""
