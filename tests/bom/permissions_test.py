@@ -96,42 +96,11 @@ class ReadPermissionWithLoggedUserInviteTest(TestCase):
         self.draw.owner = self.user.pk
         self.assertTrue(self.draw.user_can_read(self.user))
 
-    def draw_with_no_owner_test(self):
-        self.draw.owner = None
-        self.assertFalse(self.draw.user_can_read(self.user))
-
-    def draw_with_another_owner_test_empty_user_list(self):
-        self.draw.owner = User("another guy")
-        self.assertFalse(self.draw.user_can_read(self.user))
-
     def draw_with_another_owner_user_in_list_test(self):
         self.draw.owner = User("another guy")
         self.draw.users.append(self.user.pk)
         self.assertTrue(self.draw.user_can_read(self.user))
 
-    def draw_with_another_owner_user_not_in_list_test(self):
-        self.draw.owner = User("another guy")
-        self.draw.users.append("anotherguy")
-        self.assertFalse(self.draw.user_can_read(self.user))
-
-
-class ReadPermissionWithNotLoggedUserInviteTest(TestCase):
-    def setUp(self):
-        self.draw = RandomNumberDraw(shared_type='Invite',)
-        self.user = AnonymousUser()
-
-    def draw_with_no_owner_test(self):
-        self.draw.owner = None
-        self.assertFalse(self.draw.user_can_read(self.user))
-
-    def draw_with_another_owner_test_empty_user_list(self):
-        self.draw.owner = User("another guy")
-        self.assertFalse(self.draw.user_can_read(self.user))
-
-    def draw_with_another_owner_user_not_in_list_test(self):
-        self.draw.owner = User("another guy")
-        self.draw.users.append("anotherguy")
-        self.assertFalse(self.draw.user_can_read(self.user))
 
 class ReadPermissionWithLoggedUserNoneTest(TestCase):
     def setUp(self):
@@ -145,10 +114,6 @@ class ReadPermissionWithLoggedUserNoneTest(TestCase):
     def draw_with_no_owner_test(self):
         self.draw.owner = None
         self.assertTrue(self.draw.user_can_read(self.user))
-
-    def draw_with_another_owner_test_empty_user_list(self):
-        self.draw.owner = User("another guy")
-        self.assertFalse(self.draw.user_can_read(self.user))
 
     def draw_with_another_owner_user_in_list_test(self):
         self.draw.owner = User("another guy")

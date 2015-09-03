@@ -39,8 +39,8 @@ def user_can_read_draw(user, draw):
 
 def user_can_write_draw(user, draw):
     if not draw.user_can_write(user):
-        LOG.info("User {0} not allowed to write draw {1}. Type: {2}, Password? {3}, Owner:{4}"
-                 .format(user.pk, draw.pk, draw.shared_type, 'Y' if draw.password else 'N', draw.owner))
+        LOG.info("User {0} not allowed to write draw {1}. Type: {2}, Owner:{3}"
+                 .format(user.pk, draw.pk, draw.shared_type, draw.owner))
         raise PermissionDenied("Unauthorised to write the draw")
 
 
