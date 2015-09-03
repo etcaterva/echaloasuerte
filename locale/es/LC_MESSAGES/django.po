@@ -1141,22 +1141,6 @@ msgstr "cruz"
 msgid "head"
 msgstr "cara"
 
-#: web/templates/snippets/snippet_breadcrumb.html:15
-msgid "Creating a public draw"
-msgstr "Creando una tirada publica"
-
-#: web/templates/snippets/snippet_breadcrumb.html:16
-msgid "Choose"
-msgstr "Elegir"
-
-#: web/templates/snippets/snippet_breadcrumb.html:17
-msgid "Configure"
-msgstr "Configurar"
-
-#: web/templates/snippets/snippet_breadcrumb.html:18
-msgid "Spread"
-msgstr "Difundir"
-
 #: web/templates/snippets/snippet_public_draw_privacy.html:15
 msgid "The level of privacy of your draw has been updated."
 msgstr "El nivel de privacidad de la tirada ha sido actualizado."
