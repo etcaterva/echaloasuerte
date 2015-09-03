@@ -97,34 +97,9 @@ class BaseDraw(object):
     def is_shared(self):
         return self.shared_type is not None
 
-    @property
-    def share_settings(self):
-        return {
-            "shared_type": self.shared_type,
-            "password": bool(self.password),
-            "show_in_public_list": self.show_in_public_list,
-            "enable_chat": self.enable_chat
-        }
-
     def user_can_read(self, user, password=None):
         '''Checks for read access'''
-        if self.shared_type is None:
-            # Only owner can access
-            return self.user_can_write(user)
-        else:
-            # Listed users/owner can access
-            if user.is_authenticated():
-                if user.pk == self.owner:
-                    return True
-                if user.pk in self.users:
-                    return True
-
-            #If password base, check password
-            if self.password:
-                return self.password == password
-
-            #All check failed, lets check if public
-            return self.shared_type == 'Public'
+        return True
 
     def user_can_write(self, user):
         '''Checks whether user can write'''

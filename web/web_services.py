@@ -247,7 +247,7 @@ def get_draw_details(request):
 
     return JsonResponse({
         "messages": messages,
-        "settings": draw.share_settings,
+        "enable_chat": draw.enable_chat,
         "last_updated_time": draw.last_updated_time
     })
 
@@ -323,8 +323,7 @@ def update_share_settings(request):
         bom_draw.enable_chat = False
 
     MONGO.save_draw(bom_draw)
-    LOG.info("Draw {0} updated to {1}".format(
-        bom_draw.pk, bom_draw.share_settings))
+    LOG.info("Draw {0} updated".format(bom_draw.pk))
     return HttpResponse()
 
 
