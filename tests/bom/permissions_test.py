@@ -42,7 +42,7 @@ class WritePermissionWithNotLoggedUserTest(TestCase):
 
 class ReadPermissionWithLoggedUserPublicTest(TestCase):
     def setUp(self):
-        self.draw = RandomNumberDraw(shared_type='Public')
+        self.draw = RandomNumberDraw(is_shared=True)
         self.user = User("test")
 
     def user_is_owner_test(self):
@@ -70,7 +70,7 @@ class ReadPermissionWithLoggedUserPublicTest(TestCase):
 
 class ReadPermissionWithNotLoggedUserPublicTest(TestCase):
     def setUp(self):
-        self.draw = RandomNumberDraw(shared_type='Public')
+        self.draw = RandomNumberDraw(is_shared=True)
         self.user = AnonymousUser()
 
     def draw_with_no_owner_test(self):
@@ -87,24 +87,9 @@ class ReadPermissionWithNotLoggedUserPublicTest(TestCase):
         self.assertTrue(self.draw.user_can_read(self.user))
 
 
-class ReadPermissionWithLoggedUserInviteTest(TestCase):
+class ReadPermissionWithLoggedUserBCTest(TestCase):
     def setUp(self):
-        self.draw = RandomNumberDraw(shared_type='Invite')
-        self.user = User("test")
-
-    def user_is_owner_test(self):
-        self.draw.owner = self.user.pk
-        self.assertTrue(self.draw.user_can_read(self.user))
-
-    def draw_with_another_owner_user_in_list_test(self):
-        self.draw.owner = User("another guy")
-        self.draw.users.append(self.user.pk)
-        self.assertTrue(self.draw.user_can_read(self.user))
-
-
-class ReadPermissionWithLoggedUserNoneTest(TestCase):
-    def setUp(self):
-        self.draw = RandomNumberDraw(shared_type='None')
+        self.draw = RandomNumberDraw(shared_type='Public')
         self.user = User("test")
 
     def user_is_owner_test(self):
@@ -118,9 +103,4 @@ class ReadPermissionWithLoggedUserNoneTest(TestCase):
     def draw_with_another_owner_user_in_list_test(self):
         self.draw.owner = User("another guy")
         self.draw.users.append(self.user.pk)
-        self.assertFalse(self.draw.user_can_read(self.user))
-
-    def draw_with_another_owner_user_not_in_list_test(self):
-        self.draw.owner = User("another guy")
-        self.draw.users.append("anotherguy")
-        self.assertFalse(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.user_can_read(self.user))
