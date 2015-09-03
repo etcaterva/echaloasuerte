@@ -21,9 +21,6 @@ class FormBase(forms.Form):
     _id = forms.CharField(required=False, widget=forms.HiddenInput())
     title = forms.CharField(required=False)
 
-    password = forms.CharField(required=False, widget=forms.HiddenInput())
-    '''Password of the draw. If present, users can use it to access the draw'''
-
     shared_type = forms.CharField(required=False, widget=forms.HiddenInput())
     '''Type of shared type. None, Public, Invite. It needs to be rendered manually in the templates'''
 

@@ -20,7 +20,7 @@ class BaseDraw(object):
 
     def __init__(self, creation_time=None, owner=None, number_of_results=1,
                  results=None, _id=None, draw_type=None, prev_draw=None,
-                 users=None, title=None, password=None, shared_type=None,
+                 users=None, title=None, shared_type=None,
                  enable_chat=True, last_updated_time=None,
                  audit=None):
         self.number_of_results = number_of_results
@@ -54,9 +54,6 @@ class BaseDraw(object):
         self.title = title
         """Title of the concrete draw"""
 
-        self.password = password
-        """Password of the public draw"""
-
         self.audit = audit if audit else []
         """List of changes in the draw main config, user add_audit to add items"""
 
@@ -67,12 +64,11 @@ class BaseDraw(object):
         '''Type of shared type. None, Public, Invite'''
 
         '''
-        shared_type  password   Descr:
-        -------------------------------
-        None         N/A        Single user draw
-        Invite       N/A        Only invited users can access
-        Public       N          Anybody can access
-        Public       Y          Either users or password
+        shared_type  Descr:
+        -----------------------------
+        None         Single user draw
+        Invite       Only invited users can access
+        Public       Anybody can access
         '''
 
         # TODO: remove me in the future, PLEASE
@@ -94,7 +90,7 @@ class BaseDraw(object):
     def is_shared(self):
         return self.shared_type is not None
 
-    def user_can_read(self, user, password=None):
+    def user_can_read(self, user):
         """Checks for read access"""
         return True
 

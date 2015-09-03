@@ -206,10 +206,9 @@ def remove_favorite(request):
 def check_access_to_draw(request):
     """Checks whether an user can access to a draw"""
     draw_id = request.GET.get('draw_id')
-    password = request.GET.get('draw_pass')
     draw = MONGO.retrieve_draw(draw_id)
 
-    user_can_read_draw(request.user, draw, password)
+    user_can_read_draw(request.user, draw)
     return HttpResponse()
 
 
@@ -289,10 +288,9 @@ def validate_draw(request):
 def update_share_settings(request):
     """Updates the shared settings.
 
-    input POST {draw_id, shared_type, password}
+    input POST {draw_id, shared_type}
     """
     draw_id = request.GET.get('draw_id')
-    new_password = request.GET.get('new_password')
     shared_type = request.GET.get('shared_type')
     enable_chat = request.GET.get('enable_chat') == "true"
 
@@ -307,15 +305,12 @@ def update_share_settings(request):
 
     if shared_type == "Public":
         bom_draw.shared_type = shared_type
-        bom_draw.password = new_password
         bom_draw.enable_chat = enable_chat
     elif shared_type == "Invite":
         bom_draw.shared_type = shared_type
-        bom_draw.password = None
         bom_draw.enable_chat = enable_chat
     elif shared_type is None:
         bom_draw.shared_type = shared_type
-        bom_draw.password = None
         bom_draw.enable_chat = False
 
     MONGO.save_draw(bom_draw)
