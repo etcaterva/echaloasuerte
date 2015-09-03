@@ -86,10 +86,12 @@
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
 {% block content %}
-    <div class="row shared-draw-status">
-        <span class="col-xs-12 col-sm-10 col-sm-offset-1 step-configure">{%trans 'You are creating a shared draw' %}</span>
-        <span class="col-xs-12 col-sm-10 col-sm-offset-1 hidden step-spread">{%trans 'Your draw has been created!' %}</span>
-    </div>
+    {% if is_public %}
+        <div class="row shared-draw-status">
+            <span class="col-xs-12 col-sm-10 col-sm-offset-1 step-configure">{%trans 'You are creating a shared draw' %}</span>
+            <span class="col-xs-12 col-sm-10 col-sm-offset-1 hidden step-spread">{%trans 'Your draw has been created!' %}</span>
+        </div>
+    {% endif %}
     <form id="draw-form" class="clearfix" method="post">
         <!-- Draw Heading -->
         <div class="clearfix draw-heading step-configure">
