@@ -9,6 +9,9 @@
                         "<p class='text-center'><i>(Click to switch between modes)</i></p>";
     $('#select-private-shared' ).tooltip({
         track: true,
+        show: {
+            delay: 500
+        },
         items: "div[title]",
         content: function() {
             return tooltip_text;
