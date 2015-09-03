@@ -16,9 +16,10 @@
     });
 
     $('#select-private-shared').click(function(){
-    var checked = $('#cb5').is(":checked");
         var $is_shared = $('#is-shared');
-        $is_shared.prop("checked", !$is_shared.prop("checked"));
+        var is_shared = $is_shared.prop("checked");
+        $is_shared.prop("checked", !is_shared);
+        $('#site-frame').toggleClass("shared-draw", !is_shared);
     });
 
     $('.draw-link').click(function (){
