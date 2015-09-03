@@ -295,7 +295,6 @@ def update_share_settings(request):
     new_password = request.GET.get('new_password')
     shared_type = request.GET.get('shared_type')
     enable_chat = request.GET.get('enable_chat') == "true"
-    show_in_public_list = request.GET.get('show_in_public_list') == "true"
 
     if shared_type not in ("Public", "Invite", None):
         LOG.warning("Wrong type of public draw: {0}".format(shared_type))
@@ -309,17 +308,14 @@ def update_share_settings(request):
     if shared_type == "Public":
         bom_draw.shared_type = shared_type
         bom_draw.password = new_password
-        bom_draw.show_in_public_list = show_in_public_list
         bom_draw.enable_chat = enable_chat
     elif shared_type == "Invite":
         bom_draw.shared_type = shared_type
         bom_draw.password = None
-        bom_draw.show_in_public_list = show_in_public_list
         bom_draw.enable_chat = enable_chat
     elif shared_type is None:
         bom_draw.shared_type = shared_type
         bom_draw.password = None
-        bom_draw.show_in_public_list = False
         bom_draw.enable_chat = False
 
     MONGO.save_draw(bom_draw)

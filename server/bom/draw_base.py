@@ -21,7 +21,7 @@ class BaseDraw(object):
     def __init__(self, creation_time=None, owner=None, number_of_results=1,
                  results=None, _id=None, draw_type=None, prev_draw=None,
                  users=None, title=None, password=None, shared_type=None,
-                 show_in_public_list=True, enable_chat=True, last_updated_time=None,
+                 enable_chat=True, last_updated_time=None,
                  audit=None):
         self.number_of_results = number_of_results
         """Number of results to generate"""
@@ -60,9 +60,6 @@ class BaseDraw(object):
         self.audit = audit if audit else []
         """List of changes in the draw main config, user add_audit to add items"""
 
-        self.show_in_public_list = show_in_public_list
-        """Wether or not to display the draw in the public lists of draws"""
-
         self.enable_chat = enable_chat
         """Wether or not to display the chat"""
 
@@ -98,11 +95,11 @@ class BaseDraw(object):
         return self.shared_type is not None
 
     def user_can_read(self, user, password=None):
-        '''Checks for read access'''
+        """Checks for read access"""
         return True
 
     def user_can_write(self, user):
-        '''Checks whether user can write'''
+        """Checks whether user can write"""
         if self.owner is None:
             return True
         return user.pk == self.owner

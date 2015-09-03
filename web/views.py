@@ -105,7 +105,7 @@ def join_draw(request):
         })
     try:
         public_draws = MONGO.get_draws_with_filter(
-            {"shared_type": "Public", "show_in_public_list": True},
+            {"shared_type": "Public"},
         )
     except Exception as e:
         LOG.error("There was an issue when retrieving public draws. {0}".format(e))

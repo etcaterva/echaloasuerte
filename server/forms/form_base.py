@@ -27,9 +27,6 @@ class FormBase(forms.Form):
     shared_type = forms.CharField(required=False, widget=forms.HiddenInput())
     '''Type of shared type. None, Public, Invite. It needs to be rendered manually in the templates'''
 
-    show_in_public_list = forms.BooleanField(required=False)
-    '''Display or not the draw in the public lists.'''
-
     users = forms.CharField(required=False)
     '''User invited to the draw, in case of been public. It needs to be rendered manually in the templates'''
 
