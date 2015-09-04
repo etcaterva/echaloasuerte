@@ -188,14 +188,14 @@ if not hasattr(globals(), 'SECRET_KEY'):
     SECRET_FILE = join(SITE_ROOT, 'secret.txt')
     try:
         SECRET_KEY = open(SECRET_FILE).read().strip()
-    except IOError:
+    except EnvironmentError:
         try:
             from random import choice
             SECRET_KEY = ''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
-            secret = file(SECRET_FILE, 'w')
-            secret.write(SECRET_KEY)
-            secret.close()
-        except IOError:
+            with open(SECRET_FILE, 'w') as secret:
+                secret.write(SECRET_KEY)
+                secret.close()
+        except EnvironmentError:
             raise Exception('Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)
 
 # Fixing 1_6.W001
