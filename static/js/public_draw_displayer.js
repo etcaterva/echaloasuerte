@@ -1,55 +1,6 @@
 var PublicDraw = {};
 
-// This function runs when the user make changes in the privacy of a public draw and click "Save" button
-// It store the corresponding values in the input field which will be POSTed
-PublicDraw.update_privacy_fields = function (){
-    var $shared_type_field = $('input#id_shared_type');
-    var mode = $('#privacy-selector').attr('data-selected');
-    if (mode == "invited"){
-        $('#id_password').val("");
-        $shared_type_field.attr('value','Invite');
-    }else if (mode == "password"){
-        var password = $('#draw-password').val();
-        $('#id_password').val(password);
-        $shared_type_field.attr('value','Public');
-    }else{ // Everyone
-        $('#id_password').val("");
-        $shared_type_field.attr('value','Public');
-    }
-};
-
-//Initialize the UI to select the level of privacy for the draw
-PublicDraw.prepare_privacy_selection = function (){
-    // Initialize the UI (slider) to choose the level of restriction of the public draw
-    $("#privacy-selector").slideSelector();
-
-    // Initialize button "Save changes". It stores the selection in the form input
-    $('button#save-change-privacy').click(function () {
-        PublicDraw.update_privacy_fields();
-    });
-};
-
 PublicDraw.settings = function () {
-    // Update the slide selector to show the current level of privacy
-    function initialize_slideselector () {
-        var current_privacy_level = $('input#id_shared_type').val();
-        var password = $('#id_password').val();
-        var $privacySelector =  $('#privacy-selector');
-        if (current_privacy_level == "Public")
-            if (password == "") {
-                $privacySelector.slideSelector('select_everyone');
-            }
-            else {
-                $('input#draw-password').val(password);
-                $privacySelector.slideSelector('select_password');
-            }
-        else{
-            if (current_privacy_level == "Invite"){
-                $privacySelector.slideSelector('select_invited');
-            }
-        }
-    }
-
     function init_settings_panel(){
         // Show the main settings screen
         $('#settings-general').removeClass("hide");
@@ -57,8 +8,6 @@ PublicDraw.settings = function () {
 
         // Remove previous feedback in case they exist
         $('div#public-draw-settings div.feedback').addClass('hide');
-
-        initialize_slideselector();
     }
 
     // Open settings panel
@@ -110,7 +59,7 @@ PublicDraw.settings = function () {
 
     /*
     SETTINGS OPTION: Edit draw
-    If the has edited a public draw so the configuration is submited to the server
+    If the has edited a public draw so the configuration is submitted to the server
     */
     $('button#edit-draw-save').click(function() {
         $("#draw-form").attr("action", PublicDraw.url_update_draw);
@@ -146,23 +95,6 @@ PublicDraw.settings = function () {
             $('div#alert-invitation-failed').removeClass('hide');
         });
     });
-
-    /*
-    SETTINGS OPTION: Change privacy
-    Show the privacy panel
-    */
-    $('li#privacy').click(function() {
-        initialize_slideselector();
-        $('#settings-general').addClass("hide");
-        $('#settings-privacy').removeClass("hide");
-    });
-
-    /*
-        SAVE SETTINGS
-        Send the changes to the server
-    */
-
-
 };
 
 PublicDraw.lock_fields = function () {
@@ -208,20 +140,13 @@ PublicDraw.check_draw_changes = function () {
 };
 
 PublicDraw.save_settings = function (){
-    $('button#save-settings, button#save-change-privacy').click(function() {
-            $('div#settings-privacy div.feedback').addClass('hide');
-            PublicDraw.update_privacy_fields();
-            var shared_type = $('input#id_shared_type').val();
-            var new_password = $('input#draw-password').val();
+    $('button#save-settings').click(function() {
             var enable = $("#settings-chat-enabled").prop( "checked");
             $.get(PublicDraw.url_update_settings, {
                     draw_id: PublicDraw.draw_id,
-                    new_password: new_password,
-                    shared_type: shared_type,
                     enable_chat: enable
             }).done(function(data){
                 // TODO show feedback to indicate that the changes were applied
-                PublicDraw.bom_password = new_password;
                 PublicDraw.enable_chat(enable);
                 PublicDraw.bom_last_updated = new Date();
             })
@@ -242,9 +167,6 @@ PublicDraw.enable_chat = function (enable){
 PublicDraw.setup = function(){
     // Hide the information div ("Separate items by commas...") when displaying a public draw
     $('#info-comma-separated').addClass('hidden');
-
-    //Initialize the UI to select the level of privacy for the draw
-    PublicDraw.prepare_privacy_selection();
 
     // Initialize input to submit emails to be shown as a tokenField
     $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
