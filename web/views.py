@@ -94,7 +94,7 @@ def profile(request):
 @time_it
 def join_draw(request):
     """view to show the list of draws a user can join"""
-    public_draws = MONGO.get_draws_with_filter({})
+    public_draws = MONGO.get_draws_with_filter({"is_shared": True})
     context = {'public_draws': public_draws}
     return render(request, 'join_draw.html', context)
 
