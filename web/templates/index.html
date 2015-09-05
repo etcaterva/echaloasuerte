@@ -43,10 +43,9 @@ window.cookieconsent_options = {"message":"{% trans 'This website uses cookies t
 {% block content %}
     <script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
     <div title="" id="select-private-shared" class="text-center">
-        You are creating a
         <input class='tgl tgl-flip' id='is-shared' type='checkbox'>
-        <label class='tgl-btn' data-tg-off='Normal' data-tg-on='Shared' for='is-shared'></label>
-        draw
+        <label class='tgl-btn' data-tg-off='Normal Draw' data-tg-on='Shared Draw' for='is-shared'></label>
+        <img id="help_shared_draw" src="{% static 'img/help_shared_draw2.png'%}" alt="{% trans "Click to swap between modes" %}"/>
     </div>
     <div class="container-draws row">
         <div class="col-sm-6">
