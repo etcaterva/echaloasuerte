@@ -284,7 +284,7 @@ def display_draw(request, draw_id):
     bom_draw = MONGO.retrieve_draw(draw_id)
     model_name = bom_draw.draw_type
     form_name = model_name + "Form"
-    if bom_draw.user_can_read(request.user, request.GET.get("password")):
+    if bom_draw.user_can_read(request.user):
         draw_form = globals()[form_name](initial=bom_draw.__dict__.copy())
         return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
     else:
