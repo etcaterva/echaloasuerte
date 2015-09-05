@@ -75,23 +75,9 @@ a.fa:focus {
     color: #6F6F6F;
 }
 
-.draw-heading .add-password:hover {
-    color: #404b6f;
-}
-
 #results {
     margin-top: 20px;
     margin-bottom: 20px;
-}
-
-/* Box containing the selected level of restriction when creating a public draw */
-.public-draw-invite {
-    background-color: #FCFCFC;
-    border: 1px #D7D7D7 solid;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 #shared-draw-created {

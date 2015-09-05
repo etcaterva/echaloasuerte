@@ -149,7 +149,6 @@
                 url   : "{% url 'ws_schedule_toss_draw' %}",
                 data  : {
                     draw_id : "{{bom.pk}}",
-                    draw_pass : "{{bom.password}}",
                     schedule: moment.utc(schedule).format()
                 }
             }).done(function (){
@@ -182,7 +181,7 @@
         $.ajax({
             method : "GET",
             url   : "{% url 'ws_toss_draw' %}",
-            data  : {draw_id : "{{bom.pk}}", draw_pass : "{{bom.password}}"}
+            data  : {draw_id : "{{bom.pk}}"}
         }).done(function (){
             window.location.reload();
         })
