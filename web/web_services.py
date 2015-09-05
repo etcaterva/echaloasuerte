@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import mail_admins
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.core.validators import validate_email
+from server import draw_factory
 from server.mongodb.driver import MongoDriver
 from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user
 from server.forms import *
@@ -257,11 +258,9 @@ def validate_draw(request):
     draw_type = request.POST.get("draw_type")
     if not draw_type:
         return HttpResponseBadRequest("Missing post argument draw_type")
-    model_name = draw_type
-    form_name = draw_type + "Form"
 
     logger.debug("Received post data: {0}".format(request.POST))
-    draw_form = globals()[form_name](request.POST)
+    draw_form = draw_factory.create_form(draw_type, request.POST)
     if not draw_form.is_valid():
         logger.info("Form not valid: {0}".format(draw_form.errors))
         return JsonResponse({
@@ -271,12 +270,12 @@ def validate_draw(request):
     else:
         raw_draw = draw_form.cleaned_data
         logger.debug("Form cleaned data: {0}".format(raw_draw))
-        bom_draw = globals()[model_name](**raw_draw)
+        bom_draw = draw_factory.create_draw(draw_type, raw_draw)
         if not bom_draw.is_feasible():
             logger.info("Draw {0} is not feasible".format(bom_draw))
             return JsonResponse({
                 "is_valid": False,
-                "errors": "Not feasiible"
+                "errors": "Not feasible"
             })
         else:
             return JsonResponse({

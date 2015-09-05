@@ -1,12 +1,11 @@
 """Definition of views for the website"""
 from django.http import *
+from server import draw_factory
 from server.bom import *
-from server.forms import *
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from server.bom.user import User
 from server.mongodb.driver import MongoDriver
-from server.forms.form_base import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
@@ -137,7 +136,6 @@ def index(request, is_public=None):
 
 
 # TODO:
-# - Wrap the creation of draws and form through a factory. No more global
 # - Move is_feasible to the form validation
 #       a draw changed
 # - Change user_can_read and write to methods
@@ -148,28 +146,25 @@ def try_draw(request, draw_type):
     """validate the draw
     if request.POST contains "try_draw", generates a result
     """
-    model_name = URL_TO_DRAW_MAP[draw_type]
-    form_name = model_name + "Form"
-
     LOG.debug("Received post data: {0}".format(request.POST))
-    draw_form = globals()[form_name](request.POST)
+    draw_form = draw_factory.create_form(draw_type,request.POST)
     if not draw_form.is_valid():
         LOG.info("Form not valid: {0}".format(draw_form.errors))
         messages.error(request, _('Invalid values provided'))
-        return render(request, 'draws/new_draw.html', {"draw": draw_form, "is_public": True, "draw_type": model_name})
+        return render(request, 'draws/new_draw.html', {"draw": draw_form, "is_public": True, "draw_type": draw_type})
     else:
         raw_draw = draw_form.cleaned_data
         LOG.debug("Form cleaned data: {0}".format(raw_draw))
-        bom_draw = globals()[model_name](**raw_draw)
+        bom_draw = draw_factory.create_draw(draw_type, raw_draw)
         if not bom_draw.is_feasible():  # This should actually go in the form validation
             LOG.info("Draw {0} is not feasible".format(bom_draw))
             messages.error(request, _('The draw is not feasible'))
             return render(request, 'draws/new_draw.html',
-                          {"draw": draw_form, "is_public": True, "draw_type": model_name})
+                          {"draw": draw_form, "is_public": True, "draw_type": draw_type})
         else:
             bom_draw.toss()
             return render(request, 'draws/new_draw.html',
-                          {"draw": draw_form, "is_public": True, "draw_type": model_name, "bom": bom_draw})
+                          {"draw": draw_form, "is_public": True, "draw_type": draw_type, "bom": bom_draw})
 
 
 @time_it
@@ -183,35 +178,33 @@ def create_draw(request, draw_type, is_public):
         redirects to the draw, otherwise, returns the form with the errors.
     """
 
-    model_name = URL_TO_DRAW_MAP[draw_type]
-    form_name = model_name + "Form"
     is_public = is_public or is_public == 'True'
 
     if request.method == 'GET':
-        LOG.debug("Serving view to create a draw. Form: {0}".format(form_name))
-        draw_form = globals()[form_name]()
+        LOG.debug("Serving view to create a draw: {0}".format(draw_type))
+        draw_form = draw_factory.create_form(draw_type)
         return render(request, 'draws/new_draw.html',
-                      {"draw": draw_form, "is_public": is_public, "draw_type": model_name, "default_title": draw_form.DEFAULT_TITLE})
+                      {"draw": draw_form, "is_public": is_public, "draw_type": draw_type, "default_title": draw_form.DEFAULT_TITLE})
     else:
         LOG.debug("Received post data: {0}".format(request.POST))
-        draw_form = globals()[form_name](request.POST)
+        draw_form = draw_factory.create_form(draw_type, request.POST)
         if not draw_form.is_valid():
             LOG.info("Form not valid: {0}".format(draw_form.errors))
             messages.error(request, _('Invalid values provided'))
             return render(request, 'draws/new_draw.html',
-                          {"draw": draw_form, "is_public": is_public, "draw_type": model_name})
+                          {"draw": draw_form, "is_public": is_public, "draw_type": draw_type})
         else:
             raw_draw = draw_form.cleaned_data
             LOG.debug("Form cleaned data: {0}".format(raw_draw))
             # Create a draw object with the data coming in the POST
-            bom_draw = globals()[model_name](**raw_draw)
+            bom_draw = draw_factory.create_draw(draw_type, raw_draw)
             bom_draw._id = None  # Ensure we have no id
             set_owner(bom_draw, request)
             if not bom_draw.is_feasible():  # This should actually go in the form validation
                 LOG.info("Draw {0} is not feasible".format(bom_draw))
                 messages.error(request, _('The draw is not feasible'))
                 return render(request, 'draws/new_draw.html',
-                              {"draw": draw_form, "is_public": is_public, "draw_type": model_name})
+                              {"draw": draw_form, "is_public": is_public, "draw_type": draw_type})
             else:
                 # generate a result if a private draw
                 if not bom_draw.is_shared:
@@ -241,12 +234,11 @@ def update_draw(request, draw_id):
         creating a new version
     """
     prev_bom_draw = MONGO.retrieve_draw(draw_id)
-    model_name = prev_bom_draw.draw_type
-    form_name = model_name + "Form"
+    draw_type = draw_factory.get_draw_name(prev_bom_draw.draw_type)
     user_can_write_draw(request.user, prev_bom_draw)
 
     LOG.debug("Received post data: {0}".format(request.POST))
-    draw_form = globals()[form_name](request.POST)
+    draw_form = draw_factory.create_form(draw_type, request.POST)
     if not draw_form.is_valid():
         LOG.info("Form not valid: {0}".format(draw_form.errors))
         messages.error(request, _('Invalid values provided'))
@@ -262,7 +254,7 @@ def update_draw(request, draw_id):
         if not bom_draw.is_feasible():  # This should actually go in the form validation
             LOG.info("Draw {0} is not feasible".format(bom_draw))
             messages.error(request, _('The draw is not feasible'))
-            draw_form = globals()[form_name](initial=bom_draw.__dict__.copy())
+            draw_form = draw_factory.create_form(draw_type, bom_draw.__dict__.copy())
             return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
         else:
             bom_draw.add_audit("DRAW_PARAMETERS")
@@ -282,10 +274,10 @@ def display_draw(request, draw_id):
     Given a draw id, retrieves it and returns the data required to display it
     """
     bom_draw = MONGO.retrieve_draw(draw_id)
-    model_name = bom_draw.draw_type
-    form_name = model_name + "Form"
+    draw_type = draw_factory.get_draw_name(bom_draw.draw_type)
     if bom_draw.user_can_read(request.user):
-        draw_form = globals()[form_name](initial=bom_draw.__dict__.copy())
+        prev_draw_data = bom_draw.__dict__.copy()
+        draw_form = draw_factory.create_form(draw_type, prev_draw_data)
         return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
     else:
         return render(request, "draws/secure_draw.html", {"bom": bom_draw})
