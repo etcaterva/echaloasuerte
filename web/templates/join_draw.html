@@ -86,53 +86,19 @@
         set_table_size();
     });
 
-
-    // todo remove
-    // Dialog to request the password to access a protected public draw
-    dialog = $( "#password-dialog" ).dialog({
-        autoOpen: false,
-        height: 'auto',
-        width: 350,
-        modal: true,
-        buttons: {
-        "Access": {
-            id: "check-password",
-            text: "{% trans "Access" %}",
-            click: function() {
-                var password = $('#password-dialog #password').val();
-                var draw_id = dialog.data('draw_id');
-                var target_url = dialog.data('target_url');
-                target_url += "?password=";
-                target_url += password;
-                access_draw(draw_id, password, target_url);
-            }
-        },
-        Cancel: function() {
-            dialog.dialog( "close" );
-                $('#input-password').removeClass('has-error');
-                $('#wrong-password').addClass('hidden');
-        }
-        },
-        close: function() {
-            // Reset dialog inputs
-            form[ 0 ].reset();
-        }
-    });
-
     /**
      * Check whether an user can access and, if possible, access to it
     **/
-    function access_draw(draw_id, password, target_url){
+    function access_draw(draw_id, target_url){
         $.ajax({
             method : "GET",
             url   : "{% url 'check_access_to_draw' %}",
-            data  : {draw_id : draw_id, draw_pass : password}
+            data  : {draw_id : draw_id}
         }).done(function (){
             window.location = target_url;
         })
         .fail(function () {
-            $('#input-password').addClass('has-error');
-            $('#wrong-password').removeClass('hidden');
+            console.log("It was not possible to access the draw");
         });
     }
 
@@ -144,31 +110,10 @@
         // Get url and draw id
         var target_url = $(this).attr('alt');
         var draw_id = $(this).attr('data-draw_id');
-
-        var password = undefined;
-        if($(this).attr("data-pwd") == 'true') {
-            dialog.data('draw_id', draw_id)
-                  .data('target_url', target_url)
-                  .dialog( "open" );
-        }
-        else{
-            // If the draw is not password protected, directly access to it
-            access_draw(draw_id, password,target_url);
-        }
+        access_draw(draw_id,target_url);
 
         return false;
     } );
-
-    // Allow form submission with keyboard without duplicating the dialog button
-    form = dialog.find( "form" ).on( "submit", function( event ) {
-        event.preventDefault();
-        var password = $('#password-dialog #password').val();
-        var draw_id = dialog.data('draw_id');
-        var target_url = dialog.data('target_url');
-        target_url += "?password=";
-        target_url += password;
-        access_draw(draw_id, password, target_url);
-    });
 {% endblock extra_jq_ready %}
 
 {% block content %}
@@ -188,17 +133,13 @@
             </thead>
             <tbody>
             {% for d in public_draws %}
-                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}" data-pwd="{% if user.pk == d.owner %}false{% else %}{{d.password|yesno:"true,false"}}{% endif %}">
+                <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}">
                     <td>{% if user.is_authenticated %}
                             {% if user.pk == d.owner %}
                                 <span title="{% trans "You have created this draw" %}" class="fa fa-paw"></span>
                             {% elif user.pk in d.users %}
                                 <span title="{% trans "You have been invited to this draw" %}" class="fa fa-envelope-o"></span>
-                            {% elif d.password %}
-                                <span title="{% trans "This draw is protected with a password" %}" class="fa fa-key"></span>
                             {%endif%}
-                        {%elif d.password%}
-                            <span title="{% trans "This draw is protected with a password" %}" class="fa fa-key"></span>
                         {%endif%}
                     </td>
                     <td>{{ d.title }}</td>
@@ -218,22 +159,4 @@
             </tbody>
         </table>
     {% endif %}
-    <div id="password-dialog" title="{% trans "This draw is protected" %}">
-        <p>{% trans "Type the password to access the draw" %}</p>
-        <form autocomplete="off">
-            <fieldset>
-                <div id="input-password" class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                    <!-- "prevent-autofill" is a workaround to avoid chrome autofill -->
-                    <input type="password" name="prevent-autofill" style="display:none;" />
-                    <input id="password" type="password" class="form-control" name="password" placeholder="{% trans "Password" %}" autocomplete="off" >
-                </div>
-                <div id="wrong-password" class="alert alert-danger hidden">
-                    <strong>{% trans "Oops!" %}</strong> {% trans "The password is not correct" %}.
-                </div>
-                <!-- Allow form submission with keyboard without duplicating the dialog button-->
-                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-            </fieldset>
-        </form>
-    </div>
 {% endblock %}
