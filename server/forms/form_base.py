@@ -21,17 +21,11 @@ class FormBase(forms.Form):
     _id = forms.CharField(required=False, widget=forms.HiddenInput())
     title = forms.CharField(required=False)
 
-    password = forms.CharField(required=False, widget=forms.HiddenInput())
-    '''Password of the draw. If present, users can use it to access the draw'''
-
-    shared_type = forms.CharField(required=False, widget=forms.HiddenInput())
-    '''Type of shared type. None, Public, Invite. It needs to be rendered manually in the templates'''
-
-    show_in_public_list = forms.BooleanField(required=False)
-    '''Display or not the draw in the public lists.'''
+    is_shared = forms.BooleanField(required=False, widget=forms.HiddenInput())
+    """Whether the draw is open to multiple users"""
 
     users = forms.CharField(required=False)
-    '''User invited to the draw, in case of been public. It needs to be rendered manually in the templates'''
+    """User invited to the draw, in case of been public. It needs to be rendered manually in the templates"""
 
     DEFAULT_TITLE = _("New Draw")
     TEMPLATE_PATH = None

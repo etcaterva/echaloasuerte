@@ -29,18 +29,18 @@ def invite_user(user_email, draw_id, owner_user):
               'draws@echaloasuerte.com', user_email, fail_silently=True)
 
 
-def user_can_read_draw(user, draw, password=None):
-    '''Validates that user can read draw. Throws unauth otherwise'''
-    if not draw.user_can_read(user, password):
-        LOG.info("User {0} not allowed to read draw {1}. Type: {2}, Password? {3}, Owner:{4}, Users: {5}"
-                 .format(user.pk, draw.pk, draw.shared_type, 'Y' if draw.password else 'N', draw.owner, draw.users))
+def user_can_read_draw(user, draw):
+    """Validates that user can read draw. Throws unauth otherwise"""
+    if not draw.user_can_read(user):
+        LOG.info("User {0} not allowed to read draw {1}. Shared: {2}, Owner:{3}, Users: {4}"
+                 .format(user.pk, draw.pk, draw.is_shared, draw.owner, draw.users))
         raise PermissionDenied("Unauthorised to read the draw")
 
 
 def user_can_write_draw(user, draw):
     if not draw.user_can_write(user):
-        LOG.info("User {0} not allowed to write draw {1}. Type: {2}, Password? {3}, Owner:{4}"
-                 .format(user.pk, draw.pk, draw.shared_type, 'Y' if draw.password else 'N', draw.owner))
+        LOG.info("User {0} not allowed to write draw {1}. Shared: {2}, Owner:{3}"
+                 .format(user.pk, draw.pk, draw.is_shared, draw.owner))
         raise PermissionDenied("Unauthorised to write the draw")
 
 

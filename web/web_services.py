@@ -206,10 +206,9 @@ def remove_favorite(request):
 def check_access_to_draw(request):
     """Checks whether an user can access to a draw"""
     draw_id = request.GET.get('draw_id')
-    password = request.GET.get('draw_pass')
     draw = MONGO.retrieve_draw(draw_id)
 
-    user_can_read_draw(request.user, draw, password)
+    user_can_read_draw(request.user, draw)
     return HttpResponse()
 
 
@@ -247,7 +246,7 @@ def get_draw_details(request):
 
     return JsonResponse({
         "messages": messages,
-        "settings": draw.share_settings,
+        "enable_chat": draw.enable_chat,
         "last_updated_time": draw.last_updated_time
     })
 
@@ -289,42 +288,18 @@ def validate_draw(request):
 def update_share_settings(request):
     """Updates the shared settings.
 
-    input POST {draw_id, shared_type, password}
+    input POST {draw_id, enable_chat}
     """
     draw_id = request.GET.get('draw_id')
-    new_password = request.GET.get('new_password')
-    shared_type = request.GET.get('shared_type')
     enable_chat = request.GET.get('enable_chat') == "true"
-    show_in_public_list = request.GET.get('show_in_public_list') == "true"
-
-    if shared_type not in ("Public", "Invite", None):
-        LOG.warning("Wrong type of public draw: {0}".format(shared_type))
-        return HttpResponseBadRequest()
     if draw_id is None:
         LOG.warning("Empty draw_id")
         return HttpResponseBadRequest()
     bom_draw = MONGO.retrieve_draw(draw_id)
     user_can_write_draw(request.user, bom_draw)  # raises 500
-
-    if shared_type == "Public":
-        bom_draw.shared_type = shared_type
-        bom_draw.password = new_password
-        bom_draw.show_in_public_list = show_in_public_list
-        bom_draw.enable_chat = enable_chat
-    elif shared_type == "Invite":
-        bom_draw.shared_type = shared_type
-        bom_draw.password = None
-        bom_draw.show_in_public_list = show_in_public_list
-        bom_draw.enable_chat = enable_chat
-    elif shared_type is None:
-        bom_draw.shared_type = shared_type
-        bom_draw.password = None
-        bom_draw.show_in_public_list = False
-        bom_draw.enable_chat = False
+    bom_draw.enable_chat = enable_chat
 
     MONGO.save_draw(bom_draw)
-    LOG.info("Draw {0} updated to {1}".format(
-        bom_draw.pk, bom_draw.share_settings))
+    LOG.info("Draw {0} updated".format(bom_draw.pk))
     return HttpResponse()
-
 

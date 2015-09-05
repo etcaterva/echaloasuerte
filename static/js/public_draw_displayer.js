@@ -214,13 +214,11 @@ PublicDraw.save_settings = function (){
             var shared_type = $('input#id_shared_type').val();
             var new_password = $('input#draw-password').val();
             var enable = $("#settings-chat-enabled").prop( "checked");
-            var show_in_public_list = $("#settings-show-in-public-list").prop( "checked");
             $.get(PublicDraw.url_update_settings, {
                     draw_id: PublicDraw.draw_id,
                     new_password: new_password,
                     shared_type: shared_type,
-                    enable_chat: enable,
-                    show_in_public_list: show_in_public_list
+                    enable_chat: enable
             }).done(function(data){
                 // TODO show feedback to indicate that the changes were applied
                 PublicDraw.bom_password = new_password;

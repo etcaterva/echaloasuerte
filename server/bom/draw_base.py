@@ -20,9 +20,12 @@ class BaseDraw(object):
 
     def __init__(self, creation_time=None, owner=None, number_of_results=1,
                  results=None, _id=None, draw_type=None, prev_draw=None,
-                 users=None, title=None, password=None, shared_type=None,
-                 show_in_public_list=True, enable_chat=True, last_updated_time=None,
-                 audit=None):
+                 users=None, title=None, is_shared=False,
+                 enable_chat=True, last_updated_time=None,
+                 audit=None, **kwargs):
+        if kwargs:
+            logger.info("Unexpected extra args: {0}".format(kwargs))
+
         self.number_of_results = number_of_results
         """Number of results to generate"""
 
@@ -54,37 +57,23 @@ class BaseDraw(object):
         self.title = title
         """Title of the concrete draw"""
 
-        self.password = password
-        """Password of the public draw"""
-
         self.audit = audit if audit else []
         """List of changes in the draw main config, user add_audit to add items"""
 
-        self.show_in_public_list = show_in_public_list
-        """Wether or not to display the draw in the public lists of draws"""
-
         self.enable_chat = enable_chat
-        """Wether or not to display the chat"""
+        """Whether or not to display the chat"""
 
-        self.shared_type = shared_type
-        '''Type of shared type. None, Public, Invite'''
+        self.is_shared = bool(is_shared == True)
+        """Whether other users can see the draw"""
 
-        '''
-        shared_type  password   Descr:
-        -------------------------------
-        None         N/A        Single user draw
-        Invite       N/A        Only invited users can access
-        Public       N          Anybody can access
-        Public       Y          Either users or password
-        '''
+        #  TODO: backward compat
+        if "shared_type" in kwargs and kwargs["shared_type"]:
+            self.is_shared = True
 
-        # TODO: remove me in the future, PLEASE
-        if self.shared_type == "None" or self.shared_type == "":
-            self.shared_type = None
         if draw_type and draw_type != self.draw_type:
             logger.warning("A draw was built with type {0} but type {1} was "
                            "passed as argument! Fix it!".format(
-                draw_type, self.draw_type))
+                            draw_type, self.draw_type))
         if self.last_updated_time.tzinfo is None:
             self.last_updated_time.replace(tzinfo=pytz.utc)
         if self.creation_time.tzinfo is None:
@@ -94,40 +83,15 @@ class BaseDraw(object):
     def pk(self):
         return str(self._id)
 
-    def is_shared(self):
-        return self.shared_type is not None
-
-    @property
-    def share_settings(self):
-        return {
-            "shared_type": self.shared_type,
-            "password": bool(self.password),
-            "show_in_public_list": self.show_in_public_list,
-            "enable_chat": self.enable_chat
-        }
-
-    def user_can_read(self, user, password=None):
-        '''Checks for read access'''
-        if self.shared_type is None:
-            # Only owner can access
-            return self.user_can_write(user)
+    def user_can_read(self, user):
+        """Checks for read access"""
+        if self.owner:
+            return self.owner == user.pk or self.is_shared
         else:
-            # Listed users/owner can access
-            if user.is_authenticated():
-                if user.pk == self.owner:
-                    return True
-                if user.pk in self.users:
-                    return True
-
-            #If password base, check password
-            if self.password:
-                return self.password == password
-
-            #All check failed, lets check if public
-            return self.shared_type == 'Public'
+            return True
 
     def user_can_write(self, user):
-        '''Checks whether user can write'''
+        """Checks whether user can write"""
         if self.owner is None:
             return True
         return user.pk == self.owner

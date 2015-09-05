@@ -94,24 +94,7 @@ def profile(request):
 @time_it
 def join_draw(request):
     """view to show the list of draws a user can join"""
-    public_draws = []
-    user_draws = []
-    if request.user.is_authenticated():
-        user_draws = MONGO.get_draws_with_filter({
-            "$and": [
-                {"$or": [{"shared_type": "Public"}, {"shared_type": "Invite"}]},
-                {"$or": [{"owner": request.user.pk}, {"user": request.user.pk}]}
-            ]
-        })
-    try:
-        public_draws = MONGO.get_draws_with_filter(
-            {"shared_type": "Public", "show_in_public_list": True},
-        )
-    except Exception as e:
-        LOG.error("There was an issue when retrieving public draws. {0}".format(e))
-    user_draws_pk = [draw.pk for draw in user_draws]
-    public_draws = [draw for draw in public_draws if draw.pk not in user_draws_pk]
-    public_draws = public_draws + user_draws
+    public_draws = MONGO.get_draws_with_filter({})
     context = {'public_draws': public_draws}
     return render(request, 'join_draw.html', context)
 
@@ -231,13 +214,13 @@ def create_draw(request, draw_type, is_public):
                               {"draw": draw_form, "is_public": is_public, "draw_type": model_name})
             else:
                 # generate a result if a private draw
-                if not bom_draw.is_shared():
+                if not bom_draw.is_shared:
                     bom_draw.toss()
 
                 MONGO.save_draw(bom_draw)
                 LOG.info("Generated draw: {0}".format(bom_draw))
                 messages.info(request, _('Draw created successfully'))
-                shared_type = 'public' if bom_draw.is_shared() else 'private'
+                shared_type = 'public' if bom_draw.is_shared else 'private'
                 ga_track_event(category="create_draw", action=bom_draw.draw_type, label=shared_type)
                 # notify users if any
                 if bom_draw.users:
@@ -284,7 +267,7 @@ def update_draw(request, draw_id):
         else:
             bom_draw.add_audit("DRAW_PARAMETERS")
             # generate a result if a private draw
-            if not bom_draw.is_shared():
+            if not bom_draw.is_shared:
                 bom_draw.toss()
 
             MONGO.save_draw(bom_draw)
