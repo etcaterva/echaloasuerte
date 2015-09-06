@@ -30,7 +30,7 @@ def register_draw(draw_name, bom_class, form_class):
         'form': form_class
     }
     form_class.NAME_IN_URL = draw_name
-    form_class.TEMPLATE_PATH = 'snippets/draws/' + bom_class.__name__+ '.html'
+    form_class.TEMPLATE_PATH = 'snippets/draws/' + bom_class.__name__ + '.html'
 
 
 register_draw('coin', CoinDraw, CoinDrawForm)
@@ -44,13 +44,13 @@ register_draw('link_sets', LinkSetsDraw, LinkSetsDrawForm)
 
 
 def get_draw_name(draw_type=None):
-    """
-    Computes the draw name given the type name
+    """Computes the draw name given the type name
+
     :param draw_type:  name of the draw type
     :return: string with the draw name
     """
-    for draw_name, values in REGISTRY:
-        if str(values["bom"]) == draw_type:
+    for draw_name, values in REGISTRY.items():
+        if values["bom"].__name__ == draw_type:
             return draw_name
     else:
         raise ValueError
