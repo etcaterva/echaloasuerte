@@ -13,15 +13,15 @@ class WritePermissionWithLoggedUserTest(TestCase):
 
     def user_is_owner_test(self):
         self.draw.owner = self.user.pk
-        self.assertTrue(self.draw.user_can_write(self.user))
+        self.assertTrue(self.draw.check_write_access(self.user))
 
     def draw_with_no_owner_test(self):
         self.draw.owner = None
-        self.assertTrue(self.draw.user_can_write(self.user))
+        self.assertTrue(self.draw.check_write_access(self.user))
 
     def draw_with_another_owner_test(self):
         self.draw.owner = User("another guy")
-        self.assertFalse(self.draw.user_can_write(self.user))
+        self.assertFalse(self.draw.check_write_access(self.user))
 
 
 class WritePermissionWithNotLoggedUserTest(TestCase):
@@ -33,11 +33,11 @@ class WritePermissionWithNotLoggedUserTest(TestCase):
 
     def draw_with_no_owner_test(self):
         self.draw.owner = None
-        self.assertTrue(self.draw.user_can_write(self.user))
+        self.assertTrue(self.draw.check_write_access(self.user))
 
     def draw_with_another_owner_test(self):
         self.draw.owner = User("another guy")
-        self.assertFalse(self.draw.user_can_write(self.user))
+        self.assertFalse(self.draw.check_write_access(self.user))
 
 
 class ReadPermissionWithLoggedUserPublicTest(TestCase):
@@ -47,25 +47,25 @@ class ReadPermissionWithLoggedUserPublicTest(TestCase):
 
     def user_is_owner_test(self):
         self.draw.owner = self.user.pk
-        self.assertTrue(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.check_read_access(self.user))
 
     def draw_with_no_owner_test(self):
         self.draw.owner = None
-        self.assertTrue(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.check_read_access(self.user))
 
     def draw_with_another_owner_test_empty_user_list(self):
         self.draw.owner = User("another guy")
-        self.assertTrue(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.check_read_access(self.user))
 
     def draw_with_another_owner_user_in_list_test(self):
         self.draw.owner = User("another guy")
         self.draw.users.append(self.user.pk)
-        self.assertTrue(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.check_read_access(self.user))
 
     def draw_with_another_owner_user_not_in_list_test(self):
         self.draw.owner = User("another guy")
         self.draw.users.append("anotherguy")
-        self.assertTrue(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.check_read_access(self.user))
 
 
 class ReadPermissionWithNotLoggedUserPublicTest(TestCase):
@@ -75,16 +75,16 @@ class ReadPermissionWithNotLoggedUserPublicTest(TestCase):
 
     def draw_with_no_owner_test(self):
         self.draw.owner = None
-        self.assertTrue(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.check_read_access(self.user))
 
     def draw_with_another_owner_test_empty_user_list(self):
         self.draw.owner = User("another guy")
-        self.assertTrue(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.check_read_access(self.user))
 
     def draw_with_another_owner_user_not_in_list_test(self):
         self.draw.owner = User("another guy")
         self.draw.users.append("anotherguy")
-        self.assertTrue(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.check_read_access(self.user))
 
 
 class ReadPermissionWithLoggedUserBCTest(TestCase):
@@ -94,13 +94,13 @@ class ReadPermissionWithLoggedUserBCTest(TestCase):
 
     def user_is_owner_test(self):
         self.draw.owner = self.user.pk
-        self.assertTrue(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.check_read_access(self.user))
 
     def draw_with_no_owner_test(self):
         self.draw.owner = None
-        self.assertTrue(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.check_read_access(self.user))
 
     def draw_with_another_owner_user_in_list_test(self):
         self.draw.owner = User("another guy")
         self.draw.users.append(self.user.pk)
-        self.assertTrue(self.draw.user_can_read(self.user))
+        self.assertTrue(self.draw.check_read_access(self.user))

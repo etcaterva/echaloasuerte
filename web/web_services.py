@@ -5,10 +5,10 @@ from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.core.validators import validate_email
 from server import draw_factory
 from server.mongodb.driver import MongoDriver
-from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user
+from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user, \
+    set_owner, ga_track_draw
 from server.forms import *
 from server.bom import *
-from web.google_analytics import ga_track_event
 import dateutil.parser
 
 LOG = logging.getLogger("echaloasuerte")
@@ -66,7 +66,7 @@ def toss_draw(request):
     user_can_write_draw(request.user, bom_draw)  # raises 500
     result = bom_draw.toss()
     MONGO.save_draw(bom_draw)
-    ga_track_event(category="toss", action=bom_draw.draw_type)
+    ga_track_event(bom_draw, "toss")
     return JsonResponse({
         "result": result
     })

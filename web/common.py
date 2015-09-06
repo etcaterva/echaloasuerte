@@ -8,6 +8,7 @@ from django.core.mail import send_mail
 
 import logging
 import time
+from web.google_analytics import ga_track_event
 
 
 LOG = logging.getLogger("echaloasuerte")
@@ -23,22 +24,23 @@ Echaloasuerte.com Team
 """)
 
 
-def invite_user(user_email, draw_id, owner_user):
+def invite_user(user_email, draw_id, owner_user=None):
+    owner = owner_user if owner_user else _("An anonymous user")
     LOG.info("Inviting user {0} to draw {1}".format(user_email, draw_id))
-    send_mail('Echaloasuerte', INVITE_EMAIL_TEMPLATE.format(owner_user, draw_id),
+    send_mail('Echaloasuerte', INVITE_EMAIL_TEMPLATE.format(owner, draw_id),
               'draws@echaloasuerte.com', user_email, fail_silently=True)
 
 
 def user_can_read_draw(user, draw):
     """Validates that user can read draw. Throws unauth otherwise"""
-    if not draw.user_can_read(user):
+    if not draw.check_read_access(user):
         LOG.info("User {0} not allowed to read draw {1}. Shared: {2}, Owner:{3}, Users: {4}"
                  .format(user.pk, draw.pk, draw.is_shared, draw.owner, draw.users))
         raise PermissionDenied("Unauthorised to read the draw")
 
 
 def user_can_write_draw(user, draw):
-    if not draw.user_can_write(user):
+    if not draw.check_write_access(user):
         LOG.info("User {0} not allowed to write draw {1}. Shared: {2}, Owner:{3}"
                  .format(user.pk, draw.pk, draw.is_shared, draw.owner))
         raise PermissionDenied("Unauthorised to write the draw")
@@ -71,3 +73,21 @@ def time_it(func):
             return func(*args, **kwargs)
 
     return _
+
+
+def ga_track_draw(bom_draw, action):
+    """Sends a notification of action to google analytics
+
+    :bom_draw: draw to send information about
+    :action: action to send
+    """
+    shared_type = 'public' if bom_draw.is_shared else 'private'
+    ga_track_event(category=action, action=bom_draw.draw_type, label=shared_type)
+
+
+def set_owner(draw, request):
+    """Best effort to set the owner given a request"""
+    try:
+        draw.owner = request.user.pk
+    except:
+        pass
