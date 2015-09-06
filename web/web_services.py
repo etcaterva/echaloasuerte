@@ -66,7 +66,7 @@ def toss_draw(request):
     user_can_write_draw(request.user, bom_draw)  # raises 500
     result = bom_draw.toss()
     MONGO.save_draw(bom_draw)
-    ga_track_event(bom_draw, "toss")
+    ga_track_draw(bom_draw, "toss")
     return JsonResponse({
         "result": result
     })
@@ -302,3 +302,35 @@ def update_share_settings(request):
     LOG.info("Draw {0} updated".format(bom_draw.pk))
     return HttpResponse()
 
+@time_it
+def create_draw(request):
+    """create_draw ws
+    """
+    LOG.debug("Received post data: {0}".format(request.POST))
+
+    draw_type = request.POST["draw_type"]
+    draw_data = request.POST["draw_data"]
+
+    draw_form = draw_factory.create_form(draw_type, draw_data)
+    if not draw_form.is_valid():
+        LOG.info("Form not valid: {0}".format(draw_form.errors))
+        return HttpResponseBadRequest("Not valid")
+    else:
+        raw_draw = draw_form.cleaned_data
+        LOG.debug("Form cleaned data: {0}".format(raw_draw))
+        # Create a draw object with the data coming in the POST
+        bom_draw = draw_factory.create_draw(draw_type, raw_draw)
+        bom_draw._id = None  # Ensure we have no id
+        set_owner(bom_draw, request)
+        if not bom_draw.is_feasible():
+            LOG.info("Draw {0} is not feasible".format(bom_draw))
+            return HttpResponseBadRequest("Not Feasible")
+        else:
+            MONGO.save_draw(bom_draw)
+            LOG.info("Generated draw: {0}".format(bom_draw))
+            ga_track_draw(bom_draw, "create_draw")
+            # notify users if any
+            if bom_draw.users:
+                invite_user(bom_draw.users, bom_draw.pk, bom_draw.owner)
+
+            return JsonResponse({'draw_id': bom_draw.pk})
