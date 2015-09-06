@@ -3,20 +3,6 @@ from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 
 
-URL_TO_DRAW_MAP = {
-    'coin': 'CoinDraw',
-    'dice': 'DiceDraw',
-    'card': 'CardDraw',
-    'number': 'RandomNumberDraw',
-    'letter': 'RandomLetterDraw',
-    'tournament': 'TournamentDraw',
-    'item': 'RandomItemDraw',
-    'link_sets': 'LinkSetsDraw',
-}
-
-DRAW_TO_URL_MAP = {v: k for k, v in URL_TO_DRAW_MAP.items()}
-
-
 class FormBase(forms.Form):
     _id = forms.CharField(required=False, widget=forms.HiddenInput())
     title = forms.CharField(required=False)
@@ -35,12 +21,6 @@ class FormBase(forms.Form):
         if 'initial' in kwargs:
             kwargs['initial']['users'] = ','.join(kwargs['initial']['users'])
         super(FormBase, self).__init__(*args, **kwargs)
-
-        form_name = self.__class__.__name__
-        model_name = form_name[:-4]
-        name_in_url = DRAW_TO_URL_MAP[model_name]
-        self.TEMPLATE_PATH = 'snippets/draws/' + model_name + '.html'
-        self.NAME_IN_URL = name_in_url
 
         self.helper = FormHelper()
         self.helper.form_tag = False

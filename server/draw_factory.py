@@ -13,40 +13,34 @@ from server.bom import CoinDraw, DiceDraw, CardDraw, RandomNumberDraw, \
     RandomLetterDraw, TournamentDraw, LinkSetsDraw, RandomItemDraw
 
 
-REGISTRY = {
-    'coin': {
-        'bom': CoinDraw,
-        'form': CoinDrawForm
-    },
-    'dice': {
-        'bom': DiceDraw,
-        'form': DiceDrawForm,
-    },
-    'card': {
-        'bom': CardDraw,
-        'form': CardDrawForm,
-    },
-    'number': {
-        'bom': RandomNumberDraw,
-        'form': RandomNumberDrawForm,
-    },
-    'letter': {
-        'bom': RandomLetterDraw,
-        'form': RandomLetterDrawForm,
-    },
-    'tournament': {
-        'bom': TournamentDraw,
-        'form': TournamentDrawForm,
-    },
-    'item': {
-        'bom': RandomItemDraw,
-        'form': RandomItemDrawForm,
-    },
-    'link_sets': {
-        'bom': LinkSetsDraw,
-        'form': LinkSetsDrawForm,
-    },
-}
+REGISTRY = {}
+
+
+def register_draw(draw_name, bom_class, form_class):
+    """Creates the binding for the draw classes
+
+    It binds the human name with the bom and the draw class
+
+    :param draw_name: human name of the draw
+    :param bom_class: bom class
+    :param form_class: form class
+    """
+    REGISTRY[draw_name] = {
+        'bom': bom_class,
+        'form': form_class
+    }
+    form_class.NAME_IN_URL = draw_name
+    form_class.TEMPLATE_PATH = 'snippets/draws/' + bom_class.__name__+ '.html'
+
+
+register_draw('coin', CoinDraw, CoinDrawForm)
+register_draw('dice', DiceDraw, DiceDrawForm)
+register_draw('card', CardDraw, CardDrawForm)
+register_draw('number', RandomNumberDraw, RandomNumberDrawForm)
+register_draw('letter', RandomLetterDraw, RandomLetterDrawForm)
+register_draw('tournament', TournamentDraw, TournamentDrawForm)
+register_draw('item', RandomItemDraw, RandomItemDrawForm)
+register_draw('link_sets', LinkSetsDraw, LinkSetsDrawForm)
 
 
 def get_draw_name(draw_type=None):
