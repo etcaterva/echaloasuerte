@@ -21,5 +21,6 @@ The dev version is on continuous deployment, all changes in master are automatic
 All domains can be accessed through http and https and are served through cloudflare. 
 
 ## CI builds
-[![Travis Build Status](https://travis-ci.org/etcaterva/EchaloASuerte.svg?branch=master)](https://travis-ci.org/etcaterva/EchaloASuerte)
-[![Jenkins Build Status](http://92.222.219.42:8080/buildStatus/icon?job=Echaloasuerte-DEV-CI)](http://92.222.219.42:8080/job/Echaloasuerte-DEV-CI/)
+- Travis: [![Travis Master](https://travis-ci.org/etcaterva/EchaloASuerte.svg?branch=master)](https://travis-ci.org/etcaterva/EchaloASuerte)
+- CI: [![Jenkins CI](http://92.222.219.42:8080/job/Echaloasuerte-DEV-CI/badge/icon)](http://92.222.219.42:8080/job/Echaloasuerte-DEV-CI/)
+- CD: [![Jenkins CD](http://92.222.219.42:8080/job/Echaloasuerte-DEV-Deploy/badge/icon)](http://92.222.219.42:8080/job/Echaloasuerte-DEV-Deploy)
