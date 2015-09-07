@@ -7,7 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from django.contrib import messages
 from django.templatetags.static import static
 
 from server import draw_factory
@@ -217,7 +216,6 @@ def update_draw(request, draw_id):
     draw_form = draw_factory.create_form(draw_type, request.POST)
     if not draw_form.is_valid():
         LOG.info("Form not valid: {0}".format(draw_form.errors))
-        messages.error(request, _('Invalid values provided'))
         return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": prev_bom_draw})
     else:
         bom_draw = prev_bom_draw
@@ -229,7 +227,7 @@ def update_draw(request, draw_id):
                 setattr(bom_draw, key, value)
         if not bom_draw.is_feasible():
             LOG.info("Draw {0} is not feasible".format(bom_draw))
-            messages.error(request, _('The draw is not feasible'))
+            draw_form.add_error(None, _("Draw not feasible"))
             draw_form = draw_factory.create_form(draw_type, bom_draw.__dict__.copy())
             return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
         else:
@@ -240,7 +238,6 @@ def update_draw(request, draw_id):
 
             MONGO.save_draw(bom_draw)
             LOG.info("Updated draw: {0}".format(bom_draw))
-            messages.error(request, _('Draw updated successfully'))
             return redirect('retrieve_draw', draw_id=bom_draw.pk)
 
 
