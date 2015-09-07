@@ -27,6 +27,7 @@ urlpatterns += patterns(
     # web services
     url(r'^ws/update_profile/$', ws.update_user, name="update_profile"),
     url(r'^ws/feedback/$', ws.feedback, name="ws_feedback"),
+    url(r'^ws/draw/create/$', ws.create_draw, name="ws_create_draw"),
     url(r'^ws/draw/toss/$', ws.toss_draw, name="ws_toss_draw"),
     url(r'^ws/draw/schedule-toss/$', ws.schedule_toss_draw, name="ws_schedule_toss_draw"),
     url(r'^ws/draw/try/$', ws.try_draw, name="ws_try_draw"),

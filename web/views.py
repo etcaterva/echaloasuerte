@@ -1,30 +1,26 @@
 """Definition of views for the website"""
+import logging
+
 from django.http import *
-from server import draw_factory
-from server.bom import *
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
-from server.bom.user import User
-from server.mongodb.driver import MongoDriver
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.templatetags.static import static
-from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user
-import logging
+
+from server import draw_factory
+from server.bom import *
+from server.bom.user import User
+from server.mongodb.driver import MongoDriver
+from web.common import user_can_write_draw, time_it, invite_user, set_owner, \
+    ga_track_draw
 from web.google_analytics import ga_track_event
+
 
 LOG = logging.getLogger("echaloasuerte")
 MONGO = MongoDriver.instance()
-
-
-def set_owner(draw, request):
-    """Best effort to set the owner given a request"""
-    try:
-        draw.owner = request.user.pk
-    except:
-        pass
 
 
 @time_it
@@ -138,7 +134,7 @@ def index(request, is_public=None):
 # TODO:
 # - Move is_feasible to the form validation
 #       a draw changed
-# - Change user_can_read and write to methods
+# - Change check_read_access and write to methods
 
 
 @time_it
@@ -213,12 +209,10 @@ def create_draw(request, draw_type, is_public):
                 MONGO.save_draw(bom_draw)
                 LOG.info("Generated draw: {0}".format(bom_draw))
                 messages.info(request, _('Draw created successfully'))
-                shared_type = 'public' if bom_draw.is_shared else 'private'
-                ga_track_event(category="create_draw", action=bom_draw.draw_type, label=shared_type)
+                ga_track_draw(bom_draw, "create_draw")
                 # notify users if any
                 if bom_draw.users:
-                    owner = bom_draw.owner if bom_draw.owner else _("An anonymous user")
-                    invite_user(bom_draw.users, bom_draw.pk, owner)
+                    invite_user(bom_draw.users, bom_draw.pk, bom_draw.owner)
 
                 return redirect('retrieve_draw', draw_id=bom_draw.pk)
 
@@ -275,7 +269,7 @@ def display_draw(request, draw_id):
     """
     bom_draw = MONGO.retrieve_draw(draw_id)
     draw_type = draw_factory.get_draw_name(bom_draw.draw_type)
-    if bom_draw.user_can_read(request.user):
+    if bom_draw.check_read_access(request.user):
         prev_draw_data = bom_draw.__dict__.copy()
         draw_form = draw_factory.create_form(draw_type, prev_draw_data)
         return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
