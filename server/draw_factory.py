@@ -16,7 +16,7 @@ from server.bom import CoinDraw, DiceDraw, CardDraw, RandomNumberDraw, \
 REGISTRY = {}
 
 
-def register_draw(draw_name, bom_class, form_class):
+def register_draw(draw_name, bom_class, form_class, template_name=None):
     """Creates the binding for the draw classes
 
     It binds the human name with the bom and the draw class
@@ -24,24 +24,27 @@ def register_draw(draw_name, bom_class, form_class):
     :param draw_name: human name of the draw
     :param bom_class: bom class
     :param form_class: form class
+    :param template_name: name of the template to be used to render the draw
+
     """
+    template_path = 'snippets/draws/' + template_name + '.html'
     REGISTRY[draw_name] = {
         'bom': bom_class,
         'form': form_class
     }
     form_class.NAME_IN_URL = draw_name
-    form_class.TEMPLATE_PATH = 'snippets/draws/' + bom_class.__name__ + '.html'
+    form_class.TEMPLATE_PATH = template_path
     form_class.DrawClass = bom_class
 
 
-register_draw('coin', CoinDraw, CoinDrawForm)
-register_draw('dice', DiceDraw, DiceDrawForm)
-register_draw('card', CardDraw, CardDrawForm)
-register_draw('number', RandomNumberDraw, RandomNumberDrawForm)
-register_draw('letter', RandomLetterDraw, RandomLetterDrawForm)
-register_draw('tournament', TournamentDraw, TournamentDrawForm)
-register_draw('item', RandomItemDraw, RandomItemDrawForm)
-register_draw('link_sets', LinkSetsDraw, LinkSetsDrawForm)
+register_draw('coin', CoinDraw, CoinDrawForm, 'CoinDraw')
+register_draw('dice', DiceDraw, DiceDrawForm, 'DiceDraw')
+register_draw('card', CardDraw, CardDrawForm, 'CardDraw')
+register_draw('number', RandomNumberDraw, RandomNumberDrawForm, 'RandomNumberDraw')
+register_draw('letter', RandomLetterDraw, RandomLetterDrawForm, 'RandomLetterDraw')
+register_draw('tournament', TournamentDraw, TournamentDrawForm, 'TournamentDraw')
+register_draw('item', RandomItemDraw, RandomItemDrawForm, 'RandomItemDraw')
+register_draw('link_sets', LinkSetsDraw, LinkSetsDrawForm, 'LinkSetsDraw')
 
 
 def get_draw_name(draw_type=None):
