@@ -31,6 +31,7 @@ def register_draw(draw_name, bom_class, form_class):
     }
     form_class.NAME_IN_URL = draw_name
     form_class.TEMPLATE_PATH = 'snippets/draws/' + bom_class.__name__ + '.html'
+    form_class.DrawClass = bom_class
 
 
 register_draw('coin', CoinDraw, CoinDrawForm)

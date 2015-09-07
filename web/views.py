@@ -13,6 +13,7 @@ from django.templatetags.static import static
 from server import draw_factory
 from server.bom import *
 from server.bom.user import User
+from server.forms.form_base import DrawFormError
 from server.mongodb.driver import MongoDriver
 from web.common import user_can_write_draw, time_it, invite_user, set_owner, \
     ga_track_draw
@@ -144,23 +145,15 @@ def try_draw(request, draw_type):
     """
     LOG.debug("Received post data: {0}".format(request.POST))
     draw_form = draw_factory.create_form(draw_type,request.POST)
-    if not draw_form.is_valid():
+    try:
+        bom_draw = draw_form.build_draw()
+    except DrawFormError:
         LOG.info("Form not valid: {0}".format(draw_form.errors))
-        messages.error(request, _('Invalid values provided'))
         return render(request, 'draws/new_draw.html', {"draw": draw_form, "is_public": True, "draw_type": draw_type})
     else:
-        raw_draw = draw_form.cleaned_data
-        LOG.debug("Form cleaned data: {0}".format(raw_draw))
-        bom_draw = draw_factory.create_draw(draw_type, raw_draw)
-        if not bom_draw.is_feasible():  # This should actually go in the form validation
-            LOG.info("Draw {0} is not feasible".format(bom_draw))
-            messages.error(request, _('The draw is not feasible'))
-            return render(request, 'draws/new_draw.html',
-                          {"draw": draw_form, "is_public": True, "draw_type": draw_type})
-        else:
-            bom_draw.toss()
-            return render(request, 'draws/new_draw.html',
-                          {"draw": draw_form, "is_public": True, "draw_type": draw_type, "bom": bom_draw})
+        bom_draw.toss()
+        return render(request, 'draws/new_draw.html',
+                      {"draw": draw_form, "is_public": True, "draw_type": draw_type, "bom": bom_draw})
 
 
 @time_it
@@ -184,37 +177,26 @@ def create_draw(request, draw_type, is_public):
     else:
         LOG.debug("Received post data: {0}".format(request.POST))
         draw_form = draw_factory.create_form(draw_type, request.POST)
-        if not draw_form.is_valid():
-            LOG.info("Form not valid: {0}".format(draw_form.errors))
-            messages.error(request, _('Invalid values provided'))
+        try:
+            bom_draw = draw_form.build_draw()
+        except DrawFormError:
             return render(request, 'draws/new_draw.html',
                           {"draw": draw_form, "is_public": is_public, "draw_type": draw_type})
         else:
-            raw_draw = draw_form.cleaned_data
-            LOG.debug("Form cleaned data: {0}".format(raw_draw))
-            # Create a draw object with the data coming in the POST
-            bom_draw = draw_factory.create_draw(draw_type, raw_draw)
             bom_draw._id = None  # Ensure we have no id
             set_owner(bom_draw, request)
-            if not bom_draw.is_feasible():  # This should actually go in the form validation
-                LOG.info("Draw {0} is not feasible".format(bom_draw))
-                messages.error(request, _('The draw is not feasible'))
-                return render(request, 'draws/new_draw.html',
-                              {"draw": draw_form, "is_public": is_public, "draw_type": draw_type})
-            else:
-                # generate a result if a private draw
-                if not bom_draw.is_shared:
-                    bom_draw.toss()
+            #  generate a result if a private draw
+            if not bom_draw.is_shared:
+                bom_draw.toss()
 
-                MONGO.save_draw(bom_draw)
-                LOG.info("Generated draw: {0}".format(bom_draw))
-                messages.info(request, _('Draw created successfully'))
-                ga_track_draw(bom_draw, "create_draw")
-                # notify users if any
-                if bom_draw.users:
-                    invite_user(bom_draw.users, bom_draw.pk, bom_draw.owner)
+            MONGO.save_draw(bom_draw)
+            LOG.info("Generated draw: {0}".format(bom_draw))
+            ga_track_draw(bom_draw, "create_draw")
+            #  notify users if any
+            if bom_draw.users:
+                invite_user(bom_draw.users, bom_draw.pk, bom_draw.owner)
 
-                return redirect('retrieve_draw', draw_id=bom_draw.pk)
+            return redirect('retrieve_draw', draw_id=bom_draw.pk)
 
 
 @time_it
@@ -245,7 +227,7 @@ def update_draw(request, draw_id):
         for key, value in raw_draw.items():
             if key not in ("_id", "pk") and value != "":
                 setattr(bom_draw, key, value)
-        if not bom_draw.is_feasible():  # This should actually go in the form validation
+        if not bom_draw.is_feasible():
             LOG.info("Draw {0} is not feasible".format(bom_draw))
             messages.error(request, _('The draw is not feasible'))
             draw_form = draw_factory.create_form(draw_type, bom_draw.__dict__.copy())

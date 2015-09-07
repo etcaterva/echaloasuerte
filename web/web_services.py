@@ -261,26 +261,18 @@ def validate_draw(request):
 
     logger.debug("Received post data: {0}".format(request.POST))
     draw_form = draw_factory.create_form(draw_type, request.POST)
-    if not draw_form.is_valid():
+    try:
+        _ = draw_form.build_draw()
+    except DrawFormError:
         logger.info("Form not valid: {0}".format(draw_form.errors))
         return JsonResponse({
             "is_valid": False,
             "errors": draw_form.errors
         })
     else:
-        raw_draw = draw_form.cleaned_data
-        logger.debug("Form cleaned data: {0}".format(raw_draw))
-        bom_draw = draw_factory.create_draw(draw_type, raw_draw)
-        if not bom_draw.is_feasible():
-            logger.info("Draw {0} is not feasible".format(bom_draw))
-            return JsonResponse({
-                "is_valid": False,
-                "errors": "Not feasible"
-            })
-        else:
-            return JsonResponse({
-                "is_valid": True,
-            })
+        return JsonResponse({
+            "is_valid": True,
+        })
 
 
 @time_it
@@ -312,25 +304,19 @@ def create_draw(request):
     draw_data = request.POST["draw_data"]
 
     draw_form = draw_factory.create_form(draw_type, draw_data)
-    if not draw_form.is_valid():
+    try:
+        bom_draw = draw_form.build_draw()
+    except DrawFormError:
         LOG.info("Form not valid: {0}".format(draw_form.errors))
         return HttpResponseBadRequest("Not valid")
     else:
-        raw_draw = draw_form.cleaned_data
-        LOG.debug("Form cleaned data: {0}".format(raw_draw))
-        # Create a draw object with the data coming in the POST
-        bom_draw = draw_factory.create_draw(draw_type, raw_draw)
         bom_draw._id = None  # Ensure we have no id
         set_owner(bom_draw, request)
-        if not bom_draw.is_feasible():
-            LOG.info("Draw {0} is not feasible".format(bom_draw))
-            return HttpResponseBadRequest("Not Feasible")
-        else:
-            MONGO.save_draw(bom_draw)
-            LOG.info("Generated draw: {0}".format(bom_draw))
-            ga_track_draw(bom_draw, "create_draw")
-            # notify users if any
-            if bom_draw.users:
-                invite_user(bom_draw.users, bom_draw.pk, bom_draw.owner)
+        MONGO.save_draw(bom_draw)
+        LOG.info("Generated draw: {0}".format(bom_draw))
+        ga_track_draw(bom_draw, "create_draw")
+        #  notify users if any
+        if bom_draw.users:
+            invite_user(bom_draw.users, bom_draw.pk, bom_draw.owner)
 
-            return JsonResponse({'draw_id': bom_draw.pk})
+        return JsonResponse({'draw_id': bom_draw.pk})
