@@ -16,7 +16,7 @@ from server.bom import CoinDraw, DiceDraw, CardDraw, RandomNumberDraw, \
 REGISTRY = {}
 
 
-def register_draw(draw_name, bom_class, form_class, template_name=None):
+def register_draw(draw_name, bom_class, form_class, template_name):
     """Creates the binding for the draw classes
 
     It binds the human name with the bom and the draw class
