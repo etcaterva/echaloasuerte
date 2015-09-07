@@ -1,4 +1,3 @@
-import logging
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
@@ -61,7 +60,7 @@ class FormBase(forms.Form):
             raw_draw = self.cleaned_data
             LOG.debug("Form cleaned data: {0}".format(raw_draw))
             # Create a draw object with the data coming in the POST
-            bom_draw = self.DrawClass(**raw_data)
+            bom_draw = self.DrawClass(**raw_draw)
             if not bom_draw.is_feasible():  # This should actually go in the form validation
                 self.add_error(None, _('The draw is not feasible'))
                 LOG.info("Draw {0} is not feasible".format(bom_draw))
