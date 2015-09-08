@@ -203,7 +203,11 @@
                 $('.suggestion-step-final').removeClass('hidden');
             });
 
-            var old_site_url = location.protocol + "//2011." + location.host;
+            if(location.host.indexOf("pickforme") > -1){
+                var old_site_url = "//2011.pickforme.net";
+            } else {
+                var old_site_url = "//2011.echaloasuerte.com";
+            }
             var $old_site_link = $('#back-old-version');
             $old_site_link.attr('href', old_site_url);
             $old_site_link.on('click', function() {
