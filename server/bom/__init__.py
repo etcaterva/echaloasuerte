@@ -6,3 +6,4 @@ from server.bom.dice import *
 from server.bom.card import *
 from server.bom.tournament import *
 from server.bom.link_sets import *
+from server.bom.user import User

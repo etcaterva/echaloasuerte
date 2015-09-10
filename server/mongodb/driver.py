@@ -83,6 +83,10 @@ class MongoDriver(object):
         return doc["_id"]
 
     @safe_connection
+    def remove_user(self, user_id):
+        doc = self._users.remove({"_id": user_id})
+
+    @safe_connection
     def retrieve_user(self, user_id):
         doc = self._users.find_one({"_id": user_id})
         if doc is None:
@@ -163,6 +167,10 @@ class MongoDriver(object):
 
     @staticmethod
     def instance():
+        """Returns the single instance of mongodb
+
+        :rtype: MongoDriver
+        """
         if MongoDriver._instance is None:
             from django.conf import settings
 
