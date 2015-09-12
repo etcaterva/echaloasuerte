@@ -12,7 +12,7 @@ class FavouriteResource(resources.Resource):
     Allows to add/remove/retrieve the favourites of an user
     All operations requires the user to be logged in
     """
-    id = fields.CharField(help_text="id of the favourite draw")
+    id = fields.CharField(attribute='id', help_text="id of the favourite draw")
     type = fields.CharField(attribute='type', help_text="type of the draw")
 
     class Meta:
@@ -24,10 +24,6 @@ class FavouriteResource(resources.Resource):
     def _client(self):
         return mongodb.MongoDriver.instance()
 
-    def dehydrate(self, bundle):
-        bundle.data["id"] = bundle.obj.id
-        return bundle
-
     def detail_uri_kwargs(self, bundle_or_obj):
         if isinstance(bundle_or_obj, Bundle):
             return {'pk': bundle_or_obj.obj.id}
@@ -36,7 +32,7 @@ class FavouriteResource(resources.Resource):
 
     def get_object_list(self, request):
         result = []
-        if request.user.is_active:
+        if request.user.is_authenticated():
             user = self._client.retrieve_user(request.user.pk)
             favourites = user.favourites_list
             result.extend([FavouriteDraw(favourite.pk, favourite.draw_type)

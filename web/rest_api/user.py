@@ -37,7 +37,7 @@ class UserResource(resources.Resource):
 
     def get_object_list(self, request):
         result = []
-        if request.user.is_active:
+        if request.user.is_authenticated():
             result.append(self._client.retrieve_user(request.user.pk))
         return result
 

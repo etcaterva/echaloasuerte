@@ -63,7 +63,7 @@ class BaseDraw(object):
         self.enable_chat = enable_chat
         """Whether or not to display the chat"""
 
-        self.is_shared = bool(is_shared == True)
+        self.is_shared = is_shared is True
         """Whether other users can see the draw"""
 
         #  TODO: backward compat
