@@ -3,12 +3,6 @@
 {% load i18n %}
 {% block content %}
     <div class="row">
-        {% if not bom.is_shared  %}
-            <div class="alert alert-danger" role="alert">{% trans 'The draw is private, you cannot access it.' %}</div>
-        {% elif user.is_anonymous %}
-            <div class="alert alert-info" role="alert">{% trans 'You need to log in to be able to access this draw.' %}</div>
-            <a href="{% url 'login' %}"><button type="button" class="btn btn-primary">{% trans "Log in" %}</button></a>
-            <a href="{% url 'register' %}"><button type="button" class="btn btn-primary">{% trans "Sign up" %}</button></a>
-        {% endif %}
+        <div class="alert alert-danger" role="alert">{% trans 'The draw is private, you cannot access it.' %}</div>
     </div>
 {% endblock %}
