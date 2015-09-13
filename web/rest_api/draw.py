@@ -6,10 +6,9 @@ from server import mongodb
 class DrawResource(resources.Resource):
     """Resource representing the draws a user has any relation with
 
-    This resource can be used to retrieve information about the draws you have
-     access or to add/remove the draws you are linked with. (Note, the draw must
-     already exist)
-    All operations requires the user to be logged in
+    Resource to all draws within the system.
+    It serves for two purposes, draws administration and to handle what draws
+    you are subscribed to.
     """
     id = fields.CharField(attribute='_id', help_text="id of the favourite draw")
     type = fields.CharField(attribute='draw_type', help_text="type of the draw")
@@ -26,7 +25,7 @@ class DrawResource(resources.Resource):
     class Meta:
         resource_name = 'draw'
         list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get', 'delete']
+        detail_allowed_methods = ['get', 'post', 'delete']
 
     @property
     def _client(self):
@@ -62,19 +61,20 @@ class DrawResource(resources.Resource):
         return self._client.retrieve_draw(kwargs['pk'])
 
     def obj_create(self, bundle, **kwargs):
-        print bundle
-        if not bundle.request.user.is_authenticated():
+        raise NotImplementedError()
+
+    def post_detail(self, request, **kwargs):
+        if not request.user.is_authenticated():
             self.unauthorized_result(None)
-        if 'id' not in bundle.data:
-            raise exceptions.ImmediateHttpResponse(
-                response=http.HttpBadRequest("Provide an 'id' to subscribe"))
-        draw_id = bundle.data['id']
-        draw = self._client.retrieve_draw(draw_id)
-        if bundle.request.user.pk not in draw.users:
-            draw.users.append(bundle.request.user.pk)
+        draw_id = kwargs['pk']
+        try:
+            draw = self._client.retrieve_draw(draw_id)
+        except mongodb.MongoDriver.NotFoundError:
+            return http.HttpBadRequest("Draw not found")
+        if request.user.pk not in draw.users:
+            draw.users.append(request.user.pk)
             self._client.save_draw(draw)
-        bundle.obj = draw
-        return bundle
+        return http.HttpCreated()
 
     def obj_delete(self, bundle, **kwargs):
         if not bundle.request.user.is_authenticated():

@@ -94,18 +94,17 @@ class DrawResourceTest(ResourceTestCase):
                         ['id', 'type', 'is_shared', 'owner', 'title',
                          'resource_uri', 'users'])
 
-    def test_anon_post_list(self):
-        self.assertHttpUnauthorized(self.api_client.post(self.base_url,
+    def test_anon_post_detail(self):
+        self.assertHttpUnauthorized(self.api_client.post(self.detail_url,
                                                          format='json',
                                                          data={}))
 
-    def test_post_list_bad_request(self):
+    def test_post_detail_bad_request(self):
         self.login()
-        self.assertHttpBadRequest(self.api_client.post(self.base_url,
-                                                       format='json',
-                                                       data={'title': "no id"}))
+        self.assertHttpBadRequest(self.api_client.post(self.base_url + "FAKE/",
+                                                       format='json'))
 
-    def test_post_list(self):
+    def test_post_detail(self):
         self.login()
         # Check how many are there first.
         self.item.users = ['FAKE@USER.es']
@@ -113,9 +112,9 @@ class DrawResourceTest(ResourceTestCase):
         self.assertEquals(self.mongo.retrieve_draw(self.item.pk).users,
                           ['FAKE@USER.es'])
         # create it
-        self.assertHttpCreated(self.api_client.post(self.base_url,
-                                                    format='json',
-                                                    data={'id': self.item.pk}))
+        self.assertHttpCreated(self.api_client.post(self.detail_url,
+                                                    format='json'))
+
         # Verify a new one has been added.
         self.assertEquals(self.mongo.retrieve_draw(self.item.pk).users,
                           ['FAKE@USER.es', self.user.pk])
