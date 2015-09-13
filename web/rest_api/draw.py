@@ -1,6 +1,6 @@
-from tastypie import fields, resources, http
+from tastypie import fields, resources, http, exceptions
 from tastypie.bundle import Bundle
-from server import mongodb
+from server import mongodb, draw_factory
 
 
 class DrawResource(resources.Resource):
@@ -28,6 +28,8 @@ class DrawResource(resources.Resource):
                                                       ' generate when tossing')
 
     HIDDEN_ATTRIBUTES = ['draw_type', '_id']
+    FORBIDDEN_ATTRIBUTES = ['results', 'owner', '_id', 'pk', 'creation_time',
+                            'last_updated_time', 'audit']
 
     class Meta:
         resource_name = 'draw'
@@ -45,6 +47,7 @@ class DrawResource(resources.Resource):
                 bundle.data[att] = getattr(bundle.obj, att)
         for att in self.HIDDEN_ATTRIBUTES:
             bundle.data.pop(att)
+        bundle.data["type"] = draw_factory.get_draw_name(bundle.data["type"])
         return bundle
 
     def detail_uri_kwargs(self, bundle_or_obj):
@@ -70,10 +73,33 @@ class DrawResource(resources.Resource):
         return self.get_object_list(bundle.request)
 
     def obj_get(self, bundle, **kwargs):
-        return self._client.retrieve_draw(kwargs['pk'])
+        try:
+            return self._client.retrieve_draw(kwargs['pk'])
+        except mongodb.MongoDriver.NotFoundError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpNotFound())
 
     def obj_create(self, bundle, **kwargs):
-        raise NotImplementedError()
+        data = bundle.data
+        if 'type' not in data:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Missing draw type"))
+        type_ = data.pop('type')
+
+        for attr in self.FORBIDDEN_ATTRIBUTES:
+            if attr in data:
+                raise exceptions.ImmediateHttpResponse(
+                    response=http.HttpBadRequest("{0} is forbidden".format(
+                        attr)))
+
+        draw = draw_factory.create_draw(type_, data)
+        draw.owner = bundle.request.user.pk
+        if not draw.is_feasible():
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Not feasible"))
+        self._client.save_draw(draw)
+        bundle.obj = draw
+        return bundle
 
     def post_detail(self, request, **kwargs):
         if not request.user.is_authenticated():
@@ -92,7 +118,11 @@ class DrawResource(resources.Resource):
         if not bundle.request.user.is_authenticated():
             self.unauthorized_result(None)
         draw_id = kwargs['pk']
-        draw = self._client.retrieve_draw(draw_id)
+        try:
+            draw = self._client.retrieve_draw(draw_id)
+        except mongodb.MongoDriver.NotFoundError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpNotFound())
         if bundle.request.user.pk in draw.users:
             draw.users.remove(bundle.request.user.pk)
             self._client.save_draw(draw)

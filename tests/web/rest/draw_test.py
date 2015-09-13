@@ -66,7 +66,6 @@ class DrawResourceTest(ResourceTestCase):
         self.assertEqual(len(self.deserialize(resp)['objects']), 1)
         # Here, we're checking an entire structure for the expected data.
         retrieved_draw = self.deserialize(resp)['objects'][0]
-        self.assertEqual(retrieved_draw["type"], self.item.draw_type)
         self.assertEqual(retrieved_draw["is_shared"], self.item.is_shared)
         self.assertEqual(retrieved_draw["resource_uri"], self.detail_url)
         self.assertEqual(retrieved_draw["owner"], self.item.owner)
@@ -163,3 +162,134 @@ class DrawResourceTest(ResourceTestCase):
         # Verify a new one has been added.
         self.assertEquals(self.mongo.retrieve_draw(self.item.pk).users, [])
         self.assertIsNone(self.mongo.retrieve_draw(self.item.pk).owner)
+
+
+class DrawResourceCreate_Test(ResourceTestCase):
+    """Tests the creation of draws"""
+    urls = 'web.rest_api.urls'
+
+    def setUp(self):
+        super(DrawResourceCreate_Test, self).setUp()
+        django.setup()
+
+        # mongodb instance
+        self.mongo = mongodb.MongoDriver.instance()
+
+        # Create a user for authentication
+        test_user = bom.User('test@test.te')
+        test_user.set_password('test')
+        self.mongo.save_user(test_user)
+        self.user = test_user
+
+        # base url of the resource
+        self.base_url = '/v1/draw/'
+
+    def tearDown(self):
+        self.api_client.client.logout()
+        self.mongo.remove_user(self.user.pk)
+
+        # cleanup draws
+        self.mongo._draws.remove({'owner': self.user.pk})
+
+    def login(self):
+        self.api_client.client.login(username='test@test.te',
+                                     password='test')
+
+    def get_created_draw(self):
+        """Retrieve a draw created by the user"""
+        return self.mongo.get_draws_with_filter({'owner': self.user.pk})[0]
+
+    def test_anon_create_random_number_ok(self):
+        data = {
+            'title': 'test_draw_with_no_owner',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': [],
+            'type': 'number',
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpCreated(resp)
+        draw = self.mongo.get_draws_with_filter({
+            'title': 'test_draw_with_no_owner'
+        })[0]
+        self.assertTrue(draw.is_feasible())
+
+        self.assertIsNone(draw.owner)
+        self.mongo.remove_draw(draw.pk)
+
+    def test_create_random_number_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': [],
+            'type': 'number',
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+        }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpCreated(resp)
+        draw = self.get_created_draw()
+        self.assertTrue(draw.is_feasible())
+
+        data.pop('type')
+        for key, value in data.items():
+            self.assertEqual(value, getattr(draw, key))
+
+    def test_create_random_number_ok_2(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'users': ['ruben@prueba.com'],
+            'type': 'number',
+            'range_min': 0,
+            'range_max': 2,
+            'allow_repeat': False,
+            }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpCreated(resp)
+        draw = self.get_created_draw()
+        self.assertTrue(draw.is_feasible())
+
+        data.pop('type')
+        for key, value in data.items():
+            self.assertEqual(value, getattr(draw, key))
+
+    def test_create_random_number_forbidden_att(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': [],
+            'type': 'number',
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        for attr in []:
+            data["attr"] = "something"
+            resp = self.api_client.post(self.base_url,
+                                        format='json',
+                                        data=data)
+            self.assertHttpBadRequest(resp)
+            data.pop(attr)
+        self.assertEqual(0, len(self.mongo.get_draws_with_filter({
+            'owner': self.user.pk})))
+
