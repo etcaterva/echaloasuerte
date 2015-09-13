@@ -1,4 +1,5 @@
 import urllib
+
 import django
 from tastypie.test import ResourceTestCase
 
@@ -209,7 +210,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
@@ -258,7 +259,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
             'range_min': 0,
             'range_max': 2,
             'allow_repeat': False,
-            }
+        }
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
@@ -282,7 +283,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         for attr in []:
             data["attr"] = "something"
             resp = self.api_client.post(self.base_url,

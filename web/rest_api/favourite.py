@@ -1,10 +1,13 @@
 from collections import namedtuple
+
 from tastypie import fields, resources
 from tastypie.bundle import Bundle
+
 from server import mongodb
 
 
 FavouriteDraw = namedtuple('FavouriteDraw', 'id type')
+
 
 class FavouriteResource(resources.Resource):
     """Favourites draws of an user

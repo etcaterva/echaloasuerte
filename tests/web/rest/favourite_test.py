@@ -1,4 +1,5 @@
 import urllib
+
 import django
 from tastypie.test import ResourceTestCase
 

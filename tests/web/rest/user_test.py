@@ -1,4 +1,5 @@
 import urllib
+
 import django
 from tastypie.test import ResourceTestCase
 
@@ -99,7 +100,8 @@ class UserResourceTest(ResourceTestCase):
 
     def test_anon_post_list(self):
         self.assertRaises(mongodb.MongoDriver.NotFoundError,
-                          lambda: self.mongo.retrieve_user(self.post_data['email']))
+                          lambda: self.mongo.retrieve_user(
+                              self.post_data['email']))
         count_users = self.mongo._users.count()
         self.assertHttpCreated(self.api_client.post(self.base_url,
                                                     format='json',
@@ -110,7 +112,8 @@ class UserResourceTest(ResourceTestCase):
 
     def test_post_list(self):
         self.assertRaises(mongodb.MongoDriver.NotFoundError,
-                          lambda: self.mongo.retrieve_user(self.post_data['email']))
+                          lambda: self.mongo.retrieve_user(
+                              self.post_data['email']))
         self.login()
         # Check how many are there first.
         count_users = self.mongo._users.count()
@@ -138,7 +141,7 @@ class UserResourceTest(ResourceTestCase):
         self.assertEqual(self.mongo._users.count(), count_users)
         # check unchanged data
         self.assertEqual(self.mongo.retrieve_user(self.item.pk).get_email(),
-                         self.item.get_email())
+            self.item.get_email())
         self.assertEqual(self.mongo.retrieve_user(self.item.pk).use_gravatar,
                          self.item.use_gravatar)
         # Check for updated data.
