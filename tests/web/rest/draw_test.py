@@ -79,9 +79,9 @@ class DrawResourceTest(ResourceTestCase):
         self.assertValidJSONResponse(resp)
 
         # verify the keys, not all the data.
-        self.assertKeys(self.deserialize(resp),
-                        ['id', 'type', 'is_shared', 'owner', 'title',
-                         'resource_uri', 'users'])
+        for key in ['id', 'type', 'is_shared', 'owner', 'title',
+                    'resource_uri', 'users', 'number_of_results']:
+            self.assertTrue(key in self.deserialize(resp))
 
     def test_get_detail(self):
         self.login()
@@ -90,9 +90,9 @@ class DrawResourceTest(ResourceTestCase):
         self.assertValidJSONResponse(resp)
 
         # verify the keys, not all the data.
-        self.assertKeys(self.deserialize(resp),
-                        ['id', 'type', 'is_shared', 'owner', 'title',
-                         'resource_uri', 'users'])
+        for key in ['id', 'type', 'is_shared', 'owner', 'title',
+                    'resource_uri', 'users', 'number_of_results']:
+            self.assertTrue(key in self.deserialize(resp))
 
     def test_anon_post_detail(self):
         self.assertHttpUnauthorized(self.api_client.post(self.detail_url,

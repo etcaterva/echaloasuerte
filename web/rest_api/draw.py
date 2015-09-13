@@ -22,6 +22,13 @@ class DrawResource(resources.Resource):
                              null=True,
                              help_text="Owner of the draw")
 
+    number_of_results = fields.IntegerField(attribute='number_of_results',
+                                            default=1,
+                                            help_text='Number of results to'
+                                                      ' generate when tossing')
+
+    HIDDEN_ATTRIBUTES = ['draw_type', '_id']
+
     class Meta:
         resource_name = 'draw'
         list_allowed_methods = ['get', 'post']
@@ -33,6 +40,11 @@ class DrawResource(resources.Resource):
 
     def dehydrate(self, bundle):
         bundle.data["users"] = bundle.obj.users
+        for att in bundle.obj.__dict__:
+            if att not in bundle.data:
+                bundle.data[att] = getattr(bundle.obj, att)
+        for att in self.HIDDEN_ATTRIBUTES:
+            bundle.data.pop(att)
         return bundle
 
     def detail_uri_kwargs(self, bundle_or_obj):
