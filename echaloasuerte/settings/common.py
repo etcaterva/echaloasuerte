@@ -147,6 +147,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'echaloasuerte.logging_mw.RequestLoggerMiddleware',
 )
 ########## END MIDDLEWARE CONFIGURATION
 
