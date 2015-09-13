@@ -4,7 +4,7 @@ from server import bom, mongodb
 
 
 class UserResource(resources.Resource):
-    """Resource that identifies an user within the system
+    """Echaloasuerte user.
 
     Allows to create users and update some of its fields.
     """

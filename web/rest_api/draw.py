@@ -1,14 +1,15 @@
-from tastypie import fields, resources, exceptions, http
+from tastypie import fields, resources, http
 from tastypie.bundle import Bundle
 from server import mongodb
 
 
 class DrawResource(resources.Resource):
-    """Resource representing the draws a user has any relation with
+    """Generic resource for draws.
 
-    Resource to all draws within the system.
-    It serves for two purposes, draws administration and to handle what draws
-    you are subscribed to.
+    Post and delete to a draw with id to add or remove yourself from the users
+    involved in the draw.
+    GET on the resource returns all draws you are linked with. Either as a owner
+    or as an user.
     """
     id = fields.CharField(attribute='_id', help_text="id of the favourite draw")
     type = fields.CharField(attribute='draw_type', help_text="type of the draw")
@@ -21,7 +22,6 @@ class DrawResource(resources.Resource):
     owner = fields.CharField(attribute='owner',
                              null=True,
                              help_text="Owner of the draw")
-
     number_of_results = fields.IntegerField(attribute='number_of_results',
                                             default=1,
                                             help_text='Number of results to'

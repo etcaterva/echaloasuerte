@@ -7,10 +7,10 @@ from server import mongodb
 FavouriteDraw = namedtuple('FavouriteDraw', 'id type')
 
 class FavouriteResource(resources.Resource):
-    """Resource that identifies a favourite draw
+    """Favourites draws of an user
 
-    Allows to add/remove/retrieve the favourites of an user
-    All operations requires the user to be logged in
+    Allows to add/remove/retrieve the favourites of an user.
+    All operations requires the user to be logged in.
     """
     id = fields.CharField(attribute='id', help_text="id of the favourite draw")
     type = fields.CharField(attribute='type', help_text="type of the draw")

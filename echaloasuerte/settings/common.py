@@ -163,6 +163,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'crispy_forms',
     'tastypie',
+    'tastypie_swagger',
 
     'server',
     'web',
