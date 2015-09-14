@@ -11,29 +11,27 @@ PublicDrawCreator.show_configure_step = function () {
 };
 
 // Get all the messages of a public draw and refresh the chat board
-PublicDrawCreator.validate = function (){
+PublicDrawCreator.create_draw = function (){
+    // Disable button to avoid duplicated submissions
+    $('#publish').prop('disabled',true);
     var form_fields = $('#draw-form').serialize();
     form_fields += "&draw_type=" + PublicDrawCreator.draw_type;
-    $.post( PublicDrawCreator.url_validate, form_fields)
+    $.post( PublicDrawCreator.url_create, form_fields)
         .done(function( data ) {
-            if (data.is_valid == true) {
-                var $form = $('#draw-form');
-                // Set the form action to create a new draw as it may be "try_draw"
-                $form.attr("action", PublicDrawCreator.url_create_public_draw);
+            // Since the form has been just validated, hide possible previous alerts
+            $('.step-configure .alert').hide();
+            // Present the link to the user
+            var draw_url = location.protocol + location.host + data.draw_url;
+            $('.url-share').val(draw_url);
+            // Set the link of the "Go to the draw" button
+            $('#go-to-draw').attr('href', data.draw_url);
 
-                // Since the form has been just validated, hide possible previous alerts
-                $('.step-configure .alert').hide();
-
-                PublicDrawCreator.show_spread_step();
-            }else{
-                var $form = $('#draw-form');
-                $form.attr("action", PublicDrawCreator.url_try);
-                $form.submit();
-            }
+            PublicDrawCreator.show_spread_step();
         })
         .fail(function (){
-            // TODO Translate this message and show it in a better way
-            alert("Something went wrong");
+            var $form = $('#draw-form');
+            $form.attr("action", PublicDrawCreator.url_try);
+            $form.submit();
         });
 };
 
@@ -73,7 +71,7 @@ PublicDrawCreator.setup = function(){
 
     $('#publish').click(function () {
         //PublicDrawCreator.show_spread_step();
-        PublicDrawCreator.validate();
+        PublicDrawCreator.create_draw();
     });
 
     $('#try').click(function () {

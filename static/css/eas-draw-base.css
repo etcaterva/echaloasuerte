@@ -90,6 +90,14 @@ a.fa:focus {
     font-size: 30px;
 }
 
+#invite-options {
+    background-color: #FCFCFC;
+    border: 1px #D7D7D7 solid;
+    border-radius: 5px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
 .url-share {
     border: 1px solid #ebebeb;
     padding: 6px;

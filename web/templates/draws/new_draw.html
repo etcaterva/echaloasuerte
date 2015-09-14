@@ -77,7 +77,7 @@
         PublicDrawCreator.url_index = "{% url 'index' %}";
         PublicDrawCreator.url_try = "{% url 'try_draw' draw_type=draw.NAME_IN_URL %}";
         PublicDrawCreator.url_create_public_draw = "{% url 'create_public_draw' draw_type=draw.NAME_IN_URL %}";
-        PublicDrawCreator.url_validate = "{% url 'ws_validate_draw' %}";
+        PublicDrawCreator.url_create = "{% url 'ws_create_draw' %}";
         PublicDrawCreator.setup();
 
     {% endif %}
@@ -120,7 +120,7 @@
 
         {# Only shown when creating a public draw: show the link to invite users #}
         {% if is_public %}
-            <div class="step-spread hidden col-xs-12 col-md-8 col-md-offset-2">
+            <div id="invite-options" class="step-spread hidden col-xs-12 col-md-8 col-md-offset-2">
                 <p id="shared-draw-created">{% trans "Your draw is online now" %}</p>
                 <p id="shared-draw-smiley">{% trans ":D" %}</p>
                 <p>{% trans "Use any of the methods below to invite people to join and see the results." %}</p>
@@ -152,7 +152,7 @@
                 <div class="col-sm-8 col-sm-offset-2 btn-row">
                     <a href="{% url 'index' %}" class="step-configure col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
                     <a id="publish" class="step-configure col-xs-6 btn btn-primary">{% trans 'Publish draw' %}</a>
-                    <a id="go-to-draw" class="step-spread col-xs-6 col-xs-offset-3 btn btn-primary hidden">{% trans 'Go to the draw' %}</a>
+                    <a id="go-to-draw" class="step-spread col-xs-6 col-xs-offset-3 btn btn-primary hidden" href="#">{% trans 'Go to the draw' %}</a>
                 </div>
             {% else %}
                 {# Button to toss the draw (both private and public) #}

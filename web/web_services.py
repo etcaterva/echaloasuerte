@@ -1,6 +1,7 @@
 """definition of basic web services"""
 from django.contrib.auth.decorators import login_required
 from django.core.mail import mail_admins
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.core.validators import validate_email
 from server import draw_factory
@@ -300,10 +301,11 @@ def create_draw(request):
     """
     LOG.debug("Received post data: {0}".format(request.POST))
 
-    draw_type = request.POST["draw_type"]
-    draw_data = request.POST["draw_data"]
+    draw_type = request.POST.get("draw_type")
+    if not draw_type:
+        return HttpResponseBadRequest("Missing post argument draw_type")
 
-    draw_form = draw_factory.create_form(draw_type, draw_data)
+    draw_form = draw_factory.create_form(draw_type, request.POST)
     try:
         bom_draw = draw_form.build_draw()
     except DrawFormError:
@@ -318,5 +320,5 @@ def create_draw(request):
         #  notify users if any
         if bom_draw.users:
             invite_user(bom_draw.users, bom_draw.pk, bom_draw.owner)
-
-        return JsonResponse({'draw_id': bom_draw.pk})
+        draw_url = reverse('retrieve_draw', args=(bom_draw.pk, ))
+        return JsonResponse({'draw_url': draw_url})
