@@ -59,8 +59,12 @@ class User(object):
         self.use_gravatar = use_gravatar
         """Permission from the user to use his Gravatar"""
 
-    def get_email(self):
+    @property
+    def email(self):
         return self._id
+
+    def get_email(self):  # TODO: Remove
+        return self.email
 
     def get_username(self):
         try:

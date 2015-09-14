@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from django.views.generic import TemplateView
 from django.views.generic.base import RedirectView
 from web import views
@@ -48,7 +48,10 @@ urlpatterns += patterns(
     url(r'contacto.php', RedirectView.as_view(url="/", permanent=True)),
     url(r'acerca.php', RedirectView.as_view(url="about.html", permanent=True)),
 
-    url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt'))
+    url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
+
+
+    url(r'^api/', include('web.rest_api.urls'))
 )
 
 urlpatterns += staticfiles_urlpatterns()

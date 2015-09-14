@@ -5,10 +5,10 @@ python:
   - "2.7"
   - "3.4"
 # command to install dependencies
-addons:
-    sauce_connect:
-        username: "pickforme"
-        access_key: "d9f595a6-adce-4580-92b9-b12a05d73760"
+#addons:
+#    sauce_connect:
+#        username: "pickforme"
+#        access_key: "d9f595a6-adce-4580-92b9-b12a05d73760"
 install:
   - "pip install -r requirements.txt"
   - "pip install selenium pyvirtualdisplay coverage"
@@ -17,4 +17,4 @@ install:
 # command to run tests
 script:
   - nosetests tests/test_init.py tests -v
-  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" == "false" ]]; then pip install sauceclient && nosetests func_test -v ; fi
+#  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" == "false" ]]; then pip install sauceclient && nosetests func_test -v ; fi

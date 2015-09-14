@@ -81,9 +81,10 @@ def create_draw(draw_type, draw_data=None):
     :param draw_type: string name of the draw
     :param draw_data: data to initialize the draw
     :return: a draw with a type than inherits from DrawBase
+    :rtype: BaseDraw
     """
     bom_class = REGISTRY[draw_type]["bom"]
     if draw_data:
-        return bom_class()
-    else:
         return bom_class(**draw_data)
+    else:
+        return bom_class()

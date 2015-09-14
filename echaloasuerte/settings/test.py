@@ -42,9 +42,9 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django.request': {
+        'django': {
             'handlers': [],
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'propagate': False,
         },
         'echaloasuerte': {
