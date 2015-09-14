@@ -1,4 +1,7 @@
-import urllib
+try:
+    import urllib.parse as urllib
+except ImportError:
+    import urllib
 
 import django
 from tastypie.test import ResourceTestCase
@@ -221,7 +224,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
+        print(resp)
         self.assertHttpCreated(resp)
         draw = self.mongo.get_draws_with_filter({
             'title': 'test_draw_with_no_owner'
@@ -269,7 +272,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
+        print(resp)
         self.assertHttpCreated(resp)
         draw = self.get_created_draw()
         self.assertTrue(draw.is_feasible())
@@ -293,7 +296,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
+        print(resp)
         self.assertHttpCreated(resp)
         draw = self.get_created_draw()
         self.assertTrue(draw.is_feasible())
@@ -315,7 +318,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
+        print(resp)
         self.assertHttpCreated(resp)
         draw = self.get_created_draw()
         self.assertTrue(draw.is_feasible())
@@ -338,7 +341,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
+        print(resp)
         self.assertHttpCreated(resp)
         draw = self.get_created_draw()
         self.assertTrue(draw.is_feasible())
@@ -361,7 +364,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
+        print(resp)
         self.assertHttpCreated(resp)
         draw = self.get_created_draw()
         self.assertTrue(draw.is_feasible())
@@ -385,7 +388,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
+        print(resp)
         self.assertHttpCreated(resp)
         draw = self.get_created_draw()
         self.assertTrue(draw.is_feasible())
@@ -408,7 +411,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
+        print(resp)
         self.assertHttpCreated(resp)
         draw = self.get_created_draw()
         self.assertTrue(draw.is_feasible())
@@ -431,7 +434,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
+        print(resp)
         self.assertHttpCreated(resp)
         draw = self.get_created_draw()
         self.assertTrue(draw.is_feasible())
@@ -455,7 +458,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
+        print(resp)
         self.assertHttpCreated(resp)
         draw = self.get_created_draw()
         self.assertTrue(draw.is_feasible())

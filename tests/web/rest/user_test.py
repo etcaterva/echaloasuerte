@@ -1,4 +1,7 @@
-import urllib
+try:
+    import urllib.parse as urllib
+except ImportError:
+    import urllib
 
 import django
 from tastypie.test import ResourceTestCase
