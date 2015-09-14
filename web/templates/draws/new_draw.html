@@ -77,7 +77,7 @@
         PublicDrawCreator.url_index = "{% url 'index' %}";
         PublicDrawCreator.url_try = "{% url 'try_draw' draw_type=draw.NAME_IN_URL %}";
         PublicDrawCreator.url_create_public_draw = "{% url 'create_public_draw' draw_type=draw.NAME_IN_URL %}";
-        PublicDrawCreator.url_validate = "{% url 'ws_validate_draw' %}";
+        PublicDrawCreator.url_create = "{% url 'ws_create_draw' %}";
         PublicDrawCreator.setup();
 
     {% endif %}
