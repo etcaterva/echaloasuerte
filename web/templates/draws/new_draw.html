@@ -120,7 +120,7 @@
 
         {# Only shown when creating a public draw: show the link to invite users #}
         {% if is_public %}
-            <div class="step-spread hidden col-xs-12 col-md-8 col-md-offset-2">
+            <div id="invite-options" class="step-spread hidden col-xs-12 col-md-8 col-md-offset-2">
                 <p id="shared-draw-created">{% trans "Your draw is online now" %}</p>
                 <p id="shared-draw-smiley">{% trans ":D" %}</p>
                 <p>{% trans "Use any of the methods below to invite people to join and see the results." %}</p>
