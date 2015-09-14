@@ -489,6 +489,12 @@ class DrawResourceToss_Test(ResourceTestCase):
         # base url of the resource
         self.base_url = '/api/v1/draw/'
 
+    def try_(self, draw):
+        toss_url = self.base_url + "{0}/try/".format(draw.pk)
+        return self.api_client.post(toss_url,
+                                    format='json',
+                                    data={})
+
     def toss(self, draw):
         toss_url = self.base_url + "{0}/toss/".format(draw.pk)
         return self.api_client.post(toss_url,
@@ -541,6 +547,28 @@ class DrawResourceToss_Test(ResourceTestCase):
         print(resp)
         self.assertHttpUnauthorized(resp)
 
+    def test_toss_random_number_returns_result(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        draw = RandomNumberDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.assertEqual(5, self.deserialize(resp)['items'][0])
+        self.mongo.remove_draw(draw.pk)
+
     def test_toss_random_number_ok(self):
         self.login()
         data = {
@@ -571,7 +599,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'allow_repeat': True,
             }
-        draw = RandomNumberDraw(**data)
+        draw = RandomLetterDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
         resp = self.toss(draw)
@@ -590,7 +618,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'allow_repeat': True,
             }
-        draw = RandomNumberDraw(**data)
+        draw = CoinDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
         resp = self.toss(draw)
@@ -609,7 +637,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'allow_repeat': True,
             }
-        draw = RandomNumberDraw(**data)
+        draw = DiceDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
         resp = self.toss(draw)
@@ -629,7 +657,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'type_of_deck': 'french',
             'allow_repeat': True,
             }
-        draw = RandomNumberDraw(**data)
+        draw = CardDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
         resp = self.toss(draw)
@@ -649,7 +677,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'participants': ["a", "b"],
             'allow_repeat': True,
             }
-        draw = RandomNumberDraw(**data)
+        draw = TournamentDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
         resp = self.toss(draw)
@@ -669,7 +697,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'items': ["1"],
             'allow_repeat': True,
             }
-        draw = RandomNumberDraw(**data)
+        draw = RandomItemDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
         resp = self.toss(draw)
@@ -689,7 +717,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'sets': [[1, 2], [2, 3]],
             'allow_repeat': True,
             }
-        draw = RandomNumberDraw(**data)
+        draw = LinkSetsDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
         resp = self.toss(draw)
@@ -697,4 +725,25 @@ class DrawResourceToss_Test(ResourceTestCase):
         self.assertHttpOK(resp)
         draw = self.mongo.retrieve_draw(draw.pk)
         self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_try_linked_sets_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'sets': [[1], [2]],
+            'allow_repeat': True,
+            }
+        draw = LinkSetsDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.try_(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        self.assertEqual([1, 2], self.deserialize(resp)['items'][0])
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(0, len(draw.results))
         self.mongo.remove_draw(draw.pk)

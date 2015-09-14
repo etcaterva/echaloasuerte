@@ -44,7 +44,13 @@ class DrawResource(resources.Resource):
                 "http_method": "POST",
                 "resource_type": "detail",
                 "description": "Toss a draw",
-            }
+            },
+            {
+                "name": "try",
+                "http_method": "POST",
+                "resource_type": "detail",
+                "description": "Toss without saving a draw"
+                }
         ]
 
     @property
@@ -57,6 +63,10 @@ class DrawResource(resources.Resource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('toss'),
                 name="api_draw_toss"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>.*?)/try%s$"
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('try_draw'),
+                name="api_draw_try"),
         ]
 
     def toss(self, request, **kwargs):
@@ -69,6 +79,15 @@ class DrawResource(resources.Resource):
                 response=http.HttpUnauthorized("Only the owner can toss"))
         result = bom_draw.toss()
         self._client.save_draw(bom_draw)
+        self.log_throttled_access(request)
+        return self.create_response(request, result)
+
+    def try_draw(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        self.throttle_check(request)
+        draw_id = kwargs['pk']
+        bom_draw = self._client.retrieve_draw(draw_id)
+        result = bom_draw.toss()
         self.log_throttled_access(request)
         return self.create_response(request, result)
 
