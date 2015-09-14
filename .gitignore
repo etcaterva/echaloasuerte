@@ -60,3 +60,6 @@ docs/_build/
 
 # Database
 *.db
+
+# Secret Key file
+secret.txt
