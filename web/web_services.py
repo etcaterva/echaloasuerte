@@ -19,6 +19,7 @@ MONGO = MongoDriver.instance()
 @time_it
 def update_user(request):
     """updates the details of a user"""
+    # DEPRECATE
     user = MONGO.retrieve_user(request.user.pk)
     result = "ko"
 
@@ -59,6 +60,7 @@ def feedback(request):
 @time_it
 def toss_draw(request):
     """generates a result and returns it"""
+    # DEPRECATE
     draw_id = request.GET.get("draw_id")
     if draw_id is None:
         return HttpResponseBadRequest()
@@ -101,6 +103,7 @@ def try_draw(request, draw_id):
 @time_it
 def add_user_to_draw(request):
     """Add an user to a draw and sends a mail to inform him"""
+    # DEPRECATE
     draw_id = request.GET.get('draw_id')
     users_to_add = request.GET.get('emails', "")
 
@@ -135,6 +138,7 @@ def add_user_to_draw(request):
 @time_it
 def remove_user_from_draw(request):
     """Remove an user from a draw"""
+    # DEPRECATE
     draw_id = request.GET.get('draw_id')
     users = request.GET.get('emails', "")
 
@@ -158,6 +162,7 @@ def remove_user_from_draw(request):
 @time_it
 def add_favorite(request):
     """Add a draw to the list of favourites of an user"""
+    # DEPRECATE
     draw_id = request.GET.get('draw_id')
 
     if draw_id is None:
@@ -183,6 +188,7 @@ def add_favorite(request):
 @time_it
 def remove_favorite(request):
     """removes a draw from the list of favourites"""
+    # DEPRECATE
     draw_id = request.GET.get('draw_id')
 
     if draw_id is None:
@@ -206,6 +212,7 @@ def remove_favorite(request):
 
 def check_access_to_draw(request):
     """Checks whether an user can access to a draw"""
+    # is this used?
     draw_id = request.GET.get('draw_id')
     draw = MONGO.retrieve_draw(draw_id)
 
@@ -281,6 +288,7 @@ def update_share_settings(request):
 
     input POST {draw_id, enable_chat}
     """
+    # DEPRECATE
     draw_id = request.GET.get('draw_id')
     enable_chat = request.GET.get('enable_chat') == "true"
     if draw_id is None:
@@ -298,6 +306,7 @@ def update_share_settings(request):
 def create_draw(request):
     """create_draw ws
     """
+    # DEPRECATE
     LOG.debug("Received post data: {0}".format(request.POST))
 
     draw_type = request.POST["draw_type"]

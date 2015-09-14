@@ -1,5 +1,7 @@
 from tastypie import fields, resources, http, exceptions
+from tastypie.utils import trailing_slash
 from tastypie.bundle import Bundle
+from django.conf.urls import url
 
 from server import mongodb, draw_factory
 
@@ -36,10 +38,39 @@ class DrawResource(resources.Resource):
         resource_name = 'draw'
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post', 'delete']
+        extra_actions = [
+            {
+                "name": "toss",
+                "http_method": "POST",
+                "resource_type": "detail",
+                "description": "Toss a draw",
+            }
+        ]
 
     @property
     def _client(self):
         return mongodb.MongoDriver.instance()
+
+    def prepend_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<pk>.*?)/toss%s$"
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('toss'),
+                name="api_draw_toss"),
+        ]
+
+    def toss(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        self.throttle_check(request)
+        draw_id = kwargs['pk']
+        bom_draw = self._client.retrieve_draw(draw_id)
+        if not bom_draw.check_write_access(request.user):
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpUnauthorized("Only the owner can toss"))
+        result = bom_draw.toss()
+        self._client.save_draw(bom_draw)
+        self.log_throttled_access(request)
+        return self.create_response(request, result)
 
     def dehydrate(self, bundle):
         bundle.data["users"] = bundle.obj.users
