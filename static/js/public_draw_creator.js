@@ -12,6 +12,8 @@ PublicDrawCreator.show_configure_step = function () {
 
 // Get all the messages of a public draw and refresh the chat board
 PublicDrawCreator.create_draw = function (){
+    // Disable button to avoid duplicated submissions
+    $('#publish').prop('disabled',true);
     var form_fields = $('#draw-form').serialize();
     form_fields += "&draw_type=" + PublicDrawCreator.draw_type;
     $.post( PublicDrawCreator.url_create, form_fields)
