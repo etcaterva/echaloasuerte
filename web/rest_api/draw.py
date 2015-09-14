@@ -1,7 +1,9 @@
+import pytz
 from tastypie import fields, resources, http, exceptions
 from tastypie.utils import trailing_slash
 from tastypie.bundle import Bundle
 from django.conf.urls import url
+import dateutil.parser
 
 from server import mongodb, draw_factory
 
@@ -50,7 +52,13 @@ class DrawResource(resources.Resource):
                 "http_method": "POST",
                 "resource_type": "detail",
                 "description": "Toss without saving a draw"
-                }
+            },
+            {
+                "name": "schedule_toss",
+                "http_method": "POST",
+                "resource_type": "detail",
+                "description": "Schedules a toss"
+            }
         ]
 
     @property
@@ -67,6 +75,10 @@ class DrawResource(resources.Resource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('try_draw'),
                 name="api_draw_try"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>.*?)/schedule_toss/(?P<schedule>.*?)%s$"
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('schedule_toss'),
+                name="api_draw_schedule"),
         ]
 
     def toss(self, request, **kwargs):
@@ -88,6 +100,26 @@ class DrawResource(resources.Resource):
         draw_id = kwargs['pk']
         bom_draw = self._client.retrieve_draw(draw_id)
         result = bom_draw.toss()
+        self.log_throttled_access(request)
+        return self.create_response(request, result)
+
+    def schedule_toss(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        self.throttle_check(request)
+        print kwargs
+        draw_id = kwargs['pk']
+        try:
+            schedule = kwargs['schedule']
+            schedule = dateutil.parser.parse(schedule).astimezone(pytz.utc)
+        except (ValueError, KeyError):
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Invalid 'schedule'"))
+        bom_draw = self._client.retrieve_draw(draw_id)
+        if not bom_draw.check_write_access(request.user):
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpUnauthorized("Only the owner can toss"))
+        result = bom_draw.timed_toss(schedule)
+        self._client.save_draw(bom_draw)
         self.log_throttled_access(request)
         return self.create_response(request, result)
 

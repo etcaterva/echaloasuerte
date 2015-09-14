@@ -76,6 +76,7 @@ def toss_draw(request):
 @time_it
 def schedule_toss_draw(request):
     """generates a result and returns it"""
+    # DEPRECATE
     draw_id = request.GET.get("draw_id")
     schedule = request.GET.get("schedule")
     if draw_id is None or schedule is None:
@@ -93,6 +94,7 @@ def schedule_toss_draw(request):
 @time_it
 def try_draw(request, draw_id):
     """generates a result and returns it"""
+    # DEPRECATE
     bom_draw = MONGO.retrieve_draw(draw_id)
     return JsonResponse({
         "result": bom_draw.toss()

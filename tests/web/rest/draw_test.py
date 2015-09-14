@@ -489,6 +489,13 @@ class DrawResourceToss_Test(ResourceTestCase):
         # base url of the resource
         self.base_url = '/api/v1/draw/'
 
+    def schedule_toss(self, draw, schedule):
+        toss_url = self.base_url + "{0}/schedule_toss/{1}/".format(draw.pk,
+                                                                   schedule)
+        return self.api_client.post(toss_url,
+                                    format='json')
+
+
     def try_(self, draw):
         toss_url = self.base_url + "{0}/try/".format(draw.pk)
         return self.api_client.post(toss_url,
@@ -555,7 +562,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'enable_chat': True,
             'users': ['user_anon@user.es'],
             'range_min': 5,
-            'range_max': 6,
+            'range_max': 5,
             'allow_repeat': True,
             }
         draw = RandomNumberDraw(**data)
@@ -747,3 +754,60 @@ class DrawResourceToss_Test(ResourceTestCase):
         draw = self.mongo.retrieve_draw(draw.pk)
         self.assertEqual(0, len(draw.results))
         self.mongo.remove_draw(draw.pk)
+
+    def test_schedule_linked_sets_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'sets': [[1], [2]],
+            'allow_repeat': True,
+            }
+        draw = LinkSetsDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.schedule_toss(draw, '2015-10-21T00:00:00Z')
+        print(resp)
+        self.assertHttpOK(resp)
+        self.assertEqual([1, 2], self.deserialize(resp)['items'][0])
+        self.assertEqual('2015-10-21T00:00:00',
+                         self.deserialize(resp)['publication_datetime'])
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_schedule_linked_sets_missing_schedule(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'sets': [[1], [2]],
+            'allow_repeat': True,
+            }
+        draw = LinkSetsDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.schedule_toss(draw, None)
+        print(resp)
+        self.assertHttpBadRequest(resp)
+
+    def test_schedule_linked_sets_invalid_date(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'sets': [[1], [2]],
+            'allow_repeat': True,
+            }
+        draw = LinkSetsDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.schedule_toss(draw, 'invalid date :)')
+        print(resp)
+        self.assertHttpBadRequest(resp)
