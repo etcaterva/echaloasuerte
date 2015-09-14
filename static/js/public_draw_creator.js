@@ -21,6 +21,9 @@ PublicDrawCreator.create_draw = function (){
             // Present the link to the user
             var draw_url = location.protocol + location.host + data.draw_url;
             $('.url-share').val(draw_url);
+            // Set the link of the "Go to the draw" button
+            $('#go-to-draw').attr('href', data.draw_url);
+
             PublicDrawCreator.show_spread_step();
         })
         .fail(function (){
