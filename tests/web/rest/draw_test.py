@@ -4,7 +4,14 @@ import django
 from tastypie.test import ResourceTestCase
 
 from server import bom, mongodb
+from server.bom.card import CardDraw
+from server.bom.coin import CoinDraw
+from server.bom.dice import DiceDraw
+from server.bom.link_sets import LinkSetsDraw
+from server.bom.random_item import RandomItemDraw
+from server.bom.random_letter import RandomLetterDraw
 from server.bom.random_number import RandomNumberDraw
+from server.bom.tournament import TournamentDraw
 
 
 class DrawResourceTest(ResourceTestCase):
@@ -224,6 +231,29 @@ class DrawResourceCreate_Test(ResourceTestCase):
         self.assertIsNone(draw.owner)
         self.mongo.remove_draw(draw.pk)
 
+    def test_create_random_number_forbidden_att(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': [],
+            'type': 'number',
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        for attr in ['results', 'owner', '_id', 'pk', 'creation_time',
+                     'last_updated_time', 'audit']:
+            data[attr] = "something"
+            resp = self.api_client.post(self.base_url,
+                                        format='json',
+                                        data=data)
+            self.assertHttpBadRequest(resp)
+            data.pop(attr)
+        self.assertEqual(0, len(self.mongo.get_draws_with_filter({
+            'owner': self.user.pk})))
+
     def test_create_random_number_ok(self):
         self.login()
         data = {
@@ -271,26 +301,166 @@ class DrawResourceCreate_Test(ResourceTestCase):
         data.pop('type')
         for key, value in data.items():
             self.assertEqual(value, getattr(draw, key))
+        self.assertTrue(type(draw) is RandomNumberDraw)
 
-    def test_create_random_number_forbidden_att(self):
+    def test_create_random_letter_ok(self):
         self.login()
         data = {
             'title': 'test_draw',
-            'is_shared': True,
-            'enable_chat': True,
-            'users': [],
-            'type': 'number',
-            'range_min': 5,
-            'range_max': 6,
-            'allow_repeat': True,
-        }
-        for attr in []:
-            data["attr"] = "something"
-            resp = self.api_client.post(self.base_url,
-                                        format='json',
-                                        data=data)
-            self.assertHttpBadRequest(resp)
-            data.pop(attr)
-        self.assertEqual(0, len(self.mongo.get_draws_with_filter({
-            'owner': self.user.pk})))
+            'is_shared': False,
+            'enable_chat': False,
+            'users': ['ruben@prueba.com'],
+            'type': 'letter',
+            }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpCreated(resp)
+        draw = self.get_created_draw()
+        self.assertTrue(draw.is_feasible())
 
+        data.pop('type')
+        for key, value in data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.assertTrue(type(draw) is RandomLetterDraw)
+
+    def test_create_coin_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'number_of_results': 5,
+            'users': ['ruben@prueba.com'],
+            'type': 'coin',
+            }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpCreated(resp)
+        draw = self.get_created_draw()
+        self.assertTrue(draw.is_feasible())
+
+        data.pop('type')
+        for key, value in data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.assertTrue(type(draw) is CoinDraw)
+
+    def test_create_dice_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'number_of_results': 5,
+            'users': ['ruben@prueba.com'],
+            'type': 'dice',
+            }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpCreated(resp)
+        draw = self.get_created_draw()
+        self.assertTrue(draw.is_feasible())
+
+        data.pop('type')
+        for key, value in data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.assertTrue(type(draw) is DiceDraw)
+
+    def test_create_card_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'number_of_results': 5,
+            'type_of_deck': 'french',
+            'users': ['ruben@prueba.com'],
+            'type': 'card',
+            }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpCreated(resp)
+        draw = self.get_created_draw()
+        self.assertTrue(draw.is_feasible())
+
+        data.pop('type')
+        for key, value in data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.assertTrue(type(draw) is CardDraw)
+
+    def test_create_tournament_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'users': ['ruben@prueba.com'],
+            'type': 'tournament',
+            'participants': ["1", "2", "3", "4"]
+            }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpCreated(resp)
+        draw = self.get_created_draw()
+        self.assertTrue(draw.is_feasible())
+
+        data.pop('type')
+        for key, value in data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.assertTrue(type(draw) is TournamentDraw)
+
+    def test_create_item_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'users': ['ruben@prueba.com'],
+            'type': 'item',
+            'items': ["1", "2", "3", "4"]
+        }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpCreated(resp)
+        draw = self.get_created_draw()
+        self.assertTrue(draw.is_feasible())
+
+        data.pop('type')
+        for key, value in data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.assertTrue(type(draw) is RandomItemDraw)
+
+    def test_create_link_sets_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'users': ['ruben@prueba.com'],
+            'type': 'link_sets',
+            'sets': [["1", "2", "3", "4"],
+                     ["a", "b", "c", "d"]]
+        }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpCreated(resp)
+        draw = self.get_created_draw()
+        self.assertTrue(draw.is_feasible())
+
+        data.pop('type')
+        for key, value in data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.assertTrue(type(draw) is LinkSetsDraw)
