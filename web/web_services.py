@@ -129,7 +129,7 @@ def add_user_to_draw(request):
     bom_draw.users += new_users
     MONGO.save_draw(bom_draw)
 
-    invite_user(new_users, draw_id, request.user.get_email())
+    invite_user(new_users, draw_id, request.user.email)
 
     LOG.info("{0} users added to draw {1}".format(len(new_users), draw_id))
 

@@ -27,5 +27,5 @@ class UserTest(TestCase):
     def get_username_id_is_not_email_test(self):
         self.assertEqual("marioX", User("marioX").get_username())
 
-    def get_email_test(self):
-        self.assertEqual("mario@gmail.com", User("mario@gmail.com").get_email())
+    def email_test(self):
+        self.assertEqual("mario@gmail.com", User("mario@gmail.com").email)

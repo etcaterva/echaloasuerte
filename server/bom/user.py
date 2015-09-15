@@ -34,7 +34,7 @@ class User(object):
         If the user doesn't use Gravatar, a random image based on it's email will be shown"""
         default = "monsterid"
         size = 85
-        email = self.get_email().lower()
+        email = self.email.lower()
         gravatar_url = "//www.gravatar.com/avatar/" + hashlib.md5(email.encode('utf-8')).hexdigest() + "?"
         parameters = {'d':default,
                       's':str(size)}
@@ -62,9 +62,6 @@ class User(object):
     @property
     def email(self):
         return self._id
-
-    def get_email(self):  # TODO: Remove
-        return self.email
 
     def get_username(self):
         try:
