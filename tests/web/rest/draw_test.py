@@ -467,3 +467,382 @@ class DrawResourceCreate_Test(ResourceTestCase):
         for key, value in data.items():
             self.assertEqual(value, getattr(draw, key))
         self.assertTrue(type(draw) is LinkSetsDraw)
+
+
+class DrawResourceToss_Test(ResourceTestCase):
+    """Tests the toss of draws"""
+    # urls = 'web.rest_api.urls'
+
+    def setUp(self):
+        super(DrawResourceToss_Test, self).setUp()
+        django.setup()
+
+        # mongodb instance
+        self.mongo = mongodb.MongoDriver.instance()
+
+        # Create a user for authentication
+        test_user = bom.User('test@test.te')
+        test_user.set_password('test')
+        self.mongo.save_user(test_user)
+        self.user = test_user
+
+        # base url of the resource
+        self.base_url = '/api/v1/draw/'
+
+    def schedule_toss(self, draw, schedule):
+        toss_url = self.base_url + "{0}/schedule_toss/{1}/".format(draw.pk,
+                                                                   schedule)
+        return self.api_client.post(toss_url,
+                                    format='json')
+
+
+    def try_(self, draw):
+        toss_url = self.base_url + "{0}/try/".format(draw.pk)
+        return self.api_client.post(toss_url,
+                                    format='json',
+                                    data={})
+
+    def toss(self, draw):
+        toss_url = self.base_url + "{0}/toss/".format(draw.pk)
+        return self.api_client.post(toss_url,
+                                    format='json',
+                                    data={})
+
+    def tearDown(self):
+        self.api_client.client.logout()
+        self.mongo.remove_user(self.user.pk)
+
+        # cleanup draws
+        self.mongo._draws.remove({'owner': self.user.pk})
+
+    def login(self):
+        self.api_client.client.login(username='test@test.te',
+                                     password='test')
+
+    def test_toss_no_owner_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        draw = RandomNumberDraw(**data)
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+
+    def test_toss_not_owner_unauthorised(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        draw = RandomNumberDraw(**data)
+        draw.owner = "random@user.si"
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpUnauthorized(resp)
+
+    def test_toss_random_number_returns_result(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'range_min': 5,
+            'range_max': 5,
+            'allow_repeat': True,
+            }
+        draw = RandomNumberDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.assertEqual(5, self.deserialize(resp)['items'][0])
+        self.mongo.remove_draw(draw.pk)
+
+    def test_toss_random_number_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        draw = RandomNumberDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_toss_random_letter_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'allow_repeat': True,
+            }
+        draw = RandomLetterDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_toss_coin_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'allow_repeat': True,
+            }
+        draw = CoinDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_toss_dice_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'allow_repeat': True,
+            }
+        draw = DiceDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_toss_card_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'type_of_deck': 'french',
+            'allow_repeat': True,
+            }
+        draw = CardDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_toss_tournament_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'participants': ["a", "b"],
+            'allow_repeat': True,
+            }
+        draw = TournamentDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_toss_item_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'items': ["1"],
+            'allow_repeat': True,
+            }
+        draw = RandomItemDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_toss_linked_sets_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'sets': [[1, 2], [2, 3]],
+            'allow_repeat': True,
+            }
+        draw = LinkSetsDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_try_bad_id_not_found(self):
+        self.login()
+        class FakeDraw(object):
+            pk = "BAD_ID"
+        resp = self.try_(FakeDraw())
+        print(resp)
+        self.assertHttpNotFound(resp)
+
+    def test_try_empty_id_not_found(self):
+        self.login()
+        class FakeDraw(object):
+            pk = ""
+        resp = self.try_(FakeDraw())
+        print(resp)
+        self.assertHttpNotFound(resp)
+
+    def test_try_linked_sets_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'sets': [[1], [2]],
+            'allow_repeat': True,
+            }
+        draw = LinkSetsDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.try_(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        self.assertEqual([1, 2], self.deserialize(resp)['items'][0])
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(0, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_schedule_linked_sets_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'sets': [[1], [2]],
+            'allow_repeat': True,
+            }
+        draw = LinkSetsDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.schedule_toss(draw, '2015-10-21T00:00:00Z')
+        print(resp)
+        self.assertHttpOK(resp)
+        self.assertEqual([1, 2], self.deserialize(resp)['items'][0])
+        self.assertEqual('2015-10-21T00:00:00',
+                         self.deserialize(resp)['publication_datetime'])
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_schedule_empty_id_not_found(self):
+        self.login()
+        class FakeDraw(object):
+            pk = ""
+        resp = self.schedule_toss(FakeDraw(), '2015-10-21T00:00:00Z')
+        print(resp)
+        self.assertHttpNotFound(resp)
+
+
+    def test_schedule_bad_id_not_found(self):
+        self.login()
+        class FakeDraw(object):
+            pk = "INVALID_DRAW_ID"
+        resp = self.schedule_toss(FakeDraw(), '2015-10-21T00:00:00Z')
+        print(resp)
+        self.assertHttpNotFound(resp)
+
+    def test_schedule_linked_sets_missing_schedule(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'sets': [[1], [2]],
+            'allow_repeat': True,
+            }
+        draw = LinkSetsDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.schedule_toss(draw, None)
+        print(resp)
+        self.assertHttpBadRequest(resp)
+        self.mongo.remove_draw(draw.pk)
+
+    def test_schedule_linked_sets_invalid_date(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'sets': [[1], [2]],
+            'allow_repeat': True,
+            }
+        draw = LinkSetsDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.schedule_toss(draw, 'invalid date :)')
+        print(resp)
+        self.assertHttpBadRequest(resp)
+        self.mongo.remove_draw(draw.pk)

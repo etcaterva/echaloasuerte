@@ -19,7 +19,7 @@ class BaseDraw(object):
     __metaclass__ = ABCMeta
 
     def __init__(self, creation_time=None, owner=None, number_of_results=1,
-                 results=None, _id=None, draw_type=None, prev_draw=None,
+                 results=None, _id=None, draw_type=None,
                  users=None, title=None, is_shared=False,
                  enable_chat=True, last_updated_time=None,
                  audit=None, **kwargs):
@@ -47,9 +47,6 @@ class BaseDraw(object):
 
         self.last_updated_time = last_updated_time if last_updated_time else self.creation_time
         """last time this draw was updated"""
-
-        self.prev_draw = prev_draw
-        """Id of the prev draw that was modified creating this one"""
 
         self.users = users if users else []
         """List of users with access to the draw"""

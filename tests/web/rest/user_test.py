@@ -74,7 +74,7 @@ class UserResourceTest(ResourceTestCase):
         # Here, we're checking an entire structure for the expected data.
         self.assertEqual(self.deserialize(resp)['objects'][0], {
             'alias': self.item.alias,
-            'email': self.item.get_email(),
+            'email': self.item.email,
             'resource_uri': self.detail_url,
             'use_gravatar': self.item.use_gravatar
         })
@@ -87,7 +87,7 @@ class UserResourceTest(ResourceTestCase):
         # We use ``assertKeys`` here to just verify the keys, not all the data.
         self.assertKeys(self.deserialize(resp),
                         ['email', 'alias', 'resource_uri', 'use_gravatar'])
-        self.assertEqual(self.deserialize(resp)['email'], self.item.get_email())
+        self.assertEqual(self.deserialize(resp)['email'], self.item.email)
 
     def test_get_detail(self):
         self.login()
@@ -96,7 +96,7 @@ class UserResourceTest(ResourceTestCase):
         self.assertValidJSONResponse(resp)
         self.assertEqual(self.deserialize(resp), {
             'alias': self.item.alias,
-            'email': self.item.get_email(),
+            'email': self.item.email,
             'resource_uri': self.detail_url,
             'use_gravatar': self.item.use_gravatar
         })
@@ -143,8 +143,8 @@ class UserResourceTest(ResourceTestCase):
         # Make sure the count hasn't changed & we did an update.
         self.assertEqual(self.mongo._users.count(), count_users)
         # check unchanged data
-        self.assertEqual(self.mongo.retrieve_user(self.item.pk).get_email(),
-            self.item.get_email())
+        self.assertEqual(self.mongo.retrieve_user(self.item.pk).email,
+            self.item.email)
         self.assertEqual(self.mongo.retrieve_user(self.item.pk).use_gravatar,
                          self.item.use_gravatar)
         # Check for updated data.

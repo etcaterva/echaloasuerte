@@ -27,28 +27,23 @@ DATABASES = {
 BASE_LOG_PATH = join(SITE_ROOT, 'logs/')
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
     'formatters': {
         'standard': {
-            'format': '[%(asctime)s] %(levelname)s %(name)s.%(module)s.%(funcName)s | %(message)s',
+            'format': '%(name)s.%(module)s.%(funcName)s | %(message)s',
             'datefmt': '%Y%m%d %H:%M:%S',
         },
     },
     'handlers': {
         'console': {
-            'level': 'DEBUG',
+            'level': 'CRITICAL',
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
         },
     },
     'loggers': {
-        'django': {
-            'handlers': [],
-            'level': 'ERROR',
-            'propagate': False,
-        },
         'echaloasuerte': {
-            'handlers': [],
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,
         },
