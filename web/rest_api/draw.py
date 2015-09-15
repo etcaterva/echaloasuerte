@@ -106,7 +106,6 @@ class DrawResource(resources.Resource):
     def schedule_toss(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
         self.throttle_check(request)
-        print kwargs
         draw_id = kwargs['pk']
         try:
             schedule = kwargs['schedule']
