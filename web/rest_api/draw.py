@@ -85,7 +85,11 @@ class DrawResource(resources.Resource):
         self.method_check(request, allowed=['post'])
         self.throttle_check(request)
         draw_id = kwargs['pk']
-        bom_draw = self._client.retrieve_draw(draw_id)
+        try:
+            bom_draw = self._client.retrieve_draw(draw_id)
+        except mongodb.MongoDriver.NotFoundError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpNotFound())
         if not bom_draw.check_write_access(request.user):
             raise exceptions.ImmediateHttpResponse(
                 response=http.HttpUnauthorized("Only the owner can toss"))
@@ -98,7 +102,11 @@ class DrawResource(resources.Resource):
         self.method_check(request, allowed=['post'])
         self.throttle_check(request)
         draw_id = kwargs['pk']
-        bom_draw = self._client.retrieve_draw(draw_id)
+        try:
+            bom_draw = self._client.retrieve_draw(draw_id)
+        except mongodb.MongoDriver.NotFoundError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpNotFound())
         result = bom_draw.toss()
         self.log_throttled_access(request)
         return self.create_response(request, result)
@@ -110,10 +118,13 @@ class DrawResource(resources.Resource):
         try:
             schedule = kwargs['schedule']
             schedule = dateutil.parser.parse(schedule).astimezone(pytz.utc)
+            bom_draw = self._client.retrieve_draw(draw_id)
         except (ValueError, KeyError):
             raise exceptions.ImmediateHttpResponse(
                 response=http.HttpBadRequest("Invalid 'schedule'"))
-        bom_draw = self._client.retrieve_draw(draw_id)
+        except mongodb.MongoDriver.NotFoundError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpNotFound())
         if not bom_draw.check_write_access(request.user):
             raise exceptions.ImmediateHttpResponse(
                 response=http.HttpUnauthorized("Only the owner can toss"))

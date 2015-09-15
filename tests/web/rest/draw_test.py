@@ -734,6 +734,22 @@ class DrawResourceToss_Test(ResourceTestCase):
         self.assertEqual(1, len(draw.results))
         self.mongo.remove_draw(draw.pk)
 
+    def test_try_bad_id_not_found(self):
+        self.login()
+        class FakeDraw(object):
+            pk = "BAD_ID"
+        resp = self.try_(FakeDraw())
+        print(resp)
+        self.assertHttpNotFound(resp)
+
+    def test_try_empty_id_not_found(self):
+        self.login()
+        class FakeDraw(object):
+            pk = ""
+        resp = self.try_(FakeDraw())
+        print(resp)
+        self.assertHttpNotFound(resp)
+
     def test_try_linked_sets_ok(self):
         self.login()
         data = {
@@ -778,6 +794,23 @@ class DrawResourceToss_Test(ResourceTestCase):
         self.assertEqual(1, len(draw.results))
         self.mongo.remove_draw(draw.pk)
 
+    def test_schedule_empty_id_not_found(self):
+        self.login()
+        class FakeDraw(object):
+            pk = ""
+        resp = self.schedule_toss(FakeDraw(), '2015-10-21T00:00:00Z')
+        print(resp)
+        self.assertHttpNotFound(resp)
+
+
+    def test_schedule_bad_id_not_found(self):
+        self.login()
+        class FakeDraw(object):
+            pk = "INVALID_DRAW_ID"
+        resp = self.schedule_toss(FakeDraw(), '2015-10-21T00:00:00Z')
+        print(resp)
+        self.assertHttpNotFound(resp)
+
     def test_schedule_linked_sets_missing_schedule(self):
         self.login()
         data = {
@@ -794,6 +827,7 @@ class DrawResourceToss_Test(ResourceTestCase):
         resp = self.schedule_toss(draw, None)
         print(resp)
         self.assertHttpBadRequest(resp)
+        self.mongo.remove_draw(draw.pk)
 
     def test_schedule_linked_sets_invalid_date(self):
         self.login()
@@ -811,3 +845,4 @@ class DrawResourceToss_Test(ResourceTestCase):
         resp = self.schedule_toss(draw, 'invalid date :)')
         print(resp)
         self.assertHttpBadRequest(resp)
+        self.mongo.remove_draw(draw.pk)
