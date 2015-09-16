@@ -3,6 +3,32 @@
 {% load i18n %}
 
 {% block extra_jq_ready %}
+    var tooltip_text =  "<p><b>Normal Draw:</b> Personal draw in which only you will be able to see the result.</p>" +
+                        "<p><b>Shared Draw: </b> You will be able to invite other users in, see the results in live and discuss in the chat.</p>" +
+                        "<p class='text-center'><i>(Click to switch between modes)</i></p>";
+    $('#select-private-shared' ).tooltip({
+        track: true,
+        show: {
+            delay: 500
+        },
+        items: "div[title]",
+        content: function() {
+            return tooltip_text;
+        }
+    });
+
+    $('#select-private-shared').click(function(){
+        var $is_shared = $('#is-shared');
+        var is_shared = $is_shared.prop("checked");
+        $is_shared.prop("checked", !is_shared);
+        $('#site-frame').toggleClass("shared-draw", !is_shared);
+    });
+
+    $('.draw-link').click(function (){
+        var is_shared =$('#is-shared').prop("checked");
+        var create_draw_url = is_shared ? $(this).attr("data-url-shared") : $(this).attr("data-url-normal");
+        window.location.href = create_draw_url;
+    });
     {% if not user.is_authenticated and is_public %}
         $('#warning-login').modal('show');
     {% endif %}
@@ -15,8 +41,11 @@ window.cookieconsent_options = {"message":"{% trans 'This website uses cookies t
 
 {% block content %}
     <script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
-    {# breadcrumb to assist the creation of a public draw #}
-    {% include "snippets/snippet_breadcrumb.html" %}
+    <div title="" id="select-private-shared" class="text-center">
+        <input class='tgl tgl-flip' id='is-shared' type='checkbox'>
+        <label class='tgl-btn' data-tg-off='Normal Draw' data-tg-on='Shared Draw' for='is-shared'></label>
+        <img id="help_shared_draw" src="{% static 'img/help_shared_draw.png'%}" alt="{% trans "Click to swap between modes" %}"/>
+    </div>
     <div class="container-draws row">
         <div class="col-sm-6">
             {% include "snippets/snippet_draw_box.html" with draw_type="coin" draw_icon="img/draw_icons/coin.png" title=_("Flip a coin") help=_("Afraid of taking the wrong decision? Don't hesitate and throw the coin!") %}
@@ -45,7 +74,7 @@ window.cookieconsent_options = {"message":"{% trans 'This website uses cookies t
                     <ul>
                         <li>{% trans "Only you can toss" %}</li>
                         <li>{% trans "Only you can edit the details of the draw" %}</li>
-                        <li>{% trans "Only you can change the level of privacy, invite or remove people" %}</li>
+                        <li>{% trans "Only you can invite or remove people" %}</li>
                         <li>{% trans "The draw will be in your history for future access" %}</li>
                     </ul>
                     <div class="text-center" >

@@ -294,17 +294,8 @@
                             {% trans "favourites" %}
                         </a>
                         </li>
-                        <li class="nav-divider"></li>
-                    {% endif %}
 
-
-                    <!-- Public draw options -->
-                    <li class="visible-xs">
-                        <a class="public-draw-join" href="{% url 'join_public_draw' %}"><span class="fa fa-share" aria-hidden="true"></span> {% trans "Join public draw" %}</a>
-                    </li>
-                    <li class="nav-divider visible-xs"></li>
-                    <li class="visible-xs"><a class="public-draw-create" href="{% url 'publish_draw' %}"><span class="fa fa-rocket" aria-hidden="true"></span> {% trans "Create public draw" %}</a></li>
-                    {% if user.is_authenticated %}
+                        <!-- Public draw options -->
                         <li class="nav-divider visible-xs"></li>
                         <li class="visible-xs">
                         <a id="sign-out-xs" href="{% url 'login' %}">
@@ -313,20 +304,6 @@
                         </a>
                         </li>
                     {% endif %}
-                    </li>
-                    <li id="public-draw-dropdown" class="hidden-xs dropdown">
-                        <a id="public-draw" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-globe" aria-hidden="true"></span>
-                            {% trans "Public Draw" %}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a class="public-draw-join" href="{% url 'join_public_draw' %}"><span class="fa fa-share" aria-hidden="true"></span> {% trans "Join public draw" %}</a>
-                            </li>
-                            <li class="nav-divider"></li>
-                            <li><a class="public-draw-create" href="{% url 'publish_draw' %}"><span class="fa fa-rocket" aria-hidden="true"></span> {% trans "Create public draw" %}</a></li>
-                        </ul>
                     </li>
 
                     <li id="account-dropdown" class="hidden-xs dropdown">
@@ -349,7 +326,7 @@
                                             <div class="col-lg-8">
                                                 <p class="text-left"><strong>{{ user }}</strong></p>
 
-                                                <p class="text-left small"> {{user.get_email}}</p>
+                                                <p class="text-left small"> {{user.email}}</p>
 
                                                 <p class="text-left">
                                                 <a href="{% url 'profile' %}" class="btn btn-primary btn-block btn-sm">{%trans 'My profile'%}</a>

@@ -22,8 +22,6 @@
     {% if bom.is_shared %}
         <script src="{% static 'js/public_draw_displayer.js' %}"></script>
         <script src="{% static 'js/chat.js' %}"></script>
-        <script src="{% static 'js/slideSelector.js' %}"></script>
-        <link href="{% static 'css/slideSelector.css' %}" rel="stylesheet">
         <link href="{% static 'css/jquery.datetimepicker.css' %}" rel="stylesheet" />
         <script src="{% static 'js/jquery.datetimepicker.min.js' %}"></script>
     {% endif %}
@@ -120,7 +118,6 @@
         });
 
         PublicDraw.draw_id = "{{ bom.pk }}";
-        PublicDraw.bom_password = "{{bom.password}}";
         PublicDraw.bom_last_updated = moment.utc("{{bom.last_updated_time.isoformat}}");
         PublicDraw.chats = $chats;
         PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
@@ -152,7 +149,6 @@
                 url   : "{% url 'ws_schedule_toss_draw' %}",
                 data  : {
                     draw_id : "{{bom.pk}}",
-                    draw_pass : "{{bom.password}}",
                     schedule: moment.utc(schedule).format()
                 }
             }).done(function (){
@@ -185,7 +181,7 @@
         $.ajax({
             method : "GET",
             url   : "{% url 'ws_toss_draw' %}",
-            data  : {draw_id : "{{bom.pk}}", draw_pass : "{{bom.password}}"}
+            data  : {draw_id : "{{bom.pk}}"}
         }).done(function (){
             window.location.reload();
         })
@@ -197,8 +193,6 @@
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
 {% block content %}
-    {# breadcrumb to assist the creation of a public draw #}
-    {% include "snippets/snippet_breadcrumb.html" %}
     <form class="clearfix" method="post" id="draw-form">
         <!-- Draw Heading -->
         <div class="clearfix draw-heading">
@@ -330,8 +324,6 @@
                             <ul id="" class="list-group">
                                 <li id="edit-draw" class="settings-option list-group-item">{% trans "Edit draw configuration" %}</li>
                                 <li id="invite" class="settings-option list-group-item">{% trans "Invite people" %}</li>
-                                <li id="privacy" class="settings-option list-group-item">{% trans "Who can access your draw" %}</li>
-                                <li class="settings-option list-group-item"><input type="checkbox" id="settings-show-in-public-list" {%if bom.show_in_public_list %}checked{%endif%}>{% trans "Show the draw in 'Recently created'" %}</li>
                                 <li class="settings-option list-group-item"><input type="checkbox" id="settings-chat-enabled" {%if bom.enable_chat %}checked{%endif%}>{% trans "Enable chat" %}</li>
                             </ul>
                         </div>
@@ -388,20 +380,6 @@
                         <div class="modal-footer">
                             <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
                             <button type="button" data-dismiss="modal" class="btn btn-default">{% trans "Close" %}</button>
-                        </div>
-                    </div>
-
-                    <div id="settings-privacy" class="settings-submenu hide">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">{% trans "Restrict the access to your draw" %}</h4>
-                        </div>
-                        <div class="modal-body">
-                            {% include "snippets/snippet_public_draw_privacy.html" %}
-                        </div>
-                        <div class="modal-footer">
-                            <a class="btn btn-default btn-settings-back">{% trans "Back" %}</a>
-                            <button id="save-change-privacy" data-dismiss="modal" type="button" class="btn btn-primary">{% trans "Save" %}</button>
                         </div>
                     </div>
                 </div>

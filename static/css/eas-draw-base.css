@@ -75,22 +75,27 @@ a.fa:focus {
     color: #6F6F6F;
 }
 
-.draw-heading .add-password:hover {
-    color: #404b6f;
-}
-
 #results {
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
-/* Box containing the selected level of restriction when creating a public draw */
-.public-draw-restriction,
-#public-draw-invite {
+#shared-draw-created {
+    text-align: center;
+    font-size: 20px;
+}
+
+#shared-draw-smiley {
+    text-align: center;
+    font-size: 30px;
+}
+
+#invite-options {
     background-color: #FCFCFC;
     border: 1px #D7D7D7 solid;
     border-radius: 5px;
-    margin-bottom: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 .url-share {
@@ -104,23 +109,7 @@ a.fa:focus {
 
 .invite-people-option {
     font-weight: bold;
-    font-size: 18px;
-}
-
-#privacy-level {
-    margin-top: 7px;
-    margin-bottom: 7px;
-}
-
-.public-draw-restriction #recently-created {
-    border-top: 1px #D7D7D7 solid;
-    padding-top: 10px;
-    margin-bottom: 7px;
-}
-
-
-#public-draw-invite #emails {
-    width: 100%;
+    font-size: 16px;
 }
 
 .settings-option {

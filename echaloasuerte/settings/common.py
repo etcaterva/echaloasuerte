@@ -143,6 +143,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'echaloasuerte.logging_mw.RequestLoggerMiddleware',
 )
 ########## END MIDDLEWARE CONFIGURATION
 
@@ -157,6 +158,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'tastypie',
+    'tastypie_swagger',
 
     'server',
     'web',

@@ -162,7 +162,7 @@ class TestAddUser(TestServices):
         super(TestAddUser, self).setUp()
         self.test_user = User("test_mail@yop.tu", password="fake_hashed_pwd")
         self.user_id = self._driver.save_user(self.test_user)
-        self.test_draw = RandomNumberDraw(number_of_results=1, shared_type="Public")
+        self.test_draw = RandomNumberDraw(number_of_results=1, is_shared=True)
         self._driver.save_draw(self.test_draw)
         self.req = lambda: None
         self.req.user = self.test_user

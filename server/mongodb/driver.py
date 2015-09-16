@@ -83,6 +83,14 @@ class MongoDriver(object):
         return doc["_id"]
 
     @safe_connection
+    def remove_user(self, user_id):
+        self._users.remove({"_id": user_id})
+
+    @safe_connection
+    def remove_draw(self, draw_id):
+        self._draws.remove({"_id": draw_id})
+
+    @safe_connection
     def retrieve_user(self, user_id):
         doc = self._users.find_one({"_id": user_id})
         if doc is None:
@@ -125,6 +133,8 @@ class MongoDriver(object):
         """
         Retrieves a draw from mongo.
         Get the type from the serialized object
+
+        :rtype: BaseDraw
         """
         try:
             raw_id = ObjectId(draw_id) if draw_id is not ObjectId else draw_id
@@ -163,6 +173,10 @@ class MongoDriver(object):
 
     @staticmethod
     def instance():
+        """Returns the single instance of mongodb
+
+        :rtype: MongoDriver
+        """
         if MongoDriver._instance is None:
             from django.conf import settings
 

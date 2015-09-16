@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from django.views.generic import TemplateView
 from django.views.generic.base import RedirectView
 from web import views
@@ -11,7 +11,6 @@ urlpatterns += patterns(
     '',
     url(r'^$', views.index, name='index'),
 
-    url(r'^publish_draw.html$', views.index, {'is_public': True}, name="publish_draw"),
     url(r'^join_draw.html$', views.join_draw, name="join_public_draw"),
 
     url(r'^about.html$', TemplateView.as_view(template_name='about.html'), name="about"),
@@ -28,6 +27,7 @@ urlpatterns += patterns(
     # web services
     url(r'^ws/update_profile/$', ws.update_user, name="update_profile"),
     url(r'^ws/feedback/$', ws.feedback, name="ws_feedback"),
+    url(r'^ws/draw/create/$', ws.create_draw, name="ws_create_draw"),
     url(r'^ws/draw/toss/$', ws.toss_draw, name="ws_toss_draw"),
     url(r'^ws/draw/schedule-toss/$', ws.schedule_toss_draw, name="ws_schedule_toss_draw"),
     url(r'^ws/draw/try/$', ws.try_draw, name="ws_try_draw"),
@@ -48,7 +48,10 @@ urlpatterns += patterns(
     url(r'contacto.php', RedirectView.as_view(url="/", permanent=True)),
     url(r'acerca.php', RedirectView.as_view(url="about.html", permanent=True)),
 
-    url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt'))
+    url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
+
+
+    url(r'^api/', include('web.rest_api.urls'))
 )
 
 urlpatterns += staticfiles_urlpatterns()

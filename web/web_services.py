@@ -1,13 +1,15 @@
 """definition of basic web services"""
 from django.contrib.auth.decorators import login_required
 from django.core.mail import mail_admins
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.core.validators import validate_email
+from server import draw_factory
 from server.mongodb.driver import MongoDriver
-from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user
+from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user, \
+    set_owner, ga_track_draw
 from server.forms import *
 from server.bom import *
-from web.google_analytics import ga_track_event
 import dateutil.parser
 
 LOG = logging.getLogger("echaloasuerte")
@@ -18,6 +20,7 @@ MONGO = MongoDriver.instance()
 @time_it
 def update_user(request):
     """updates the details of a user"""
+    # DEPRECATE
     user = MONGO.retrieve_user(request.user.pk)
     result = "ko"
 
@@ -58,6 +61,7 @@ def feedback(request):
 @time_it
 def toss_draw(request):
     """generates a result and returns it"""
+    # DEPRECATE
     draw_id = request.GET.get("draw_id")
     if draw_id is None:
         return HttpResponseBadRequest()
@@ -65,7 +69,7 @@ def toss_draw(request):
     user_can_write_draw(request.user, bom_draw)  # raises 500
     result = bom_draw.toss()
     MONGO.save_draw(bom_draw)
-    ga_track_event(category="toss", action=bom_draw.draw_type)
+    ga_track_draw(bom_draw, "toss")
     return JsonResponse({
         "result": result
     })
@@ -73,6 +77,7 @@ def toss_draw(request):
 @time_it
 def schedule_toss_draw(request):
     """generates a result and returns it"""
+    # DEPRECATE
     draw_id = request.GET.get("draw_id")
     schedule = request.GET.get("schedule")
     if draw_id is None or schedule is None:
@@ -90,6 +95,7 @@ def schedule_toss_draw(request):
 @time_it
 def try_draw(request, draw_id):
     """generates a result and returns it"""
+    # DEPRECATE
     bom_draw = MONGO.retrieve_draw(draw_id)
     return JsonResponse({
         "result": bom_draw.toss()
@@ -100,6 +106,7 @@ def try_draw(request, draw_id):
 @time_it
 def add_user_to_draw(request):
     """Add an user to a draw and sends a mail to inform him"""
+    # DEPRECATE
     draw_id = request.GET.get('draw_id')
     users_to_add = request.GET.get('emails', "")
 
@@ -123,7 +130,7 @@ def add_user_to_draw(request):
     bom_draw.users += new_users
     MONGO.save_draw(bom_draw)
 
-    invite_user(new_users, draw_id, request.user.get_email())
+    invite_user(new_users, draw_id, request.user.email)
 
     LOG.info("{0} users added to draw {1}".format(len(new_users), draw_id))
 
@@ -134,6 +141,7 @@ def add_user_to_draw(request):
 @time_it
 def remove_user_from_draw(request):
     """Remove an user from a draw"""
+    # DEPRECATE
     draw_id = request.GET.get('draw_id')
     users = request.GET.get('emails', "")
 
@@ -157,6 +165,7 @@ def remove_user_from_draw(request):
 @time_it
 def add_favorite(request):
     """Add a draw to the list of favourites of an user"""
+    # DEPRECATE
     draw_id = request.GET.get('draw_id')
 
     if draw_id is None:
@@ -182,6 +191,7 @@ def add_favorite(request):
 @time_it
 def remove_favorite(request):
     """removes a draw from the list of favourites"""
+    # DEPRECATE
     draw_id = request.GET.get('draw_id')
 
     if draw_id is None:
@@ -205,11 +215,11 @@ def remove_favorite(request):
 
 def check_access_to_draw(request):
     """Checks whether an user can access to a draw"""
+    # is this used?
     draw_id = request.GET.get('draw_id')
-    password = request.GET.get('draw_pass')
     draw = MONGO.retrieve_draw(draw_id)
 
-    user_can_read_draw(request.user, draw, password)
+    user_can_read_draw(request.user, draw)
     return HttpResponse()
 
 
@@ -247,7 +257,7 @@ def get_draw_details(request):
 
     return JsonResponse({
         "messages": messages,
-        "settings": draw.share_settings,
+        "enable_chat": draw.enable_chat,
         "last_updated_time": draw.last_updated_time
     })
 
@@ -258,73 +268,68 @@ def validate_draw(request):
     draw_type = request.POST.get("draw_type")
     if not draw_type:
         return HttpResponseBadRequest("Missing post argument draw_type")
-    model_name = draw_type
-    form_name = draw_type + "Form"
 
     logger.debug("Received post data: {0}".format(request.POST))
-    draw_form = globals()[form_name](request.POST)
-    if not draw_form.is_valid():
+    draw_form = draw_factory.create_form(draw_type, request.POST)
+    try:
+        _ = draw_form.build_draw()
+    except DrawFormError:
         logger.info("Form not valid: {0}".format(draw_form.errors))
         return JsonResponse({
             "is_valid": False,
             "errors": draw_form.errors
         })
     else:
-        raw_draw = draw_form.cleaned_data
-        logger.debug("Form cleaned data: {0}".format(raw_draw))
-        bom_draw = globals()[model_name](**raw_draw)
-        if not bom_draw.is_feasible():
-            logger.info("Draw {0} is not feasible".format(bom_draw))
-            return JsonResponse({
-                "is_valid": False,
-                "errors": "Not feasiible"
-            })
-        else:
-            return JsonResponse({
-                "is_valid": True,
-            })
+        return JsonResponse({
+            "is_valid": True,
+        })
 
 
 @time_it
 def update_share_settings(request):
     """Updates the shared settings.
 
-    input POST {draw_id, shared_type, password}
+    input POST {draw_id, enable_chat}
     """
+    # DEPRECATE
     draw_id = request.GET.get('draw_id')
-    new_password = request.GET.get('new_password')
-    shared_type = request.GET.get('shared_type')
     enable_chat = request.GET.get('enable_chat') == "true"
-    show_in_public_list = request.GET.get('show_in_public_list') == "true"
-
-    if shared_type not in ("Public", "Invite", None):
-        LOG.warning("Wrong type of public draw: {0}".format(shared_type))
-        return HttpResponseBadRequest()
     if draw_id is None:
         LOG.warning("Empty draw_id")
         return HttpResponseBadRequest()
     bom_draw = MONGO.retrieve_draw(draw_id)
     user_can_write_draw(request.user, bom_draw)  # raises 500
-
-    if shared_type == "Public":
-        bom_draw.shared_type = shared_type
-        bom_draw.password = new_password
-        bom_draw.show_in_public_list = show_in_public_list
-        bom_draw.enable_chat = enable_chat
-    elif shared_type == "Invite":
-        bom_draw.shared_type = shared_type
-        bom_draw.password = None
-        bom_draw.show_in_public_list = show_in_public_list
-        bom_draw.enable_chat = enable_chat
-    elif shared_type is None:
-        bom_draw.shared_type = shared_type
-        bom_draw.password = None
-        bom_draw.show_in_public_list = False
-        bom_draw.enable_chat = False
+    bom_draw.enable_chat = enable_chat
 
     MONGO.save_draw(bom_draw)
-    LOG.info("Draw {0} updated to {1}".format(
-        bom_draw.pk, bom_draw.share_settings))
+    LOG.info("Draw {0} updated".format(bom_draw.pk))
     return HttpResponse()
 
+@time_it
+def create_draw(request):
+    """create_draw ws
+    """
+    # DEPRECATE
+    LOG.debug("Received post data: {0}".format(request.POST))
 
+    draw_type = request.POST.get("draw_type")
+    if not draw_type:
+        return HttpResponseBadRequest("Missing post argument draw_type")
+
+    draw_form = draw_factory.create_form(draw_type, request.POST)
+    try:
+        bom_draw = draw_form.build_draw()
+    except DrawFormError:
+        LOG.info("Form not valid: {0}".format(draw_form.errors))
+        return HttpResponseBadRequest("Not valid")
+    else:
+        bom_draw._id = None  # Ensure we have no id
+        set_owner(bom_draw, request)
+        MONGO.save_draw(bom_draw)
+        LOG.info("Generated draw: {0}".format(bom_draw))
+        ga_track_draw(bom_draw, "create_draw")
+        #  notify users if any
+        if bom_draw.users:
+            invite_user(bom_draw.users, bom_draw.pk, bom_draw.owner)
+        draw_url = reverse('retrieve_draw', args=(bom_draw.pk, ))
+        return JsonResponse({'draw_url': draw_url})
