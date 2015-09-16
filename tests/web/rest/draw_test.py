@@ -129,17 +129,6 @@ class DrawResourceTest(ResourceTestCase):
         self.assertEquals(self.mongo.retrieve_draw(self.item.pk).users,
                           ['FAKE@USER.es', self.user.pk])
 
-    def test_anon_patch_detail(self):
-        self.assertHttpMethodNotAllowed(self.api_client.patch(self.detail_url,
-                                                              format='json',
-                                                              data={}))
-
-    def test_patch_detail(self):
-        self.login()
-        self.assertHttpMethodNotAllowed(self.api_client.patch(self.detail_url,
-                                                              format='json',
-                                                              data={}))
-
     def test_anon_delete_detail(self):
         self.assertHttpUnauthorized(self.api_client.delete(self.detail_url,
                                                            format='json'))
@@ -845,4 +834,341 @@ class DrawResourceToss_Test(ResourceTestCase):
         resp = self.schedule_toss(draw, 'invalid date :)')
         print(resp)
         self.assertHttpBadRequest(resp)
+        self.mongo.remove_draw(draw.pk)
+
+
+class DrawResourceUpdate_Test(ResourceTestCase):
+    """Tests the update of draws"""
+    # urls = 'web.rest_api.urls'
+
+    def setUp(self):
+        super(DrawResourceUpdate_Test, self).setUp()
+        django.setup()
+
+        # mongodb instance
+        self.mongo = mongodb.MongoDriver.instance()
+
+        # Create a user for authentication
+        test_user = bom.User('test@test.te')
+        test_user.set_password('test')
+        self.mongo.save_user(test_user)
+        self.user = test_user
+
+        # base url of the resource
+        self.base_url = '/api/v1/draw/'
+
+    def tearDown(self):
+        self.api_client.client.logout()
+        self.mongo.remove_user(self.user.pk)
+
+        # cleanup draws
+        self.mongo._draws.remove({'owner': self.user.pk})
+
+    def login(self):
+        self.api_client.client.login(username='test@test.te',
+                                     password='test')
+
+    def detail_uri(self, draw):
+        return self.base_url + draw.pk + '/'
+
+    def test_update_no_owner_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        draw = RandomNumberDraw(**data)
+        self.mongo.save_draw(draw)
+        resp = self.api_client.patch(self.detail_uri(draw), data={})
+        print(resp)
+        self.assertHttpAccepted(resp)
+
+    def test_update_not_owner_unauthorised(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        draw = RandomNumberDraw(**data)
+        draw.owner = "random@user.si"
+        self.mongo.save_draw(draw)
+        resp = self.api_client.patch(self.detail_uri(draw), data={})
+        print(resp)
+        self.assertHttpUnauthorized(resp)
+
+    def test_update_random_number_not_feasible(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        draw = RandomNumberDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        update_data = {
+            'range_min': 70,
+            'range_max': 60
+        }
+        resp = self.api_client.patch(self.detail_uri(draw), data=update_data)
+        print(resp)
+        self.assertHttpBadRequest(resp)
+        self.mongo.remove_draw(draw.pk)
+
+    def test_update_random_number_fake_attributes(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        draw = RandomNumberDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        for attr in ['not_an_attribute', 'participants', 'a_test']:
+            data[attr] = "something"
+            resp = self.api_client.patch(self.detail_uri(draw),
+                                         format='json',
+                                         data=data)
+            self.assertHttpAccepted(resp)
+            updated_draw = self.mongo.retrieve_draw(draw.pk)
+            self.assertFalse(hasattr(updated_draw, attr))
+            data.pop(attr)
+        self.mongo.remove_draw(draw.pk)
+
+    def test_update_random_number_forbidden_att(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        draw = RandomNumberDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        for attr in ['results', 'owner', '_id', 'pk', 'creation_time',
+                     'last_updated_time', 'audit']:
+            data[attr] = "something"
+            resp = self.api_client.patch(self.detail_uri(draw),
+                                         format='json',
+                                         data=data)
+            self.assertHttpBadRequest(resp)
+            data.pop(attr)
+        self.mongo.remove_draw(draw.pk)
+
+    def test_update_random_number_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        draw = RandomNumberDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        update_data = {
+            'range_min': 50,
+            'range_max': 60
+        }
+        resp = self.api_client.patch(self.detail_uri(draw), data=update_data)
+        print(resp)
+        self.assertHttpAccepted(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        for key, value in update_data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_update_random_letter_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'allow_repeat': True,
+            }
+        draw = RandomLetterDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        update_data = {
+            'users': ["test1@u.o", "test2@l.o"]
+        }
+        resp = self.api_client.patch(self.detail_uri(draw), data=update_data)
+        print(resp)
+        self.assertHttpAccepted(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        for key, value in update_data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_update_coin_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'allow_repeat': True,
+            }
+        draw = CoinDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        update_data = {
+            'users': []
+        }
+        resp = self.api_client.patch(self.detail_uri(draw), data=update_data)
+        print(resp)
+        self.assertHttpAccepted(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        for key, value in update_data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_update_dice_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'allow_repeat': True,
+            }
+        draw = DiceDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        update_data = {
+            'number_of_results': 5
+        }
+        resp = self.api_client.patch(self.detail_uri(draw), data=update_data)
+        print(resp)
+        self.assertHttpAccepted(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        for key, value in update_data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_update_card_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'type_of_deck': 'french',
+            'allow_repeat': True,
+            }
+        draw = CardDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        update_data = {
+            'type_of_deck': 'french'
+        }
+        resp = self.api_client.patch(self.detail_uri(draw), data=update_data)
+        print(resp)
+        self.assertHttpAccepted(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        for key, value in update_data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_update_tournament_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'participants': ["a", "b"],
+            }
+        draw = TournamentDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        update_data = {
+            'participants': ['Javier', 'Ruben', 'Josemari'],
+            'enable_chat': False
+        }
+        resp = self.api_client.patch(self.detail_uri(draw), data=update_data)
+        print(resp)
+        self.assertHttpAccepted(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        for key, value in update_data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_update_item_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'items': ["1"],
+            'allow_repeat': True,
+            }
+        draw = RandomItemDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        update_data = {
+            'items': [1, 2, 3, 4],
+            'title': 'new title'
+        }
+        resp = self.api_client.patch(self.detail_uri(draw), data=update_data)
+        print(resp)
+        self.assertHttpAccepted(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        for key, value in update_data.items():
+            self.assertEqual(value, getattr(draw, key))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_update_linked_sets_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'sets': [[1, 2], [2, 3]],
+            'allow_repeat': True,
+            }
+        draw = LinkSetsDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        update_data = {
+            'sets': [
+                ["One", "Two", "Three"],
+                ["Caramba", "Jeropa"]
+            ]
+        }
+        resp = self.api_client.patch(self.detail_uri(draw), data=update_data)
+        print(resp)
+        self.assertHttpAccepted(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        for key, value in update_data.items():
+            self.assertEqual(value, getattr(draw, key))
         self.mongo.remove_draw(draw.pk)
