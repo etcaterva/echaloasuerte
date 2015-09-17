@@ -63,6 +63,3 @@ docs/_build/
 
 # Secret Key file
 secret.txt
-
-# Secret Key Browserstack
-secret_tests.txt

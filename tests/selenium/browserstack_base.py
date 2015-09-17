@@ -1,12 +1,10 @@
-import os
-from os.path import join
+from os import environ
 import django
 from django.test import LiveServerTestCase
 from selenium import webdriver
-from echaloasuerte.settings.common import SITE_ROOT
 from server.mongodb.driver import MongoDriver
 
-BROWSERSTACK_KEY = os.environ.get('BROWSERSTACK_KEY')
+BROWSERSTACK_KEY = environ.get('BROWSERSTACK_KEY')
 
 
 class BrowserStackTest(LiveServerTestCase):
@@ -14,10 +12,6 @@ class BrowserStackTest(LiveServerTestCase):
     def __init__(self, *args, **kwargs):
         super(BrowserStackTest, self).__init__(*args, **kwargs)
         django.setup()
-
-    def wait(self, seconds=10):
-        # Set up a default implicit wait for 10 seconds
-        self.driver.implicitly_wait(seconds)
 
     def setUp(self):
         self.db = MongoDriver.instance()
@@ -36,7 +30,10 @@ class BrowserStackTest(LiveServerTestCase):
             self.driver = webdriver.Remote(command_executor=test_url, desired_capabilities=desired_cap)
         else:
             # PhantomJS (Silent mode)
-            self.driver = webdriver.PhantomJS('C:/phantomjs/bin/phantomjs.exe')
+            self.driver = webdriver.PhantomJS('phantomjs.exe')
+
+            # Set up implicit wait for 10 seconds
+            self.driver.implicitly_wait(10)
 
             # Firefox (Graphic mode)
             #self.driver = webdriver.Firefox()

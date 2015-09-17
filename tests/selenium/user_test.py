@@ -1,6 +1,7 @@
 from server.bom import User
 from tests.selenium.browserstack_base import BrowserStackTest
 
+
 class UserTest(BrowserStackTest):
     """
     Test that all draw types can be accessed and generate results.
@@ -26,7 +27,6 @@ class UserTest(BrowserStackTest):
     def login(self):
         driver = self.driver
         self.driver.get(self.base_url + "/accounts/sigin/")
-        self.wait()
         email_input = driver.find_element_by_css_selector("#login #email")
         password_input = driver.find_element_by_css_selector("#login #password")
         email_input.clear()
@@ -47,7 +47,6 @@ class UserTest(BrowserStackTest):
         password_input.clear()
         password_input.send_keys('test')
         driver.find_element_by_css_selector("#login-dropdown #login-button").click()
-        self.wait()
         result = driver.find_elements_by_id('account-dropdown')
         self.assertNotEqual([], result)
 
@@ -55,7 +54,6 @@ class UserTest(BrowserStackTest):
         """ User login (from login screen) """
         driver = self.driver
         self.login()
-        self.wait()
         result = driver.find_elements_by_id('account-dropdown')
         self.assertNotEqual([], result)
 
