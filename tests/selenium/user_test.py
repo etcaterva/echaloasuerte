@@ -23,8 +23,19 @@ class UserTest(BrowserStackTest):
         # Load starting page
         self.driver.get(self.base_url + "/")
 
-    def test_sign_in_user(self):
-        # Sign up in one of the browsers
+    def login(self):
+        driver = self.driver
+        self.driver.get(self.base_url + "/accounts/sigin/")
+        email_input = driver.find_element_by_css_selector("#login #email")
+        password_input = driver.find_element_by_css_selector("#login #password")
+        email_input.clear()
+        email_input.send_keys("test@test.com")
+        password_input.clear()
+        password_input.send_keys('test')
+        driver.find_element_by_css_selector("#login #login-button").click()
+
+    def test_login_in_dropdown(self):
+        """ User login (from dropdown panel) """
         driver = self.driver
         login_button = driver.find_element_by_css_selector('#login-dropdown a')
         login_button.click()
@@ -35,6 +46,25 @@ class UserTest(BrowserStackTest):
         password_input.clear()
         password_input.send_keys('test')
         driver.find_element_by_css_selector("#login-dropdown #login-button").click()
-        account_panel = driver.find_element_by_id('account-dropdown')
-        self.assertTrue(account_panel)
+        result = driver.find_elements_by_id('account-dropdown')
+        self.assertNotEqual([], result)
+
+    def test_login_in_screen(self):
+        """ User login (from login screen) """
+        driver = self.driver
+        self.login()
+        result = driver.find_elements_by_id('account-dropdown')
+        self.assertNotEqual([], result)
+
+    def test_change_alias(self):
+        pass
+
+    def test_change_password(self):
+        pass
+
+    def test_change_email(self):
+        pass
+
+    def test_change_avatar(self):
+        pass
 

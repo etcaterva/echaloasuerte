@@ -6,7 +6,7 @@ from selenium import webdriver
 from echaloasuerte.settings.common import SITE_ROOT
 from server.mongodb.driver import MongoDriver
 
-LOCAL_TESTS = None #os.environ.get('RUN_TESTS_LOCALLY')
+LOCAL_TESTS = os.environ.get('RUN_TESTS_LOCALLY')
 
 
 class BrowserStackTest(LiveServerTestCase):
