@@ -24,10 +24,11 @@ class BrowserStackTest(LiveServerTestCase):
         self.base_url = self.live_server_url
         test_url_file = join(SITE_ROOT, 'secret_tests.txt')
         try:
-            test_url = open(test_url_file).read().strip()
+            key = open(test_url_file).read().strip()
         except IOError:
             print("Impossible to load secret_tests.txt")
         else:
+            test_url = "http://davidnaranjo1:{0}@hub.browserstack.com:80/wd/hub".format(key)
             # Specify capabilities
             desired_cap = {'browser': 'Safari',
                            'browser_version': '8.0',
