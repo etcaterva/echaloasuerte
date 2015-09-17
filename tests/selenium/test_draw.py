@@ -20,8 +20,8 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn = driver.find_element_by_id("toss")
         toss_btn.click()
         self.wait()
-        results = driver.find_element_by_id("results")
-        self.assertTrue(results)
+        result = driver.find_elements_by_id("results")
+        self.assertNotEqual([], result)
 
     def test_random_number_test(self):
         driver = self.driver
@@ -31,8 +31,8 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn = driver.find_element_by_id("toss")
         toss_btn.click()
         self.wait()
-        results = driver.find_element_by_id("results")
-        self.assertTrue(results)
+        result = driver.find_elements_by_id("results")
+        self.assertNotEqual([], result)
 
     def test_random_card(self):
         driver = self.driver
@@ -42,8 +42,8 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn = driver.find_element_by_id("toss")
         toss_btn.click()
         self.wait()
-        results = driver.find_element_by_id("results")
-        self.assertTrue(results)
+        result = driver.find_elements_by_id("results")
+        self.assertNotEqual([], result)
 
     def test_random_item(self):
         driver = self.driver
@@ -54,8 +54,8 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn = driver.find_element_by_id("toss")
         toss_btn.click()
         self.wait()
-        results = driver.find_element_by_id("results")
-        self.assertTrue(results)
+        result = driver.find_elements_by_id("results")
+        self.assertNotEqual([], result)
 
     def test_dice(self):
         driver = self.driver
@@ -65,8 +65,8 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn = driver.find_element_by_id("toss")
         toss_btn.click()
         self.wait()
-        results = driver.find_element_by_id("results")
-        self.assertTrue(results)
+        result = driver.find_elements_by_id("results")
+        self.assertNotEqual([], result)
 
     def test_link_sets(self):
         driver = self.driver
@@ -78,8 +78,8 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn = driver.find_element_by_id("toss")
         toss_btn.click()
         self.wait()
-        results = driver.find_element_by_id("results")
-        self.assertTrue(results)
+        result = driver.find_elements_by_id("results")
+        self.assertNotEqual([], result)
 
     def test_back_button(self):
         driver = self.driver

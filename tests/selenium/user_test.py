@@ -26,6 +26,7 @@ class UserTest(BrowserStackTest):
     def login(self):
         driver = self.driver
         self.driver.get(self.base_url + "/accounts/sigin/")
+        self.wait()
         email_input = driver.find_element_by_css_selector("#login #email")
         password_input = driver.find_element_by_css_selector("#login #password")
         email_input.clear()
@@ -34,7 +35,7 @@ class UserTest(BrowserStackTest):
         password_input.send_keys('test')
         driver.find_element_by_css_selector("#login #login-button").click()
 
-    def test_login_in_dropdown(self):
+    def test_login_dropdown(self):
         """ User login (from dropdown panel) """
         driver = self.driver
         login_button = driver.find_element_by_css_selector('#login-dropdown a')
@@ -46,6 +47,7 @@ class UserTest(BrowserStackTest):
         password_input.clear()
         password_input.send_keys('test')
         driver.find_element_by_css_selector("#login-dropdown #login-button").click()
+        self.wait()
         result = driver.find_elements_by_id('account-dropdown')
         self.assertNotEqual([], result)
 
@@ -53,18 +55,19 @@ class UserTest(BrowserStackTest):
         """ User login (from login screen) """
         driver = self.driver
         self.login()
+        self.wait()
         result = driver.find_elements_by_id('account-dropdown')
         self.assertNotEqual([], result)
 
-    def test_change_alias(self):
-        pass
+    '''def test_change_alias(self):
+        driver = self.driver
+        driver.get('/accounts/profile')
 
     def test_change_password(self):
-        pass
+        driver = self.driver
+        driver.get('/accounts/profile')
 
     def test_change_email(self):
-        pass
-
-    def test_change_avatar(self):
-        pass
+        driver = self.driver
+        driver.get('/accounts/profile')'''
 
