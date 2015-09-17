@@ -21,7 +21,7 @@ urlpatterns += patterns(
     url(r'^draw/try/(?P<draw_type>[^/]+)/$', views.try_draw, name="try_draw"),
     url(r'^accounts/signup/$', views.register, name='register'),
     url(r'^accounts/forgot_password/$', views.under_construction, name='forgot_password'),
-    url(r'^accounts/sigin/$', views.login_user, name='login'),
+    url(r'^accounts/login/$', views.login_user, name='login'),
     url(r'^accounts/profile/$', views.profile, name='profile'),
 
     # web services
