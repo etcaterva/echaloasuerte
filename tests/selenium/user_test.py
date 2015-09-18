@@ -14,15 +14,18 @@ class UserTest(BrowserStackTest):
         super(UserTest, self).setUp()
 
         # delete user if exists
-        self.remove_user("test@test.com")
-        self.test_user = User(
-            'test@test.com',
-        )
-        self.test_user.set_password("test")
-        self.db.create_user(self.test_user)
+        test_user = User('test@test.com')
+        test_user.set_password("test")
+        self.db.create_user(test_user)
+        self.test_user = test_user
 
         # Load starting page
         self.driver.get(self.base_url + "/")
+
+    def tearDown(self):
+        super(UserTest, self).tearDown()
+
+        self.db.remove_user(self.test_user.pk)
 
     def login(self):
         driver = self.driver
