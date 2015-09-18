@@ -80,6 +80,7 @@ class NormalDrawTest(BrowserStackTest):
         driver = self.driver
         driver.find_element_by_id("number-draw").click()
         driver.find_element_by_class_name("back-arrow").click()
-        driver.find_element_by_id("number-draw")
+        result = driver.find_elements_by_id("number-draw")
+        self.assertTrue(result)
 
 
