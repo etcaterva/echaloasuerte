@@ -19,10 +19,10 @@ class BrowserStackTest(LiveServerTestCase):
         if BROWSERSTACK_KEY:
             test_url = "http://davidnaranjo1:{0}@hub.browserstack.com:80/wd/hub".format(BROWSERSTACK_KEY)
             # Specify capabilities
-            desired_cap = {'browser': 'Safari',
-                           'browser_version': '8.0',
-                           'os': 'OS X',
-                           'os_version': 'Yosemite',
+            desired_cap = {'browser': 'Firefox',
+                           'browser_version': '40.0',
+                           'os': 'Windows',
+                           'os_version': '8.1',
                            'resolution': '1024x768',
                            'browserstack.local': True,
                            'browserstack.debug': True

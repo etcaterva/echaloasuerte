@@ -51,14 +51,14 @@ class UserTest(BrowserStackTest):
         password_input.send_keys('test')
         driver.find_element_by_css_selector("#login-dropdown #login-button").click()
         result = driver.find_elements_by_id('account-dropdown')
-        self.assertNotEqual([], result)
+        self.assertTrue(result)
 
     def test_login_in_screen(self):
         """ User login (from login screen) """
         driver = self.driver
         self.login()
         result = driver.find_elements_by_id('account-dropdown')
-        self.assertNotEqual([], result)
+        self.assertTrue(result)
 
     '''def test_change_alias(self):
         driver = self.driver
