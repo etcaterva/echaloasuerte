@@ -21,8 +21,8 @@ class BrowserStackTest(LiveServerTestCase):
             # Specify capabilities
             desired_cap = {'browser': 'Firefox',
                            'browser_version': '40.0',
-                           'os': 'Windows',
-                           'os_version': '8.1',
+                           'os': 'OS X',
+                           'os_version': 'Yosemite',
                            'resolution': '1024x768',
                            'browserstack.local': True,
                            'browserstack.debug': True
