@@ -32,12 +32,13 @@ class BrowserStackTest(LiveServerTestCase):
             # PhantomJS (Silent mode)
             self.driver = webdriver.PhantomJS('phantomjs.exe')
 
-            # Set up implicit wait for 10 seconds
-            self.driver.implicitly_wait(10)
-
             # Firefox (Graphic mode)
-            #self.driver = webdriver.Firefox()
+            # self.driver = webdriver.Firefox()
+
             self.driver.set_window_size(1000, 900)
+
+        # Set up implicit wait for 10 seconds
+        self.driver.implicitly_wait(10)
 
     def tearDown(self):
         self.driver.quit()
