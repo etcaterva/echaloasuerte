@@ -20,7 +20,7 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn = driver.find_element_by_id("toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
-        self.assertNotEqual([], result)
+        self.assertTrue(result)
 
     def test_random_number_test(self):
         """Selenium: Random Number draw (normal draw)"""
@@ -30,7 +30,7 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn = driver.find_element_by_id("toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
-        self.assertNotEqual([], result)
+        self.assertTrue(result)
 
     def test_random_card(self):
         """Selenium: Card draw (normal draw)"""
@@ -40,7 +40,7 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn = driver.find_element_by_id("toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
-        self.assertNotEqual([], result)
+        self.assertTrue(result)
 
     def test_random_item(self):
         """Selenium: Random item draw (normal draw)"""
@@ -51,7 +51,7 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn = driver.find_element_by_id("toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
-        self.assertNotEqual([], result)
+        self.assertTrue(result)
 
     def test_dice(self):
         """Selenium: Dice draw (normal draw)"""
@@ -61,7 +61,7 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn = driver.find_element_by_id("toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
-        self.assertNotEqual([], result)
+        self.assertTrue(result)
 
     def test_link_sets(self):
         """Selenium: Link sets draw (normal draw)"""

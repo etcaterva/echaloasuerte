@@ -13,7 +13,6 @@ class UserTest(BrowserStackTest):
     def setUp(self):
         super(UserTest, self).setUp()
 
-        # delete user if exists
         test_user = User('test@test.com')
         test_user.set_password("test")
         self.db.create_user(test_user)
