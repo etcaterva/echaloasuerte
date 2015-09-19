@@ -14,7 +14,9 @@ install:
   - "pip install selenium pyvirtualdisplay coverage"
   - export DJANGO_SETTINGS_MODULE="echaloasuerte.settings.test"
   - "python manage.py syncdb --noinput"
+  - wget http://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
+  - unzip BrowserStackLocal-linux-x64.zip
 # command to run tests
 script:
   - nosetests tests/test_init.py tests -v
-#  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" == "false" ]]; then pip install sauceclient && nosetests func_test -v ; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" == "false" ]]; then ./BrowserStackLocal $BROWSERSTACK_KEY > /dev/null & && sleep 10 && nosetests func_test -v ; fi
