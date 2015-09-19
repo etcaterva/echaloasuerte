@@ -38,7 +38,7 @@ class BrowserStackTest(LiveServerTestCase):
             self.driver.set_window_size(1000, 900)
 
         # Set up implicit wait for 10 seconds
-        self.driver.implicitly_wait(10)
+        self.driver.implicitly_wait(20)
 
     def tearDown(self):
         self.driver.quit()
