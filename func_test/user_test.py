@@ -1,5 +1,5 @@
 from server.bom import User
-from tests.selenium.browserstack_base import BrowserStackTest
+from func_test.browserstack_base import BrowserStackTest
 
 
 class UserTest(BrowserStackTest):
