@@ -16,7 +16,7 @@ install:
   - "python manage.py syncdb --noinput"
   - wget http://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
   - unzip BrowserStackLocal-linux-x64.zip
-  - ./BrowserStackLocal $BROWSERSTACK_KEY > /dev/null &
+  -  if [ $TRAVIS_PYTHON_VERSION == '2.7' ]; then ./BrowserStackLocal $BROWSERSTACK_KEY > /dev/null & ; fi
   - sleep 10
 # command to run tests
 script:
