@@ -306,8 +306,8 @@
                     {% endif %}
                     </li>
 
-                    <li id="account-dropdown" class="hidden-xs dropdown">
-                        {% if user.is_authenticated %}
+                    {% if user.is_authenticated %}
+                        <li id="account-dropdown" class="hidden-xs dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <span class="fa fa-user"></span> 
                                 {{ user }}
@@ -349,7 +349,9 @@
                                 </li>
                             </ul>
                             <!-- End account dropdown panel -->
-                        {% else %}
+                        </li>
+                    {% else %}
+                        <li id="login-dropdown" class="hidden-xs dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <span class="fa fa-user" aria-hidden="true"></span> {% trans "Log in" %}<b class="caret"></b>
                             </a>
@@ -390,8 +392,8 @@
                                 </li>
                             </ul>
                             <!-- End login panel -->
-                        {% endif %}
-                    </li>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
