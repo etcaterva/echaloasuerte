@@ -233,6 +233,11 @@
             <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
                 <textarea name="title" class="form-control protected autogrow draw-title-area text-center" rows="1">{{ bom.title }}</textarea>
             </div>
+            {% if bom.description %}
+            <div class="col-xs-12 col-sm-12 text-center">
+                <p>{{bom.description}}</p>
+            </div>
+            {% endif %}
         </div>
         <!-- End Draw Heading -->
 

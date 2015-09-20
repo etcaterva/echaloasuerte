@@ -22,7 +22,7 @@ class BaseDraw(object):
                  results=None, _id=None, draw_type=None,
                  users=None, title=None, is_shared=False,
                  enable_chat=True, last_updated_time=None,
-                 audit=None, **kwargs):
+                 audit=None, description=None, **kwargs):
         if kwargs:
             logger.info("Unexpected extra args: {0}".format(kwargs))
 
@@ -53,6 +53,9 @@ class BaseDraw(object):
 
         self.title = title
         """Title of the concrete draw"""
+
+        self.description = description
+        """Description of the draw"""
 
         self.audit = audit if audit else []
         """List of changes in the draw main config, user add_audit to add items"""
