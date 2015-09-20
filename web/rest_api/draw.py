@@ -128,7 +128,8 @@ class DrawResource(resources.Resource):
                 response=http.HttpNotFound())
         if not bom_draw.check_write_access(request.user):
             raise exceptions.ImmediateHttpResponse(
-                response=http.HttpUnauthorized("Only the owner can toss"))
+                response=http.HttpUnauthorized(
+                    "Only the owner can schedule a toss"))
         result = bom_draw.timed_toss(schedule)
         self._client.save_draw(bom_draw)
         self.log_throttled_access(request)
@@ -204,7 +205,7 @@ class DrawResource(resources.Resource):
                 response=http.HttpBadRequest("Draw not found"))
         if not draw.check_write_access(bundle.request.user):
             raise exceptions.ImmediateHttpResponse(
-                response=http.HttpUnauthorized("Only the owner can toss"))
+                response=http.HttpUnauthorized("Only the owner can update"))
 
         for name, value in bundle.data.items():
             if not hasattr(draw, name):
