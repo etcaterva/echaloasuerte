@@ -1,4 +1,4 @@
-EchaloASuerte
+![EchaloASuerte](http://echaloasuerte.com/static/img/brand_lg.2dcf2f907ada.png)
 =============
 Echaloasuerte is a simple website that allows people to take decisions base on random factors.
 

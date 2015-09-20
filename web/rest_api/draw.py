@@ -35,11 +35,12 @@ class DrawResource(resources.Resource):
     HIDDEN_ATTRIBUTES = ['draw_type', '_id']
     FORBIDDEN_ATTRIBUTES = ['results', 'owner', '_id', 'pk', 'creation_time',
                             'last_updated_time', 'audit']
+    FROZEN_ATTRIBUTES = []
 
     class Meta:
         resource_name = 'draw'
         list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get', 'post', 'delete']
+        detail_allowed_methods = ['get', 'post', 'delete', 'patch']
         extra_actions = [
             {
                 "name": "toss",
@@ -127,7 +128,8 @@ class DrawResource(resources.Resource):
                 response=http.HttpNotFound())
         if not bom_draw.check_write_access(request.user):
             raise exceptions.ImmediateHttpResponse(
-                response=http.HttpUnauthorized("Only the owner can toss"))
+                response=http.HttpUnauthorized(
+                    "Only the owner can schedule a toss"))
         result = bom_draw.timed_toss(schedule)
         self._client.save_draw(bom_draw)
         self.log_throttled_access(request)
@@ -190,6 +192,36 @@ class DrawResource(resources.Resource):
         if not draw.is_feasible():
             raise exceptions.ImmediateHttpResponse(
                 response=http.HttpBadRequest("Not feasible"))
+        self._client.save_draw(draw)
+        bundle.obj = draw
+        return bundle
+
+    def obj_update(self, bundle, **kwargs):
+        draw_id = kwargs['pk']
+        try:
+            draw = self._client.retrieve_draw(draw_id)
+        except mongodb.MongoDriver.NotFoundError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Draw not found"))
+        if not draw.check_write_access(bundle.request.user):
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpUnauthorized("Only the owner can update"))
+
+        for name, value in bundle.data.items():
+            if not hasattr(draw, name):
+                continue
+            elif name in self.FROZEN_ATTRIBUTES + self.FORBIDDEN_ATTRIBUTES:
+                if getattr(draw, name) != value:
+                    raise exceptions.ImmediateHttpResponse(
+                        response=http.HttpBadRequest("{0} is forbidden".format(
+                            name)))
+            else:
+                setattr(draw, name, value)
+
+        if not draw.is_feasible():
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Not feasible"))
+
         self._client.save_draw(draw)
         bundle.obj = draw
         return bundle
