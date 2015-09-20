@@ -28,7 +28,7 @@ class UserTest(BrowserStackTest):
 
     def login(self):
         driver = self.driver
-        self.driver.get(self.base_url + "/accounts/sigin/")
+        self.driver.get(self.base_url + "/accounts/login/")
         email_input = driver.find_element_by_css_selector("#login #email")
         password_input = driver.find_element_by_css_selector("#login #password")
         email_input.clear()
