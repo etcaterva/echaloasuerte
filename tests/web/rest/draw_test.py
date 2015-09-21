@@ -39,6 +39,8 @@ class DrawResourceTest(ResourceTestCase):
         # Create an object we will use to test
         item = RandomNumberDraw()
         item.users = [self.user.pk]
+        item.title = "Titulo"
+        item.description = "A description, it can be long. Rather long"
         self.mongo.save_draw(item)
         self.item = item
 
@@ -81,6 +83,7 @@ class DrawResourceTest(ResourceTestCase):
         self.assertEqual(retrieved_draw["resource_uri"], self.detail_url)
         self.assertEqual(retrieved_draw["owner"], self.item.owner)
         self.assertEqual(retrieved_draw["title"], self.item.title)
+        self.assertEqual(retrieved_draw["description"], self.item.description)
         self.assertEqual(retrieved_draw["users"], self.item.users)
 
     def test_anon_get_detail(self):
@@ -245,6 +248,29 @@ class DrawResourceCreate_Test(ResourceTestCase):
             data.pop(attr)
         self.assertEqual(0, len(self.mongo.get_draws_with_filter({
             'owner': self.user.pk})))
+
+    def test_create_random_number_with_desc_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'description': 'The description',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': [],
+            'type': 'number',
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print(resp)
+        self.assertHttpCreated(resp)
+        draw = self.get_created_draw()
+        self.assertTrue(draw.is_feasible())
+        self.assertEqual(draw.description,
+                         data["description"])
 
     def test_create_random_number_ok(self):
         self.login()

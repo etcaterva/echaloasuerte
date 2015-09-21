@@ -21,6 +21,9 @@ class DrawResource(resources.Resource):
     title = fields.CharField(attribute='title',
                              help_text="Title of the draw",
                              null=True)
+    description = fields.CharField(attribute='description',
+                                   help_text="Description of the draw",
+                                   null=True)
     is_shared = fields.BooleanField(attribute='is_shared',
                                     default=False,
                                     help_text="Whether the draw is public or not")

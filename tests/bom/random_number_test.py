@@ -17,6 +17,10 @@ class RandomNumberDrawTest(TestCase):
         raw = RandomNumberDraw(range_min=0).__dict__
         self.assertEqual(raw["range_min"], 0)
 
+    def description_test(self):
+        raw = RandomNumberDraw(description="Test").__dict__
+        self.assertEqual(raw["description"], "Test")
+
     def deserialization_test(self):
         """RandomNumberDraw: Deserialization"""
         raw = {"range_min": 5, "range_max": 10}
