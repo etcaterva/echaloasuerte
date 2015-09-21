@@ -1,4 +1,4 @@
-from tastypie import fields, resources, exceptions
+from tastypie import fields, resources, exceptions, http
 from tastypie.bundle import Bundle
 
 from server import bom, mongodb
@@ -47,8 +47,13 @@ class UserResource(resources.Resource):
         return self.get_object_list(bundle.request)
 
     def obj_get(self, bundle, **kwargs):
-        user = self._client.retrieve_user(kwargs['pk'])
-        return user
+        try:
+            user = self._client.retrieve_user(kwargs['pk'])
+        except mongodb.MongoDriver.NotFoundError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpNotFound())
+        else:
+            return user
 
     def obj_create(self, bundle, **kwargs):
         bundle.obj = bom.User(_id=bundle.data["email"])
@@ -58,12 +63,16 @@ class UserResource(resources.Resource):
 
     def obj_update(self, bundle, **kwargs):
         if bundle.obj.pk != bundle.request.user.pk:
-            self.unauthorized_result(None)
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpUnauthorized("An user can only update "
+                                               "his own details"))
 
         for key, value in bundle.data.items():
             if key in self.FROZEN_ATTRIBUTES:
                 if getattr(bundle.obj, key, value) != value:
-                    raise exceptions.BadRequest()
+                    raise exceptions.ImmediateHttpResponse(
+                        response=http.HttpBadRequest(
+                            "Invalid attribute {0}".format(key)))
             elif key == 'password':
                 bundle.obj.set_password(bundle.data['password'])
             else:
