@@ -276,7 +276,7 @@
                         {% if user.is_authenticated %}
                             <a id="profile-dropdown-link" href="{% url 'profile' %}">
                                 <span class="fa fa-user" aria-hidden="true"></span>
-                                {{ user }}
+                                {{ user.alias }}
                             </a>
                         {% else %}
                             <a id="login-dropdown-link" href="{% url 'login' %}">
@@ -310,7 +310,7 @@
                         <li id="account-dropdown" class="hidden-xs dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <span class="fa fa-user"></span> 
-                                {{ user }}
+                                {{ user.alias }}
                                 <span class="caret"></span>
                             </a>
                             <!-- Account dropdown panel -->
@@ -324,7 +324,7 @@
                                                 </p>
                                             </div>
                                             <div class="col-lg-8">
-                                                <p class="text-left"><strong>{{ user }}</strong></p>
+                                                <p class="text-left"><strong>{{ user.alias }}</strong></p>
 
                                                 <p class="text-left small"> {{user.email}}</p>
 
