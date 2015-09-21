@@ -215,6 +215,8 @@ ALLOWED_HOSTS = [
     '.onlinewbs.com.',  # Also allow FQDN and subdomains
     '.echaloasuerte.com',
     '.echaloasuerte.com.',
+    '.chooserandom.com',
+    '.chooserandom.com.',
     '92.222.219.42',
     'vps71464.ovh.net',
     'vps162180.ovh.net',
