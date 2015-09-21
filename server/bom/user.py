@@ -63,12 +63,6 @@ class User(object):
     def email(self):
         return self._id
 
-    def get_username(self):
-        try:
-            return self._id.split('@')[0]
-        except Exception as e:
-            return self._id
-
     def is_anonymous(self):
         return False
 
@@ -85,8 +79,7 @@ class User(object):
         self.password = make_password(raw_password)
 
     def __str__(self):
-
-        return self.get_username()
+        return self._id
 
 
 import server.mongodb.driver
