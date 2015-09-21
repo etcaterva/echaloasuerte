@@ -53,7 +53,13 @@ class User(object):
         self.favourites = favourites if favourites is not None else []
         """List of favourites of a user"""
 
-        self.alias = alias if alias else self._id
+        if not alias:
+            try:
+                alias = _id.split('@')[0]
+            except Exception as e:
+                alias = _id
+
+        self.alias = alias
         """Alias of the user (name it appears for the public)"""
 
         self.use_gravatar = use_gravatar
