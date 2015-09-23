@@ -21,11 +21,13 @@ class UserTest(TestCase):
         self.dummy_user.set_password("123")
         self.assertTrue(self.dummy_user.check_password("123"))
 
-    def get_username_id_is_email_test(self):
-        self.assertEqual("mario", User("mario@weirdmail.com").get_username())
-
-    def get_username_id_is_not_email_test(self):
-        self.assertEqual("marioX", User("marioX").get_username())
-
     def email_test(self):
         self.assertEqual("mario@gmail.com", User("mario@gmail.com").email)
+
+    def get_alias_ok_test(self):
+        user =  User("test_user@test.com")
+        self.assertEqual("test_user", user.alias)
+
+    def get_alias_no_email_ok_test(self):
+        user =  User("test_user")
+        self.assertEqual("test_user", user.alias)
