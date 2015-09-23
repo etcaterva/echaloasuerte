@@ -14,7 +14,7 @@ install:
 script:
   - nosetests tests/test_init.py tests -v
   - |
-    if [[ $TRAVIS_PYTHON_VERSION == '2.7' && ! -z $BROWSERSTACK_KEY]]; then
+    if [[ $TRAVIS_PYTHON_VERSION == '2.7' && ! -z $BROWSERSTACK_KEY ]]; then
       wget http://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
       unzip BrowserStackLocal-linux-x64.zip
       ./BrowserStackLocal $BROWSERSTACK_KEY > /dev/null &
