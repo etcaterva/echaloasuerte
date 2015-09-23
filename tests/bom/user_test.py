@@ -23,3 +23,11 @@ class UserTest(TestCase):
 
     def email_test(self):
         self.assertEqual("mario@gmail.com", User("mario@gmail.com").email)
+
+    def get_alias_ok_test(self):
+        user =  User("test_user@test.com")
+        self.assertEqual("test_user", user.alias)
+
+    def get_alias_no_email_ok_test(self):
+        user =  User("test_user")
+        self.assertEqual("test_user", user.alias)
