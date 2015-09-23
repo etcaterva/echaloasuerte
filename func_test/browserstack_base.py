@@ -4,6 +4,7 @@ from django.test import LiveServerTestCase
 from selenium import webdriver
 from server.mongodb.driver import MongoDriver
 
+BROWSERSTACK_USERNAME = environ.get('BROWSERSTACK_USERNAME')
 BROWSERSTACK_KEY = environ.get('BROWSERSTACK_KEY')
 
 
@@ -17,7 +18,7 @@ class BrowserStackTest(LiveServerTestCase):
         self.db = MongoDriver.instance()
         self.base_url = self.live_server_url
         if BROWSERSTACK_KEY:
-            test_url = "http://davidnaranjo1:{0}@hub.browserstack.com:80/wd/hub".format(BROWSERSTACK_KEY)
+            test_url = "http://{0}:{1}@hub.browserstack.com:80/wd/hub".format(BROWSERSTACK_USERNAME, BROWSERSTACK_KEY)
             # Specify capabilities
             desired_cap = {'browser': 'Firefox',
                            'browser_version': '40.0',
