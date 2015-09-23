@@ -6,6 +6,7 @@ from server.mongodb.driver import MongoDriver
 
 BROWSERSTACK_USERNAME = environ.get('BROWSERSTACK_USERNAME')
 BROWSERSTACK_KEY = environ.get('BROWSERSTACK_KEY')
+REPOSITORY_PATH = environ.get('TRAVIS_REPO_SLUG')
 
 
 class BrowserStackTest(LiveServerTestCase):
@@ -26,7 +27,8 @@ class BrowserStackTest(LiveServerTestCase):
                            'os_version': 'Yosemite',
                            'resolution': '1024x768',
                            'browserstack.local': True,
-                           'browserstack.debug': True
+                           'browserstack.debug': True,
+                           'browserstack.localIdentifier': REPOSITORY_PATH
                            }
             self.driver = webdriver.Remote(command_executor=test_url, desired_capabilities=desired_cap)
         else:
