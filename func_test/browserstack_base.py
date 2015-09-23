@@ -27,8 +27,7 @@ class BrowserStackTest(LiveServerTestCase):
                            'os_version': 'Yosemite',
                            'resolution': '1024x768',
                            'browserstack.local': True,
-                           'browserstack.debug': True,
-                           'browserstack.localIdentifier': REPOSITORY_PATH
+                           'browserstack.debug': True
                            }
             self.driver = webdriver.Remote(command_executor=test_url, desired_capabilities=desired_cap)
         else:

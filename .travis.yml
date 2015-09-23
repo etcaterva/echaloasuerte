@@ -16,13 +16,10 @@ script:
   - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19LRVk9V1ZycEpiUnpNTVhKakxBTG1xQnAK`
   - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19VU0VSTkFNRT1kYXZpZG5hcmFuam8xCg==`
   - |
-    if [[ $TRAVIS_PYTHON_VERSION == '2.7' && ! -z $BROWSERSTACK_KEY ]]; then
+    if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" == "true" && ! -z $BROWSERSTACK_KEY ]]; then
       wget http://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
       unzip BrowserStackLocal-linux-x64.zip
-      env
-      echo "Current repo: "
-      echo $TRAVIS_REPO_SLUG
-      ./BrowserStackLocal -localIdentifier $TRAVIS_REPO_SLUG $BROWSERSTACK_KEY > /dev/null &
+      ./BrowserStackLocal $BROWSERSTACK_KEY > /dev/null &
       sleep 10
       nosetests func_test -v
     fi
