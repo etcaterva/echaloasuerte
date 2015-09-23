@@ -1,4 +1,7 @@
 language: python
+env:
+  global:
+    secure: E4pfm9TRyrx5VpJ045JmDXfkeN/DEYw6Wc/pasBFiCWSk0gS6LpKRXqiV5Sm2PocYS6yf8kNw9UTXp0Hdxu0sh85QY7gcXdYUsY7NA7YEgKzxWli48JUOlbpFuddAN1tJLqQa86Z89mCfeD1agi4vDAIGC/hZnqgNbjRlfm6wJg=
 services:
   - mongodb
 python:
