@@ -53,14 +53,11 @@ class User(object):
         self.favourites = favourites if favourites is not None else []
         """List of favourites of a user"""
 
-        if not alias:
-            try:
-                alias = _id.split('@')[0]
-            except Exception as e:
-                alias = _id
-
-        self.alias = alias
-        """Alias of the user (name it appears for the public)"""
+        if alias:
+            self.alias = alias
+            """Alias of the user (name it appears for the public)"""
+        else:
+            self.alias = str(_id).split('@')[0]
 
         self.use_gravatar = use_gravatar
         """Permission from the user to use his Gravatar"""
