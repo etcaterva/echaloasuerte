@@ -1,7 +1,7 @@
 language: python
 env:
   global:
-    secure: E4pfm9TRyrx5VpJ045JmDXfkeN/DEYw6Wc/pasBFiCWSk0gS6LpKRXqiV5Sm2PocYS6yf8kNw9UTXp0Hdxu0sh85QY7gcXdYUsY7NA7YEgKzxWli48JUOlbpFuddAN1tJLqQa86Z89mCfeD1agi4vDAIGC/hZnqgNbjRlfm6wJg=
+    secure: hLxJZaa8WVJVR2dInZNQNTsxV3Zm9uH+lLrHCctCLRxO+v/lWit/1SMRQa6fv8TlwNAuvMGrh8TYyZ8v1naiWieCPG25jo7ydOOaZpJRJDHy5jyq5NTjff4fgKw0s4O6EOqNHBOsUDdqagY2efB/UqJ4Jd5C87wHb9DfCKEgpq4=
 services:
   - mongodb
 python:
@@ -16,6 +16,7 @@ install:
 # command to run tests
 script:
   - nosetests tests/test_init.py tests -v
+  - env
   - |
     if [[ $TRAVIS_PYTHON_VERSION == '2.7' && ! -z $BROWSERSTACK_KEY ]]; then
       wget http://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
