@@ -19,6 +19,8 @@ script:
     if [[ $TRAVIS_PYTHON_VERSION == '2.7' && ! -z $BROWSERSTACK_KEY ]]; then
       wget http://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
       unzip BrowserStackLocal-linux-x64.zip
+      env
+      echo "Current repo: "
       echo $TRAVIS_REPO_SLUG
       ./BrowserStackLocal -localIdentifier $TRAVIS_REPO_SLUG $BROWSERSTACK_KEY > /dev/null &
       sleep 10
