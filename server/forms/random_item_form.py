@@ -13,7 +13,7 @@ class RandomItemDrawForm(FormBase):
     DEFAULT_TITLE = _("Random Item")
 
     def __init__(self, *args, **kwargs):
-        if 'initial' in kwargs:
+        if 'initial' in kwargs and 'items' in kwargs['initial']:
             kwargs['initial']['items'] = ','.join(kwargs['initial']['items'])
         super(RandomItemDrawForm, self).__init__(*args, **kwargs)
 

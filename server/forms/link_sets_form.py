@@ -11,7 +11,7 @@ class LinkSetsDrawForm(FormBase):
     DEFAULT_TITLE = _("Link sets")
 
     def __init__(self, *args, **kwargs):
-        if 'initial' in kwargs:
+        if 'initial' in kwargs and 'sets' in kwargs['initial']:
             for i in range(0, len(kwargs['initial']['sets'])):
                 kwargs['initial']['set_{0}'.format(i + 1)] = ','.join(kwargs['initial']['sets'][i])
         super(LinkSetsDrawForm, self).__init__(*args, **kwargs)

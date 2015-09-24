@@ -32,8 +32,8 @@ class FormBase(forms.Form):
     DrawClass = None
 
     def __init__(self, *args, **kwargs):
-        if 'initial' in kwargs:
-            kwargs['initial']['users'] = ','.join(kwargs['initial']['users'])
+        if 'initial' in kwargs and 'users' in kwargs['initial']:
+                kwargs['initial']['users'] = ','.join(kwargs['initial'].ge['users'])
         super(FormBase, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
