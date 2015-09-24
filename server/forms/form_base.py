@@ -22,6 +22,10 @@ class FormBase(forms.Form):
     """User invited to the draw, in case of been public.
      It needs to be rendered manually in the templates"""
 
+    description = forms.CharField(required=False)
+    """Short summary of the draw's purpose.
+     It needs to be rendered manually in the templates"""
+
     DEFAULT_TITLE = _("New Draw")
     TEMPLATE_PATH = None
     NAME_IN_URL = None
