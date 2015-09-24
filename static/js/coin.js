@@ -28,9 +28,9 @@ coin.animate = function () {
 	framecnt++;
 	if ((framecnt > 8) && (framenum == coin.result)) {
 		$("#img-coin" ).attr("src", cachedimages[framenum].src);
-	}
-	else{
-		setTimeout("coin.animate()", 30);}
+	} else {
+		setTimeout("coin.animate()", 30);
+    }
 }
 
 coin.flip = function (result) {
