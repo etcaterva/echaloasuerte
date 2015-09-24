@@ -5,10 +5,6 @@ python:
   - "2.7"
   - "3.4"
 # command to install dependencies
-#addons:
-#    sauce_connect:
-#        username: "pickforme"
-#        access_key: "d9f595a6-adce-4580-92b9-b12a05d73760"
 install:
   - "pip install -r requirements.txt"
   - "pip install selenium pyvirtualdisplay coverage"
@@ -17,4 +13,13 @@ install:
 # command to run tests
 script:
   - nosetests tests/test_init.py tests -v
-#  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" == "false" ]]; then pip install sauceclient && nosetests func_test -v ; fi
+  - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19LRVk9V1ZycEpiUnpNTVhKakxBTG1xQnAK`
+  - true && `base64 --decode <<< ZXhwb3J0IEJST1dTRVJTVEFDS19VU0VSTkFNRT1kYXZpZG5hcmFuam8xCg==`
+  - |
+    if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" != "false" && ! -z $BROWSERSTACK_KEY ]]; then
+      wget http://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
+      unzip BrowserStackLocal-linux-x64.zip
+      ./BrowserStackLocal $BROWSERSTACK_KEY > /dev/null &
+      sleep 10
+      nosetests func_test -v
+    fi
