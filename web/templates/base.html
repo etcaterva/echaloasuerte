@@ -269,7 +269,12 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{% url 'index' %}">
-                <img id="brand" src="{% static "img/brand.png" %}" alt="{% trans "EchaloASuerte" %}"/>
+                <img id="brand"
+                    {% if LANGUAGE_CODE == 'es' %}
+                        src="{% static "img/brand/brand_es.png" %}" alt="{% trans "EchaloASuerte" %}"/>
+                    {% else %}
+                        src="{% static "img/brand/brand_en.png" %}" alt="{% trans "ChooseRandom" %}"/>
+                    {% endif %}
             </a>
         </div>
 
