@@ -33,7 +33,7 @@ class FormBase(forms.Form):
 
     def __init__(self, *args, **kwargs):
         if 'initial' in kwargs and 'users' in kwargs['initial']:
-                kwargs['initial']['users'] = ','.join(kwargs['initial'].ge['users'])
+                kwargs['initial']['users'] = ','.join(kwargs['initial']['users'])
         super(FormBase, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
