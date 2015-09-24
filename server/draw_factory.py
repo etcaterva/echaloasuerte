@@ -60,7 +60,7 @@ def get_draw_name(draw_type=None):
         raise ValueError
 
 
-def create_form(draw_type, draw_data=None):
+def create_form(draw_type, draw_data=None, initial=None):
     """Creates the correct type of a form
 
     :param draw_type: string name of the draw
@@ -71,7 +71,10 @@ def create_form(draw_type, draw_data=None):
     if draw_data:
         form = form_class(draw_data)
     else:
-        form = form_class()
+        if initial:
+            form = form_class(initial=initial)
+        else:
+            form = form_class()
     return form
 
 
