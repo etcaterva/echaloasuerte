@@ -1,3 +1,4 @@
+import json
 import pytz
 from tastypie import fields, resources, http, exceptions
 from tastypie.utils import trailing_slash
@@ -54,7 +55,7 @@ class DrawResource(resources.Resource):
             {
                 "name": "try",
                 "http_method": "POST",
-                "resource_type": "detail",
+                "resource_type": "list",
                 "description": "Toss without saving a draw"
             },
             {
@@ -75,7 +76,7 @@ class DrawResource(resources.Resource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('toss'),
                 name="api_draw_toss"),
-            url(r"^(?P<resource_name>%s)/(?P<pk>.*?)/try%s$"
+            url(r"^(?P<resource_name>%s)/try%s$"
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('try_draw'),
                 name="api_draw_try"),
@@ -102,16 +103,25 @@ class DrawResource(resources.Resource):
         self.log_throttled_access(request)
         return self.create_response(request, result)
 
-    def try_draw(self, request, **kwargs):
+    def try_draw(self, request, **_):
         self.method_check(request, allowed=['post'])
         self.throttle_check(request)
-        draw_id = kwargs['pk']
+        data = json.loads(request.body)
+
         try:
-            bom_draw = self._client.retrieve_draw(draw_id)
-        except mongodb.MongoDriver.NotFoundError:
+            type_ = data.pop('type')
+            draw = draw_factory.create_draw(type_, data)
+        except KeyError:
             raise exceptions.ImmediateHttpResponse(
-                response=http.HttpNotFound())
-        result = bom_draw.toss()
+                response=http.HttpBadRequest("Missing draw type"))
+        except draw_factory.DrawNotRegistered:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Invalid draw type"))
+        if not draw.is_feasible():
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Not feasible"))
+        self._client.save_draw(draw)
+        result = draw.toss()
         self.log_throttled_access(request)
         return self.create_response(request, result)
 
