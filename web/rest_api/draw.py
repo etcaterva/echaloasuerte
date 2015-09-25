@@ -63,7 +63,19 @@ class DrawResource(resources.Resource):
                 "http_method": "POST",
                 "resource_type": "detail",
                 "description": "Schedules a toss"
-            }
+            },
+            {
+                "name": "chat",
+                "http_method": "POST",
+                "resource_type": "detail",
+                "description": "Add chat entry",
+            },
+            {
+                "name": "chat",
+                "http_method": "GET",
+                "resource_type": "detail",
+                "description": "Retrieve chat entries",
+            },
         ]
 
     @property
@@ -84,7 +96,57 @@ class DrawResource(resources.Resource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('schedule_toss'),
                 name="api_draw_schedule"),
+            url(r"^%s/(?P<pk>.*?)/chat%s$"
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('chat'),
+                name="api_draw_chat"),
         ]
+
+    def chat(self, request, **kwargs):
+        self.method_check(request, allowed=['post', 'get'])
+        self.throttle_check(request)
+        draw_id = kwargs['pk']
+        try:
+            draw = self._client.retrieve_draw(draw_id)  # check exists
+        except mongodb.MongoDriver.NotFoundError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpNotFound())
+        if request.method == 'POST':
+            try:
+                data = json.loads(request.body)
+            except TypeError:
+                data = json.loads(request.body.decode('utf-8'))
+            try:
+                message = data['message']
+                user = data['user']
+                self._client.add_chat_message(draw_id, message, user)
+            except KeyError:
+                raise exceptions.ImmediateHttpResponse(
+                    response=http.HttpBadRequest("Missing message or username"))
+            return self.create_response(request, {})
+        elif request.method == 'GET':
+            # TODO: return only the list of messages
+            def get_user_image(username):
+                """function to get either the user avatar or an empty string"""
+                try:
+                    return self._client.retrieve_user(username).user_image
+                except Exception:
+                    return ""
+            try:
+                messages = self._client.retrieve_chat_messages(draw_id)
+            except mongodb.MongoDriver.NotFoundError:
+                messages = []
+
+            users = set([message["user"] for message in messages])
+            users_map = {name: get_user_image(name) for name in users}
+            for message in messages:
+                message["avatar"] = users_map[message["user"]]
+
+            return self.create_response(request, {
+                "messages": messages,
+                "enable_chat": draw.enable_chat,
+                "last_updated_time": draw.last_updated_time
+            })
 
     def toss(self, request, **kwargs):
         self.method_check(request, allowed=['post'])

@@ -1,3 +1,6 @@
+import datetime
+import pytz
+
 try:
     import urllib.parse as urllib
 except ImportError:
@@ -1220,3 +1223,165 @@ class DrawResourceUpdate_Test(ResourceTestCase):
         for key, value in update_data.items():
             self.assertEqual(value, getattr(draw, key))
         self.mongo.remove_draw(draw.pk)
+
+
+class DrawResourceChat_Test(ResourceTestCase):
+    """Tests the update of draws"""
+    # urls = 'web.rest_api.urls'
+
+    def setUp(self):
+        super(DrawResourceChat_Test, self).setUp()
+        django.setup()
+
+        # mongodb instance
+        self.mongo = mongodb.MongoDriver.instance()
+
+        # Create a user for authentication
+        test_user = bom.User('test@test.te')
+        test_user.set_password('test')
+        self.mongo.save_user(test_user)
+        self.user = test_user
+
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'sets': [[1, 2], [2, 3]],
+            'allow_repeat': True,
+            }
+        draw = LinkSetsDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        self.draw = draw
+
+        # base url of the resource
+        self.base_url = '/api/v1/draw/'
+
+    def tearDown(self):
+        self.api_client.client.logout()
+        self.mongo.remove_user(self.user.pk)
+
+        self.mongo.remove_draw(self.draw.pk)
+
+    def login(self):
+        self.api_client.client.login(username='test@test.te',
+                                     password='test')
+
+    def detail_uri(self, draw):
+        return self.base_url + draw.pk + '/'
+
+    def chat_uri(self, draw):
+        return self.detail_uri(draw) + 'chat/'
+
+    def test_get_empty_chat_draw(self):
+        self.login()
+        draw = self.draw
+        resp = self.api_client.get(self.chat_uri(draw))
+        print(resp)
+        self.assertHttpOK(resp)
+        self.assertEqual(0,
+                         len(self.deserialize(resp)["messages"]))
+
+    def test_get_chat_draw(self):
+        self.login()
+        draw = self.draw
+        self.mongo.add_chat_message(draw.pk,
+                                    "chat message",
+                                    "anon")
+        resp = self.api_client.get(self.chat_uri(draw))
+        print(resp)
+        self.assertHttpOK(resp)
+        self.assertEqual(1,
+                         len(self.deserialize(resp)["messages"]))
+        self.assertEqual("chat message",
+                         self.deserialize(resp)["messages"][0]["content"])
+
+    def test_get_user_chat_draw(self):
+        self.login()
+        draw = self.draw
+        self.mongo.add_chat_message(draw.pk,
+                                    "chat message",
+                                    self.user.pk)
+        resp = self.api_client.get(self.chat_uri(draw))
+        print(resp)
+        self.assertHttpOK(resp)
+        self.assertEqual(1,
+                         len(self.deserialize(resp)["messages"]))
+        self.assertEqual(self.user.pk,
+                         self.deserialize(resp)["messages"][0]["user"])
+
+    def test_get_no_user_chat_draw(self):
+        self.login()
+        draw = self.draw
+        self.mongo.add_chat_message(draw.pk,
+                                    "chat message",
+                                    "anon")
+        resp = self.api_client.get(self.chat_uri(draw))
+        print(resp)
+        self.assertHttpOK(resp)
+        self.assertEqual(1,
+                         len(self.deserialize(resp)["messages"]))
+        self.assertEqual("anon",
+                         self.deserialize(resp)["messages"][0]["user"])
+
+    def test_anon_post_chat(self):
+        draw = self.draw
+        resp = self.api_client.post(self.chat_uri(draw), data={
+            "message": "chat message",
+            "user": "anon user"
+        })
+        print(resp)
+        self.assertHttpOK(resp)
+        chats = self.mongo.retrieve_chat_messages(draw.pk)
+        self.assertEqual(1, len(chats))
+        self.assertEqual("anon user", chats[0]["user"])
+
+    def test_post_chat(self):
+        self.login()
+        draw = self.draw
+        resp = self.api_client.post(self.chat_uri(draw), data={
+            "message": "chat message",
+            "user": self.user.pk
+        })
+        print(resp)
+        self.assertHttpOK(resp)
+        chats = self.mongo.retrieve_chat_messages(draw.pk)
+        self.assertEqual(1, len(chats))
+        self.assertEqual(self.user.pk, chats[0]["user"])
+        self.assertEqual("chat message", chats[0]["content"])
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+        #self.assertTrue(now > chats[0]["creation_time"])
+        #self.assertTrue(now - datetime.timedelta(minutes=5) <
+        #                chats[0]["creation_time"])
+
+    def test_post_on_existing_chat(self):
+        self.login()
+        draw = self.draw
+        self.mongo.add_chat_message(draw.pk,
+                                    "chat message",
+                                    "anon")
+        resp = self.api_client.post(self.chat_uri(draw), data={
+            "message": "chat message",
+            "user": self.user.pk
+        })
+        print(resp)
+        self.assertHttpOK(resp)
+        chats = self.mongo.retrieve_chat_messages(draw.pk)
+        self.assertEqual(2, len(chats))
+        self.assertEqual(self.user.pk, chats[0]["user"])
+        self.assertEqual("anon", chats[1]["user"])
+
+    def test_post_missing_data(self):
+        draw = self.draw
+        resp = self.api_client.post(self.chat_uri(draw), data={
+            "user": self.user.pk
+        })
+        print(resp)
+        self.assertHttpBadRequest(resp)
+
+        resp = self.api_client.post(self.chat_uri(draw), data={
+            "message": "chat message",
+        })
+        print(resp)
+        self.assertHttpBadRequest(resp)
