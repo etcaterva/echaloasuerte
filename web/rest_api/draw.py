@@ -39,7 +39,7 @@ class DrawResource(resources.Resource):
     HIDDEN_ATTRIBUTES = ['draw_type', '_id']
     FORBIDDEN_ATTRIBUTES = ['results', 'owner', '_id', 'pk', 'creation_time',
                             'last_updated_time', 'audit']
-    FROZEN_ATTRIBUTES = []
+    FROZEN_ATTRIBUTES = ['type']
 
     class Meta:
         resource_name = 'draw'
@@ -106,7 +106,10 @@ class DrawResource(resources.Resource):
     def try_draw(self, request, **_):
         self.method_check(request, allowed=['post'])
         self.throttle_check(request)
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+        except TypeError:
+            data = json.loads(request.body.decode('utf-8'))
 
         try:
             type_ = data.pop('type')
@@ -189,18 +192,20 @@ class DrawResource(resources.Resource):
 
     def obj_create(self, bundle, **kwargs):
         data = bundle.data
-        if 'type' not in data:
-            raise exceptions.ImmediateHttpResponse(
-                response=http.HttpBadRequest("Missing draw type"))
-        type_ = data.pop('type')
-
         for attr in self.FORBIDDEN_ATTRIBUTES:
             if attr in data:
                 raise exceptions.ImmediateHttpResponse(
                     response=http.HttpBadRequest("{0} is forbidden".format(
                         attr)))
-
-        draw = draw_factory.create_draw(type_, data)
+        try:
+            type_ = data.pop('type')
+            draw = draw_factory.create_draw(type_, data)
+        except KeyError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Missing draw type"))
+        except draw_factory.DrawNotRegistered:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Invalid draw type"))
         draw.owner = bundle.request.user.pk
         if not draw.is_feasible():
             raise exceptions.ImmediateHttpResponse(
