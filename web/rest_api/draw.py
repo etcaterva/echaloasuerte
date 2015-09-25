@@ -72,15 +72,15 @@ class DrawResource(resources.Resource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/(?P<pk>.*?)/toss%s$"
+            url(r"^%s/(?P<pk>.*?)/toss%s$"
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('toss'),
                 name="api_draw_toss"),
-            url(r"^(?P<resource_name>%s)/try%s$"
+            url(r"^%s/try%s$"
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('try_draw'),
                 name="api_draw_try"),
-            url(r"^(?P<resource_name>%s)/(?P<pk>.*?)/schedule_toss/(?P<schedule>.*?)%s$"
+            url(r"^%s/(?P<pk>.*?)/schedule_toss/(?P<schedule>.*?)%s$"
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('schedule_toss'),
                 name="api_draw_schedule"),
