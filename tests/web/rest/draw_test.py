@@ -510,12 +510,11 @@ class DrawResourceToss_Test(ResourceTestCase):
         return self.api_client.post(toss_url,
                                     format='json')
 
-
-    def try_(self, draw):
-        toss_url = self.base_url + "{0}/try/".format(draw.pk)
+    def try_(self, data):
+        toss_url = self.base_url + "try/"
         return self.api_client.post(toss_url,
                                     format='json',
-                                    data={})
+                                    data=data)
 
     def toss(self, draw):
         toss_url = self.base_url + "{0}/toss/".format(draw.pk)
@@ -749,21 +748,49 @@ class DrawResourceToss_Test(ResourceTestCase):
         self.assertEqual(1, len(draw.results))
         self.mongo.remove_draw(draw.pk)
 
-    def test_try_bad_id_not_found(self):
+    def test_try_bad_data_bad_request(self):
         self.login()
-        class FakeDraw(object):
-            pk = "BAD_ID"
-        resp = self.try_(FakeDraw())
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'type': 'link_sets',
+            'users': ['ruben@prueba.com'],
+            'sets': [[],
+                     ["a", "b", "c", "d"]]
+        }
+        resp = self.try_(data)
         print(resp)
-        self.assertHttpNotFound(resp)
+        self.assertHttpBadRequest(resp)
 
-    def test_try_empty_id_not_found(self):
+    def test_try_no_type_bad_request(self):
         self.login()
-        class FakeDraw(object):
-            pk = ""
-        resp = self.try_(FakeDraw())
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'users': ['ruben@prueba.com'],
+            'sets': [["1", "2", "3", "4"],
+                     ["a", "b", "c", "d"]]
+        }
+        resp = self.try_(data)
         print(resp)
-        self.assertHttpNotFound(resp)
+        self.assertHttpBadRequest(resp)
+
+    def test_try_invalid_type_bad_request(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'type': 'INVALID',
+            'users': ['ruben@prueba.com'],
+            'sets': [["1", "2", "3", "4"],
+                     ["a", "b", "c", "d"]]
+        }
+        resp = self.try_(data)
+        print(resp)
+        self.assertHttpBadRequest(resp)
 
     def test_try_linked_sets_ok(self):
         self.login()
@@ -772,19 +799,14 @@ class DrawResourceToss_Test(ResourceTestCase):
             'is_shared': True,
             'enable_chat': True,
             'users': ['user_anon@user.es'],
+            'type': 'link_sets',
             'sets': [[1], [2]],
             'allow_repeat': True,
             }
-        draw = LinkSetsDraw(**data)
-        draw.owner = self.user.pk
-        self.mongo.save_draw(draw)
-        resp = self.try_(draw)
+        resp = self.try_(data)
         print(resp)
         self.assertHttpOK(resp)
         self.assertEqual([1, 2], self.deserialize(resp)['items'][0])
-        draw = self.mongo.retrieve_draw(draw.pk)
-        self.assertEqual(0, len(draw.results))
-        self.mongo.remove_draw(draw.pk)
 
     def test_schedule_linked_sets_ok(self):
         self.login()

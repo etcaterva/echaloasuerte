@@ -16,6 +16,10 @@ from server.bom import CoinDraw, DiceDraw, CardDraw, RandomNumberDraw, \
 REGISTRY = {}
 
 
+class DrawNotRegistered(Exception):
+    """Exception when trying to use an unregistered draw"""
+
+
 def register_draw(draw_name, bom_class, form_class, template_name):
     """Creates the binding for the draw classes
 
@@ -57,7 +61,7 @@ def get_draw_name(draw_type=None):
         if values["bom"].__name__ == draw_type:
             return draw_name
     else:
-        raise ValueError
+        raise DrawNotRegistered()
 
 
 def create_form(draw_type, draw_data=None, initial=None):
@@ -67,6 +71,9 @@ def create_form(draw_type, draw_data=None, initial=None):
     :param draw_data: data of the draw to create the form
     :return: Form that inherits from DrawFormBase
     """
+    if draw_type not in REGISTRY:
+        raise DrawNotRegistered()
+
     form_class = REGISTRY[draw_type]["form"]
     if draw_data:
         form = form_class(draw_data)
@@ -86,6 +93,9 @@ def create_draw(draw_type, draw_data=None):
     :return: a draw with a type than inherits from DrawBase
     :rtype: BaseDraw
     """
+    if draw_type not in REGISTRY:
+        raise DrawNotRegistered()
+
     bom_class = REGISTRY[draw_type]["bom"]
     if draw_data:
         return bom_class(**draw_data)

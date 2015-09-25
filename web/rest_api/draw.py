@@ -1,3 +1,4 @@
+import json
 import pytz
 from tastypie import fields, resources, http, exceptions
 from tastypie.utils import trailing_slash
@@ -38,7 +39,7 @@ class DrawResource(resources.Resource):
     HIDDEN_ATTRIBUTES = ['draw_type', '_id']
     FORBIDDEN_ATTRIBUTES = ['results', 'owner', '_id', 'pk', 'creation_time',
                             'last_updated_time', 'audit']
-    FROZEN_ATTRIBUTES = []
+    FROZEN_ATTRIBUTES = ['type']
 
     class Meta:
         resource_name = 'draw'
@@ -54,7 +55,7 @@ class DrawResource(resources.Resource):
             {
                 "name": "try",
                 "http_method": "POST",
-                "resource_type": "detail",
+                "resource_type": "list",
                 "description": "Toss without saving a draw"
             },
             {
@@ -71,15 +72,15 @@ class DrawResource(resources.Resource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/(?P<pk>.*?)/toss%s$"
+            url(r"^%s/(?P<pk>.*?)/toss%s$"
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('toss'),
                 name="api_draw_toss"),
-            url(r"^(?P<resource_name>%s)/(?P<pk>.*?)/try%s$"
+            url(r"^%s/try%s$"
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('try_draw'),
                 name="api_draw_try"),
-            url(r"^(?P<resource_name>%s)/(?P<pk>.*?)/schedule_toss/(?P<schedule>.*?)%s$"
+            url(r"^%s/(?P<pk>.*?)/schedule_toss/(?P<schedule>.*?)%s$"
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('schedule_toss'),
                 name="api_draw_schedule"),
@@ -102,16 +103,28 @@ class DrawResource(resources.Resource):
         self.log_throttled_access(request)
         return self.create_response(request, result)
 
-    def try_draw(self, request, **kwargs):
+    def try_draw(self, request, **_):
         self.method_check(request, allowed=['post'])
         self.throttle_check(request)
-        draw_id = kwargs['pk']
         try:
-            bom_draw = self._client.retrieve_draw(draw_id)
-        except mongodb.MongoDriver.NotFoundError:
+            data = json.loads(request.body)
+        except TypeError:
+            data = json.loads(request.body.decode('utf-8'))
+
+        try:
+            type_ = data.pop('type')
+            draw = draw_factory.create_draw(type_, data)
+        except KeyError:
             raise exceptions.ImmediateHttpResponse(
-                response=http.HttpNotFound())
-        result = bom_draw.toss()
+                response=http.HttpBadRequest("Missing draw type"))
+        except draw_factory.DrawNotRegistered:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Invalid draw type"))
+        if not draw.is_feasible():
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Not feasible"))
+        self._client.save_draw(draw)
+        result = draw.toss()
         self.log_throttled_access(request)
         return self.create_response(request, result)
 
@@ -179,18 +192,20 @@ class DrawResource(resources.Resource):
 
     def obj_create(self, bundle, **kwargs):
         data = bundle.data
-        if 'type' not in data:
-            raise exceptions.ImmediateHttpResponse(
-                response=http.HttpBadRequest("Missing draw type"))
-        type_ = data.pop('type')
-
         for attr in self.FORBIDDEN_ATTRIBUTES:
             if attr in data:
                 raise exceptions.ImmediateHttpResponse(
                     response=http.HttpBadRequest("{0} is forbidden".format(
                         attr)))
-
-        draw = draw_factory.create_draw(type_, data)
+        try:
+            type_ = data.pop('type')
+            draw = draw_factory.create_draw(type_, data)
+        except KeyError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Missing draw type"))
+        except draw_factory.DrawNotRegistered:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Invalid draw type"))
         draw.owner = bundle.request.user.pk
         if not draw.is_feasible():
             raise exceptions.ImmediateHttpResponse(
