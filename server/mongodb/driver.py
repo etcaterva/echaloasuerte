@@ -169,6 +169,8 @@ class MongoDriver(object):
         entries = doc["entries"]
         logger.debug("Retrieved document chat {0} with {1} entries "
                      .format(draw_id, len(entries)))
+        for entry in entries:
+            entry['creation_time'] = entry['creation_time'].replace(tzinfo=pytz.utc)
         return sorted(entries, key=lambda k: k['creation_time'], reverse=True)
 
     @staticmethod

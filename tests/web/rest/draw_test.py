@@ -1351,9 +1351,9 @@ class DrawResourceChat_Test(ResourceTestCase):
         self.assertEqual(self.user.pk, chats[0]["user"])
         self.assertEqual("chat message", chats[0]["content"])
         now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
-        #self.assertTrue(now > chats[0]["creation_time"])
-        #self.assertTrue(now - datetime.timedelta(minutes=5) <
-        #                chats[0]["creation_time"])
+        self.assertTrue(now > chats[0]["creation_time"])
+        self.assertTrue(now - datetime.timedelta(minutes=5) <
+                        chats[0]["creation_time"])
 
     def test_post_on_existing_chat(self):
         self.login()
