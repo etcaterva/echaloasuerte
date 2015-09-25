@@ -12,6 +12,11 @@ class CoinDrawForm(FormBase):
 
         self.helper.layout = Layout(
             HTML(
-                '<div class="text-center"><input type="image" id="img-coin" src="{0}" name="coin"><p>{1}</p></div>'.format(
+                '<div class="text-center">'
+                '<a href="#">'
+                '<img type="image" id="img-coin" src="{0}" name="coin" '
+                '''onclick="$('#toss, #try, #toss-button').click();" />'''
+                '<a>'
+                '<p>{1}</p></div>'.format(
                     static('img/img_coin/head.png'), _("Tap the coin to flip it")))
         )

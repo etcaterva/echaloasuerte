@@ -19,27 +19,27 @@ coin.setup = function (baseUrl) {
     cachedimages[3].src = baseUrl + "head_dist.png";
     cachedimages[4] = new Image();
     cachedimages[4].src = baseUrl + "dist.png";
-	framecnt = 0;
+    framecnt = 0;
 }
 
 coin.animate = function () {
-	framenum = (framecnt) % 4;
-	$("#img-coin" ).attr("src", cachedimages[pict[framenum]].src);
-	framecnt++;
-	if ((framecnt > 8) && (framenum == coin.result)) {
-		$("#img-coin" ).attr("src", cachedimages[framenum].src);
-	}
-	else{
-		setTimeout("coin.animate()", 30);}
+    framenum = (framecnt) % 4;
+    $("#img-coin" ).attr("src", cachedimages[pict[framenum]].src);
+    framecnt++;
+    if ((framecnt > 8) && (framenum == coin.result)) {
+        $("#img-coin" ).attr("src", cachedimages[framenum].src);
+    } else {
+        setTimeout("coin.animate()", 30);
+    }
 }
 
 coin.flip = function (result) {
-    /* 	choice = 0 (HEAH)
-	choice = 2 (TAIL)
+    /*     choice = 0 (HEAH)
+    choice = 2 (TAIL)
     */
     if (result == "head")
         coin.result = 0
     else
         coin.result = 2
-	coin.animate();
+    coin.animate();
 }
