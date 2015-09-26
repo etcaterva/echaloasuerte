@@ -179,9 +179,8 @@
             return;
         }
         $.ajax({
-            method : "GET",
-            url   : "{% url 'ws_toss_draw' %}",
-            data  : {draw_id : "{{bom.pk}}"}
+            method : "POST",
+            url : "{% url 'api_draw_toss' api_name="v1" pk=bom.pk %}"
         }).done(function (){
             window.location.reload();
         })
