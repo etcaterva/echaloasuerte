@@ -23,6 +23,8 @@ class LinkSetsDraw(BaseDraw):
         - The numer of results generated will be equal to the number of items in the first set
         - If needed, items will be added to the others set or ignoted to match the length of the first
     """
+    TYPES = BaseDraw.TYPES.copy()
+    TYPES['sets'] = list
 
     def __init__(self, sets=None, **kwargs):
         super(LinkSetsDraw, self).__init__(**kwargs)
@@ -36,9 +38,10 @@ class LinkSetsDraw(BaseDraw):
         try:
             if sets:
                 for i in sets:
-                    i[0]  #validate is a list and has at least 1 element
+                    i[0]  # validate is a list and has at least 1 element
         except Exception as e:
-            logger.error("Issue when creating a AsociationListDraw. Items: {0}, exception: {1}".format(sets, e))
+            logger.error("Issue when creating a AsociationListDraw."
+                         " Items: {0}, exception: {1}".format(sets, e))
 
     def is_feasible(self):
         return self.sets and len(self.sets[0]) > 0 and len(self.sets) > 1

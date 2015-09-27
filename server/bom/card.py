@@ -12,6 +12,8 @@ class CardDraw(BaseDraw):
     """
     Stores the content of a draw of CardsDraw
     """
+    TYPES = BaseDraw.TYPES.copy()
+    TYPES['type_of_deck'] = basestring
 
     def __init__(self, type_of_deck='french', **kwargs):
         super(CardDraw, self).__init__(**kwargs)

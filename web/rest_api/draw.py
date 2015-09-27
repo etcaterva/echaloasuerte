@@ -6,7 +6,7 @@ from tastypie.bundle import Bundle
 from django.conf.urls import url
 import dateutil.parser
 
-from server import mongodb, draw_factory
+from server import mongodb, draw_factory, bom
 
 
 class DrawResource(resources.Resource):
@@ -176,15 +176,16 @@ class DrawResource(resources.Resource):
         try:
             type_ = data.pop('type')
             draw = draw_factory.create_draw(type_, data)
+            draw.validate()
         except KeyError:
             raise exceptions.ImmediateHttpResponse(
                 response=http.HttpBadRequest("Missing draw type"))
         except draw_factory.DrawNotRegistered:
             raise exceptions.ImmediateHttpResponse(
                 response=http.HttpBadRequest("Invalid draw type"))
-        if not draw.is_feasible():
+        except bom.InvalidDraw as e:
             raise exceptions.ImmediateHttpResponse(
-                response=http.HttpBadRequest("Not feasible"))
+                response=http.HttpBadRequest(e))
         self._client.save_draw(draw)
         result = draw.toss()
         self.log_throttled_access(request)
@@ -262,16 +263,17 @@ class DrawResource(resources.Resource):
         try:
             type_ = data.pop('type')
             draw = draw_factory.create_draw(type_, data)
+            draw.validate()
         except KeyError:
             raise exceptions.ImmediateHttpResponse(
                 response=http.HttpBadRequest("Missing draw type"))
         except draw_factory.DrawNotRegistered:
             raise exceptions.ImmediateHttpResponse(
                 response=http.HttpBadRequest("Invalid draw type"))
-        draw.owner = bundle.request.user.pk
-        if not draw.is_feasible():
+        except bom.InvalidDraw as e:
             raise exceptions.ImmediateHttpResponse(
-                response=http.HttpBadRequest("Not feasible"))
+                response=http.HttpBadRequest(e))
+        draw.owner = bundle.request.user.pk
         self._client.save_draw(draw)
         bundle.obj = draw
         return bundle
@@ -298,9 +300,11 @@ class DrawResource(resources.Resource):
             else:
                 setattr(draw, name, value)
 
-        if not draw.is_feasible():
+        try:
+            draw.validate()
+        except bom.InvalidDraw as e:
             raise exceptions.ImmediateHttpResponse(
-                response=http.HttpBadRequest("Not feasible"))
+                response=http.HttpBadRequest(e))
 
         self._client.save_draw(draw)
         bundle.obj = draw

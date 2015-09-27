@@ -20,6 +20,99 @@ from server.bom.random_number import RandomNumberDraw
 from server.bom.tournament import TournamentDraw
 
 
+class DrawResource_ValidateTest(ResourceTestCase):
+    urls = 'web.rest_api.urls'
+
+    def setUp(self):
+        super(DrawResource_ValidateTest, self).setUp()
+        django.setup()
+
+        # mongodb instance
+        self.mongo = mongodb.MongoDriver.instance()
+
+        # Create a user for authentication
+        test_user = bom.User('test@test.te')
+        test_user.set_password('test')
+        self.mongo.save_user(test_user)
+        self.user = test_user
+
+        # base url of the resource
+        self.base_url = '/v1/draw/'
+
+        # Create an object we will use to test
+        item = RandomNumberDraw()
+        item.users = [self.user.pk]
+        item.title = "Titulo"
+        item.description = "A description, it can be long. Rather long"
+        self.mongo.save_draw(item)
+        self.item = item
+
+        # We also build a detail URI, since we will be using it all over.
+        self.detail_url = self.base_url + '{0}/'.format(
+            urllib.quote(self.item.pk))
+
+    def tearDown(self):
+        self.api_client.client.logout()
+        self.mongo.remove_user(self.user.pk)
+        self.mongo.remove_draw(self.item.pk)
+
+        # cleanup draws from other tests
+        self.mongo._draws.remove({'owner': self.user.pk})
+
+    def login(self):
+        self.api_client.client.login(username='test@test.te',
+                                     password='test')
+
+    def invalid_title_test(self):
+        data = {
+            'title': 1,
+            'is_shared': True,
+            'enable_chat': True,
+            'users': [],
+            'type': 'number',
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpBadRequest(resp)
+
+    def invalid_tournament_test(self):
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'users': ['ruben@prueba.com'],
+            'type': 'tournament',
+            'participants': "NOT A LIST"
+        }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpBadRequest(resp)
+
+    def invalid_range_min_type_test(self):
+        data = {
+            'title': 'draw title',
+            'is_shared': 'Yes',
+            'enable_chat': True,
+            'users': [],
+            'type': 'number',
+            'range_min': 'a',
+            'range_max': 6,
+            'allow_repeat': True,
+            }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print resp
+        self.assertHttpBadRequest(resp)
+
+
 class DrawResourceTest(ResourceTestCase):
     urls = 'web.rest_api.urls'
 
@@ -323,6 +416,25 @@ class DrawResourceCreate_Test(ResourceTestCase):
         for key, value in data.items():
             self.assertEqual(value, getattr(draw, key))
         self.assertTrue(type(draw) is RandomNumberDraw)
+
+    def test_create_random_bad_data_bad_request(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': False,
+            'enable_chat': False,
+            'users': ['ruben@prueba.com'],
+            'type': 'number',
+            'number_of_results': -1,
+            'range_min': "2",
+            'range_max': 2,
+            'allow_repeat': False,
+            }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print(resp)
+        self.assertHttpBadRequest(resp)
 
     def test_create_random_letter_ok(self):
         self.login()

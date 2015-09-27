@@ -8,6 +8,17 @@ logger = logging.getLogger("echaloasuerte")
 import pytz
 
 
+class InvalidDraw(RuntimeError):
+    def __init__(self, attributes, message):
+        super(InvalidDraw, self).__init__(message)
+        self.attributes = attributes
+        self.message = message
+
+    def __repr__(self):
+        return "<Invalid Draw. Attr: '{}' msg: {}>".format(self.attributes,
+                                                           self.message)
+
+
 def get_utc_now():
     return datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
 
@@ -17,6 +28,16 @@ class BaseDraw(object):
     Stores the content of a draw of random items
     """
     __metaclass__ = ABCMeta
+    TYPES = {
+        'creation_time': datetime.datetime,
+        'owner': basestring,
+        'users': list,
+        'title': basestring,
+        'enable_chat': bool,
+        'is_shared': bool,
+        'last_updated_time': datetime.datetime,
+        'description': basestring
+    }
 
     def __init__(self, creation_time=None, owner=None, number_of_results=1,
                  results=None, _id=None, draw_type=None,
@@ -66,14 +87,14 @@ class BaseDraw(object):
         self.is_shared = is_shared is True
         """Whether other users can see the draw"""
 
-        #  TODO: backward compat
+        # TODO: backward compat
         if "shared_type" in kwargs and kwargs["shared_type"]:
             self.is_shared = True
 
         if draw_type and draw_type != self.draw_type:
             logger.warning("A draw was built with type {0} but type {1} was "
-                           "passed as argument! Fix it!".format(
-                            draw_type, self.draw_type))
+                           "passed as argument! Fix it!"
+                           .format(draw_type, self.draw_type))
         if self.last_updated_time.tzinfo is None:
             self.last_updated_time.replace(tzinfo=pytz.utc)
         if self.creation_time.tzinfo is None:
@@ -95,6 +116,22 @@ class BaseDraw(object):
         if self.owner is None:
             return True
         return user.pk == self.owner
+
+    def check_types(self):
+        """Check the types based on the class_attribute TYPES"""
+        for attr, value in self.__dict__.items():
+            if value and attr in self.TYPES:
+                if not isinstance(value, self.TYPES[attr]):
+                    raise InvalidDraw(attr,
+                                      "{}: is '{}', expected: '{}'".format(
+                                          attr, type(value), self.TYPES[attr]
+                                      ))
+
+    def validate(self):
+        """Validates the draw. Throws if not valid"""
+        self.check_types()
+        if not self.is_feasible():
+            raise InvalidDraw([], "The draw is not feasible")
 
     def is_feasible(self):
         return self.number_of_results > 0
@@ -126,13 +163,13 @@ class BaseDraw(object):
     def timed_toss(self, publication_datetime):
         """Adds a result with a publication time"""
         result = {
-                    "datetime": get_utc_now(),
-                    "items": self.generate_result(),
-                    "publication_datetime": publication_datetime
-                }
+            "datetime": get_utc_now(),
+            "items": self.generate_result(),
+            "publication_datetime": publication_datetime
+        }
         self.results.append(result)
         logger.debug("Scheduled draw toss: {0} ({1})".format(
-                     self, publication_datetime))
+            self, publication_datetime))
         return result
 
 
