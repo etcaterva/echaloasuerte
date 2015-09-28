@@ -75,7 +75,7 @@ def create_form(draw_type, draw_data=None, initial=None):
 
     form_class = REGISTRY[draw_type]["form"]
     if draw_data:
-        form = form_class(draw_data)
+        form = form_class(initial=draw_data)
     else:
         if initial:
             form = form_class(initial=initial)
