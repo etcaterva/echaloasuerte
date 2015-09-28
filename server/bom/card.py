@@ -1,4 +1,5 @@
 from server.bom.draw_base import *
+from six import string_types
 
 # This should be used for the API
 decks = {'french': ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10", "hj", "hq", "hk",
@@ -13,7 +14,7 @@ class CardDraw(BaseDraw):
     Stores the content of a draw of CardsDraw
     """
     TYPES = BaseDraw.TYPES.copy()
-    TYPES['type_of_deck'] = basestring
+    TYPES['type_of_deck'] = string_types
 
     def __init__(self, type_of_deck='french', **kwargs):
         super(CardDraw, self).__init__(**kwargs)

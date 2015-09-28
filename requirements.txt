@@ -5,3 +5,4 @@ pymongo==2.7.2
 pytz==2014.10
 django-tastypie==0.12.2
 django-tastypie-swagger==0.1.4
+six==1.9.0

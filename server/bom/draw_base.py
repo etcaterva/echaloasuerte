@@ -4,9 +4,10 @@ import datetime
 from abc import ABCMeta, abstractmethod
 import logging
 
-logger = logging.getLogger("echaloasuerte")
+from six import string_types
 import pytz
 
+logger = logging.getLogger("echaloasuerte")
 
 class InvalidDraw(RuntimeError):
     def __init__(self, attributes, message):
@@ -30,13 +31,13 @@ class BaseDraw(object):
     __metaclass__ = ABCMeta
     TYPES = {
         'creation_time': datetime.datetime,
-        'owner': basestring,
+        'owner': string_types,
         'users': list,
-        'title': basestring,
+        'title': string_types,
         'enable_chat': bool,
         'is_shared': bool,
         'last_updated_time': datetime.datetime,
-        'description': basestring
+        'description': string_types
     }
 
     def __init__(self, creation_time=None, owner=None, number_of_results=1,
