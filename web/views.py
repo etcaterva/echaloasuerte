@@ -175,7 +175,8 @@ def create_draw(request, draw_type, is_public):
                       {"draw": draw_form, "is_public": is_public, "draw_type": draw_type, "default_title": draw_form.DEFAULT_TITLE})
     else:
         LOG.debug("Received post data: {0}".format(request.POST))
-        draw_form = draw_factory.create_form(draw_type, request.POST)
+        draw_data = request.POST.copy()
+        draw_form = draw_factory.create_form(draw_type, draw_data)
         try:
             bom_draw = draw_form.build_draw()
         except DrawFormError:
