@@ -79,7 +79,56 @@
         PublicDrawCreator.url_create_public_draw = "{% url 'create_public_draw' draw_type=draw.NAME_IN_URL %}";
         PublicDrawCreator.url_create = "{% url 'ws_create_draw' %}";
         PublicDrawCreator.setup();
+    {% else %}
+        $.fn.serializeObject = function(){
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function() {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
 
+        var create_draw = function (){
+            // Serialize and clean the form
+            var form_fields = $('#draw-form').serializeObject();
+            delete form_fields["csrfmiddlewaretoken"];
+            delete form_fields["_id"];
+            form_fields["type"] = "{{ draw_type }}";
+            var data = JSON.stringify(form_fields);
+
+            // Create the draw
+            $.ajax({
+                type : "POST",
+                contentType : 'application/json',
+                url: "{% url 'api_dispatch_list' api_name="v1" resource_name="draw" %}",
+                data: data
+                }).done(function( data, textStatus, xhr ) {
+                    // TODO The results should be rendered without reloading
+                    // But that will come in future RPs
+
+                    // Get the url to the draw
+                    var url_draw_api = xhr.getResponseHeader('Location');
+                    var url_draw_web = url_draw_api.replace(/api\/v[\d\.]+\//g,'');
+
+                    var draw_id = url_draw_web.match(/draw\/[0-9a-g]+/)[0].replace("draw/","");
+
+                    window.location.href = url_draw_web;
+                })
+                .fail(function (e){
+                    // TODO show better feedback
+                    alert("there are errors");
+                });
+        };
+
+        $('#toss').click(create_and_toss);
     {% endif %}
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
