@@ -77,7 +77,6 @@ class DrawResource_ValidateTest(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
         self.assertHttpBadRequest(resp)
 
     def invalid_tournament_test(self):
@@ -92,7 +91,6 @@ class DrawResource_ValidateTest(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
         self.assertHttpBadRequest(resp)
 
     def invalid_range_min_type_test(self):
@@ -109,7 +107,6 @@ class DrawResource_ValidateTest(ResourceTestCase):
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
-        print resp
         self.assertHttpBadRequest(resp)
 
 
