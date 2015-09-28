@@ -1,11 +1,16 @@
 from server.bom.draw_base import *
 
-MAX_TECHNICAL_NUMBER=9223372036854775807
+MAX_TECHNICAL_NUMBER = 9223372036854775807
+
 
 class RandomNumberDraw(BaseDraw):
     """
     Class that represents a draw with the details to produce random numbers.
     """
+    TYPES = BaseDraw.TYPES.copy()
+    TYPES['range_min'] = int
+    TYPES['range_max'] = int
+    TYPES['allow_repeat'] = bool
 
     def __init__(self, range_min=0, range_max=10, allow_repeat=False, **kwargs):
         super(RandomNumberDraw, self).__init__(**kwargs)
@@ -43,14 +48,13 @@ class RandomNumberDraw(BaseDraw):
 
         return True
 
-
     def generate_result(self):
         """Carries out the toss"""
         result = []
         for i in range(0, self.number_of_results):
             while True:
                 random_value = random.randint(self.range_min, self.range_max)
-                if (self.allow_repeat or random_value not in result):
+                if self.allow_repeat or random_value not in result:
                     result.append(random_value)
                     break
         return result

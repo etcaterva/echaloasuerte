@@ -12,7 +12,6 @@ from server.forms.tournament_form import TournamentDrawForm
 from server.bom import CoinDraw, DiceDraw, CardDraw, RandomNumberDraw, \
     RandomLetterDraw, TournamentDraw, LinkSetsDraw, RandomItemDraw
 
-
 REGISTRY = {}
 
 
