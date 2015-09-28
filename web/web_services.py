@@ -270,7 +270,7 @@ def validate_draw(request):
         return HttpResponseBadRequest("Missing post argument draw_type")
 
     logger.debug("Received post data: {0}".format(request.POST))
-    draw_form = draw_factory.create_form(draw_type, request.POST)
+    draw_form = draw_factory.create_form(draw_type, data=request.POST)
     try:
         _ = draw_form.build_draw()
     except DrawFormError:
@@ -316,7 +316,7 @@ def create_draw(request):
     if not draw_type:
         return HttpResponseBadRequest("Missing post argument draw_type")
 
-    draw_form = draw_factory.create_form(draw_type, request.POST)
+    draw_form = draw_factory.create_form(draw_type, data=request.POST)
     try:
         bom_draw = draw_form.build_draw()
     except DrawFormError:

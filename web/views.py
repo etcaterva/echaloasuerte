@@ -143,7 +143,7 @@ def try_draw(request, draw_type):
     if request.POST contains "try_draw", generates a result
     """
     LOG.debug("Received post data: {0}".format(request.POST))
-    draw_form = draw_factory.create_form(draw_type,request.POST)
+    draw_form = draw_factory.create_form(draw_type, data=request.POST)
     try:
         bom_draw = draw_form.build_draw()
     except DrawFormError:
@@ -175,7 +175,7 @@ def create_draw(request, draw_type, is_public):
                       {"draw": draw_form, "is_public": is_public, "draw_type": draw_type, "default_title": draw_form.DEFAULT_TITLE})
     else:
         LOG.debug("Received post data: {0}".format(request.POST))
-        draw_form = draw_factory.create_form(draw_type, request.POST)
+        draw_form = draw_factory.create_form(draw_type, data=request.POST)
         try:
             bom_draw = draw_form.build_draw()
         except DrawFormError:
@@ -213,7 +213,7 @@ def update_draw(request, draw_id):
     user_can_write_draw(request.user, prev_bom_draw)
 
     LOG.debug("Received post data: {0}".format(request.POST))
-    draw_form = draw_factory.create_form(draw_type, request.POST)
+    draw_form = draw_factory.create_form(draw_type, data=request.POST)
     if not draw_form.is_valid():
         LOG.info("Form not valid: {0}".format(draw_form.errors))
         return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": prev_bom_draw})
@@ -228,7 +228,7 @@ def update_draw(request, draw_id):
         if not bom_draw.is_feasible():
             LOG.info("Draw {0} is not feasible".format(bom_draw))
             draw_form.add_error(None, _("Draw not feasible"))
-            draw_form = draw_factory.create_form(draw_type, bom_draw.__dict__.copy())
+            draw_form = draw_factory.create_form(draw_type, data=bom_draw.__dict__.copy())
             return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
         else:
             bom_draw.add_audit("DRAW_PARAMETERS")
@@ -249,8 +249,8 @@ def display_draw(request, draw_id):
     bom_draw = MONGO.retrieve_draw(draw_id)
     draw_type = draw_factory.get_draw_name(bom_draw.draw_type)
     if bom_draw.check_read_access(request.user):
-        prev_draw_data = bom_draw.__dict__.copy()
-        draw_form = draw_factory.create_form(draw_type, prev_draw_data)
+        draw_data = bom_draw.__dict__.copy()
+        draw_form = draw_factory.create_form(draw_type, initial=draw_data)
         return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
     else:
         return render(request, "draws/secure_draw.html", {"bom": bom_draw})
