@@ -10,6 +10,7 @@ PublicDrawCreator.show_configure_step = function () {
     $('.step-configure').removeClass('hidden');
 };
 
+// Serialize a form to a JS object
 $.fn.serializeObject = function()
 {
     var o = {};
