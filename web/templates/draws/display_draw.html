@@ -164,18 +164,33 @@
         });
 
     {% else %}
+        var edited_fields = {}
         $("#draw-form :input").change(function(changed_input) {
-            draw_updated_flag = true; //marks the draw as updated
+            var $this = $(this);
+            edited_fields[$this.attr('name')] = $this.val();
         });
     {% endif %}
 
     var draw_updated_flag = false;
     $("#toss-button").click( function() {
-        $('#toss-button').prop('disabled',true);
-        $(this).text('{% trans "Loading..." %}');
-        if (draw_updated_flag) {
-            $("#draw-form").attr("action", "{% url 'update_draw' draw_id=bom.pk %}");
-            $("#draw-form").submit();
+        //$('#toss-button').prop('disabled',true);
+        //$(this).text('{% trans "Loading..." %}');
+        if (Object.keys(edited_fields).length > 0) {
+            var edited_data = JSON.stringify(edited_fields);
+            $.ajax({
+                type : 'PATCH',
+                contentType : 'application/json',
+                url : "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
+                data: edited_data
+            }).done(function (){
+                alert("Edited");
+            })
+            .fail(function () {
+                alert("Not edited");
+            });
+
+            /*$("#draw-form").attr("action", "{% url 'update_draw' draw_id=bom.pk %}");
+            $("#draw-form").submit();*/
             return;
         }
         $.ajax({
