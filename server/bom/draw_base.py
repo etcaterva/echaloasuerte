@@ -9,6 +9,7 @@ import pytz
 
 logger = logging.getLogger("echaloasuerte")
 
+
 class InvalidDraw(RuntimeError):
     def __init__(self, attributes, message):
         super(InvalidDraw, self).__init__(message)
@@ -18,6 +19,9 @@ class InvalidDraw(RuntimeError):
     def __repr__(self):
         return "<Invalid Draw. Attr: '{}' msg: {}>".format(self.attributes,
                                                            self.message)
+
+    def serialize(self):
+        return str({'attributes': self.attributes, 'message': self.message})
 
 
 def get_utc_now():
