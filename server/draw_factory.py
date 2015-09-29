@@ -63,24 +63,17 @@ def get_draw_name(draw_type=None):
         raise DrawNotRegistered()
 
 
-def create_form(draw_type, draw_data=None, initial=None):
+def create_form(draw_type, *args, **kwargs):
     """Creates the correct type of a form
-
+    
     :param draw_type: string name of the draw
-    :param draw_data: data of the draw to create the form
     :return: Form that inherits from DrawFormBase
     """
     if draw_type not in REGISTRY:
         raise DrawNotRegistered()
 
     form_class = REGISTRY[draw_type]["form"]
-    if draw_data:
-        form = form_class(draw_data)
-    else:
-        if initial:
-            form = form_class(initial=initial)
-        else:
-            form = form_class()
+    form = form_class(*args, **kwargs)
     return form
 
 
