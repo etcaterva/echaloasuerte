@@ -23,6 +23,10 @@ PublicDrawCreator.create_draw = function (){
             // Present the link to the user
             var draw_url = location.protocol + location.host + data.draw_url;
             $('.url-share').val(draw_url);
+            $('#share-fb-icon').attr('data-href', draw_url);
+            if (typeof FB !== 'undefined') { //refresh facebook items
+                FB.XFBML.parse();
+            }
             // Set the link of the "Go to the draw" button
             $('#go-to-draw').attr('href', data.draw_url);
 
