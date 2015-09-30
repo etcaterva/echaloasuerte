@@ -129,16 +129,6 @@
 
         var url_draw = location.protocol + "//" + location.host + "{% url "retrieve_draw" draw_id=bom.pk %}";
         $('.url-share').val(url_draw);
-        $('#share-fb-icon').attr("data-href", url_draw);
-
-        {% if bom.owner == user.pk %}
-            var drawDate = moment.utc("{{bom.creation_time.isoformat}}");
-            drawDate.add(1, 'minutes');
-            if(drawDate > moment.utc()) {
-                $('#well-done-modal').modal('show');
-            }
-        {% endif %}
-
         $('.datetimepicker').datetimepicker({value:moment().format()});
 
         $("#confirm-schedule-button").click( function() {
@@ -368,6 +358,11 @@
                             </div>
                             <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
                             <div class="text-center"><a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a></div>
+                            <span class="invite-people-option">{% trans "Option 3)" %}</span>
+                            <p>
+                                Facebook:
+                            </p>
+                            <div id="share-fb-icon" class="fb-share-button" data-href="{{request.build_absolute_uri}}" data-layout="button"></div>
 
                             <div class="clearfix">
                                 <div class="invited-users">
