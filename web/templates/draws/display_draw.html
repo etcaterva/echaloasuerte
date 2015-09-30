@@ -409,28 +409,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- "Well done & sharing link" modal -->
-        <div id="well-done-modal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="WellDone">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">{% trans "Well done!" %}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>{% trans "You have created a public draw." %}</p>
-                        <p>{% trans "You can invite people using this link:" %}</p>
-                        <input class="url-share text-center" readonly>
-                        <p>{% trans "Or Facebook:" %}</p>
-                        <div id="share-fb-icon" class="fb-share-button" data-href="" data-layout="button"></div>
-                    </div>
-                    <div class="modal-footer text-center ">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Take me to the draw" %}</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     {% endif %}
 {% endblock content %}
 
