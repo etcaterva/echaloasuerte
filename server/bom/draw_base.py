@@ -151,6 +151,10 @@ class BaseDraw(object):
         self.check_types()
         if self.number_of_results < 1:
             raise InvalidDraw('number_of_results')
+        if len(self.title) > 500:
+            raise InvalidDraw('title')
+        if len(self.description) > 50000:
+            raise InvalidDraw('description')
 
     def is_feasible(self):  # TODO: remove me
         return self.number_of_results > 0
