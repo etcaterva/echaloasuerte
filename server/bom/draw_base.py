@@ -21,7 +21,7 @@ class InvalidDraw(RuntimeError):
         if isinstance(attributes, six.string_types):
             self.attributes = [attributes]
         else:
-            self.attributes = [attributes]
+            self.attributes = attributes
 
         if message:
             self.message = message
@@ -151,9 +151,9 @@ class BaseDraw(object):
         self.check_types()
         if self.number_of_results < 1:
             raise InvalidDraw('number_of_results')
-        if len(self.title) > 500:
+        if not self.title or len(self.title) > 500:
             raise InvalidDraw('title')
-        if len(self.description) > 50000:
+        if self.description and len(self.description) > 50000:
             raise InvalidDraw('description')
 
     def is_feasible(self):  # TODO: remove me
