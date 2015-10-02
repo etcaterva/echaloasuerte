@@ -27,8 +27,12 @@ Echaloasuerte.com Team
 def invite_user(user_email, draw_id, owner_user=None):
     owner = owner_user if owner_user else _("An anonymous user")
     LOG.info("Inviting user {0} to draw {1}".format(user_email, draw_id))
-    send_mail('Echaloasuerte', INVITE_EMAIL_TEMPLATE.format(owner, draw_id),
-              'draws@echaloasuerte.com', user_email, fail_silently=True)
+    try:
+        send_mail('Echaloasuerte', INVITE_EMAIL_TEMPLATE.format(owner, draw_id),
+                'draws@echaloasuerte.com', user_email )
+    except Exception as error:
+        LOG.error("Unexpected error when inviting user {0}: {1}".format(user_email,
+                                                                        error))
 
 
 def user_can_read_draw(user, draw):

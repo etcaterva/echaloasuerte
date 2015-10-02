@@ -129,16 +129,6 @@
 
         var url_draw = location.protocol + "//" + location.host + "{% url "retrieve_draw" draw_id=bom.pk %}";
         $('.url-share').val(url_draw);
-        $('#share-fb-icon').attr("data-href", url_draw);
-
-        {% if bom.owner == user.pk %}
-            var drawDate = moment.utc("{{bom.creation_time.isoformat}}");
-            drawDate.add(1, 'minutes');
-            if(drawDate > moment.utc()) {
-                $('#well-done-modal').modal('show');
-            }
-        {% endif %}
-
         $('.datetimepicker').datetimepicker({value:moment().format()});
 
         $("#confirm-schedule-button").click( function() {
@@ -368,6 +358,11 @@
                             </div>
                             <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
                             <div class="text-center"><a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a></div>
+                            <span class="invite-people-option">{% trans "Option 3)" %}</span>
+                            <p>
+                                Facebook:
+                            </p>
+                            <div id="share-fb-icon" class="fb-share-button" data-href="{{request.build_absolute_uri}}" data-layout="button"></div>
 
                             <div class="clearfix">
                                 <div class="invited-users">
@@ -405,28 +400,6 @@
                     </div>
                     <div class="modal-footer text-center ">
                         <button type="button" class="btn btn-primary" id="confirm-schedule-button" autocomplete="off">{% trans "Schedule it!" %}</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- "Well done & sharing link" modal -->
-        <div id="well-done-modal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="WellDone">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">{% trans "Well done!" %}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>{% trans "You have created a public draw." %}</p>
-                        <p>{% trans "You can invite people using this link:" %}</p>
-                        <input class="url-share text-center" readonly>
-                        <p>{% trans "Or Facebook:" %}</p>
-                        <div id="share-fb-icon" class="fb-share-button" data-href="" data-layout="button"></div>
-                    </div>
-                    <div class="modal-footer text-center ">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Take me to the draw" %}</button>
                     </div>
                 </div>
             </div>
