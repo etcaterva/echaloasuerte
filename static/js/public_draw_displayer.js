@@ -37,7 +37,7 @@ PublicDraw.settings = function () {
     $('a#edit-draw-confirmation').click(function() {
         PublicDraw.unlock_fields();
         // Hide the toss button
-        $('button#toss, #toss-button').addClass('hide');
+        $('button#toss, #toss-button, #schedule-toss-button').addClass('hide');
         // Show the "Save changes" and "Cancel edition" buttons
         $('div#edit-draw-save-changes').removeClass('hide');
         // Close settings panel
