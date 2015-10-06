@@ -14,7 +14,7 @@ The dev version is on continuous deployment, all changes in master are automatic
 
 ## DNS
  - www.echaloasuerte.com: Root domain for the spanish version
- - www.pickforme.net: Root domain for the english version
+ - www.chooserandom.com: Root domain for the english version
  - prod.*: latest version deployed to the prod server
  - dev.*: latest version deployed to the dev servier
   
