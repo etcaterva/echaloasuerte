@@ -18,7 +18,7 @@
         <meta name="description" content="Not sure about a choice? Choose random! Heads or tails, lottery, etc..." />
         <link rel="alternate" hreflang="es" href="//echaloasuerte.com/" />
     {% endif %}
-    <title>{% block title %}{% endblock title %}{% trans 'Echalo A Suerte' %}</title>
+    <title>{% block title %}{% endblock title %}{% trans 'Choose Random' %}</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}img/favicon.ico"/>
@@ -271,10 +271,11 @@
             <a class="navbar-brand" href="{% url 'index' %}">
                 <img id="brand"
                     {% if LANGUAGE_CODE == 'es' %}
-                        src="{% static "img/brand/brand_es.png" %}" alt="{% trans "EchaloASuerte" %}"/>
+                        src="{% static "img/brand/brand_es.png" %}"
                     {% else %}
-                        src="{% static "img/brand/brand_en.png" %}" alt="{% trans "ChooseRandom" %}"/>
+                        src="{% static "img/brand/brand_en.png" %}"
                     {% endif %}
+                alt="{% trans "Choose Random" %}"/>
             </a>
         </div>
 
