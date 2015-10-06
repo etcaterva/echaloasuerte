@@ -3,9 +3,11 @@
 # This file is distributed under the same license as the global package.
 # Mario Corchero <<mariocj89@gmail.com>>, 2015
 #
+msgid ""
+msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-06 20:25+0000\n"
+"POT-Creation-Date: 2015-10-06 21:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mario Corchero\n"
 "Language: Spanish\n"
@@ -698,7 +700,8 @@ msgstr ":D"
 msgid ""
 "Use any of the methods below to invite people to join and see the results."
 msgstr ""
-"Utiliza cualquiera de los metodos a continuación para invitar a mas personas a la tirada."
+"Utiliza cualquiera de los metodos a continuación para invitar a mas personas "
+"a la tirada."
 
 #: web/templates/draws/new_draw.html:128
 msgid "Send this link to anyone you wish to invite"
@@ -1295,4 +1298,3 @@ msgstr "¿Con que celda empiezas?"
 #: web/views.py:230
 msgid "Draw not feasible"
 msgstr "La tirada no es factible"
-
