@@ -102,7 +102,6 @@ def try_draw(request, draw_id):
     })
 
 
-@login_required
 @time_it
 def add_user_to_draw(request):
     """Add an user to a draw and sends a mail to inform him"""
@@ -137,7 +136,6 @@ def add_user_to_draw(request):
     return HttpResponse()
 
 
-@login_required
 @time_it
 def remove_user_from_draw(request):
     """Remove an user from a draw"""

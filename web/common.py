@@ -34,19 +34,19 @@ The Choose Random Team</p>
 """)
 
 
-def invite_user(users_email, draw)
-    owner = draw.owner.alias if draw.owner else _("An anonymous user")
+def invite_user(users_email, draw):
     draw_id = draw.pk
-    draw_title = draw.title if draw.title or _("Draw without a title")
+    owner = draw.owner.alias if draw.owner else _("An anonymous user")
+    draw_title = draw.title if draw.title else _("Draw without a title")
     LOG.info("Inviting users {0} to draw {1}".format(users_email, draw_id))
     arguments = {
-        "image_url": static("brand_en.png"),
+        "image_url": static("img/brand/brand_en.png"),
         "user": owner,
-        "title": draw_title
+        "title": draw_title,
         "draw_id": draw_id
     }
     try:
-        send_mail('Choose Random',
+        send_mail(_('Choose Random') + " | " + draw_title,
                   INVITE_EMAIL_TEMPLATE.format(**arguments),
                   'draws@chooserandom.com',
                   users_email,
