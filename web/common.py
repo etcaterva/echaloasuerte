@@ -1,6 +1,7 @@
 """Common helpers for the pyhon code in the web project"""
 
 from django.core.exceptions import PermissionDenied
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from contextlib import contextmanager
 from django.http import HttpRequest
 from django.utils.translation import ugettext_lazy as _
@@ -13,25 +14,45 @@ from web.google_analytics import ga_track_event
 
 LOG = logging.getLogger("echaloasuerte")
 
-INVITE_EMAIL_TEMPLATE = _("""
-Hi!
+INVITE_EMAIL_TEMPLATE = _("""ChooseRandom.com
+You have been invited to a shared draw
+--------------------------------------
+{user} has invited you to his shared draw "{title}"
 
-You have been invited to a draw in echaloasuerte by {0}
-Your link is http://www.echaloasuerte.com/draw/{1}/ .
+Join now at https://chooserandom.com/draw/{draw_id}
 
-Good Luck,
-Echaloasuerte.com Team
+Good Luck!
+The Choose Random Team
+""")
+INVITE_HTML_EMAIL_TEMPLATE = _("""
+<img src="https://chooserandom.com/{image_url}" alt="Choose Random">
+<h2>You have been invited to a shared draw</h2>
+<p>{user} has invited you to his shared draw "{title}"</p>
+<a href="https://chooserandom.com/draw/{draw_id}"><h3>Join Now</h3></a>
+<p>Good Luck!<br />
+The Choose Random Team</p>
 """)
 
 
-def invite_user(user_email, draw_id, owner_user=None):
-    owner = owner_user if owner_user else _("An anonymous user")
-    LOG.info("Inviting user {0} to draw {1}".format(user_email, draw_id))
+def invite_user(users_email, draw)
+    owner = draw.owner.alias if draw.owner else _("An anonymous user")
+    draw_id = draw.pk
+    draw_title = draw.title if draw.title or _("Draw without a title")
+    LOG.info("Inviting users {0} to draw {1}".format(users_email, draw_id))
+    arguments = {
+        "image_url": static("brand_en.png"),
+        "user": owner,
+        "title": draw_title
+        "draw_id": draw_id
+    }
     try:
-        send_mail('Echaloasuerte', INVITE_EMAIL_TEMPLATE.format(owner, draw_id),
-                'draws@echaloasuerte.com', user_email )
+        send_mail('Choose Random',
+                  INVITE_EMAIL_TEMPLATE.format(**arguments),
+                  'draws@chooserandom.com',
+                  users_email,
+                  html_message=INVITE_HTML_EMAIL_TEMPLATE.format(**arguments))
     except Exception as error:
-        LOG.error("Unexpected error when inviting user {0}: {1}".format(user_email,
+        LOG.error("Unexpected error when inviting user {0}: {1}".format(users_email,
                                                                         error))
 
 
