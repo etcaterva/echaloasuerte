@@ -13,7 +13,7 @@ class DrawFormError(RuntimeError):
 
 class FormBase(forms.Form):
     _id = forms.CharField(required=False, widget=forms.HiddenInput())
-    title = forms.CharField(required=False)
+    title = forms.CharField(required=False, max_length=500)
 
     is_shared = forms.BooleanField(required=False, widget=forms.HiddenInput())
     """Whether the draw is open to multiple users"""
@@ -22,7 +22,7 @@ class FormBase(forms.Form):
     """User invited to the draw, in case of been public.
      It needs to be rendered manually in the templates"""
 
-    description = forms.CharField(required=False)
+    description = forms.CharField(required=False, max_length=5000)
     """Short summary of the draw's purpose.
      It needs to be rendered manually in the templates"""
 

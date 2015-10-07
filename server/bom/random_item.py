@@ -1,4 +1,5 @@
-from server.bom.draw_base import *
+import random
+from server.bom.draw_base import BaseDraw, InvalidDraw
 
 
 class RandomItemDraw(BaseDraw):
@@ -18,6 +19,13 @@ class RandomItemDraw(BaseDraw):
         self.allow_repeat = allow_repeat
         """Whether the same item can appear more than once in the result"""
 
+    def validate(self):
+        super(RandomItemDraw, self).validate()
+        if not self.items:
+            raise InvalidDraw('items')
+        if self.number_of_results > len(self.items) and not self.allow_repeat:
+            raise InvalidDraw('number_of_results')
+
     def is_feasible(self):
         if len(self.items) <= 0 or self.number_of_results <= 0:
             return False
@@ -28,7 +36,7 @@ class RandomItemDraw(BaseDraw):
         for i in range(0, self.number_of_results):
             while True:
                 random_value = random.choice(self.items)
-                if (self.allow_repeat or random_value not in result):
+                if self.allow_repeat or random_value not in result:
                     result.append(random_value)
                     break
         return result

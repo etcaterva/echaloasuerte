@@ -185,7 +185,7 @@ class DrawResource(resources.Resource):
                 response=http.HttpBadRequest("Invalid draw type"))
         except bom.InvalidDraw as e:
             raise exceptions.ImmediateHttpResponse(
-                response=http.HttpBadRequest(e))
+                response=http.HttpBadRequest(e.serialize()))
         self._client.save_draw(draw)
         result = draw.toss()
         self.log_throttled_access(request)
@@ -272,7 +272,7 @@ class DrawResource(resources.Resource):
                 response=http.HttpBadRequest("Invalid draw type"))
         except bom.InvalidDraw as e:
             raise exceptions.ImmediateHttpResponse(
-                response=http.HttpBadRequest(e))
+                response=http.HttpBadRequest(e.serialize()))
         draw.owner = bundle.request.user.pk
         self._client.save_draw(draw)
         bundle.obj = draw
@@ -304,7 +304,7 @@ class DrawResource(resources.Resource):
             draw.validate()
         except bom.InvalidDraw as e:
             raise exceptions.ImmediateHttpResponse(
-                response=http.HttpBadRequest(e))
+                response=http.HttpBadRequest(e.serialize()))
 
         self._client.save_draw(draw)
         bundle.obj = draw

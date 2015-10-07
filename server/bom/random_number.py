@@ -1,4 +1,6 @@
-from server.bom.draw_base import *
+import random
+from server.bom.draw_base import BaseDraw, InvalidDraw
+from django.utils.translation import ugettext_lazy as _
 
 MAX_TECHNICAL_NUMBER = 9223372036854775807
 
@@ -23,6 +25,17 @@ class RandomNumberDraw(BaseDraw):
 
         self.allow_repeat = allow_repeat
         """Whether the set of numbers to generate can contain repetitions. Note, if false, max-min > num_res"""
+
+    def validate(self):
+        super(RandomNumberDraw, self).validate()
+        if self.number_of_results > 50:
+            raise InvalidDraw('number_of_results')
+
+        if self.range_max < self.range_min:
+            raise InvalidDraw(['range_min', 'range_max'], _('Range too small'))
+
+        if self.range_max - self.range_min < self.number_of_results and not self.allow_repeat:
+            raise InvalidDraw('number_of_results')
 
     def is_feasible(self):
         # TODO range_max must have a defaulf value

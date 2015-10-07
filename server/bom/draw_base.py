@@ -6,18 +6,36 @@ import logging
 
 from six import string_types
 import pytz
+import six
 
 logger = logging.getLogger("echaloasuerte")
 
+
 class InvalidDraw(RuntimeError):
-    def __init__(self, attributes, message):
+    def __init__(self, attributes, message=None):
+        """Initializes an invalid draw exception,
+
+        attributes can be a string for a single attribute or a list of them
+        """
         super(InvalidDraw, self).__init__(message)
-        self.attributes = attributes
-        self.message = message
+        if isinstance(attributes, six.string_types):
+            self.attributes = [attributes]
+        else:
+            self.attributes = attributes
+
+        if message:
+            self.message = message
+        elif len(self.attributes) == 1:
+            self.message = _("Invalid {0}").format(attributes[0])
+        else:
+            self.message = _("Invalid attributes: {0}").format(attributes)
 
     def __repr__(self):
         return "<Invalid Draw. Attr: '{}' msg: {}>".format(self.attributes,
                                                            self.message)
+
+    def serialize(self):
+        return str({'attributes': self.attributes, 'message': self.message})
 
 
 def get_utc_now():
@@ -131,10 +149,14 @@ class BaseDraw(object):
     def validate(self):
         """Validates the draw. Throws if not valid"""
         self.check_types()
-        if not self.is_feasible():
-            raise InvalidDraw([], "The draw is not feasible")
+        if self.number_of_results < 1:
+            raise InvalidDraw('number_of_results')
+        if not self.title or len(self.title) > 500:
+            raise InvalidDraw('title')
+        if self.description and len(self.description) > 50000:
+            raise InvalidDraw('description')
 
-    def is_feasible(self):
+    def is_feasible(self):  # TODO: remove me
         return self.number_of_results > 0
 
     def mark_updated(self):
@@ -143,7 +165,7 @@ class BaseDraw(object):
 
     def add_audit(self, type_):
         """Adds an audit message for the modification of a draw
-        The latest audit are at the begining
+        The latest audit are at the beginning
         the type of audits are:
         DRAW_PARAMETERS: one or more of the basic parameters of the draw changed
         """

@@ -1,5 +1,7 @@
-from server.bom.draw_base import *
+import random
 from six import string_types
+from django.utils.translation import ugettext_lazy as _
+from server.bom.draw_base import BaseDraw, InvalidDraw
 
 # This should be used for the API
 decks = {'french': ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10", "hj", "hq", "hk",
@@ -22,6 +24,14 @@ class CardDraw(BaseDraw):
         self.type_of_deck = type_of_deck
         """Type of deck to be used"""
 
+    def validate(self):
+        super(CardDraw, self).validate()
+        if self.type_of_deck not in decks:
+            raise InvalidDraw('type_of_deck')
+
+        if self.number_of_results > len(decks[self.type_of_deck]):
+            raise InvalidDraw('number_of_results')
+
     def is_feasible(self):
         if self.type_of_deck not in decks:
             # The selected deck is not available
@@ -38,4 +48,5 @@ class CardDraw(BaseDraw):
         return True
 
     def generate_result(self):
-        return [random.randint(1, len(decks[self.type_of_deck])) for x in range(0, self.number_of_results)]
+        return [random.randint(1, len(decks[self.type_of_deck]))
+                for _ in range(0, self.number_of_results)]

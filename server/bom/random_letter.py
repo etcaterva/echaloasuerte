@@ -1,8 +1,6 @@
 import random
 import string
-from django.utils.translation import ugettext_lazy as _
-
-from server.bom.draw_base import *
+from server.bom.draw_base import BaseDraw, InvalidDraw
 
 
 class RandomLetterDraw(BaseDraw):
@@ -12,6 +10,11 @@ class RandomLetterDraw(BaseDraw):
 
     def __init__(self, **kwargs):
         super(RandomLetterDraw, self).__init__(**kwargs)
+
+    def validate(self):
+        super(RandomLetterDraw, self).validate()
+        if self.number_of_results > 50:
+            raise InvalidDraw('number_of_results')
 
     def is_feasible(self):
         if self.number_of_results <= 0:
@@ -24,4 +27,5 @@ class RandomLetterDraw(BaseDraw):
 
     def generate_result(self):
         """Carries out the toss"""
-        return [random.choice(string.ascii_letters) for _ in range(self.number_of_results)]
+        return [random.choice(string.ascii_letters)
+                for _ in range(self.number_of_results)]
