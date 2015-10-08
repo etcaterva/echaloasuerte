@@ -102,7 +102,6 @@ def try_draw(request, draw_id):
     })
 
 
-@login_required
 @time_it
 def add_user_to_draw(request):
     """Add an user to a draw and sends a mail to inform him"""
@@ -130,14 +129,13 @@ def add_user_to_draw(request):
     bom_draw.users += new_users
     MONGO.save_draw(bom_draw)
 
-    invite_user(new_users, draw_id, request.user.email)
+    invite_user(new_users, bom_draw)
 
     LOG.info("{0} users added to draw {1}".format(len(new_users), draw_id))
 
     return HttpResponse()
 
 
-@login_required
 @time_it
 def remove_user_from_draw(request):
     """Remove an user from a draw"""
@@ -330,6 +328,6 @@ def create_draw(request):
         ga_track_draw(bom_draw, "create_draw")
         #  notify users if any
         if bom_draw.users:
-            invite_user(bom_draw.users, bom_draw.pk, bom_draw.owner)
+            invite_user(bom_draw.users, bom_draw)
         draw_url = reverse('retrieve_draw', args=(bom_draw.pk, ))
         return JsonResponse({'draw_url': draw_url})

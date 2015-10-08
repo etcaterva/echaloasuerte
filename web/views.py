@@ -193,7 +193,7 @@ def create_draw(request, draw_type, is_public):
             ga_track_draw(bom_draw, "create_draw")
             #  notify users if any
             if bom_draw.users:
-                invite_user(bom_draw.users, bom_draw.pk, bom_draw.owner)
+                invite_user(bom_draw.users, bom_draw)
 
             return redirect('retrieve_draw', draw_id=bom_draw.pk)
 

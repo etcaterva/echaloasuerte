@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-06 21:40+0000\n"
+"POT-Creation-Date: 2015-10-08 20:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mario Corchero\n"
 "Language: Spanish\n"
@@ -23,6 +23,20 @@ msgstr "Español"
 #: echaloasuerte/settings/common.py:59
 msgid "English"
 msgstr "Inglés"
+
+#: server/bom/draw_base.py:29
+#, python-brace-format
+msgid "Invalid {0}"
+msgstr "{0} inválido"
+
+#: server/bom/draw_base.py:31
+#, python-brace-format
+msgid "Invalid attributes: {0}"
+msgstr "Attributos inválidos: {0}"
+
+#: server/bom/random_number.py:35
+msgid "Range too small"
+msgstr "Rango demasiado pequeño"
 
 #: server/forms/card_form.py:9
 msgid "French"
@@ -158,30 +172,71 @@ msgstr ""
 "<div id='info-comma-separated' class='alert alert-info' role='alert'>Separa "
 "los elementos por comas. p.ej: Maria, David S, Leo, ...</div>"
 
-#: web/common.py:16
+#: web/common.py:17
 #, python-brace-format
 msgid ""
+"ChooseRandom.com\n"
+"You have been invited to a shared draw\n"
+"--------------------------------------\n"
+"{user} has invited you to his shared draw \"{title}\"\n"
 "\n"
-"Hi!\n"
+"Join now at https://chooserandom.com/draw/{draw_id}\n"
 "\n"
-"You have been invited to a draw in echaloasuerte by {0}\n"
-"Your link is http://www.echaloasuerte.com/draw/{1}/ .\n"
-"\n"
-"Good Luck,\n"
-"Echaloasuerte.com Team\n"
+"Good Luck!\n"
+"The Choose Random Team\n"
 msgstr ""
+"EchaloASuerte.com\n"
+"Te han invitado a una tirada compartida\n"
+"---------------------------------------\n"
+"{user} te ha invitado a su tirada \"{title}\"\n"
 "\n"
-"Hola!\n"
+"Unete en https://echaloasuerte.com/draw/{draw_id}\n"
 "\n"
-"Has sido invitado a una tirada en echaloasuerte por {0}\n"
-"Puedes acceder con el enlace: http://www.echaloasuerte.com/draw/{1}/ .\n"
-"\n"
-"Buena Suerte,\n"
-"El equipo de Echaloasuerte.com\n"
+"Buena Suerte!\n"
+"El equipo de EchaloASuerte\n"
 
-#: web/common.py:28
+#: web/common.py:27
+#, fuzzy, python-brace-format
+#| msgid ""
+#| "ChooseRandom.com\n"
+#| "You have been invited to a shared draw\n"
+#| "--------------------------------------\n"
+#| "{user} has invited you to his shared draw \"{title}\"\n"
+#| "\n"
+#| "Join now at https://chooserandom.com/draw/{draw_id}\n"
+#| "\n"
+#| "Good Luck!\n"
+#| "The Choose Random Team\n"
+msgid ""
+"\n"
+"<img src=\"https://chooserandom.com/{image_url}\" alt=\"Choose Random\">\n"
+"<h2>You have been invited to a shared draw</h2>\n"
+"<p>{user} has invited you to his shared draw \"{title}\"</p>\n"
+"<a href=\"https://chooserandom.com/draw/{draw_id}\"><h3>Join Now</h3></a>\n"
+"<p>Good Luck!<br />\n"
+"The Choose Random Team</p>\n"
+msgstr ""
+"EchaloASuerte.com\n"
+"Te han invitado a una tirada compartida\n"
+"---------------------------------------\n"
+"{user} te ha invitado a su tirada \"{title}\"\n"
+"\n"
+"Unete en https://echaloasuerte.com/draw/{draw_id}\n"
+"\n"
+"Buena Suerte!\n"
+"El equipo de EchaloASuerte\n"
+
+#: web/common.py:39
 msgid "An anonymous user"
 msgstr "Un usuario anónimo"
+
+#: web/common.py:40
+msgid "Draw without a title"
+msgstr "Tiarada sin título"
+
+#: web/common.py:49 web/templates/base.html:21 web/templates/base.html.py:278
+msgid "Choose Random"
+msgstr "Echalo A Suerte"
 
 #: web/templates/about.html:6
 msgid ""
@@ -302,10 +357,6 @@ msgstr ""
 "<a>pagarnos una cerveza</a>, vamos a necesitar muchas para seguir mejorando "
 "la web.</p>\n"
 "    "
-
-#: web/templates/base.html:21 web/templates/base.html.py:278
-msgid "Choose Random"
-msgstr "Echalo A Suerte"
 
 #: web/templates/base.html:295 web/templates/base.html.py:367
 #: web/templates/base.html:390 web/templates/index.html:85

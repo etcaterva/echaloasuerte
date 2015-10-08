@@ -227,11 +227,11 @@ ALLOWED_HOSTS = [
 LOGIN_URL = "/accounts/login/"
 
 #EMAIL settings
-DEFAULT_FROM_EMAIL = "echaloasuerte@gmail.com"
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = "echaloasuerte@gmail.com"
+DEFAULT_FROM_EMAIL = "EchaloASuerte/Choose Random"
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST_USER = "postmaster@chooserandom.com"
 EMAIL_HOST_PASSWORD = 'GMAIL_PASSWORD_PLACEHOLDER'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX = "[django][echaloasuerte] "  #for admin mails
-SERVER_EMAIL = "echaloasuerte@gmail.com"
+SERVER_EMAIL = "postmaster@chooserandom.com"
