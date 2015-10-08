@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-07 23:12+0000\n"
+"POT-Creation-Date: 2015-10-08 20:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mario Corchero\n"
 "Language: Spanish\n"
@@ -27,12 +27,12 @@ msgstr "Inglés"
 #: server/bom/draw_base.py:29
 #, python-brace-format
 msgid "Invalid {0}"
-msgstr "Invalid {0}"
+msgstr "{0} inválido"
 
 #: server/bom/draw_base.py:31
 #, python-brace-format
 msgid "Invalid attributes: {0}"
-msgstr "Invalid attributes: {0}"
+msgstr "Attributos inválidos: {0}"
 
 #: server/bom/random_number.py:35
 msgid "Range too small"
@@ -226,13 +226,17 @@ msgstr ""
 "Buena Suerte!\n"
 "El equipo de EchaloASuerte\n"
 
-#: web/common.py:38
+#: web/common.py:39
 msgid "An anonymous user"
 msgstr "Un usuario anónimo"
 
 #: web/common.py:40
 msgid "Draw without a title"
-msgstr "La tirada no es factible"
+msgstr "Tiarada sin título"
+
+#: web/common.py:49 web/templates/base.html:21 web/templates/base.html.py:278
+msgid "Choose Random"
+msgstr "Echalo A Suerte"
 
 #: web/templates/about.html:6
 msgid ""
@@ -353,10 +357,6 @@ msgstr ""
 "<a>pagarnos una cerveza</a>, vamos a necesitar muchas para seguir mejorando "
 "la web.</p>\n"
 "    "
-
-#: web/templates/base.html:21 web/templates/base.html.py:278
-msgid "Choose Random"
-msgstr "Echalo A Suerte"
 
 #: web/templates/base.html:295 web/templates/base.html.py:367
 #: web/templates/base.html:390 web/templates/index.html:85
