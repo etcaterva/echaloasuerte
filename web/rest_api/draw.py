@@ -311,14 +311,28 @@ class DrawResource(resources.Resource):
         return bundle
 
     def post_detail(self, request, **kwargs):
-        if not request.user.is_authenticated():
-            self.unauthorized_result(None)
         draw_id = kwargs['pk']
         try:
             draw = self._client.retrieve_draw(draw_id)
         except mongodb.MongoDriver.NotFoundError:
             return http.HttpBadRequest("Draw not found")
-        if request.user.pk not in draw.users:
+        try:
+            data = json.loads(request.body)
+        except TypeError:
+            data = json.loads(request.body.decode('utf-8'))
+        if 'add_user' in data:
+            draw.users.append(str(data['add_user']))
+            self._client.save_draw(draw)
+        if 'remove_user' in data:
+            if not draw.check_write_access(request.user):
+                raise exceptions.ImmediateHttpResponse(
+                    response=http.HttpUnauthorized("Only the owner can update"))
+            try:
+                draw.users.remove(str(data['remove_user']))
+                self._client.save_draw(draw)
+            except ValueError:
+                pass
+        if request.user.is_authenticated() and request.user.pk not in draw.users:
             draw.users.append(request.user.pk)
             self._client.save_draw(draw)
         return http.HttpCreated()
