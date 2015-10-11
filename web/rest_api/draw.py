@@ -6,6 +6,7 @@ from tastypie.bundle import Bundle
 from django.conf.urls import url
 import dateutil.parser
 
+from web.common import invite_user
 from server import mongodb, draw_factory, bom
 
 
@@ -321,8 +322,10 @@ class DrawResource(resources.Resource):
         except TypeError:
             data = json.loads(request.body.decode('utf-8'))
         if 'add_user' in data:
-            draw.users.append(str(data['add_user']))
+            new_user =  str(data['add_user'])
+            draw.users.append(new_user)
             self._client.save_draw(draw)
+            invite_user([new_user], draw)
         if 'remove_user' in data:
             if not draw.check_write_access(request.user):
                 raise exceptions.ImmediateHttpResponse(
