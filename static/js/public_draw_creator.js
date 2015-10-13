@@ -71,7 +71,6 @@ jQuery.fn.extend({
                 console.log("ERROR: Two inputs in the forms share the same name");
             }
         });
-        console.log(serialized_draw);
         return serialized_draw;
 	}
 });
