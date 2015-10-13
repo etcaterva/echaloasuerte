@@ -10,32 +10,79 @@ PublicDrawCreator.show_configure_step = function () {
     $('.step-configure').removeClass('hidden');
 };
 
-// Serialize a form to a JS object
-$.fn.serializeObject = function()
-{
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
+
+jQuery.fn.extend({
+    // Serialize a form to a JS object
+    serializeForm: function(fields_skipped) {
+        var rCRLF = /\r?\n/g,
+            rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
+            rsubmittable = /^(?:input|select|textarea|keygen)/i,
+            manipulation_rcheckableType = /^(?:checkbox|radio)$/i;
+        var serialized_draw = {};
+		var draw_object =  this.map(function(){
+			// Can add propHook for "elements" to filter or add form elements
+			var elements = jQuery.prop( this, "elements" );
+			return elements ? jQuery.makeArray( elements ) : this;
+		})
+		.filter(function(){
+			var type = this.type;
+
+			return this.name && $.inArray(this.name, fields_skipped) < 0 && $.inArray(this.name, fields_skipped) &&
+                !jQuery( this ).is( ":disabled" ) && rsubmittable.test( this.nodeName ) &&
+                !rsubmitterTypes.test( type ) && ( this.checked || !manipulation_rcheckableType.test( type ) );
+		})
+		.map(function( i, elem ){
+			var val = jQuery( this ).val().replace( rCRLF, "\r\n" );
+                var type = elem.type;
+            if (type == "number"){
+                val = parseInt(val, 10);
+            }else{
+                if (type == "checkbox" ){
+                    val = true;
+                }else{
+                    if (type == "hidden"){
+                        if (val == "True"){
+                            val = true;
+                        }else{
+                            if (val == "False"){
+                                val = false;
+                            }else{
+                                if (!isNaN(val)){
+                                    val = parseInt(val, 10);
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
+			return val == null ?
+				null :
+				jQuery.isArray( val ) ?
+					jQuery.map( val, function( val ){
+						return { name: elem.name, value: val, type: elem.type };
+					}) :
+					{ name: elem.name, value: val, type: elem.type };
+		})
+        .get();
+        $.each(draw_object, function() {
+            if (serialized_draw[this.name] === undefined) {
+                serialized_draw[this.name] = this.value;
+            } else {
+                console.log("ERROR: Two inputs in the forms share the same name");
+            }
+        });
+        console.log(serialized_draw);
+        return serialized_draw;
+	}
+});
 
 PublicDrawCreator.create_draw = function (){
     // Disable button to avoid duplicated submissions
     $('#publish').prop('disabled',true);
 
     // Serialize and clean the form
-    var form_fields = $('#draw-form').serializeObject();
-    delete form_fields["csrfmiddlewaretoken"];
-    delete form_fields["_id"];
+    var fields_skipped = ["csrfmiddlewaretoken", "_id"];
+    var form_fields = $('#draw-form').serializeForm(fields_skipped);
     form_fields["type"] = PublicDrawCreator.draw_type;
     var data = JSON.stringify(form_fields);
 
@@ -53,7 +100,7 @@ PublicDrawCreator.create_draw = function (){
             $('.url-share').val(url_draw_web);
 
 			// Set url to the FB share button
-            $('#share-fb-icon').attr('data-href', draw_url);
+            $('#share-fb-icon').attr('data-href', url_draw_web);
             if (typeof FB !== 'undefined') { //refresh facebook items
                 FB.XFBML.parse();
             }
