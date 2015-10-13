@@ -40,7 +40,7 @@ jQuery.fn.extend({
                 if (type == "checkbox" ){
                     val = true;
                 }else{
-                    if (type == "hidden"){
+                    if (type == "hidden" || type == "radio"){
                         if (val == "True"){
                             val = true;
                         }else{
