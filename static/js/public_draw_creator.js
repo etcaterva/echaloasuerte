@@ -63,7 +63,7 @@ PublicDrawCreator.create_draw = function (){
 
             PublicDrawCreator.show_spread_step();
         })
-        .fail(function (e){
+        .fail(function (){
             var $form = $('#draw-form');
             $form.attr("action", PublicDrawCreator.url_try);
             $form.submit();
