@@ -124,7 +124,9 @@
         PublicDraw.url_get_draw_details = "{% url 'ws_get_draw_details' %}";
         PublicDraw.url_update_draw = "{% url 'update_draw' draw_id=bom.pk %}";
         PublicDraw.url_update_settings = "{% url 'ws_update_share_settings' %}";
-        PublicDraw.msg_tooltip_protected = "{% trans "To edit the details go to Settings" %}";
+        {% if not bom.owner or bom.owner == user.pk %}
+            PublicDraw.msg_tooltip_protected = "{% trans "To edit the details go to Settings" %}";
+        {% endif %}
         PublicDraw.setup();
 
         var url_draw = location.protocol + "//" + location.host + "{% url "retrieve_draw" draw_id=bom.pk %}";
