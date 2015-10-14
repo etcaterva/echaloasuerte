@@ -19,50 +19,42 @@ jQuery.fn.extend({
             rsubmittable = /^(?:input|select|textarea|keygen)/i,
             manipulation_rcheckableType = /^(?:checkbox|radio)$/i;
         var serialized_draw = {};
-		var draw_object =  this.map(function(){
-			// Can add propHook for "elements" to filter or add form elements
-			var elements = jQuery.prop( this, "elements" );
-			return elements ? jQuery.makeArray( elements ) : this;
-		})
-		.filter(function(){
-			var type = this.type;
+        var draw_object =  this.map(function(){
+            // Can add propHook for "elements" to filter or add form elements
+            var elements = jQuery.prop( this, "elements" );
+            return elements ? jQuery.makeArray( elements ) : this;
+        })
+        .filter(function(){
+            var type = this.type;
 
-			return this.name && $.inArray(this.name, fields_skipped) < 0 && $.inArray(this.name, fields_skipped) &&
+            return this.name && $.inArray(this.name, fields_skipped) < 0 &&
                 !jQuery( this ).is( ":disabled" ) && rsubmittable.test( this.nodeName ) &&
                 !rsubmitterTypes.test( type ) && ( this.checked || !manipulation_rcheckableType.test( type ) );
-		})
-		.map(function( i, elem ){
-			var val = jQuery( this ).val().replace( rCRLF, "\r\n" );
+        })
+        .map(function( i, elem ){
+            var val = jQuery( this ).val().replace( rCRLF, "\r\n" );
                 var type = elem.type;
             if (type == "number"){
                 val = parseInt(val, 10);
-            }else{
-                if (type == "checkbox" ){
+            }else if (type == "checkbox" ){
+                val = true;
+            }else if (type == "hidden" || type == "radio"){
+                if (val == "True"){
                     val = true;
-                }else{
-                    if (type == "hidden" || type == "radio"){
-                        if (val == "True"){
-                            val = true;
-                        }else{
-                            if (val == "False"){
-                                val = false;
-                            }else{
-                                if (!isNaN(val)){
-                                    val = parseInt(val, 10);
-                                }
-                            }
-                        }
-                    }
+                }else if (val == "False"){
+                    val = false;
+                }else if (!isNaN(val)){
+                    val = parseInt(val, 10);
                 }
             }
-			return val == null ?
-				null :
-				jQuery.isArray( val ) ?
-					jQuery.map( val, function( val ){
-						return { name: elem.name, value: val, type: elem.type };
-					}) :
-					{ name: elem.name, value: val, type: elem.type };
-		})
+            return val == null ?
+                null :
+                jQuery.isArray( val ) ?
+                    jQuery.map( val, function( val ){
+                        return { name: elem.name, value: val, type: elem.type };
+                    }) :
+                    { name: elem.name, value: val, type: elem.type };
+        })
         .get();
         $.each(draw_object, function() {
             if (serialized_draw[this.name] === undefined) {
@@ -72,7 +64,7 @@ jQuery.fn.extend({
             }
         });
         return serialized_draw;
-	}
+    }
 });
 
 PublicDrawCreator.create_draw = function (){
@@ -97,8 +89,7 @@ PublicDrawCreator.create_draw = function (){
 
             // Present the link to the user
             $('.url-share').val(url_draw_web);
-
-			// Set url to the FB share button
+            // Set url to the FB share button
             $('#share-fb-icon').attr('data-href', url_draw_web);
             if (typeof FB !== 'undefined') { //refresh facebook items
                 FB.XFBML.parse();
