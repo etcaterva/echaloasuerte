@@ -36,7 +36,7 @@ The Choose Random Team</p>
 
 def invite_user(users_email, draw):
     draw_id = draw.pk
-    owner = draw.owner.alias if draw.owner else _("An anonymous user")
+    owner = draw.owner or _("An anonymous user")
     draw_title = draw.title if draw.title else _("Draw without a title")
     LOG.info("Inviting users {0} to draw {1}".format(users_email, draw_id))
     arguments = {

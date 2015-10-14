@@ -6,6 +6,7 @@ from tastypie.bundle import Bundle
 from django.conf.urls import url
 import dateutil.parser
 
+from web.common import invite_user
 from server import mongodb, draw_factory, bom
 
 
@@ -312,14 +313,30 @@ class DrawResource(resources.Resource):
         return bundle
 
     def post_detail(self, request, **kwargs):
-        if not request.user.is_authenticated():
-            self.unauthorized_result(None)
         draw_id = kwargs['pk']
         try:
             draw = self._client.retrieve_draw(draw_id)
         except mongodb.MongoDriver.NotFoundError:
             return http.HttpBadRequest("Draw not found")
-        if request.user.pk not in draw.users:
+        try:
+            data = json.loads(request.body)
+        except TypeError:
+            data = json.loads(request.body.decode('utf-8'))
+        if 'add_user' in data:
+            new_user =  str(data['add_user'])
+            draw.users.append(new_user)
+            self._client.save_draw(draw)
+            invite_user([new_user], draw)
+        if 'remove_user' in data:
+            if not draw.check_write_access(request.user):
+                raise exceptions.ImmediateHttpResponse(
+                    response=http.HttpUnauthorized("Only the owner can update"))
+            try:
+                draw.users.remove(str(data['remove_user']))
+                self._client.save_draw(draw)
+            except ValueError:
+                pass
+        if request.user.is_authenticated() and request.user.pk not in draw.users:
             draw.users.append(request.user.pk)
             self._client.save_draw(draw)
         return http.HttpCreated()
