@@ -81,7 +81,10 @@
         return true;
     });
 
-    $('.accordion').accordion({collapsible: true});
+    $('.accordion').accordion({
+        collapsible: true,
+        heightStyle: "content"
+    });
 
     $('#fav-button').favourites({
             "url_add": "{% url 'ws_add_favorite' %}",
