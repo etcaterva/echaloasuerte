@@ -212,6 +212,10 @@
         console.log("toss");
         $('#draw-form').drawManager('check_changes_and_toss');
     });
+    $("#edit-draw-save").click( function() {
+        console.log("Edit public draw");
+        $('#draw-form').drawManager('update');
+    });
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}

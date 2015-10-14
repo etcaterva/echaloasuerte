@@ -130,7 +130,25 @@
         },
 
         update: function(){
-
+            if (Object.keys(this.edited_fields).length > 0) {
+                console.log(this.edited_fields);
+                var edited_data = JSON.stringify(this.edited_fields);
+                console.log(edited_data);
+                $.ajax({
+                    type : 'PATCH',
+                    contentType : 'application/json',
+                    url : this.options.url_update,
+                    data: edited_data
+                }).done(function (){
+                    // Don't use reload to avoid unintentional form submissions
+                    window.location.href = String( window.location.href ).replace( "/#", "" );
+                })
+                .fail(function (e) {
+                    alert("Not edited" + e);
+                });
+            }else{
+                window.location.href = String( window.location.href ).replace( "/#", "" );
+            }
         },
 
         // Serialize a form to a JS object
