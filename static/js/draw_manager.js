@@ -65,9 +65,7 @@
             this.$element = $(element);
             this.options = $.extend({}, defaults, options);
 
-            $("#draw-form").find(":input").change(function(changed_input) {
-                // TODO what's changed input
-                console.log("Changed input: " + changed_input);
+            $("#draw-form").find(":input").change(function() {
                 var $this = $(this);
                 that.edited_fields[$this.attr('name')] = $this.cast_input_value();
             });
