@@ -58,14 +58,13 @@
         constructor: DrawManager,
 
         edited_fields: {},
-
-
+        
         init: function (element, options) {
             var that = this;
             this.$element = $(element);
             this.options = $.extend({}, defaults, options);
 
-            $("#draw-form").find(":input").change(function() {
+            this.$element.find(":input").change(function() {
                 var $this = $(this);
                 that.edited_fields[$this.attr('name')] = $this.cast_input_value();
             });
@@ -159,7 +158,7 @@
                 rsubmittable = /^(?:input|select|textarea|keygen)/i,
                 manipulation_rcheckableType = /^(?:checkbox|radio)$/i;
             var serialized_draw = {};
-            var draw_form = $("#draw-form");
+            var draw_form = this.$element;
             var draw_object =  draw_form.map(function(){
                 // Can add propHook for "elements" to filter or add form elements
                 var elements = jQuery.prop( this, "elements" );
