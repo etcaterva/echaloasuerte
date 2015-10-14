@@ -8,31 +8,21 @@
             var value = this.val().replace( /\r?\n/g, "\r\n" ); // Avoid CRLF injection
             if (type == "number"){
                 return parseInt(value, 10);
-            }else{
-                if (type == "checkbox" ){
-                    // Non checked checkbox are not processed at all
+            }else if (type == "checkbox" ){
+                // Non checked checkbox are not processed at all
+                return true;
+            }else if (type == "hidden" || type == "radio"){
+                if (value == "True"){
                     return true;
-                }else{
-                    if (type == "hidden" || type == "radio"){
-                        if (value == "True"){
-                            return true;
-                        }else{
-                            if (value == "False"){
-                                return false;
-                            }else{
-                                if (!isNaN(value)){
-                                    return parseInt(value, 10);
-                                }
-                                else{
-                                    return value;
-                                }
-                            }
-                        }
-                    }
-                    else{
-                        return value;
-                    }
+                }else if (value == "False"){
+                    return false;
+                }else if (!isNaN(value)){
+                        return parseInt(value, 10);
+                } else {
+                    return value;
                 }
+            } else{
+                return value;
             }
         },
 
@@ -50,7 +40,7 @@
             })
             .filter(function(){
                 var type = this.type;
-                return this.name && $.inArray(this.name, excluded_fields) < 0 && $.inArray(this.name, excluded_fields) &&
+                return this.name && $.inArray(this.name, excluded_fields) < 0 &&
                     !jQuery( this ).is( ":disabled" ) && rsubmittable.test( this.nodeName ) &&
                     !rsubmitterTypes.test( type ) && ( this.checked || !manipulation_rcheckableType.test( type ) );
             })
@@ -69,7 +59,7 @@
                 if (serialized_draw[this.name] === undefined) {
                     serialized_draw[this.name] = this.value;
                 } else {
-                    console.log("ERROR: Two inputs in the forms share the same name");
+                    console.log("ERROR: Two inputs in the forms share the same name (" + this.name + ")");
                 }
             });
             return serialized_draw;
