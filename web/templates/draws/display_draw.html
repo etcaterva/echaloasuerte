@@ -274,22 +274,22 @@
                 <!-- Button to toss -->
                 <div class="row btn-row">
                     {% if not bom.is_shared %}
-                        <button id="toss-button" type="button" class="btn btn-success" autocomplete="off">{% trans 'Toss' %}</button>
+                        <a id="toss-button"  class="btn btn-success" autocomplete="off">{% trans 'Toss' %}</a>
                     {% else %}
                         {%if not bom.owner or bom.owner == user.pk %}
                             <a id="toss-button" class="btn btn-success" autocomplete="off">{% trans 'Toss' %}</a>
-                            <button id="schedule-toss-button" type="button" class="btn" title="{% trans 'Schedule Toss' %}" autocomplete="off">
+                            <a id="schedule-toss-button" class="btn" title="{% trans 'Schedule Toss' %}" autocomplete="off">
                                 <i class="fa fa-clock-o" ></i>
-                            </button>
+                            </a>
                             {# Buttons to save changes when editing an already published public draw #}
                             <div id="edit-draw-save-changes" class="hide">
                                 <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
-                                <button type="submit" id="edit-draw-save" class="col-xs-6 btn btn-primary" autocomplete="off">{% trans 'Save changes' %}</button>
+                                <a id="edit-draw-save" class="col-xs-6 btn btn-primary" autocomplete="off">{% trans 'Save changes' %}</a>
                             </div>
                         {%else%}
-                            <button id="toss-disabled-button" type="button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</button>
+                            <a id="toss-disabled-button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</a>
                             <div class="alert alert-warning alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <a class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></a>
                                 {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
                             </div>
                         {% endif %}
