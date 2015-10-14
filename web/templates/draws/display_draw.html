@@ -19,6 +19,7 @@
     <script src="{% static 'js/card.js' %}"></script>
     <script src="{% static 'js/coin.js' %}"></script>
     <script src="{% static 'js/dice.js' %}"></script>
+    <script src="{% static 'js/draw_manager.js' %}"></script>
     {% if bom.is_shared %}
         <script src="{% static 'js/public_draw_displayer.js' %}"></script>
         <script src="{% static 'js/chat.js' %}"></script>
@@ -200,24 +201,16 @@
         });
     {% endif %}
 
+    var $updater = $('#draw-form').drawManager({
+        url_toss: "{% url 'api_draw_toss' api_name="v1" pk=bom.pk %}",
+        url_update: "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
+        msg_result: "{% trans "Result" %}",
+        msg_generated_on: "{% trans "generated on" %}"
+    });
     var draw_updated_flag = false;
     $("#toss-button").click( function() {
-        $('#toss-button').prop('disabled',true);
-        $(this).text('{% trans "Loading..." %}');
-        if (draw_updated_flag) {
-            $("#draw-form").attr("action", "{% url 'update_draw' draw_id=bom.pk %}");
-            $("#draw-form").submit();
-            return;
-        }
-        $.ajax({
-            method : "POST",
-            url : "{% url 'api_draw_toss' api_name="v1" pk=bom.pk %}"
-        }).done(function (){
-            window.location.reload();
-        })
-        .fail(function () {
-            alert("{% trans 'There was an issue when tossing the draw :(' %}");
-        });
+        console.log("toss");
+        $('#draw-form').drawManager('check_changes_and_toss');
     });
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
@@ -284,7 +277,7 @@
                         <button id="toss-button" type="button" class="btn btn-success" autocomplete="off">{% trans 'Toss' %}</button>
                     {% else %}
                         {%if not bom.owner or bom.owner == user.pk %}
-                            <button id="toss-button" type="button" class="btn btn-success" autocomplete="off">{% trans 'Toss' %}</button>
+                            <a id="toss-button" class="btn btn-success" autocomplete="off">{% trans 'Toss' %}</a>
                             <button id="schedule-toss-button" type="button" class="btn" title="{% trans 'Schedule Toss' %}" autocomplete="off">
                                 <i class="fa fa-clock-o" ></i>
                             </button>
