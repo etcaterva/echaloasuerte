@@ -306,6 +306,7 @@ class DrawResource(resources.Resource):
             raise exceptions.ImmediateHttpResponse(
                 response=http.HttpBadRequest(e.serialize()))
 
+        draw.add_audit("DRAW_PARAMETERS")
         self._client.save_draw(draw)
         bundle.obj = draw
         return bundle
