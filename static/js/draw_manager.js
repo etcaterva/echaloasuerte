@@ -1,6 +1,8 @@
 ;(function ($) {
 
     jQuery.fn.extend({
+
+        // Return te value of an input as String, Number or Boolean based on the type of input
         cast_input_value: function(){
             var type = this.attr("type");
             var value = this.val().replace( /\r?\n/g, "\r\n" ); // Avoid CRLF injection
@@ -32,12 +34,52 @@
                     }
                 }
             }
+        },
+
+        // Serialize a form to a JS object
+        serializeForm: function(excluded_fields) {
+            var rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
+                rsubmittable = /^(?:input|select|textarea|keygen)/i,
+                manipulation_rcheckableType = /^(?:checkbox|radio)$/i;
+
+            var serialized_draw = {};
+            var draw_object =  this.map(function(){
+                // Can add propHook for "elements" to filter or add form elements
+                var elements = jQuery.prop( this, "elements" );
+                return elements ? jQuery.makeArray( elements ) : this;
+            })
+            .filter(function(){
+                var type = this.type;
+                return this.name && $.inArray(this.name, excluded_fields) < 0 && $.inArray(this.name, excluded_fields) &&
+                    !jQuery( this ).is( ":disabled" ) && rsubmittable.test( this.nodeName ) &&
+                    !rsubmitterTypes.test( type ) && ( this.checked || !manipulation_rcheckableType.test( type ) );
+            })
+            .map(function( i, elem ){
+                var value = jQuery( this ).cast_input_value();
+                return value == null ?
+                    null :
+                    jQuery.isArray( value ) ?
+                        jQuery.map( value, function( value ){
+                            return { name: elem.name, value: value, type: elem.type };
+                        }) :
+                        { name: elem.name, value: value, type: elem.type };
+            })
+            .get();
+            $.each(draw_object, function() {
+                if (serialized_draw[this.name] === undefined) {
+                    serialized_draw[this.name] = this.value;
+                } else {
+                    console.log("ERROR: Two inputs in the forms share the same name");
+                }
+            });
+            return serialized_draw;
         }
     });
 
     // Set the defaults
     var pluginName = 'DrawManager',
         defaults = {
+            draw_type: null,
             is_shared: false,
             callback_render: null,
             callback_animate: null,
@@ -110,9 +152,10 @@
         },
 
         try_draw: function(){
-            // Serialize and clean the form
-            var form_fields = this.serializeForm(["_id", "csrfmiddlewaretoken"]);
-            form_fields["type"] = PublicDrawCreator.draw_type;
+            // Serialize and clean the draw form
+            var excluded_fields = ["_id", "csrfmiddlewaretoken"];
+            var form_fields = this.$element.serializeForm(excluded_fields);
+            form_fields["type"] = this.options.draw_type;
             var data = JSON.stringify(form_fields);
 
             $.ajax({
@@ -176,46 +219,6 @@
             }else{
                 window.location.href = String( window.location.href ).replace( "/#", "" );
             }
-        },
-
-        // Serialize a form to a JS object
-        serializeForm: function(fields_skipped) {
-            var that = this;
-            var rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
-                rsubmittable = /^(?:input|select|textarea|keygen)/i,
-                manipulation_rcheckableType = /^(?:checkbox|radio)$/i;
-            var serialized_draw = {};
-            var draw_form = this.$element;
-            var draw_object =  draw_form.map(function(){
-                // Can add propHook for "elements" to filter or add form elements
-                var elements = jQuery.prop( this, "elements" );
-                return elements ? jQuery.makeArray( elements ) : this;
-            })
-            .filter(function(){
-                var type = this.type;
-                return this.name && $.inArray(this.name, fields_skipped) < 0 && $.inArray(this.name, fields_skipped) &&
-                    !jQuery( this ).is( ":disabled" ) && rsubmittable.test( this.nodeName ) &&
-                    !rsubmitterTypes.test( type ) && ( this.checked || !manipulation_rcheckableType.test( type ) );
-            })
-            .map(function( i, elem ){
-                var value = jQuery( this ).cast_input_value();
-                return value == null ?
-                    null :
-                    jQuery.isArray( value ) ?
-                        jQuery.map( value, function( value ){
-                            return { name: elem.name, value: value, type: elem.type };
-                        }) :
-                        { name: elem.name, value: value, type: elem.type };
-            })
-            .get();
-            $.each(draw_object, function() {
-                if (serialized_draw[this.name] === undefined) {
-                    serialized_draw[this.name] = this.value;
-                } else {
-                    console.log("ERROR: Two inputs in the forms share the same name");
-                }
-            });
-            return serialized_draw;
         }
     };
 
