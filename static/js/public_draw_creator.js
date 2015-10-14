@@ -60,7 +60,7 @@ jQuery.fn.extend({
             if (serialized_draw[this.name] === undefined) {
                 serialized_draw[this.name] = this.value;
             } else {
-                console.log("ERROR: Two inputs in the forms share the same name");
+                console.log("ERROR: Two inputs in the forms share the same name (" + this.name + ")");
             }
         });
         return serialized_draw;
