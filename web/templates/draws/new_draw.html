@@ -19,6 +19,7 @@
     <script src="{% static 'js/card.js' %}"></script>
     <script src="{% static 'js/coin.js' %}"></script>
     <script src="{% static 'js/dice.js' %}"></script>
+    <script src="{% static 'js/draw_manager.js' %}"></script>
     {% if is_public %}
         <script src="{% static 'js/public_draw_creator.js' %}"></script>
     {% endif %}
@@ -80,6 +81,18 @@
         PublicDrawCreator.setup();
 
     {% endif %}
+
+    var $draw_maneger = $('#draw-form').drawManager({
+        url_try: "{% url 'api_draw_try' api_name="v1" %}",
+        msg_result: "{% trans "Result" %}",
+        msg_generated_on: "{% trans "generated on" %}"
+    });
+
+    $("#try").click( function() {
+        console.log("Try draw");
+        $('#draw-form').drawManager('try_draw');
+    });
+
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
 {% block content %}
@@ -149,7 +162,7 @@
             {% if is_public %}
                 {# Button to try a draw when creating a public one #}
                 <div class="row btn-row step-configure">
-                    <button type="submit" id="try" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
+                    <a id="try" class="btn btn-success">{% trans 'Try it!' %}</a>
                 </div>
 
                 {# Buttons "Next Step" and "Cancel" shown when creating a public draw #}

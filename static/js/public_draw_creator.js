@@ -146,8 +146,8 @@ PublicDrawCreator.setup = function(){
         PublicDrawCreator.create_draw();
     });
 
-    $('#try').click(function () {
+    /*$('#try').click(function () {
         //PublicDrawCreator.try_draw();
         $('#draw-form').attr("action", PublicDrawCreator.url_try);
-    });
+    });*/
 };

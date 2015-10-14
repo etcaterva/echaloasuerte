@@ -3,8 +3,7 @@
     jQuery.fn.extend({
         cast_input_value: function(){
             var type = this.attr("type");
-            var value = this.val();
-            console.log(type + " - " + value);
+            var value = this.val().replace( /\r?\n/g, "\r\n" ); // Avoid CRLF injection
             if (type == "number"){
                 return parseInt(value, 10);
             }else{
@@ -28,6 +27,9 @@
                             }
                         }
                     }
+                    else{
+                        return value;
+                    }
                 }
             }
         }
@@ -41,6 +43,7 @@
             callback_animate: null,
             url_toss: "",
             url_update: "",
+            url_try: "",
             msg_result: "Result",
             msg_generated_on: "generated on"
         };
@@ -106,6 +109,31 @@
             });
         },
 
+        try_draw: function(){
+            // Serialize and clean the form
+            var form_fields = this.serializeForm(["_id", "csrfmiddlewaretoken"]);
+            form_fields["type"] = PublicDrawCreator.draw_type;
+            var data = JSON.stringify(form_fields);
+
+            $.ajax({
+                type : 'POST',
+                contentType : 'application/json',
+                url : this.options.url_try,
+                data: data
+            }).done(function( data ) {
+                // TODO Results should be rendered properly
+                var result = data.items;
+                var result_cad = "Result: ";
+                for (var i=0; i<result.length; i++){
+                    result_cad += result[i] + ", ";
+                }
+                alert(result_cad);
+            }).fail(function (e){
+                // TODO Improve feedback
+                console.log("ERROR: " + e.responseText);
+            });
+        },
+
         check_changes_and_toss: function(){
             var that = this;
             if (Object.keys(this.edited_fields).length > 0) {
@@ -153,8 +181,7 @@
         // Serialize a form to a JS object
         serializeForm: function(fields_skipped) {
             var that = this;
-            var rCRLF = /\r?\n/g,
-                rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
+            var rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
                 rsubmittable = /^(?:input|select|textarea|keygen)/i,
                 manipulation_rcheckableType = /^(?:checkbox|radio)$/i;
             var serialized_draw = {};
@@ -166,40 +193,12 @@
             })
             .filter(function(){
                 var type = this.type;
-
                 return this.name && $.inArray(this.name, fields_skipped) < 0 && $.inArray(this.name, fields_skipped) &&
                     !jQuery( this ).is( ":disabled" ) && rsubmittable.test( this.nodeName ) &&
                     !rsubmitterTypes.test( type ) && ( this.checked || !manipulation_rcheckableType.test( type ) );
             })
             .map(function( i, elem ){
-                var input_value = jQuery( this ).val().replace( rCRLF, "\r\n" );
-                var value;
-                var type = elem.type;
-                console.log("type: "+ that.infer_data_type(type,input_value));
-                if (type == "number"){
-                    value = parseInt(input_value, 10);
-                }else{
-                    if (type == "checkbox" ){
-                        value = true;
-                    }else{
-                        if (type == "hidden" || type == "radio"){
-                            if (input_value == "True"){
-                                value = true;
-                            }else{
-                                if (input_value == "False"){
-                                    value = false;
-                                }else{
-                                    if (!isNaN(input_value)){
-                                        value = parseInt(input_value, 10);
-                                    }
-                                    else{
-                                        value = input_value;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                var value = jQuery( this ).cast_input_value();
                 return value == null ?
                     null :
                     jQuery.isArray( value ) ?
@@ -218,8 +217,6 @@
             });
             return serialized_draw;
         }
-
-        
     };
 
     /*********************************
