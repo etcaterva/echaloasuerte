@@ -21,6 +21,11 @@
                 } else {
                     return value;
                 }
+            } else if (this.hasClass('eas-tokenfield')){
+                var items = value.split(',');
+                console.log(items)
+                return items;
+                //return value;
             } else{
                 return value;
             }
@@ -48,11 +53,7 @@
                 var value = jQuery( this ).cast_input_value();
                 return value == null ?
                     null :
-                    jQuery.isArray( value ) ?
-                        jQuery.map( value, function( value ){
-                            return { name: elem.name, value: value, type: elem.type };
-                        }) :
-                        { name: elem.name, value: value, type: elem.type };
+                    { name: elem.name, value: value, type: elem.type };
             })
             .get();
             $.each(draw_object, function() {
@@ -205,7 +206,9 @@
             })
             .fail(function (e){
                 // TODO The WS create draw should return the specific errors when the draw is invalid
-                that.try_draw();
+                if (that.options.is_shared) {
+                    that.try_draw();
+                }
             });
         },
 
