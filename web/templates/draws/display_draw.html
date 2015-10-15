@@ -131,6 +131,19 @@
             "msg_regsiter": "You need an account to save your favourite draws",
             "msg_toss": "Click on the 'Toss' button to try the draw first"
     });
+
+    var $updater = $('#draw-form').drawManager({
+        url_toss: "{% url 'api_draw_toss' api_name="v1" pk=bom.pk %}",
+        url_update: "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
+        msg_result: "{% trans "Result" %}",
+        msg_generated_on: "{% trans "generated on" %}"
+    });
+    var draw_updated_flag = false;
+    $("#toss-button").click( function() {
+        console.log("toss");
+        $('#draw-form').drawManager('check_changes_and_toss');
+    });
+
     {% if bom.is_shared %}
         // Anonimous users
         {% if user.is_authenticated %}
@@ -160,6 +173,7 @@
         PublicDraw.draw_id = "{{ bom.pk }}";
         PublicDraw.bom_last_updated = moment.utc("{{bom.last_updated_time.isoformat}}");
         PublicDraw.chats = $chats;
+        PublicDraw.draw_manager = $updater;
         PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
         PublicDraw.url_get_chat_messages = "{% url 'api_draw_chat' api_name="v1" pk=bom.pk %}";
         PublicDraw.url_update_draw = "{% url 'update_draw' draw_id=bom.pk %}";
@@ -201,21 +215,7 @@
         });
     {% endif %}
 
-    var $updater = $('#draw-form').drawManager({
-        url_toss: "{% url 'api_draw_toss' api_name="v1" pk=bom.pk %}",
-        url_update: "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
-        msg_result: "{% trans "Result" %}",
-        msg_generated_on: "{% trans "generated on" %}"
-    });
-    var draw_updated_flag = false;
-    $("#toss-button").click( function() {
-        console.log("toss");
-        $('#draw-form').drawManager('check_changes_and_toss');
-    });
-    $("#edit-draw-save").click( function() {
-        console.log("Edit public draw");
-        $('#draw-form').drawManager('update');
-    });
+
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}

@@ -1,7 +1,7 @@
 var PublicDraw = {};
 
 PublicDraw.settings = function () {
-    function init_settings_panel(){
+    function show_settings_panel(){
         // Show the main settings screen
         $('#settings-general').removeClass("hide");
         $('.settings-submenu').addClass("hide");
@@ -12,12 +12,12 @@ PublicDraw.settings = function () {
 
     // Open settings panel
     $('#edit-settings-button').click(function (){
-        init_settings_panel();
+        show_settings_panel();
     });
 
     // Show the settings' main screen
     $('.btn-settings-back').click(function (){
-        init_settings_panel();
+        show_settings_panel();
     });
 
     /*
@@ -37,7 +37,7 @@ PublicDraw.settings = function () {
     $('a#edit-draw-confirmation').click(function() {
         PublicDraw.unlock_fields();
         // Hide the toss button
-        $('button#toss, #toss-button, #schedule-toss-button').addClass('hide');
+        $('#toss-button, #schedule-toss-button').addClass('hide');
         // Show the "Save changes" and "Cancel edition" buttons
         $('div#edit-draw-save-changes').removeClass('hide');
         // Close settings panel
@@ -61,9 +61,8 @@ PublicDraw.settings = function () {
     SETTINGS OPTION: Edit draw
     If the has edited a public draw so the configuration is submitted to the server
     */
-    $('button#edit-draw-save').click(function() {
-        $("#draw-form").attr("action", PublicDraw.url_update_draw);
-        return true;
+    $('#edit-draw-save').click(function() {
+        PublicDraw.draw_manager.drawManager('update_shared_draw');
     });
 
 
@@ -123,8 +122,8 @@ PublicDraw.bom_last_updated = "";
 PublicDraw.check_draw_changes = function () {
     $.ajax({
         method : "GET",
-        url : PublicDraw.url_get_chat_messages,
-        contentType : 'application/json'
+        contentType : 'application/json',
+        url : PublicDraw.url_get_chat_messages
     }).done(function(data) {
         if(PublicDraw.bom_last_updated < moment.utc(data.last_updated_time)){
             window.location.reload();
