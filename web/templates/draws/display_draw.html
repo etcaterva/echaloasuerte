@@ -176,7 +176,6 @@
         PublicDraw.draw_manager = $updater;
         PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
         PublicDraw.url_get_chat_messages = "{% url 'api_draw_chat' api_name="v1" pk=bom.pk %}";
-        PublicDraw.url_update_draw = "{% url 'update_draw' draw_id=bom.pk %}";
         PublicDraw.url_update_settings = "{% url 'ws_update_share_settings' %}";
         {% if not bom.owner or bom.owner == user.pk %}
             PublicDraw.msg_tooltip_protected = "{% trans "To edit the details go to Settings" %}";
