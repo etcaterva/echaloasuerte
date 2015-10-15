@@ -20,9 +20,6 @@
     <script src="{% static 'js/coin.js' %}"></script>
     <script src="{% static 'js/dice.js' %}"></script>
     <script src="{% static 'js/draw_manager.js' %}"></script>
-    {% if is_public %}
-        <script src="{% static 'js/public_draw_creator.js' %}"></script>
-    {% endif %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
 
@@ -51,11 +48,6 @@
         $("textarea.autogrow").autoGrowInput({title:'{{ default_title }}',maxWidth: max_width,minWidth:30,comfortZone:30});
     };
 
-    // Don't shake the title when it has already a title
-    {% if bom.title %}
-        PublicDrawCreator.title_changed = true;
-    {% endif %}
-
     // Autosize the title box the first time
     autosize();
     $( window ).resize(function() {
@@ -73,18 +65,11 @@
 
     $('.accordion').accordion({collapsible: true});
 
-    {% if is_public %}
-        PublicDrawCreator.draw_type = "{{ draw_type }}"
-        PublicDrawCreator.url_index = "{% url 'index' %}";
-        PublicDrawCreator.url_try = "{% url 'try_draw' draw_type=draw.NAME_IN_URL %}";
-        PublicDrawCreator.url_create = "{% url 'api_dispatch_list' api_name="v1" resource_name="draw" %}";
-        PublicDrawCreator.setup();
-
-    {% endif %}
-
     var $draw_maneger = $('#draw-form').drawManager({
         draw_type: "{{ draw_type }}",
+        is_shared: "{{ is_public }}",
         url_try: "{% url 'api_draw_try' api_name="v1" %}",
+        url_create: "{% url 'api_dispatch_list' api_name="v1" resource_name="draw" %}",
         msg_result: "{% trans "Result" %}",
         msg_generated_on: "{% trans "generated on" %}"
     });
@@ -93,6 +78,13 @@
         console.log("Try draw");
         $('#draw-form').drawManager('try_draw');
     });
+
+    $("#create-and-toss, #publish").click( function() {
+        console.log("Create and toss draw");
+        $('#draw-form').drawManager('create_draw');
+    });
+
+
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
@@ -173,9 +165,9 @@
                     <a id="go-to-draw" class="step-spread col-xs-6 col-xs-offset-3 btn btn-primary hidden" href="#">{% trans 'Go to the draw' %}</a>
                 </div>
             {% else %}
-                {# Button to toss the draw (both private and public) #}
+                {# Button to toss the draw in private draws #}
                 <div class="row ">
-                    <button id="toss" type="submit" name="toss" class="btn btn-success">{% trans 'Toss!' %}</button>
+                    <a id="create-and-toss" class="btn btn-success">{% trans 'Toss!' %}</a>
                 </div>
             {% endif %}
         </div>

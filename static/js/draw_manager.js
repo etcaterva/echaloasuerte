@@ -75,6 +75,7 @@
             callback_animate: null,
             url_toss: "",
             url_update: "",
+            url_create: "",
             url_try: "",
             msg_result: "Result",
             msg_generated_on: "generated on"
@@ -103,6 +104,16 @@
                 var $this = $(this);
                 that.edited_fields[$this.attr('name')] = $this.cast_input_value();
             });
+
+            if (this.options.is_shared){
+                // Initialize input to submit emails as a tokenFields
+                $('input#invite-emails').tokenfield({
+                    createTokensOnBlur:true,
+                    delimiter: [',',' '],
+                    inputType: 'email',
+                    minWidth: 150
+                });
+            }
         },
 
         add_result: function (result){
@@ -128,6 +139,9 @@
             }
         },
 
+        /**
+         * Toss the current draw and reload the page
+         */
         toss: function(){
             $.ajax({
                 method : "POST",
@@ -138,6 +152,60 @@
             })
             .fail(function () {
                 alert("{% trans 'There was an issue when tossing the draw :(' %}");
+            });
+        },
+
+        /**
+         * Creates a draw (both normal and shared)
+         * If the draw is normal, the pages is reloaded
+         * If the draw is shared, the 'Spread' step is shown
+         *
+         * If the draw is not valid, the errors are presented to the user
+         */
+        create_draw: function(){
+            var that = this;
+            // Disable button to avoid duplicated submissions
+            $('#publish').prop('disabled',true);
+
+            // Serialize and clean the form
+            var fields_skipped = ["csrfmiddlewaretoken", "_id"];
+            var form_fields = $('#draw-form').serializeForm(fields_skipped);
+            form_fields["type"] = this.options.draw_type;
+            var data = JSON.stringify(form_fields);
+
+            $.ajax({
+                type : "POST",
+                contentType : 'application/json',
+                url: this.options.url_create,
+                data: data
+            }).done(function( data, textStatus, xhr ) {
+                // Get the url to the draw
+                var url_draw_api = xhr.getResponseHeader('Location');
+                var url_draw_web = url_draw_api.replace(/api\/v[\d\.]+\//g,'');
+
+                if (that.options.is_shared){
+                    // Present the link to the user
+                    $('.url-share').val(url_draw_web);
+                    // Set url to the FB share button
+                    $('#share-fb-icon').attr('data-href', url_draw_web);
+                    if (typeof FB !== 'undefined') { //refresh facebook items
+                        FB.XFBML.parse();
+                    }
+
+                    // Set the link of the "Go to the draw" button
+                    $('#go-to-draw').attr('href', url_draw_web);
+
+                    // TODO Show next step in the creation
+                    that.show_spread_step();
+                }else{
+                    // TODO Could we just auto-toss in normal draws when they are created?
+                    window.location.href = url_draw_web;
+                }
+
+            })
+            .fail(function (e){
+                // TODO The WS create draw should return the specific errors when the draw is invalid
+                that.try_draw();
             });
         },
 
@@ -189,6 +257,12 @@
             }
         },
 
+        /**
+         * Updates the current draw if there were any changes
+         * The changes are recorded every time an input is changed and they are stored in 'this.edited_fields'
+         *
+         * As a result, the page is always reloaded.
+         */
         update: function(){
             if (Object.keys(this.edited_fields).length > 0) {
                 console.log(this.edited_fields);
@@ -209,7 +283,16 @@
             }else{
                 window.location.href = String( window.location.href ).replace( "/#", "" );
             }
-        }
+        },
+
+        /**
+         * Show the spread step in the creation process of a shared draw
+         */
+        show_spread_step: function () {
+            $('.step-configure').addClass('hidden');
+            $('.step-spread').removeClass('hidden');
+        },
+
     };
 
     /*********************************
