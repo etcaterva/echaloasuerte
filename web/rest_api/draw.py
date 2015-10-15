@@ -6,7 +6,7 @@ from tastypie.bundle import Bundle
 from django.conf.urls import url
 import dateutil.parser
 
-from web.common import invite_user
+from web.common import invite_user, mail_toss
 from server import mongodb, draw_factory, bom
 
 
@@ -162,6 +162,8 @@ class DrawResource(resources.Resource):
             raise exceptions.ImmediateHttpResponse(
                 response=http.HttpUnauthorized("Only the owner can toss"))
         result = bom_draw.toss()
+        if bom_draw.is_shared:
+            mail_toss(bom_draw)
         self._client.save_draw(bom_draw)
         self.log_throttled_access(request)
         return self.create_response(request, result)
@@ -212,6 +214,8 @@ class DrawResource(resources.Resource):
                     "Only the owner can schedule a toss"))
         result = bom_draw.timed_toss(schedule)
         self._client.save_draw(bom_draw)
+        if bom_draw.is_shared:
+            mail_toss(bom_draw)
         self.log_throttled_access(request)
         return self.create_response(request, result)
 

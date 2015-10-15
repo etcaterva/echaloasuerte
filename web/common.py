@@ -24,6 +24,7 @@ Join now at https://chooserandom.com/draw/{draw_id}
 Good Luck!
 The Choose Random Team
 """)
+
 INVITE_HTML_EMAIL_TEMPLATE = _("""
 <img src="https://chooserandom.com/{image_url}" alt="Choose Random">
 <h2>You have been invited to a shared draw</h2>
@@ -33,8 +34,51 @@ INVITE_HTML_EMAIL_TEMPLATE = _("""
 The Choose Random Team</p>
 """)
 
+TOSS_EMAIL_TEMPLATE = _("""ChooseRandom.com
+A draw has been tossed!
+--------------------------------------
+{user} has tossed the draw "{title}"
+
+Check the result now at https://chooserandom.com/draw/{draw_id}
+
+Good Luck!
+The Choose Random Team
+""")
+
+TOSS_HTML_EMAIL_TEMPLATE = _("""
+<img src="https://chooserandom.com/{image_url}" alt="Choose Random">
+<h2>A draw has been tossed</h2>
+<p>{user} has tossed the draw "{title}"</p>
+<a href="https://chooserandom.com/draw/{draw_id}"><h3>Check Now</h3></a>
+<p>Good Luck!<br />
+The Choose Random Team</p>
+""")
+
+def mail_toss(draw):
+    """Sends a mail to the users to notify them about a toss in a draw"""
+    draw_id = draw.pk
+    users_email = draw.users
+    owner = draw.owner or _("An anonymous user")
+    draw_title = draw.title or _("Draw without a title")
+    LOG.info("Notifying users {0} about draw {1}".format(users_email, draw_id))
+    arguments = {
+        "image_url": static("img/brand/brand_en.png"),
+        "user": owner,
+        "title": draw_title,
+        "draw_id": draw_id
+    }
+    try:
+        send_mail(_('Choose Random') + " | " + draw_title,
+                  TOSS_EMAIL_TEMPLATE.format(**arguments),
+                  'draws@chooserandom.com',
+                  users_email,
+                  html_message=TOSS_HTML_EMAIL_TEMPLATE.format(**arguments))
+    except Exception as error:
+        LOG.error("Unexpected error when notifing user {0}: {1}".format(users_email,
+                                                                        error))
 
 def invite_user(users_email, draw):
+    """Sends a mail to a list of users to invite them to a draw"""
     draw_id = draw.pk
     owner = draw.owner or _("An anonymous user")
     draw_title = draw.title if draw.title else _("Draw without a title")
