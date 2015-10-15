@@ -259,7 +259,7 @@
         check_changes_and_toss: function(){
             var that = this;
             if (Object.keys(this.edited_fields).length > 0) {
-                this.basic_update(
+                this.update(
                     callback_done = function (){
                         that.toss();
                     },
@@ -280,7 +280,7 @@
          */
         update_shared_draw: function(){
             if (Object.keys(this.edited_fields).length > 0) {
-                this.basic_update(
+                this.update(
                     callback_done = function (){
                         // Don't use reload to avoid unintentional form submissions
                         window.location.href = String( window.location.href ).replace( "/#", "" );
@@ -301,7 +301,7 @@
          * @param callback_done Function executed if the update success
          * @param callback_fail Function executed if the update fails
          */
-        basic_update: function(callback_done, callback_fail){
+        update: function(callback_done, callback_fail){
                 var edited_data = JSON.stringify(this.edited_fields);
                 $.ajax({
                     type : 'PATCH',
