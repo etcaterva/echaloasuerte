@@ -2,7 +2,12 @@
 
     jQuery.fn.extend({
 
-        // Return te value of an input as String, Number or Boolean based on the type of input
+        /**
+         * Cast the data contained in the input
+         *
+         * The type of data it's inferred from the input 'type' attribute, the classes it may have and the value itself
+         * @returns {*} Returns the value casted (String, Integer, Bool or Array)
+         */
         cast_input_value: function(){
             var type = this.attr("type");
             var value = this.val().replace( /\r?\n/g, "\r\n" ); // Avoid CRLF injection
@@ -31,7 +36,11 @@
             }
         },
 
-        // Serialize a form to a JS object
+        /**
+         * Serialize the form into a JS object
+         * @param excluded_fields An array of inputs which will be ignored
+         * @returns {Object} The serialized form
+         */
         serializeForm: function(excluded_fields) {
             var rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
                 rsubmittable = /^(?:input|select|textarea|keygen)/i,
@@ -212,6 +221,10 @@
             });
         },
 
+        /**
+         * ONLY USED IN SHARED DRAWS
+         * The draw is tried and the results are presented to the user (the draw is not saved in the server)
+         */
         try_draw: function(){
             // Serialize and clean the draw form
             var excluded_fields = ["_id", "csrfmiddlewaretoken"];
@@ -238,6 +251,11 @@
             });
         },
 
+        /**
+         * ONLY USED IN NORMAL DRAWS
+         * Check whether the user has modified any field and if so the draw is updated in the server.
+         * After that the draw is tossed
+         */
         check_changes_and_toss: function(){
             var that = this;
             if (Object.keys(this.edited_fields).length > 0) {
