@@ -259,51 +259,58 @@
         check_changes_and_toss: function(){
             var that = this;
             if (Object.keys(this.edited_fields).length > 0) {
-                console.log(this.edited_fields);
-                var edited_data = JSON.stringify(this.edited_fields);
-                console.log(edited_data);
-                $.ajax({
-                    type : 'PATCH',
-                    contentType : 'application/json',
-                    url : this.options.url_update,
-                    data: edited_data
-                }).done(function (){
-                    that.toss();
-                })
-                .fail(function (e) {
-                    alert("Not edited" + e);
-                });
+                this.basic_update(
+                    callback_done = function (){
+                        that.toss();
+                    },
+                    callback_fail = function (e) {
+                        alert("Not edited" + e);
+                    }
+                );
             }else{
                 that.toss();
             }
         },
 
         /**
+         * ONLY USED IN SHARED DRAWS
          * Updates the current draw if there were any changes
-         * The changes are recorded every time an input is changed and they are stored in 'this.edited_fields'
          *
          * As a result, the page is always reloaded.
          */
-        update: function(){
+        update_shared_draw: function(){
             if (Object.keys(this.edited_fields).length > 0) {
-                console.log(this.edited_fields);
+                this.basic_update(
+                    callback_done = function (){
+                        // Don't use reload to avoid unintentional form submissions
+                        window.location.href = String( window.location.href ).replace( "/#", "" );
+                    },
+                    callback_fail = function (e) {
+                        alert("Not edited" + e);
+                    }
+                );
+            }else{
+                window.location.href = String( window.location.href ).replace( "/#", "" );
+            }
+        },
+
+        /**
+         * Updates the current draw.
+         * Only the fields stored in 'this.edited_fields' are updated
+         * 
+         * @param callback_done Function executed if the update success
+         * @param callback_fail Function executed if the update fails
+         */
+        basic_update: function(callback_done, callback_fail){
                 var edited_data = JSON.stringify(this.edited_fields);
-                console.log(edited_data);
                 $.ajax({
                     type : 'PATCH',
                     contentType : 'application/json',
                     url : this.options.url_update,
                     data: edited_data
-                }).done(function (){
-                    // Don't use reload to avoid unintentional form submissions
-                    window.location.href = String( window.location.href ).replace( "/#", "" );
                 })
-                .fail(function (e) {
-                    alert("Not edited" + e);
-                });
-            }else{
-                window.location.href = String( window.location.href ).replace( "/#", "" );
-            }
+                .done(callback_done)
+                .fail(callback_fail);
         },
 
         /**
