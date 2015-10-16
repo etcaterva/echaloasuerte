@@ -104,6 +104,7 @@
     var $draw_maneger = $('#draw-form').drawManager({
         url_toss: "{% url 'api_draw_toss' api_name="v1" pk=bom.pk %}",
         url_update: "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
+        url_schedule_toss: "{% url 'api_draw_schedule' api_name="v1" pk=bom.pk schedule="ts_placeholder"%}",
         msg_result: "{% trans "Result" %}",
         msg_generated_on: "{% trans "generated on" %}"
     });
@@ -141,7 +142,7 @@
         PublicDraw.draw_id = "{{ bom.pk }}";
         PublicDraw.bom_last_updated = moment.utc("{{bom.last_updated_time.isoformat}}");
         PublicDraw.chats = $chats;
-        PublicDraw.draw_manager = $updater;
+        PublicDraw.draw_manager = $draw_maneger;
         PublicDraw.url_invite_users = "{% url 'ws_add_users_to_draw' %}";
         PublicDraw.url_get_chat_messages = "{% url 'api_draw_chat' api_name="v1" pk=bom.pk %}";
         PublicDraw.url_update_settings = "{% url 'ws_update_share_settings' %}";
@@ -155,21 +156,8 @@
         $('.datetimepicker').datetimepicker({value:moment().format()});
 
         $("#confirm-schedule-button").click( function() {
-            var schedule = new Date($("#toss-schedule").val());
             $('#confirm-schedule-button').prop('disabled',true);
-            $.ajax({
-                method : "GET",
-                url   : "{% url 'ws_schedule_toss_draw' %}",
-                data  : {
-                    draw_id : "{{bom.pk}}",
-                    schedule: moment.utc(schedule).format()
-                }
-            }).done(function (){
-                window.location.reload();
-            })
-            .fail(function () {
-                alert("{% trans 'There was an issue when scheduling the tossing :(' %}");
-            });
+            $draw_maneger.drawManager('schedule_toss');
         });
 
         $('#schedule-toss-button').click(function() {
@@ -407,7 +395,7 @@
                         <input id="toss-schedule" class="datetimepicker" type="text" >
                     </div>
                     <div class="modal-footer text-center ">
-                        <button type="button" class="btn btn-primary" id="confirm-schedule-button" autocomplete="off">{% trans "Schedule it!" %}</button>
+                        <a class="btn btn-primary" id="confirm-schedule-button" autocomplete="off">{% trans "Schedule it!" %}</a>
                     </div>
                 </div>
             </div>

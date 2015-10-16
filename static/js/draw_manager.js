@@ -87,6 +87,7 @@
             url_update: "",
             url_create: "",
             url_try: "",
+            url_schedule_toss: "",
             msg_result: "Result",
             msg_generated_on: "generated on"
         };
@@ -280,6 +281,24 @@
             }).fail(function (e){
                 // TODO Improve feedback
                 console.log("ERROR: " + e.responseText);
+            });
+        },
+
+        schedule_toss: function() {
+            var schedule_timestamp = moment.utc(new Date($("#toss-schedule").val())).format();
+            this.options.url_schedule_toss = this.options.url_schedule_toss.replace('ts_placeholder',schedule_timestamp);
+            console.log(schedule_timestamp);
+            $.ajax({
+                type : 'POST',
+                contentType : 'application/json',
+                url : this.options.url_schedule_toss
+            }).done(function (){
+                // Here response should be rendered without reloading
+                //window.location.reload();
+                console.log("done")
+            })
+            .fail(function (e) {
+                alert("There was an issue when scheduling the draw :(");
             });
         },
 
