@@ -110,10 +110,22 @@
             this.$element = $(element);
             this.options = $.extend({}, defaults, options);
 
+            // Record in 'edited_fields' when inputs are changed
             this.$element.find(":input").change(function() {
                 var $this = $(this);
                 that.edited_fields[$this.attr('name')] = $this.cast_input_value();
             });
+
+            // Add toggle behaviour to show and hide "allow repeat" checkbox based on the number of results
+            var toggle_allow_repeat = function (){
+                if (that.$element.find('#id_number_of_results').val() > 1){
+                    that.$element.find('#div_id_allow_repeat').removeClass('hidden');
+                }else{
+                    that.$element.find('#div_id_allow_repeat').addClass('hidden');
+                }
+            };
+            $('#id_number_of_results').bind('keyup change', toggle_allow_repeat);
+            toggle_allow_repeat();
 
             if (this.options.is_shared){
                 // Initialize input to submit emails as a tokenFields
