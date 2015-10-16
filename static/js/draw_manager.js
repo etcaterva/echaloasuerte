@@ -159,6 +159,11 @@
             }
         },
 
+        /**
+         * Add a result to the list of previous results
+         *
+         * @param result Result to add
+         */
         add_result: function (result){
             var $results = $('#results').find('.accordion');
 
@@ -202,6 +207,8 @@
          * Attempt to create a shared draw.
          * If the draw is created successfully, the invitation methods are presented to the user.
          * If not, the errors are rendered on the form
+         *
+         * ONLY USED IN SHARED DRAWS
          */
         publish: function(){
             var that = this;
@@ -238,6 +245,8 @@
          * Attempt to create a normal draw.
          * If the draw is created it is automatically tossed and the results are presented
          * If not, the errors are rendered in the form
+         *
+         * ONLY USED IN NORMAL DRAWS
          */
         create_and_toss: function(){
             var that = this;
@@ -283,8 +292,10 @@
         },
 
         /**
+         * Try if the configuration of the draw is valid.
+         * If so, the results are presented to the user (the draw is not saved in the server)
+         *
          * ONLY USED IN SHARED DRAWS
-         * The draw is tried and the results are presented to the user (the draw is not saved in the server)
          */
         try_draw: function(){
             // Serialize and clean the draw form
@@ -331,9 +342,10 @@
         },
 
         /**
-         * ONLY USED IN NORMAL DRAWS
          * Check whether the user has modified any field and if so the draw is updated in the server.
          * After that the draw is tossed
+         *
+         * ONLY USED IN NORMAL DRAWS
          */
         check_changes_and_toss: function(){
             var that = this;
@@ -352,10 +364,10 @@
         },
 
         /**
-         * ONLY USED IN SHARED DRAWS
          * Updates the current draw if there were any changes
-         *
          * As a result, the page is always reloaded.
+         *
+         * ONLY USED IN SHARED DRAWS
          */
         update_shared_draw: function(){
             if (Object.keys(this.edited_fields).length > 0) {
@@ -394,6 +406,8 @@
 
         /**
          * Show the spread step in the creation process of a shared draw
+         *
+         * ONLY USED IN SHARED DRAWS
          */
         show_spread_step: function () {
             $('.step-configure').addClass('hidden');
