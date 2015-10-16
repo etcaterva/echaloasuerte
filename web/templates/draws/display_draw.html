@@ -56,11 +56,6 @@
         return true;
     });
 
-    $('.accordion').accordion({
-        collapsible: true,
-        heightStyle: "content"
-    });
-
     $('#subscribe-button').click(function() {
         {% if user.is_authenticated %}
             var isSubscribed = $(this).attr("data-active") === "y";
@@ -106,16 +101,15 @@
             "msg_toss": "Click on the 'Toss' button to try the draw first"
     });
 
-    var $updater = $('#draw-form').drawManager({
+    var $draw_maneger = $('#draw-form').drawManager({
         url_toss: "{% url 'api_draw_toss' api_name="v1" pk=bom.pk %}",
         url_update: "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
         msg_result: "{% trans "Result" %}",
         msg_generated_on: "{% trans "generated on" %}"
     });
-    var draw_updated_flag = false;
     $("#toss-button").click( function() {
         console.log("toss");
-        $('#draw-form').drawManager('check_changes_and_toss');
+        $draw_maneger.drawManager('check_changes_and_toss');
     });
 
     {% if bom.is_shared %}

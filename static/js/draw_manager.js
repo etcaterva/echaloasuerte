@@ -140,6 +140,13 @@
                 autosize();
             });
 
+            // Initialize results' accordion
+            $('#results').find('.accordion').accordion({
+                collapsible: true,
+                heightStyle: "content"
+            });
+
+
             if (this.options.is_shared){
                 // Initialize input to submit emails as a tokenFields
                 $('input#invite-emails').tokenfield({

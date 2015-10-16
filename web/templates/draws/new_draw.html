@@ -38,8 +38,6 @@
         return true;
     });
 
-    $('.accordion').accordion({collapsible: true});
-
     var $draw_maneger = $('#draw-form').drawManager({
         draw_type: "{{ draw_type }}",
         is_shared: {{ is_public|yesno:"true,false" }},
@@ -51,15 +49,13 @@
 
     $("#try").click( function() {
         console.log("Try draw");
-        $('#draw-form').drawManager('try_draw');
+        $draw_maneger.drawManager('try_draw');
     });
 
     $("#create-and-toss, #publish").click( function() {
         console.log("Create and toss draw");
-        $('#draw-form').drawManager('create_draw');
+        $draw_maneger.drawManager('create_draw');
     });
-
-
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
