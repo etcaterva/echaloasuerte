@@ -99,9 +99,9 @@
     {% if bom.is_shared %}
         // Anonimous users
         {% if user.is_authenticated %}
-            var user_name = "{{ user.pk }}";
+            var user_alias = "{{ user.alias }}";
         {% else %}
-            var user_name = getCookie("user_name");
+            var user_alias = getCookie("user_alias");
         {% endif %}
 
         var $chat_containers = $('#chat-frame, #chat-column');
@@ -109,7 +109,8 @@
             "is_enabled": {{bom.enable_chat|yesno:"true,false"}},
             "url_send_message": "{% url 'chat_add_message' %}",
             "url_send_message": "{% url 'api_draw_chat' api_name="v1" pk=bom.pk %}",
-            "user_name": user_name,
+            "user_id": "{{ user.pk }}",
+            "user_alias": user_alias,
             "draw_id": "{{ bom.pk }}",
             "msg_type_your_message": "{% trans 'Type your message here...' %}",
             "msg_login_first": "{% trans "To use the chat you should <a href='#'>login</a> or <a href='#'>register</a>" %}",
