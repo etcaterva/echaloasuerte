@@ -127,6 +127,19 @@
             $('#id_number_of_results').bind('keyup change', toggle_allow_repeat);
             toggle_allow_repeat();
 
+            // Resize the title textarea based on the screen size
+            autosize = function(){
+                var max_width = $("#draw-title-container").width()*2/3;
+                $("textarea.autogrow").width(max_width);
+                $("textarea.autogrow").autoGrowInput({title:'{{ default_title }}',maxWidth: max_width,minWidth:30,comfortZone:30});
+            };
+            // Autosize the title box the first time
+            autosize();
+            // Autosize every time the window is resized
+            $( window ).resize(function() {
+                autosize();
+            });
+
             if (this.options.is_shared){
                 // Initialize input to submit emails as a tokenFields
                 $('input#invite-emails').tokenfield({

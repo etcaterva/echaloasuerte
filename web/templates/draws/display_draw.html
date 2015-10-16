@@ -50,20 +50,6 @@
         }
     });
 
-    // Autoresize the title box when window is resized
-    autosize = function(){
-        var max_width = $("#draw-title-container").width();
-        $("textarea.autogrow").width(max_width);
-        $("textarea.autogrow").autoGrowInput({title:'{{ bom.title }}',maxWidth: max_width,minWidth:30,comfortZone:30});
-    };
-
-    // Autosize the title box the first time
-    autosize();
-    $( window ).resize(function() {
-        // Autosize when the window is resized
-        autosize();
-    });
-
     // Disable submit button after submitting
     $('form').submit(function() {
         $(this).find("button[type='submit']").prop('disabled',true);
