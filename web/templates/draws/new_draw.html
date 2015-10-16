@@ -30,14 +30,6 @@
         $(this).select();
     });
 
-    // Disable submit button after submitting
-    $('form').submit(function() {
-        var $submit_btn = $(this).find("button[type='submit']");
-        $submit_btn.prop('disabled',true);
-        $submit_btn.text('{% trans "Loading..." %}');
-        return true;
-    });
-
     var $draw_maneger = $('#draw-form').drawManager({
         draw_type: "{{ draw_type }}",
         is_shared: {{ is_public|yesno:"true,false" }},
@@ -46,7 +38,6 @@
         msg_result: "{% trans "Result" %}",
         msg_generated_on: "{% trans "generated on" %}"
     });
-
 
     {% if is_public %}
         $("#try").click( function() {
@@ -63,7 +54,6 @@
             $draw_maneger.drawManager('create-and-toss');
         });
     {% endif %}
-
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
@@ -134,19 +124,19 @@
             {% if is_public %}
                 {# Button to try a draw when creating a public one #}
                 <div class="row btn-row step-configure">
-                    <a id="try" class="btn btn-success">{% trans 'Try it!' %}</a>
+                    <button type="button" id="try" class="btn btn-success submit-lockable">{% trans 'Try it!' %}</button>
                 </div>
 
                 {# Buttons "Next Step" and "Cancel" shown when creating a public draw #}
                 <div class="col-sm-8 col-sm-offset-2 btn-row">
                     <a href="{% url 'index' %}" class="step-configure col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
-                    <a id="publish" class="step-configure col-xs-6 btn btn-primary">{% trans 'Publish draw' %}</a>
+                    <button type="button" id="publish" class="step-configure col-xs-6 btn btn-primary submit-lockable">{% trans 'Publish draw' %}</button>
                     <a id="go-to-draw" class="step-spread col-xs-6 col-xs-offset-3 btn btn-primary hidden" href="#">{% trans 'Go to the draw' %}</a>
                 </div>
             {% else %}
                 {# Button to toss the draw in private draws #}
                 <div class="row ">
-                    <a id="create-and-toss" class="btn btn-success">{% trans 'Toss!' %}</a>
+                    <button type="button" id="create-and-toss" class="btn btn-success submit-lockable">{% trans 'Toss!' %}</button>
                 </div>
             {% endif %}
         </div>

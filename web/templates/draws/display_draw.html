@@ -108,10 +108,6 @@
         msg_result: "{% trans "Result" %}",
         msg_generated_on: "{% trans "generated on" %}"
     });
-    $("#toss-button").click( function() {
-        console.log("toss");
-        $draw_maneger.drawManager('check_changes_and_toss');
-    });
 
     {% if bom.is_shared %}
         // Anonimous users
@@ -162,6 +158,39 @@
 
         $('#schedule-toss-button').click(function() {
             $('#schedule-toss-modal').modal('show');
+        });
+
+        $("#shared-draw-toss").click( function() {
+            console.log("toss");
+            $draw_maneger.drawManager('toss');
+        });
+
+        // When fields are focused, all the content is pre-selected
+        $('.form-control').click(function() {
+            var attr = $(this).hasClass('protected');
+            if (typeof attr === typeof undefined || attr === false) {
+                $(this).select();
+            }
+        });
+        $(".protected").tooltip({
+            show: {delay: 500},
+            track: true,
+        });
+    {% else %}
+        $('#fav-button').favourites({
+            "url_add": "{% url 'ws_add_favorite' %}",
+            "url_remove": "{% url 'ws_remove_favorite' %}",
+            "user_authenticated": {{ user.is_authenticated|yesno:"true,false" }},
+            "draw_id": "{{ bom.pk }}",
+            "path_img_star": "{% static "img/star.png" %}",
+            "path_img_star_empty": "{% static "img/star-o.png" %}",
+            "msg_regsiter": "You need an account to save your favourite draws",
+            "msg_toss": "Click on the 'Toss' button to try the draw first"
+        });
+
+        $("#normal-draw-toss").click( function() {
+            console.log("toss");
+            $draw_maneger.drawManager('check_changes_and_toss');
         });
     {% endif %}
 
@@ -226,17 +255,17 @@
                 <!-- Button to toss -->
                 <div class="row btn-row">
                     {% if not bom.is_shared %}
-                        <a id="toss-button"  class="btn btn-success" autocomplete="off">{% trans 'Toss' %}</a>
+                        <button type="button" id="normal-draw-toss" class="btn btn-success submit-lockable" autocomplete="off">{% trans 'Toss' %}</button>
                     {% else %}
                         {%if not bom.owner or bom.owner == user.pk %}
-                            <a id="toss-button" class="btn btn-success" autocomplete="off">{% trans 'Toss' %}</a>
-                            <a id="schedule-toss-button" class="btn" title="{% trans 'Schedule Toss' %}" autocomplete="off">
+                            <button type="button" id="shared-draw-toss" class="btn btn-success submit-lockable" autocomplete="off">{% trans 'Toss' %}</button>
+                            <button type="button" id="schedule-toss-button" class="btn btn-default submit-lockable" title="{% trans 'Schedule Toss' %}" autocomplete="off">
                                 <i class="fa fa-clock-o" ></i>
-                            </a>
+                            </button>
                             {# Buttons to save changes when editing an already published public draw #}
                             <div id="edit-draw-save-changes" class="hide">
                                 <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
-                                <a id="edit-draw-save" class="col-xs-6 btn btn-primary" autocomplete="off">{% trans 'Save changes' %}</a>
+                                <button type="button" id="edit-draw-save" class="col-xs-6 btn btn-primary submit-lockable" autocomplete="off">{% trans 'Save changes' %}</button>
                             </div>
                         {%else%}
                             <a id="toss-disabled-button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</a>

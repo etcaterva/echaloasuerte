@@ -191,15 +191,21 @@
          * Toss the current draw and reload the page
          */
         toss: function(){
+            // Lock submit buttons to avoid unintentional submitions
+            $('.submit-lockable').prop('disabled',true);
+
             $.ajax({
                 method : "POST",
                 url : this.options.url_toss
             }).done(function (){
                 // Here results should be rendered without reloading
-                window.location.reload();
+                //window.location.reload();
             })
             .fail(function () {
                 alert("{% trans 'There was an issue when tossing the draw :(' %}");
+            }).always(function(){
+                $('.submit-lockable').prop('disabled',false);
+                    asds
             });
         },
 
@@ -212,8 +218,6 @@
          */
         publish: function(){
             var that = this;
-            // Disable button to avoid duplicated submissions
-            $('#publish').prop('disabled',true);
 
             this.create_draw(
                 callback_done = function( data, textStatus, xhr ){
@@ -250,8 +254,6 @@
          */
         create_and_toss: function(){
             var that = this;
-            // Disable button to avoid duplicated submissions
-            $('#create-and-toss').prop('disabled',true);
 
             this.create_draw(
                 callback_done = function( data, textStatus, xhr ){
@@ -275,6 +277,9 @@
          * @param callback_fail Function executed if the creation fails
          */
         create_draw: function(callback_done, callback_fail){
+            // Lock submit buttons to avoid unintentional submitions
+            $('.submit-lockable').prop('disabled',true);
+
             // Serialize and clean the form
             var fields_skipped = ["csrfmiddlewaretoken", "_id"];
             var form_fields = $('#draw-form').serializeForm(fields_skipped);
@@ -288,7 +293,10 @@
                 data: data
             })
             .done(callback_done)
-            .fail(callback_fail);
+            .fail(callback_fail)
+            .always(function(){
+                $('.submit-lockable').prop('disabled',false);
+            });
         },
 
         /**
@@ -298,6 +306,9 @@
          * ONLY USED IN SHARED DRAWS
          */
         try_draw: function(){
+            // Lock submit buttons to avoid unintentional submitions
+            $('.submit-lockable').prop('disabled',true);
+
             // Serialize and clean the draw form
             var excluded_fields = ["_id", "csrfmiddlewaretoken"];
             var form_fields = this.$element.serializeForm(excluded_fields);
@@ -320,10 +331,15 @@
             }).fail(function (e){
                 // TODO Improve feedback
                 console.log("ERROR: " + e.responseText);
+            }).always(function(){
+                $('.submit-lockable').prop('disabled',false);
             });
         },
 
         schedule_toss: function() {
+            // Lock submit buttons to avoid unintentional submitions
+            $('.submit-lockable').prop('disabled',true);
+
             var schedule_timestamp = moment.utc(new Date($("#toss-schedule").val())).format();
             this.options.url_schedule_toss = this.options.url_schedule_toss.replace('ts_placeholder',schedule_timestamp);
             console.log(schedule_timestamp);
@@ -338,6 +354,8 @@
             })
             .fail(function (e) {
                 alert("There was an issue when scheduling the draw :(");
+            }).always(function(){
+                $('.submit-lockable').prop('disabled',false);
             });
         },
 
@@ -393,6 +411,9 @@
          * @param callback_fail Function executed if the update fails
          */
         update: function(callback_done, callback_fail){
+                // Lock submit buttons to avoid unintentional submitions
+                $('.submit-lockable').prop('disabled',true);
+
                 var edited_data = JSON.stringify(this.edited_fields);
                 $.ajax({
                     type : 'PATCH',
@@ -401,7 +422,10 @@
                     data: edited_data
                 })
                 .done(callback_done)
-                .fail(callback_fail);
+                .fail(callback_fail)
+                .always(function(){
+                    $('.submit-lockable').prop('disabled',false);
+                });
         },
 
         /**
