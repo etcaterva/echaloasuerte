@@ -163,14 +163,7 @@
         $('#schedule-toss-button').click(function() {
             $('#schedule-toss-modal').modal('show');
         });
-
-    {% else %}
-        $("#draw-form :input").change(function(changed_input) {
-            draw_updated_flag = true; //marks the draw as updated
-        });
     {% endif %}
-
-
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
