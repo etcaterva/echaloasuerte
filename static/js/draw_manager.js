@@ -199,34 +199,20 @@
         },
 
         /**
-         * Creates a draw (both normal and shared)
-         * If the draw is normal, the pages is reloaded
-         * If the draw is shared, the 'Spread' step is shown
-         *
-         * If the draw is not valid, the errors are presented to the user
+         * Attempt to create a shared draw.
+         * If the draw is created successfully, the invitation methods are presented to the user.
+         * If not, the errors are rendered on the form
          */
-        create_draw: function(){
+        publish: function(){
             var that = this;
             // Disable button to avoid duplicated submissions
             $('#publish').prop('disabled',true);
 
-            // Serialize and clean the form
-            var fields_skipped = ["csrfmiddlewaretoken", "_id"];
-            var form_fields = $('#draw-form').serializeForm(fields_skipped);
-            form_fields["type"] = this.options.draw_type;
-            var data = JSON.stringify(form_fields);
-
-            $.ajax({
-                type : "POST",
-                contentType : 'application/json',
-                url: this.options.url_create,
-                data: data
-            }).done(function( data, textStatus, xhr ) {
-                // Get the url to the draw
-                var url_draw_api = xhr.getResponseHeader('Location');
-                var url_draw_web = url_draw_api.replace(/api\/v[\d\.]+\//g,'');
-
-                if (that.options.is_shared){
+            this.create_draw(
+                callback_done = function( data, textStatus, xhr ){
+                    // Get the url to the draw
+                    var url_draw_api = xhr.getResponseHeader('Location');
+                    var url_draw_web = url_draw_api.replace(/api\/v[\d\.]+\//g,'');
                     // Present the link to the user
                     $('.url-share').val(url_draw_web);
                     // Set url to the FB share button
@@ -240,18 +226,60 @@
 
                     // TODO Show next step in the creation
                     that.show_spread_step();
-                }else{
-                    // TODO Could we just auto-toss in normal draws when they are created?
-                    window.location.href = url_draw_web;
-                }
-
-            })
-            .fail(function (e){
-                // TODO The WS create draw should return the specific errors when the draw is invalid
-                if (that.options.is_shared) {
+                },
+                callback_fail = function () {
+                    // TODO Error should be rendered manually here
                     that.try_draw();
                 }
-            });
+            );
+        },
+
+        /**
+         * Attempt to create a normal draw.
+         * If the draw is created it is automatically tossed and the results are presented
+         * If not, the errors are rendered in the form
+         */
+        create_and_toss: function(){
+            var that = this;
+            // Disable button to avoid duplicated submissions
+            $('#create-and-toss').prop('disabled',true);
+
+            this.create_draw(
+                callback_done = function( data, textStatus, xhr ){
+                    // Get the url to the draw
+                    var url_draw_api = xhr.getResponseHeader('Location');
+                    var url_draw_web = url_draw_api.replace(/api\/v[\d\.]+\//g,'');
+                    // TODO Could we just auto-toss in normal draws when they are created?
+                    window.location.href = url_draw_web;
+                },
+                callback_fail = function (e) {
+                    // TODO Error should be rendered manually here
+                    that.try_draw();
+                }
+            );
+        },
+
+        /**
+         * Creates a draw with the data from the current draw form
+         *
+         * @param callback_done Function executed if the creation success
+         * @param callback_fail Function executed if the creation fails
+         */
+        create_draw: function(callback_done, callback_fail){
+            // Serialize and clean the form
+            var fields_skipped = ["csrfmiddlewaretoken", "_id"];
+            var form_fields = $('#draw-form').serializeForm(fields_skipped);
+            form_fields["type"] = this.options.draw_type;
+            var data = JSON.stringify(form_fields);
+
+            $.ajax({
+                type : "POST",
+                contentType : 'application/json',
+                url: this.options.url_create,
+                data: data
+            })
+            .done(callback_done)
+            .fail(callback_fail);
         },
 
         /**
