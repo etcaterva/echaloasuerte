@@ -134,7 +134,7 @@ class DrawResource(resources.Resource):
                 except Exception:
                     return ""
                 else:
-                    return {"alias": user.user_image, "avatar": user.user_image}
+                    return {"alias": user.alias, "avatar": user.user_image}
             try:
                 messages = self._client.retrieve_chat_messages(draw_id)
             except mongodb.MongoDriver.NotFoundError:

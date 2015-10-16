@@ -126,7 +126,7 @@
 
         // Given a chat entry generates and returns the html code necessarry to be rendered
         formatChatEntry: function (chat_entry){
-            var user = chat_entry.user_alias;
+            var user = chat_entry.alias;
             var avatar = chat_entry.avatar || this.options.default_avatar;
             var content = chat_entry.content;
             var time = moment.utc(chat_entry.creation_time).fromNow();
