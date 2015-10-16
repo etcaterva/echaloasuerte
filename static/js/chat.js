@@ -89,14 +89,20 @@
                 return;
             }
 
+            var message_object = {
+                user : this.options.user_name,
+                message : message
+            };
+            var data = JSON.stringify(message_object);
+
+
             $.ajax({
                 url : this.options.url_send_message,
-                method : "GET",
-                data: {
-                    draw_id : this.options.draw_id,
-                    user_name : this.options.user_name,
-                    message : message
-                }
+                method : "POST",
+                contentType: 'application/json',
+                data: data
+            }).fail(function(e){
+                alert("The message was not sent");
             });
         },
 
