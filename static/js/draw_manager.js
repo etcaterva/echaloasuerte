@@ -28,7 +28,6 @@
                 }
             } else if (this.hasClass('eas-tokenfield')){
                 var items = value.split(',');
-                console.log(items)
                 return items;
                 //return value;
             } else{
@@ -196,16 +195,15 @@
 
             $.ajax({
                 method : "POST",
+                contentType : 'application/json',
                 url : this.options.url_toss
             }).done(function (){
                 // Here results should be rendered without reloading
-                //window.location.reload();
-            })
-            .fail(function () {
+                window.location.reload();
+            }).fail(function () {
                 alert("{% trans 'There was an issue when tossing the draw :(' %}");
             }).always(function(){
                 $('.submit-lockable').prop('disabled',false);
-                    asds
             });
         },
 
@@ -342,15 +340,13 @@
 
             var schedule_timestamp = moment.utc(new Date($("#toss-schedule").val())).format();
             this.options.url_schedule_toss = this.options.url_schedule_toss.replace('ts_placeholder',schedule_timestamp);
-            console.log(schedule_timestamp);
             $.ajax({
                 type : 'POST',
                 contentType : 'application/json',
                 url : this.options.url_schedule_toss
             }).done(function (){
                 // Here response should be rendered without reloading
-                //window.location.reload();
-                console.log("done")
+                window.location.reload();
             })
             .fail(function (e) {
                 alert("There was an issue when scheduling the draw :(");

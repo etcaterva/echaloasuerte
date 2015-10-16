@@ -41,16 +41,13 @@
 
     {% if is_public %}
         $("#try").click( function() {
-            console.log("Try draw");
             $draw_maneger.drawManager('try_draw');
         });
         $("#publish").click( function() {
-            console.log("Create and toss draw");
             $draw_maneger.drawManager('publish');
         });
     {% else %}
         $("#create-and-toss").click( function() {
-            console.log("Create and toss draw");
             $draw_maneger.drawManager('create-and-toss');
         });
     {% endif %}
