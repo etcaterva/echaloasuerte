@@ -143,21 +143,21 @@ PublicDraw.check_draw_changes = function () {
 };
 
 PublicDraw.save_settings = function (){
-    $('button#save-settings').click(function() {
-            var enable = $("#settings-chat-enabled").prop( "checked");
-            $.get(PublicDraw.url_update_settings, {
-                    draw_id: PublicDraw.draw_id,
-                    enable_chat: enable
-            }).done(function(data){
-                // TODO show feedback to indicate that the changes were applied
-                PublicDraw.enable_chat(enable);
-                PublicDraw.bom_last_updated = new Date();
-            })
-            .fail(function() {
-                // TODO Show feedback when the change could not be done
-                console.log("Error when updating the draw details");
-            });
-        });
+    var enable = $("#settings-chat-enabled").prop( "checked");
+    var data = JSON.stringify({'enable_chat': enable});
+    $.ajax({
+        method : "PATCH",
+        contentType : 'application/json',
+        url : PublicDraw.url_update,
+        data: data
+    }).done(function(data) {
+        // TODO show feedback to indicate that the changes were applied
+        PublicDraw.enable_chat(enable);
+        PublicDraw.bom_last_updated = new Date();
+    }).fail (function() {
+        // TODO Show feedback when the change could not be done
+        console.log("Error when updating the draw details");
+    });
 };
 
 PublicDraw.enable_chat = function (enable){
@@ -183,5 +183,6 @@ PublicDraw.setup = function(){
     PublicDraw.lock_fields();
 
     PublicDraw.check_draw_changes();
-    PublicDraw.save_settings();
+
+    $('#save-settings').bind("click", PublicDraw.save_settings);
 };

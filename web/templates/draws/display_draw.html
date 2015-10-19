@@ -141,7 +141,7 @@
         PublicDraw.draw_manager = $draw_maneger;
         PublicDraw.url_invite_users = "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}";
         PublicDraw.url_get_chat_messages = "{% url 'api_draw_chat' api_name="v1" pk=bom.pk %}";
-        PublicDraw.url_update_settings = "{% url 'ws_update_share_settings' %}";
+        PublicDraw.url_update = "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}";
         {% if not bom.owner or bom.owner == user.pk %}
             PublicDraw.msg_tooltip_protected = "{% trans "To edit the details go to Settings" %}";
         {% endif %}
