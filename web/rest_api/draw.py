@@ -279,6 +279,8 @@ class DrawResource(resources.Resource):
             raise exceptions.ImmediateHttpResponse(
                 response=http.HttpBadRequest(e.serialize()))
         draw.owner = bundle.request.user.pk
+        if not draw.is_shared:
+            draw.toss()
         self._client.save_draw(draw)
         bundle.obj = draw
         return bundle

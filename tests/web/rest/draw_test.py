@@ -372,6 +372,54 @@ class DrawResourceCreate_Test(ResourceTestCase):
         self.assertIsNone(draw.owner)
         self.mongo.remove_draw(draw.pk)
 
+    def test_create_shared_is_not_tossed(self):
+        data = {
+            'title': 'test_draw_with_no_owner',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': [],
+            'type': 'number',
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+        }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print(resp)
+        self.assertHttpCreated(resp)
+        draw = self.mongo.get_draws_with_filter({
+            'title': 'test_draw_with_no_owner'
+        })[0]
+        self.assertTrue(draw.is_feasible())
+
+        self.assertEqual(len(draw.results), 0)
+        self.mongo.remove_draw(draw.pk)
+
+    def test_create_private_is_tossed(self):
+        data = {
+            'title': 'test_draw_with_no_owner',
+            'is_shared': False,
+            'enable_chat': True,
+            'users': [],
+            'type': 'number',
+            'range_min': 5,
+            'range_max': 6,
+            'allow_repeat': True,
+        }
+        resp = self.api_client.post(self.base_url,
+                                    format='json',
+                                    data=data)
+        print(resp)
+        self.assertHttpCreated(resp)
+        draw = self.mongo.get_draws_with_filter({
+            'title': 'test_draw_with_no_owner'
+        })[0]
+        self.assertTrue(draw.is_feasible())
+
+        self.assertEqual(len(draw.results), 1)
+        self.mongo.remove_draw(draw.pk)
+
     def test_create_random_number_forbidden_att(self):
         self.login()
         data = {
