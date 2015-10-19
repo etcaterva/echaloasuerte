@@ -122,9 +122,9 @@ PublicDraw.bom_last_updated = "";
 // If so, reload the page.
 PublicDraw.check_draw_changes = function () {
     $.ajax({
-        url : PublicDraw.url_get_draw_details,
         method : "GET",
-        data: { draw_id : PublicDraw.draw_id }
+        url : PublicDraw.url_get_chat_messages,
+        contentType : 'application/json'
     }).done(function(data) {
         if(PublicDraw.bom_last_updated < moment.utc(data.last_updated_time)){
             window.location.reload();

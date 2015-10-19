@@ -6,7 +6,8 @@
             is_enabled: true,
             url_send_message: "",
             draw_id: "",
-            user_name: "",
+            user_alias: "",
+            user_id: "",
             msg_type_your_message: "",
             msg_chat: "",
             msg_login_first: "",
@@ -52,7 +53,7 @@
             );
 
             // If the user is not logged in and does not have an alias, setup the button
-            if (!this.options.user_name) {
+            if (!this.options.user_alias) {
                 this.$element.find('#access-chat').click(function () {
                     var valid_alias = that.check_alias_and_enable_chat();
                     console.log(valid_alias)
@@ -89,14 +90,19 @@
                 return;
             }
 
+            var message_object = {
+                user : this.options.user_id,
+                message : message
+            };
+            var data = JSON.stringify(message_object);
+
             $.ajax({
                 url : this.options.url_send_message,
-                method : "GET",
-                data: {
-                    draw_id : this.options.draw_id,
-                    user_name : this.options.user_name,
-                    message : message
-                }
+                method : "POST",
+                contentType: 'application/json',
+                data: data
+            }).fail(function(e){
+                alert("The message was not sent");
             });
         },
 
@@ -120,7 +126,7 @@
 
         // Given a chat entry generates and returns the html code necessarry to be rendered
         formatChatEntry: function (chat_entry){
-            var user = chat_entry.user;
+            var user = chat_entry.alias;
             var avatar = chat_entry.avatar || this.options.default_avatar;
             var content = chat_entry.content;
             var time = moment.utc(chat_entry.creation_time).fromNow();
@@ -140,8 +146,8 @@
             var alias = this.$element.find('.alias-chat').val();
             if (alias.length > 1 && alias.length < 20 ){
                 $('.login-for-chat').remove();
-                setCookie("user_name", alias);
-                this.options.user_name = alias;
+                setCookie("user_alias", alias);
+                this.options.user_alias = alias;
                 return true;
             }
             return false;
@@ -154,7 +160,7 @@
             var html_button = '<button class="btn btn-success btn-sm" id="chat-send">'+this.options.msg_send+'</button>';
 
             var html = "";
-            if (!this.options.user_name){
+            if (!this.options.user_alias){
                 // Add grayed out layer to "disable" chat until an alias is given
                 html =  '<div class="login-for-chat text-center"><p>' + this.options.msg_login_first + '</p>' +
                         '   <p>' + this.options.msg_alias + '</p>' +
