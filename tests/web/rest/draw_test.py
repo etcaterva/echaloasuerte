@@ -243,7 +243,7 @@ class DrawResourceTest(ResourceTestCase):
         self.assertHttpCreated(self.api_client.post(self.detail_url,
                                                     format='json',
                                                     data={
-                                                        'add_user': 'FAKE@USER.es'
+                                                        'add_user': ['FAKE@USER.es']
                                                     }))
 
         # Verify a new one has been added.
@@ -260,7 +260,7 @@ class DrawResourceTest(ResourceTestCase):
         self.assertHttpCreated(self.api_client.post(self.detail_url,
                                                     format='json',
                                                     data={
-                                                        'add_user': 'FAKE@USER.es'
+                                                        'add_user': ['FAKE@USER.es']
                                                     }))
         self.assertEquals(sorted(self.mongo.retrieve_draw(self.item.pk).users),
                          sorted(['FAKE@USER.es', self.user.pk]))
