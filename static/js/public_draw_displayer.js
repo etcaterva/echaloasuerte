@@ -81,17 +81,21 @@ PublicDraw.settings = function () {
     */
     $('a#send-emails').click(function() {
         $('div#settings-invite div.feedback').addClass('hide');
-        var draw_id = $(this).attr("data-id");
         var users = $('input#invite-emails').val();
 
-        // Store the emails in the draw form input
-        $('#users').val(users);
+        // Serialize and clean the form
+        var users_to_invite = {'add_user': users.split(',')};
+        var data = JSON.stringify(users_to_invite);
 
-        $.get(PublicDraw.url_invite_users, {draw_id: draw_id, emails: users}, function(data){
-            $('div#alert-invitation-success').removeClass('hide');
-        })
-        .fail(function() {
-            $('div#alert-invitation-failed').removeClass('hide');
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            data: data,
+            url: PublicDraw.url_invite_users
+        }).done(function(){
+            console.log("users invited");
+        }).fail(function(){
+            console.log("users NOT invited");
         });
     });
 };
