@@ -132,7 +132,7 @@ class DrawResource(resources.Resource):
                 try:
                     user = self._client.retrieve_user(username)
                 except Exception:
-                    return ""
+                    return {}
                 else:
                     return {"alias": user.alias, "avatar": user.user_image}
             try:
