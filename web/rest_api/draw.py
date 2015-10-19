@@ -327,10 +327,11 @@ class DrawResource(resources.Resource):
         except TypeError:
             data = json.loads(request.body.decode('utf-8'))
         if 'add_user' in data:
-            new_user =  str(data['add_user'])
-            draw.users.append(new_user)
+            new_users = [str(user) for user in data['add_user']
+                                   if '@' in str(user)]
+            draw.users.extend(new_users)
             self._client.save_draw(draw)
-            invite_user([new_user], draw)
+            invite_user(new_users, draw)
         if 'remove_user' in data:
             if not draw.check_write_access(request.user):
                 raise exceptions.ImmediateHttpResponse(
