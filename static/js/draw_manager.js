@@ -14,8 +14,7 @@
             if (type == "number"){
                 return parseInt(value, 10);
             }else if (type == "checkbox" ){
-                // Non checked checkbox are not processed at all
-                return true;
+                return this.prop( "checked");
             }else if (type == "hidden" || type == "radio"){
                 if (value == "True"){
                     return true;
@@ -27,9 +26,7 @@
                     return value;
                 }
             } else if (this.hasClass('eas-tokenfield')){
-                var items = value.split(',');
-                return items;
-                //return value;
+                return value.split(',');;
             } else{
                 return value;
             }
