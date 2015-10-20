@@ -11,9 +11,11 @@ PublicDraw.defaults = {
     url_update: null,
     url_subscribe: null,
     msg_login_to_subscribe: "Please, log in to be able to subscribe to a draw",
+    msg_error_subscribe: "There was an issue when subscribing to the draw :(",
+    msg_error_unsubscribe: "There was an issue when unsubscribing to the draw :(",
 };
 
-PublicDraw.settings = function () {
+PublicDraw.setup_settings_panel = function () {
     function show_settings_panel(){
         // Show the main settings screen
         $('#settings-general').removeClass("hide");
@@ -220,7 +222,7 @@ PublicDraw.subscribe = function (subscribe){
             $subscribe_button.attr("data-active", "n");
         })
         .fail(function (error) {
-            alert("{% trans 'There was an issue when subscribing to the draw :(' %}");
+            alert(PublicDraw.options.msg_error_subscribe);
             console.log(error);
         });
     } else {
@@ -233,7 +235,7 @@ PublicDraw.subscribe = function (subscribe){
             $subscribe_button.attr("data-active", "y");
         })
         .fail(function (error) {
-            alert("{% trans 'There was an issue when unsubscribing to the draw :(' %}");
+            alert(PublicDraw.options.msg_error_unsubscribe);
             console.log(error);
         });
     }
@@ -250,12 +252,12 @@ PublicDraw.setup = function(options){
     $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
     $('input#invited-users').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
 
-    // Update url in the FB share button
-    $('.url-share').val(url_draw);
-
     $(".invited-users-spoiler").click(function() {
 		$(this).parent().next().collapse('toggle');
 	});
+
+    // Update url in the FB share button
+    $('.url-share').val(PublicDraw.options.url_share_fb);
 
     // Add datetime picker to schedule draws
     $('.datetimepicker').datetimepicker({value:moment().format()});
@@ -274,10 +276,12 @@ PublicDraw.setup = function(options){
         track: true
     });
     PublicDraw.lock_fields(true);
-    PublicDraw.settings();
 
-    PublicDraw.check_draw_changes();
+    PublicDraw.setup_settings_panel();
     PublicDraw.setup_buttons();
+
+    // Check periodically if the draw has been updated
+    PublicDraw.check_draw_changes();
 
     $('#save-settings').bind("click", PublicDraw.save_settings);
 };
