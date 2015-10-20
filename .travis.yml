@@ -14,6 +14,6 @@ install:
 script:
   - nosetests tests/test_init.py tests -v
   - |
-    if [[ $TRAVIS_PYTHON_VERSION == '2.7' && "${TRAVIS_PULL_REQUEST}" != "false" ]]; then
+    if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then
       nosetests func_test -v
     fi
