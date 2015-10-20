@@ -1,5 +1,18 @@
 var PublicDraw = {};
 
+PublicDraw.defaults = {
+    draw_id: null,
+    is_authenticated: false,
+    bom_last_updated: null,
+    chats: null,
+    draw_manager: null,
+    url_invite_users: null,
+    url_get_chat_messages: null,
+    url_update: null,
+    url_subscribe: null,
+    msg_login_to_subscribe: "Please, log in to be able to subscribe to a draw",
+};
+
 PublicDraw.settings = function () {
     function show_settings_panel(){
         // Show the main settings screen
@@ -35,7 +48,7 @@ PublicDraw.settings = function () {
     Unlock the fields, hide toss button and present buttons to save changes and cancel the edition
     */
     $('a#edit-draw-confirmation').click(function() {
-        PublicDraw.unlock_fields();
+        PublicDraw.lock_fields(false);
         // Hide the toss button
         $('#toss-button, #schedule-toss-button').addClass('hide');
         // Show the "Save changes" and "Cancel edition" buttons
@@ -62,7 +75,7 @@ PublicDraw.settings = function () {
     If the has edited a public draw so the configuration is submitted to the server
     */
     $('#edit-draw-save').click(function() {
-        PublicDraw.draw_manager.drawManager('update_shared_draw');
+        PublicDraw.options.draw_manager.drawManager('update_shared_draw');
     });
 
 
@@ -91,7 +104,7 @@ PublicDraw.settings = function () {
             type: 'POST',
             contentType: 'application/json',
             data: data,
-            url: PublicDraw.url_invite_users
+            url: PublicDraw.options.url_invite_users
         }).done(function(){
             console.log("users invited");
         }).fail(function(){
@@ -100,40 +113,45 @@ PublicDraw.settings = function () {
     });
 };
 
-PublicDraw.lock_fields = function () {
-    // Add read-only property to the inputs of the draw
-    $('.protected').prop('readonly', true);
-    $('.protected').prop('title', PublicDraw.msg_tooltip_protected);
+/**
+ * Lock and unlock the form fields
+ *
+ * @param locked Determines whether the fields will be locked or unlocked
+ */
+PublicDraw.lock_fields = function(locked){
+    var $protected_fields = $('.protected');
+    if (locked){
+        // Add read-only property to the inputs of the draw
+        $protected_fields.prop('readonly', true);
+        $protected_fields.prop('title', PublicDraw.options.msg_tooltip_protected);
 
-    // Add read-only property to inputs with tokenField
-    $('.protected').tokenfield('readonly');
-    $('.protected').parent('.tokenfield').attr('readonly', "true");
+        // Add read-only property to inputs with tokenField
+        $protected_fields.tokenfield('readonly');
+        $protected_fields.parent('.tokenfield').attr('readonly', "true");
+    }else{
+        // Remove read-only property to the inputs of the draw
+        $protected_fields.removeProp('readonly');
+        $protected_fields.removeProp('title');
+
+        // Remove read-only property to inputs with tokenField
+        $protected_fields.tokenfield('writeable');
+        $protected_fields.parent('.tokenfield').removeAttr('readonly');
+    }
 };
 
-PublicDraw.unlock_fields = function () {
-    // Add read-only property to the inputs of the draw
-    $('.protected').removeProp('readonly');
-
-    // Add read-only property to inputs with tokenField
-    $('.protected').tokenfield('writeable');
-    $('.protected').parent('.tokenfield').removeAttr('readonly');
-};
-
-
-PublicDraw.bom_last_updated = "";
 // Make a request to the server to check whether the draw has changed
 // If so, reload the page.
 PublicDraw.check_draw_changes = function () {
     $.ajax({
         method : "GET",
         contentType : 'application/json',
-        url : PublicDraw.url_get_chat_messages
+        url : PublicDraw.options.url_get_chat_messages
     }).done(function(data) {
-        if(PublicDraw.bom_last_updated < moment.utc(data.last_updated_time)){
+        if(PublicDraw.options.bom_last_updated < moment.utc(data.last_updated_time)){
             window.location.reload();
         }
-        for(var i=0; i<PublicDraw.chats.length; i++) {
-            PublicDraw.chats[i].messages = data.messages;
+        for(var i=0; i<PublicDraw.options.chats.length; i++) {
+            PublicDraw.options.chats[i].messages = data.messages;
         }
     }).fail (function() {
         console.log("Error when retrieving draw details");
@@ -148,12 +166,12 @@ PublicDraw.save_settings = function (){
     $.ajax({
         method : "PATCH",
         contentType : 'application/json',
-        url : PublicDraw.url_update,
+        url : PublicDraw.options.url_update,
         data: data
     }).done(function(data) {
         // TODO show feedback to indicate that the changes were applied
         PublicDraw.enable_chat(enable);
-        PublicDraw.bom_last_updated = new Date();
+        PublicDraw.options.bom_last_updated = new Date();
     }).fail (function() {
         // TODO Show feedback when the change could not be done
         console.log("Error when updating the draw details");
@@ -161,13 +179,70 @@ PublicDraw.save_settings = function (){
 };
 
 PublicDraw.enable_chat = function (enable){
-    $.each(PublicDraw.chats, function(){
+    $.each(PublicDraw.options.chats, function(){
         this.enable(enable);
     });
 };
 
+PublicDraw.setup_buttons = function (){
+        $("#confirm-schedule-button").click( function() {
+            $('#confirm-schedule-button').prop('disabled',true);
+            PublicDraw.options.draw_manager.drawManager('schedule_toss');
+        });
+
+        $('#schedule-toss-button').click(function() {
+            $('#schedule-toss-modal').modal('show');
+        });
+
+        $("#shared-draw-toss").click( function() {
+            PublicDraw.options.draw_manager.drawManager('toss');
+        });
+
+        $('#subscribe-button').click(function() {
+            if (PublicDraw.options.is_authenticated){
+                var isSubscribed = $('#subscribe-button').attr("data-active") === "y";
+                PublicDraw.subscribe(!isSubscribed)
+            }else{
+                alert(PublicDraw.options.msg_login_to_subscribe);
+            }
+        });
+};
+
+PublicDraw.subscribe = function (subscribe){
+    var $subscribe_button = $('#subscribe-button');
+    if (subscribe) {
+        $.ajax({
+            method : "POST",
+            url : PublicDraw.options.url_subscribe,
+            data: "{}"
+        }).done(function (){
+            console.log("subscribed to draw");
+            $subscribe_button.attr("data-active", "n");
+        })
+        .fail(function (error) {
+            alert("{% trans 'There was an issue when subscribing to the draw :(' %}");
+            console.log(error);
+        });
+    } else {
+        $.ajax({
+            method : "DELETE",
+            url : PublicDraw.options.url_subscribe,
+            data: {}
+        }).done(function (){
+            console.log("Unsubscribed to draw");
+            $subscribe_button.attr("data-active", "y");
+        })
+        .fail(function (error) {
+            alert("{% trans 'There was an issue when unsubscribing to the draw :(' %}");
+            console.log(error);
+        });
+    }
+};
+
 // Initialize the interface for a public draw
-PublicDraw.setup = function(){
+PublicDraw.setup = function(options){
+    PublicDraw.options = $.extend({}, PublicDraw.defaults, options);
+
     // Hide the information div ("Separate items by commas...") when displaying a public draw
     $('#info-comma-separated').addClass('hidden');
 
@@ -175,14 +250,34 @@ PublicDraw.setup = function(){
     $('input#invite-emails').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
     $('input#invited-users').tokenfield({createTokensOnBlur:true, delimiter: [',',' '], inputType: 'email', minWidth: 300});
 
+    // Update url in the FB share button
+    $('.url-share').val(url_draw);
+
     $(".invited-users-spoiler").click(function() {
 		$(this).parent().next().collapse('toggle');
 	});
 
+    // Add datetime picker to schedule draws
+    $('.datetimepicker').datetimepicker({value:moment().format()});
+
+    // When fields are focused, pre-selected its content
+    $('.form-control').click(function() {
+        var attr = $(this).hasClass('protected');
+        if (typeof attr === typeof undefined || attr === false) {
+            $(this).select();
+        }
+    });
+
+    // Add the styled tooltip
+    $(".protected").tooltip({
+        show: {delay: 500},
+        track: true
+    });
+    PublicDraw.lock_fields(true);
     PublicDraw.settings();
-    PublicDraw.lock_fields();
 
     PublicDraw.check_draw_changes();
+    PublicDraw.setup_buttons();
 
     $('#save-settings').bind("click", PublicDraw.save_settings);
 };

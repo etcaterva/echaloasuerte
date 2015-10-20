@@ -26,7 +26,7 @@
                     return value;
                 }
             } else if (this.hasClass('eas-tokenfield')){
-                return value.split(',');;
+                return value.split(',');
             } else{
                 return value;
             }
@@ -430,7 +430,6 @@
             $('.step-configure').addClass('hidden');
             $('.step-spread').removeClass('hidden');
         },
-
     };
 
     /*********************************

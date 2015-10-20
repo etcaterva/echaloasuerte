@@ -37,59 +37,6 @@
     {% endif %}
 {% endblock extra_js %}
 {% block extra_jq_ready %}
-    $(".protected").tooltip({
-        show: {delay: 500},
-        track: true,
-    });
-
-    // When fields are focused, all the content is pre-selected
-    $('.form-control').click(function() {
-        var attr = $(this).hasClass('protected');
-        if (typeof attr === typeof undefined || attr === false) {
-            $(this).select();
-        }
-    });
-
-    // Disable submit button after submitting
-    $('form').submit(function() {
-        $(this).find("button[type='submit']").prop('disabled',true);
-        return true;
-    });
-
-    $('#subscribe-button').click(function() {
-        {% if user.is_authenticated %}
-            var isSubscribed = $(this).attr("data-active") === "y";
-            if (!isSubscribed) {
-                $.ajax({
-                    method : "POST",
-                    url : "{% url 'api_dispatch_detail' resource_name="draw" api_name="v1" pk=bom.pk %}",
-                    data: "{}"
-                }).done(function (){
-                    alert("{%trans "Subscribed to draw updates"%}");
-                    $(this).attr("data-active", "n");
-                })
-                .fail(function (error) {
-                    alert("{% trans 'There was an issue when subscribing to the draw :(' %}");
-                    console.log(error);
-                });
-            } else {
-                $.ajax({
-                    method : "DELETE",
-                    url : "{% url 'api_dispatch_detail' resource_name="draw" api_name="v1" pk=bom.pk %}",
-                    data: {}
-                }).done(function (){
-                    alert("{%trans "Unsubscribed from draw updates"%}");
-                    $(this).attr("data-active", "y");
-                })
-                .fail(function (error) {
-                    alert("{% trans 'There was an issue when unsubscribing to the draw :(' %}");
-                    console.log(error);
-                });
-            }
-        {% else %}
-            alert("{%trans "Please, log in to be able to subscribe to a draw"%}");
-        {% endif %}
-    });
     $('#fav-button').favourites({
             "url_add": "{% url 'ws_add_favorite' %}",
             "url_remove": "{% url 'ws_remove_favorite' %}",
@@ -135,46 +82,22 @@
             "default_avatar": "{% static 'img/anon-user-avatar.png' %}"
         });
 
-        PublicDraw.draw_id = "{{ bom.pk }}";
-        PublicDraw.bom_last_updated = moment.utc("{{bom.last_updated_time.isoformat}}");
-        PublicDraw.chats = $chats;
-        PublicDraw.draw_manager = $draw_maneger;
-        PublicDraw.url_invite_users = "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}";
-        PublicDraw.url_get_chat_messages = "{% url 'api_draw_chat' api_name="v1" pk=bom.pk %}";
-        PublicDraw.url_update = "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}";
-        {% if not bom.owner or bom.owner == user.pk %}
-            PublicDraw.msg_tooltip_protected = "{% trans "To edit the details go to Settings" %}";
-        {% endif %}
-        PublicDraw.setup();
-
-        var url_draw = location.protocol + "//" + location.host + "{% url "retrieve_draw" draw_id=bom.pk %}";
-        $('.url-share').val(url_draw);
-        $('.datetimepicker').datetimepicker({value:moment().format()});
-
-        $("#confirm-schedule-button").click( function() {
-            $('#confirm-schedule-button').prop('disabled',true);
-            $draw_maneger.drawManager('schedule_toss');
-        });
-
-        $('#schedule-toss-button').click(function() {
-            $('#schedule-toss-modal').modal('show');
-        });
-
-        $("#shared-draw-toss").click( function() {
-            $draw_maneger.drawManager('toss');
-        });
-
-        // When fields are focused, all the content is pre-selected
-        $('.form-control').click(function() {
-            var attr = $(this).hasClass('protected');
-            if (typeof attr === typeof undefined || attr === false) {
-                $(this).select();
-            }
-        });
-        $(".protected").tooltip({
-            show: {delay: 500},
-            track: true,
-        });
+        var public_draw_options = {
+            draw_id: "{{ bom.pk }}",
+            is_authenticated: {{ user.is_authenticated|yesno:"true,false" }},
+            bom_last_updated: moment.utc("{{bom.last_updated_time.isoformat}}"),
+            chats: $chats,
+            draw_manager: $draw_maneger,
+            url_invite_users: "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
+            url_get_chat_messages: "{% url 'api_draw_chat' api_name="v1" pk=bom.pk %}",
+            url_update: "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
+            url_subscribe: "{% url 'api_dispatch_detail' resource_name="draw" api_name="v1" pk=bom.pk %}",
+            url_share_fb: location.protocol + "//" + location.host + "{% url "retrieve_draw" draw_id=bom.pk %}",
+            {% if not bom.owner or bom.owner == user.pk %}
+                msg_tooltip_protected: "{% trans "To edit the details go to Settings" %}",
+            {% endif %}
+        }
+        PublicDraw.setup(public_draw_options);
     {% else %}
         $('#fav-button').favourites({
             "url_add": "{% url 'ws_add_favorite' %}",
