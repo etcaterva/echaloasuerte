@@ -21,7 +21,7 @@
                 }else if (value == "False"){
                     return false;
                 }else if (!isNaN(value)){
-                        return parseInt(value, 10);
+                    return parseInt(value, 10);
                 } else {
                     return value;
                 }
@@ -56,9 +56,11 @@
             })
             .map(function( i, elem ){
                 var value = jQuery( this ).cast_input_value();
-                return value == null ?
-                    null :
-                    { name: elem.name, value: value, type: elem.type };
+                if (value != null){
+                    return { name: elem.name, value: value, type: elem.type };
+                }else{
+                    return null;
+                }
             })
             .get();
             $.each(draw_object, function() {
@@ -236,7 +238,6 @@
                     // Set the link of the "Go to the draw" button
                     $('#go-to-draw').attr('href', url_draw_web);
 
-                    // TODO Show next step in the creation
                     that.show_spread_step();
                 },
                 callback_fail = function () {
@@ -261,7 +262,6 @@
                     // Get the url to the draw
                     var url_draw_api = xhr.getResponseHeader('Location');
                     var url_draw_web = url_draw_api.replace(/api\/v[\d\.]+\//g,'');
-                    // TODO Could we just auto-toss in normal draws when they are created?
                     window.location.href = url_draw_web;
                 },
                 callback_fail = function (e) {
