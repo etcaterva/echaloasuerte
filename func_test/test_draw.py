@@ -17,7 +17,7 @@ class NormalDrawTest(BrowserStackTest):
         driver = self.driver
         draw_box = driver.find_element_by_id("coin-draw")
         draw_box.click()
-        toss_btn = driver.find_element_by_id("toss")
+        toss_btn = driver.find_element_by_id("create-and-toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
         self.assertTrue(result)
@@ -27,7 +27,7 @@ class NormalDrawTest(BrowserStackTest):
         driver = self.driver
         draw_box = driver.find_element_by_id("number-draw")
         draw_box.click()
-        toss_btn = driver.find_element_by_id("toss")
+        toss_btn = driver.find_element_by_id("create-and-toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
         self.assertTrue(result)
@@ -37,7 +37,7 @@ class NormalDrawTest(BrowserStackTest):
         driver = self.driver
         draw_box = driver.find_element_by_id("card-draw")
         draw_box.click()
-        toss_btn = driver.find_element_by_id("toss")
+        toss_btn = driver.find_element_by_id("create-and-toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
         self.assertTrue(result)
@@ -48,7 +48,7 @@ class NormalDrawTest(BrowserStackTest):
         draw_box = driver.find_element_by_id("item-draw")
         draw_box.click()
         driver.find_element_by_id("id_items-tokenfield").send_keys("a,b,c")
-        toss_btn = driver.find_element_by_id("toss")
+        toss_btn = driver.find_element_by_id("create-and-toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
         self.assertTrue(result)
@@ -58,7 +58,7 @@ class NormalDrawTest(BrowserStackTest):
         driver = self.driver
         draw_box = driver.find_element_by_id("dice-draw")
         draw_box.click()
-        toss_btn = driver.find_element_by_id("toss")
+        toss_btn = driver.find_element_by_id("create-and-toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
         self.assertTrue(result)
@@ -70,7 +70,7 @@ class NormalDrawTest(BrowserStackTest):
         draw_box.click()
         driver.find_element_by_id("id_set_1-tokenfield").send_keys("1,2,3")
         driver.find_element_by_id("id_set_2-tokenfield").send_keys("a,b,c")
-        toss_btn = driver.find_element_by_id("toss")
+        toss_btn = driver.find_element_by_id("create-and-toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
         self.assertTrue(result)

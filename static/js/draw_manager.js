@@ -62,7 +62,13 @@
             })
             .get();
             $.each(draw_object, function() {
-                if (serialized_draw[this.name] === undefined) {
+                var regex_set = /^set_[0-9]/i;
+                if (regex_set.test(this.name)){
+                    if (serialized_draw['sets'] === undefined){
+                        serialized_draw['sets'] = [];
+                    }
+                    serialized_draw['sets'].push(this.value);
+                }else if (serialized_draw[this.name] === undefined) {
                     serialized_draw[this.name] = this.value;
                 } else {
                     console.log("ERROR: Two inputs in the forms share the same name (" + this.name + ")");
