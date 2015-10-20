@@ -19,68 +19,38 @@
     <script src="{% static 'js/card.js' %}"></script>
     <script src="{% static 'js/coin.js' %}"></script>
     <script src="{% static 'js/dice.js' %}"></script>
-    {% if is_public %}
-        <script src="{% static 'js/public_draw_creator.js' %}"></script>
-    {% endif %}
+    <script src="{% static 'js/draw_manager.js' %}"></script>
 {% endblock extra_head %}
 {% block extra_jq_ready %}
-
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
+    $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
         $(this).select();
     });
-    // Hide the "allow repeat" checkbox (since by default the number of results is 1)
-     var toggle_allow_repeat = function (){
-        if ($('#id_number_of_results').val() > 1){
-            $('#div_id_allow_repeat').removeClass('hidden');
-        }else{
-            $('#div_id_allow_repeat').addClass('hidden');
-        }
-    };
-    toggle_allow_repeat();
-    // Show/hide "allow repeat" option if the number of results is higher than 1)
-    $('#id_number_of_results').bind('keyup change', toggle_allow_repeat);
 
-    // Autoresize the title box when window is resized
-    autosize = function(){
-        var max_width = $("#draw-title-container").width()*2/3;
-        $("textarea.autogrow").width(max_width);
-        $("textarea.autogrow").autoGrowInput({title:'{{ default_title }}',maxWidth: max_width,minWidth:30,comfortZone:30});
-    };
-
-    // Don't shake the title when it has already a title
-    {% if bom.title %}
-        PublicDrawCreator.title_changed = true;
-    {% endif %}
-
-    // Autosize the title box the first time
-    autosize();
-    $( window ).resize(function() {
-        // Autosize when the window is resized
-        autosize();
+    var $draw_maneger = $('#draw-form').drawManager({
+        draw_type: "{{ draw_type }}",
+        is_shared: {{ is_public|yesno:"true,false" }},
+        url_try: "{% url 'api_draw_try' api_name="v1" %}",
+        url_create: "{% url 'api_dispatch_list' api_name="v1" resource_name="draw" %}",
+        msg_result: "{% trans "Result" %}",
+        msg_generated_on: "{% trans "generated on" %}"
     });
-
-    // Disable submit button after submitting
-    $('form').submit(function() {
-        var $submit_btn = $(this).find("button[type='submit']");
-        $submit_btn.prop('disabled',true);
-        $submit_btn.text('{% trans "Loading..." %}');
-        return true;
-    });
-
-    $('.accordion').accordion({collapsible: true});
 
     {% if is_public %}
-        PublicDrawCreator.draw_type = "{{ draw_type }}"
-        PublicDrawCreator.url_index = "{% url 'index' %}";
-        PublicDrawCreator.url_try = "{% url 'try_draw' draw_type=draw.NAME_IN_URL %}";
-        PublicDrawCreator.url_create = "{% url 'api_dispatch_list' api_name="v1" resource_name="draw" %}";
-        PublicDrawCreator.setup();
-
+        $("#try").click( function() {
+            $draw_maneger.drawManager('try_draw');
+        });
+        $("#publish").click( function() {
+            $draw_maneger.drawManager('publish');
+        });
+    {% else %}
+        $("#create-and-toss").click( function() {
+            $draw_maneger.drawManager('create_and_toss');
+        });
     {% endif %}
-    $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
 {% block content %}
     {% if is_public %}
@@ -149,19 +119,19 @@
             {% if is_public %}
                 {# Button to try a draw when creating a public one #}
                 <div class="row btn-row step-configure">
-                    <button type="submit" id="try" name="try" class="btn btn-success">{% trans 'Try it!' %}</button>
+                    <button type="button" id="try" class="btn btn-success submit-lockable">{% trans 'Try it!' %}</button>
                 </div>
 
                 {# Buttons "Next Step" and "Cancel" shown when creating a public draw #}
                 <div class="col-sm-8 col-sm-offset-2 btn-row">
                     <a href="{% url 'index' %}" class="step-configure col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
-                    <a id="publish" class="step-configure col-xs-6 btn btn-primary">{% trans 'Publish draw' %}</a>
+                    <button type="button" id="publish" class="step-configure col-xs-6 btn btn-primary submit-lockable">{% trans 'Publish draw' %}</button>
                     <a id="go-to-draw" class="step-spread col-xs-6 col-xs-offset-3 btn btn-primary hidden" href="#">{% trans 'Go to the draw' %}</a>
                 </div>
             {% else %}
-                {# Button to toss the draw (both private and public) #}
+                {# Button to toss the draw in private draws #}
                 <div class="row ">
-                    <button id="toss" type="submit" name="toss" class="btn btn-success">{% trans 'Toss!' %}</button>
+                    <button type="button" id="create-and-toss" class="btn btn-success submit-lockable">{% trans 'Toss!' %}</button>
                 </div>
             {% endif %}
         </div>

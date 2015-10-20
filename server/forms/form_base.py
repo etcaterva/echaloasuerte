@@ -18,6 +18,7 @@ class FormBase(forms.Form):
     is_shared = forms.BooleanField(required=False, widget=forms.HiddenInput())
     """Whether the draw is open to multiple users"""
 
+    # TODO the users field is not needed anymore in the form
     users = forms.CharField(required=False)
     """User invited to the draw, in case of been public.
      It needs to be rendered manually in the templates"""
