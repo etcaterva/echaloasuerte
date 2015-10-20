@@ -22,8 +22,8 @@
     <script src="{% static 'js/draw_manager.js' %}"></script>
 {% endblock extra_head %}
 {% block extra_jq_ready %}
-
     {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
+    $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 
     // When fields are focused, all the content is pre-selected
     $('.form-control').click(function() {
@@ -51,8 +51,6 @@
             $draw_maneger.drawManager('create_and_toss');
         });
     {% endif %}
-
-    $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
 {% block content %}
     {% if is_public %}

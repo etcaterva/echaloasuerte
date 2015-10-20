@@ -37,6 +37,8 @@
     {% endif %}
 {% endblock extra_js %}
 {% block extra_jq_ready %}
+    $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
+
     $('#fav-button').favourites({
             "url_add": "{% url 'ws_add_favorite' %}",
             "url_remove": "{% url 'ws_remove_favorite' %}",
@@ -44,8 +46,8 @@
             "draw_id": "{{ bom.pk }}",
             "path_img_star": "{% static "img/star.png" %}",
             "path_img_star_empty": "{% static "img/star-o.png" %}",
-            "msg_regsiter": "You need an account to save your favourite draws",
-            "msg_toss": "Click on the 'Toss' button to try the draw first"
+            "msg_regsiter": "{% trans "You need an account to save your favourite draws" %}",
+            "msg_toss": "{% trans "Click on the 'Toss' button to try the draw first" %}"
     });
 
     var $draw_maneger = $('#draw-form').drawManager({
@@ -116,8 +118,6 @@
             $draw_maneger.drawManager('check_changes_and_toss');
         });
     {% endif %}
-
-    $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 {% endblock extra_jq_ready %}
 {% block content %}
     <form class="clearfix" method="post" id="draw-form">
