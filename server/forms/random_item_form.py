@@ -35,3 +35,10 @@ class RandomItemDrawForm(FormBase):
                 'allow_repeat',
             ),
         )
+
+    def clean(self):
+        cleaned_data = super(RandomItemDrawForm, self).clean()
+        if not self._errors:
+            raw_items = cleaned_data.get('items')
+            cleaned_data['items'] = raw_items.split(",") if ',' in raw_items else raw_items.split()
+        return cleaned_data

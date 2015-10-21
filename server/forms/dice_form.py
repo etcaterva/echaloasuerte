@@ -7,7 +7,7 @@ from server.forms.form_base import FormBase
 class DiceDrawForm(FormBase):
     number_of_results = forms.IntegerField(label=_("Number of dice"),
                                            required=True, initial=1,
-                                           max_value=20)
+                                           min_value=1, max_value=20)
 
     DEFAULT_TITLE = _("Roll dice")
 

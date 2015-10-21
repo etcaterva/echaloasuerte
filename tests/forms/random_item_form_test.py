@@ -11,12 +11,12 @@ class RandomItemDrawFormTest(TestCase):
 
     def not_enough_items_ko_test(self):
         """RandomItemDrawForm: Not enough items is not valid"""
-        form_data = {'number_of_results': 1}
+        form_data = {'number_of_results': 1, 'items': []}
         form = RandomItemDrawForm(data=form_data)
         self.assertFalse(form.is_valid())
 
     def not_enough_results_ko_test(self):
-        """RandomItemDrawForm: Number of items requested less than one is not valid"""
+        """RandomItemDrawForm: Number of items > 0 """
         form_data = {'number_of_results': 0}
         form = RandomItemDrawForm(data=form_data)
         self.assertFalse(form.is_valid())

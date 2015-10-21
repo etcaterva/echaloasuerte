@@ -8,7 +8,6 @@ class FormDrawConsistencyTest(TestCase):
 
     def validate(self, data, model_name):
         """General validation for forms and boms"""
-        data["users"] = "user1, user2"
         form_name = model_name + "Form"
         draw_class = globals()[model_name]
         form_class = globals()[form_name]
