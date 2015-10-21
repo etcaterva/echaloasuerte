@@ -1,5 +1,4 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from server.forms.form_base import FormBase
 from crispy_forms.layout import Layout, Row
@@ -12,7 +11,6 @@ class RandomNumberDrawForm(FormBase):
     allow_repeat = forms.BooleanField(label=_("Allow repetitions"), required=False)
 
     DEFAULT_TITLE = _("Random Number")
-
 
     def __init__(self, *args, **kwargs):
         super(RandomNumberDrawForm, self).__init__(*args, **kwargs)
@@ -32,22 +30,3 @@ class RandomNumberDrawForm(FormBase):
                 'allow_repeat',
             ),
         )
-
-    def clean_number_of_results(self):
-        if 0 < self.cleaned_data.get('number_of_results', 1) < 50:
-            return self.cleaned_data.get('number_of_results', '')
-        raise ValidationError(_("Between 1 and 50"))
-
-    def clean(self):
-        cleaned_data = super(RandomNumberDrawForm, self).clean()
-        # Form errors will be shown only when there are not field errors
-        if not self._errors:
-            range_min = cleaned_data.get('range_min', 0)
-            range_max = cleaned_data.get('range_max', 0)
-            if range_min >= range_max:
-                raise ValidationError(_("Range is too small"))
-
-            if not cleaned_data.get('allow_repeat', False):
-                if range_max - range_min < cleaned_data.get('number_of_results', 0):
-                    raise ValidationError(_("Range is too small, maybe you want to allow repeated numbers?"))
-        return cleaned_data

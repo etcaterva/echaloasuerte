@@ -1,12 +1,13 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.layout import Layout, Row, Field, HTML
+from crispy_forms.layout import Layout, Row, HTML
 from server.forms import FormBase
 
 
 class TournamentDrawForm(FormBase):
-    participants = forms.CharField(label=_("Participants"), widget=forms.TextInput())
+    participants = forms.CharField(label=_("Participants"),
+                                   required=True,
+                                   widget=forms.TextInput())
 
     DEFAULT_TITLE = _("Tournament")
 
@@ -27,10 +28,3 @@ class TournamentDrawForm(FormBase):
                 'participants',
             ),
         )
-
-    def clean(self):
-        cleaned_data = super(TournamentDrawForm, self).clean()
-        if not self._errors:
-            raw_participants = cleaned_data.get('participants')
-            cleaned_data['participants'] = raw_participants.split(",") if ',' in raw_participants else raw_participants.split()
-        return cleaned_data

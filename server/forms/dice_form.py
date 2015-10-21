@@ -1,12 +1,13 @@
 from crispy_forms.layout import Layout, Row
 from django import forms
-from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from server.forms.form_base import FormBase
 
 
 class DiceDrawForm(FormBase):
-    number_of_results = forms.IntegerField(label=_("Number of dice"), required=True, initial=1, max_value=20)
+    number_of_results = forms.IntegerField(label=_("Number of dice"),
+                                           required=True, initial=1,
+                                           max_value=20)
 
     DEFAULT_TITLE = _("Roll dice")
 
@@ -24,7 +25,3 @@ class DiceDrawForm(FormBase):
             ),
         )
 
-    def clean_number_of_results(self):
-        if 0 < self.cleaned_data.get('number_of_results', 1) < 20:
-            return self.cleaned_data.get('number_of_results', '')
-        raise ValidationError(_("Between 1 and 20"))

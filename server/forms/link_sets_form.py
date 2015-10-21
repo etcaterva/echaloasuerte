@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.layout import Layout, Row, HTML, Field
+from crispy_forms.layout import Layout, Row, HTML
 from server.forms import FormBase
 
 
@@ -30,15 +30,3 @@ class LinkSetsDrawForm(FormBase):
                 'set_2',
             ),
         )
-
-    def clean(self):
-        cleaned_data = super(LinkSetsDrawForm, self).clean()
-        if not self._errors:
-            raw_set1 = cleaned_data.get('set_1')
-            raw_set2 = cleaned_data.get('set_2')
-            proc_set1 = raw_set1.split(",") if ',' in raw_set1 else raw_set1.split()
-            proc_set2 = raw_set2.split(",") if ',' in raw_set2 else raw_set2.split()
-            cleaned_data['sets'] = [proc_set1, proc_set2]
-            cleaned_data.pop('set_1')
-            cleaned_data.pop('set_2')
-        return cleaned_data

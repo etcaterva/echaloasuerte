@@ -1,5 +1,4 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from server.forms.form_base import FormBase
 from crispy_forms.layout import Layout, Row
@@ -22,8 +21,3 @@ class RandomLetterDrawForm(FormBase):
                 'number_of_results',
             ),
         )
-
-    def clean_number_of_results(self):
-        if 0 < self.cleaned_data.get('number_of_results', 1) < 50:
-            return self.cleaned_data.get('number_of_results', '')
-        raise ValidationError(_("Between 1 and 50"))
