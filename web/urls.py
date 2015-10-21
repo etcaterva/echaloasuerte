@@ -15,10 +15,8 @@ urlpatterns += patterns(
 
     url(r'^about.html$', TemplateView.as_view(template_name='about.html'), name="about"),
     url(r'^draw/(?P<draw_id>[0-9a-g]+)/$', views.display_draw, name="retrieve_draw"),
-    url(r'^draw/(?P<draw_id>[0-9a-g]+)/update/$', views.update_draw, name="update_draw"),
     url(r'^draw/new/(?P<draw_type>[^/]+)/public/$', views.create_draw, {'is_public': True}, name="create_public_draw"),
     url(r'^draw/new/(?P<draw_type>[^/]+)/$', views.create_draw, {'is_public': False}, name="create_draw"),
-    url(r'^draw/try/(?P<draw_type>[^/]+)/$', views.try_draw, name="try_draw"),
     url(r'^accounts/signup/$', views.register, name='register'),
     url(r'^accounts/forgot_password/$', views.under_construction, name='forgot_password'),
     url(r'^accounts/login/$', views.login_user, name='login'),
@@ -47,6 +45,8 @@ urlpatterns += patterns(
     url(r'^ws/draw/validate/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/draw/toss/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/draw/create/$', RedirectView.as_view(url="/", permanent=True)),
+    url(r'^draw/(?P<draw_id>[0-9a-g]+)/update/$', RedirectView.as_view(url="/", permanent=True)),
+    url(r'^draw/try/(?P<draw_type>[^/]+)/$', RedirectView.as_view(url="/", permanent=True)),
 
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
 

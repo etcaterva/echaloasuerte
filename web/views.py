@@ -130,40 +130,11 @@ def index(request, is_public=None):
     }
     return render(request, 'index.html', context)
 
-
-# TODO:
-# - Move is_feasible to the form validation
-#       a draw changed
-# - Change check_read_access and write to methods
-
-
-@time_it
-def try_draw(request, draw_type):
-    """validate the draw
-    if request.POST contains "try_draw", generates a result
-    """
-    LOG.debug("Received post data: {0}".format(request.POST))
-    draw_form = draw_factory.create_form(draw_type, data=request.POST)
-    try:
-        bom_draw = draw_form.build_draw()
-    except DrawFormError:
-        LOG.info("Form not valid: {0}".format(draw_form.errors))
-        return render(request, 'draws/new_draw.html', {"draw": draw_form, "is_public": True, "draw_type": draw_type})
-    else:
-        bom_draw.toss()
-        return render(request, 'draws/new_draw.html',
-                      {"draw": draw_form, "is_public": True, "draw_type": draw_type, "bom": bom_draw})
-
-
 @time_it
 def create_draw(request, draw_type, is_public):
     """create_draw view
-    @param
-    Serves the page to create a draw (empty) form
-        and handles the creation of a draw.
-    When received a GET request returns an empty form to create a draw
-        and with a POST and data attempts to create a draw. If success,
-        redirects to the draw, otherwise, returns the form with the errors.
+
+    Servers the page to create a draw
     """
 
     is_public = is_public or is_public == 'True'
@@ -174,72 +145,7 @@ def create_draw(request, draw_type, is_public):
         return render(request, 'draws/new_draw.html',
                       {"draw": draw_form, "is_public": is_public, "draw_type": draw_type, "default_title": draw_form.DEFAULT_TITLE})
     else:
-        LOG.debug("Received post data: {0}".format(request.POST))
-        draw_form = draw_factory.create_form(draw_type, data=request.POST)
-        try:
-            bom_draw = draw_form.build_draw()
-        except DrawFormError:
-            return render(request, 'draws/new_draw.html',
-                          {"draw": draw_form, "is_public": is_public, "draw_type": draw_type})
-        else:
-            bom_draw._id = None  # Ensure we have no id
-            set_owner(bom_draw, request)
-            #  generate a result if a private draw
-            if not bom_draw.is_shared:
-                bom_draw.toss()
-
-            MONGO.save_draw(bom_draw)
-            LOG.info("Generated draw: {0}".format(bom_draw))
-            ga_track_draw(bom_draw, "create_draw")
-            #  notify users if any
-            if bom_draw.users:
-                invite_user(bom_draw.users, bom_draw)
-
-            return redirect('retrieve_draw', draw_id=bom_draw.pk)
-
-
-@time_it
-def update_draw(request, draw_id):
-    """Serves the update of a draw
-    @draw_id: pk of the draw to update
-    Given the draw details through the POST data, updates the draw.
-    If success, redirects to display the view, otherwise, returns
-        the form with the errors. It always create a new version
-        of the draw. Use ws to update parts of the draw without
-        creating a new version
-    """
-    prev_bom_draw = MONGO.retrieve_draw(draw_id)
-    draw_type = draw_factory.get_draw_name(prev_bom_draw.draw_type)
-    user_can_write_draw(request.user, prev_bom_draw)
-
-    LOG.debug("Received post data: {0}".format(request.POST))
-    draw_form = draw_factory.create_form(draw_type, data=request.POST)
-    if not draw_form.is_valid():
-        LOG.info("Form not valid: {0}".format(draw_form.errors))
-        return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": prev_bom_draw})
-    else:
-        bom_draw = prev_bom_draw
-        raw_draw = draw_form.cleaned_data
-        LOG.debug("Form cleaned data: {0}".format(raw_draw))
-        # update the draw with the data coming from the POST
-        for key, value in raw_draw.items():
-            if key not in ("_id", "pk") and value != "":
-                setattr(bom_draw, key, value)
-        if not bom_draw.is_feasible():
-            LOG.info("Draw {0} is not feasible".format(bom_draw))
-            draw_form.add_error(None, _("Draw not feasible"))
-            draw_form = draw_factory.create_form(draw_type, data=bom_draw.__dict__.copy())
-            return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
-        else:
-            bom_draw.add_audit("DRAW_PARAMETERS")
-            # generate a result if a private draw
-            if not bom_draw.is_shared:
-                bom_draw.toss()
-
-            MONGO.save_draw(bom_draw)
-            LOG.info("Updated draw: {0}".format(bom_draw))
-            return redirect('retrieve_draw', draw_id=bom_draw.pk)
-
+        LOG.error("Deprecated draw creation, the api should have been used instead")
 
 @time_it
 def display_draw(request, draw_id):
@@ -254,7 +160,6 @@ def display_draw(request, draw_id):
         return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
     else:
         return render(request, "draws/secure_draw.html", {"bom": bom_draw})
-
 
 @time_it
 def under_construction(request):
