@@ -46,6 +46,27 @@
         $("#publish").click( function() {
             $draw_maneger.drawManager('publish');
         });
+
+        // Invite users when the "Send emails" button is clicked
+        $('a#send-emails').click(function() {
+            var users = $('input#invite-emails').val();
+            var url_invite = $('#send-emails').attr('data-link-invite');
+
+            // Serialize the emails
+            var users_to_invite = {'add_user': users.split(',')};
+            var data = JSON.stringify(users_to_invite);
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                data: data,
+                url: url_invite
+            }).done(function(){
+                console.log("users invited");
+            }).fail(function(){
+                console.log("users NOT invited");
+            });
+        });
     {% else %}
         $("#create-and-toss").click( function() {
             $draw_maneger.drawManager('create_and_toss');
@@ -105,7 +126,7 @@
                     <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
                 </div>
                 <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
-                <div class="text-center"><a id="send-emails" data-id="{{bom.pk}}" class="btn btn-info">{% trans "Send emails" %}</a></div>
+                <div class="text-center"><a id="send-emails" class="btn btn-info">{% trans "Send emails" %}</a></div>
                 <span class="invite-people-option">{% trans "Option 3)" %}</span>
                 <p>
                     Facebook:

@@ -98,7 +98,7 @@ PublicDraw.setup_settings_panel = function () {
         $('div#settings-invite div.feedback').addClass('hide');
         var users = $('input#invite-emails').val();
 
-        // Serialize and clean the form
+        // Serialize the emails
         var users_to_invite = {'add_user': users.split(',')};
         var data = JSON.stringify(users_to_invite);
 
