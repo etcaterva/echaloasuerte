@@ -15,7 +15,7 @@ class CoinDrawForm(FormBase):
                 '<div class="text-center">'
                 '<a href="#">'
                 '<img type="image" id="img-coin" src="{0}" name="coin" '
-                '''onclick="$('#toss, #try, #toss-button').click();" />'''
+                '''onclick="$('#create-and-toss,#normal-draw-toss, #shared-draw-toss, #try').click();" />'''
                 '<a>'
                 '<p>{1}</p></div>'.format(
                     static('img/img_coin/head.png'), _("Tap the coin to flip it")))
