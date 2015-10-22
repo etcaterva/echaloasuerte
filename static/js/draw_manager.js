@@ -227,6 +227,8 @@
                     // Get the url to the draw
                     var url_draw_api = xhr.getResponseHeader('Location');
                     var url_draw_web = url_draw_api.replace(/api\/v[\d\.]+\//g,'');
+                    // Expose link to invite users
+                    $('#send-emails').attr('data-link-invite', url_draw_api);
                     // Present the link to the user
                     $('.url-share').val(url_draw_web);
                     // Set url to the FB share button

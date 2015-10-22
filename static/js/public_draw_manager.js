@@ -95,10 +95,10 @@ PublicDraw.setup_settings_panel = function () {
     Send the new users to the server
     */
     $('a#send-emails').click(function() {
-        $('div#settings-invite div.feedback').addClass('hide');
+        $('div#settings-invite').find('div.feedback').addClass('hidden');
         var users = $('input#invite-emails').val();
 
-        // Serialize and clean the form
+        // Serialize the emails
         var users_to_invite = {'add_user': users.split(',')};
         var data = JSON.stringify(users_to_invite);
 
@@ -108,8 +108,10 @@ PublicDraw.setup_settings_panel = function () {
             data: data,
             url: PublicDraw.options.url_invite_users
         }).done(function(){
+            $('#alert-invitation-success').removeClass('hidden');
             console.log("users invited");
         }).fail(function(){
+            $('#alert-invitation-fail').removeClass('hidden');
             console.log("users NOT invited");
         });
     });
