@@ -1,14 +1,16 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.layout import Layout, Row, Field, HTML
+from crispy_forms.layout import Layout, Row, HTML
 from server.forms import FormBase
 
 
 class RandomItemDrawForm(FormBase):
-    number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1)
-    allow_repeat = forms.BooleanField(label=_("Allow repetitions"), required=False)
-    items = forms.CharField(label=_("Items"), widget=forms.TextInput())
+    number_of_results = forms.IntegerField(label=_("Number of results"),
+                                           required=True, initial=1)
+    allow_repeat = forms.BooleanField(label=_("Allow repetitions"),
+                                      required=False)
+    items = forms.CharField(label=_("Items"), widget=forms.TextInput(),
+                            required=True)
 
     DEFAULT_TITLE = _("Random Item")
 
@@ -33,11 +35,6 @@ class RandomItemDrawForm(FormBase):
                 'allow_repeat',
             ),
         )
-
-    def clean_number_of_results(self):
-        if self.cleaned_data.get('number_of_results', 1) < 1:
-            raise ValidationError(_("Any result?"))
-        return self.cleaned_data.get('number_of_results', '')
 
     def clean(self):
         cleaned_data = super(RandomItemDrawForm, self).clean()

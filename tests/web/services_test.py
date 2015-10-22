@@ -5,8 +5,7 @@ from django.core.exceptions import PermissionDenied
 from server.bom.user import User
 from server.bom import RandomNumberDraw
 from server.mongodb.driver import MongoDriver
-from web.web_services import update_user, toss_draw, try_draw, \
-    add_user_to_draw, add_favorite, remove_favorite, remove_user_from_draw
+from web.web_services import update_user, add_favorite, remove_favorite
 
 
 class TestServices(TestCase):
@@ -103,56 +102,6 @@ class TestToss(TestServices):
     def retrieve_draw(self):
         return self._driver.retrieve_draw(self.test_draw._id)
 
-    def toss_private_test(self):
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().results)
-        )
-        self.req.GET = {"draw_id": self.test_draw._id}
-        toss_draw(self.req)
-        self.assertEqual(
-            1,
-            len(self.retrieve_draw().results)
-        )
-
-    def toss_not_owned_test(self):
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().results)
-        )
-        self.test_draw.owner = 555
-        self._driver.save_draw(self.test_draw)
-        self.req.GET = {"draw_id": self.test_draw._id}
-        self.assertRaises(
-            PermissionDenied,
-            lambda: toss_draw(self.req)
-        )
-
-    def toss_private_twice_test(self):
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().results)
-        )
-        self.req.GET = {"draw_id": self.test_draw._id}
-        toss_draw(self.req)
-        toss_draw(self.req)
-        self.assertEqual(
-            2,
-            len(self.retrieve_draw().results)
-        )
-
-    def toss_try_draw_test(self):
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().results)
-        )
-        self.req.GET = {}
-        try_draw(self.req, self.test_draw._id)
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().results)
-        )
-
 
 class TestAddUser(TestServices):
     """ Test the adding a user to a public draw
@@ -173,87 +122,6 @@ class TestAddUser(TestServices):
 
     def retrieve_draw(self):
         return self._driver.retrieve_draw(self.test_draw._id)
-
-    def add_no_email_test(self):
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().users)
-        )
-        self.req.GET = {"draw_id": self.test_draw._id}
-        add_user_to_draw(self.req)
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().users)
-        )
-
-    def add_two_email_test(self):
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().users)
-        )
-        self.req.GET = {
-            "draw_id": self.test_draw._id,
-            "emails": "mail1@gmail.com, mail2@gmail.es"
-        }
-        add_user_to_draw(self.req)
-        self.assertEqual(
-            2,
-            len(self.retrieve_draw().users)
-        )
-
-    def add_remove_test(self):
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().users)
-        )
-        self.req.GET = {
-            "draw_id": self.test_draw._id,
-            "emails": "mail1@gmail.com, mail2@gmail.es"
-        }
-        add_user_to_draw(self.req)
-        self.assertEqual(
-            2,
-            len(self.retrieve_draw().users)
-        )
-        self.req.GET = {
-            "draw_id": self.test_draw._id,
-            "emails": "mail1@gmail.com, "
-        }
-        remove_user_from_draw(self.req)
-        self.assertEqual(
-            1,
-            len(self.retrieve_draw().users)
-        )
-
-    def add_invalid_email_test(self):
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().users)
-        )
-        self.req.GET = {
-            "draw_id": self.test_draw._id,
-            "emails": "this_is_not_an_email"
-        }
-        add_user_to_draw(self.req)
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().users)
-        )
-
-    def add_only_one_valid_test(self):
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().users)
-        )
-        self.req.GET = {
-            "draw_id": self.test_draw._id,
-            "emails": "this_is_not_an_email valid@email.com"
-        }
-        add_user_to_draw(self.req)
-        self.assertEqual(
-            0,
-            len(self.retrieve_draw().users)
-        )
 
 
 class TestFavourites(TestServices):

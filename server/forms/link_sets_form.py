@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.layout import Layout, Row, HTML, Field
+from crispy_forms.layout import Layout, Row, HTML
 from server.forms import FormBase
 
 

@@ -18,11 +18,6 @@ class FormBase(forms.Form):
     is_shared = forms.BooleanField(required=False, widget=forms.HiddenInput())
     """Whether the draw is open to multiple users"""
 
-    # TODO the users field is not needed anymore in the form
-    users = forms.CharField(required=False)
-    """User invited to the draw, in case of been public.
-     It needs to be rendered manually in the templates"""
-
     description = forms.CharField(required=False, max_length=5000)
     """Short summary of the draw's purpose.
      It needs to be rendered manually in the templates"""
@@ -33,8 +28,6 @@ class FormBase(forms.Form):
     DrawClass = None
 
     def __init__(self, *args, **kwargs):
-        if 'initial' in kwargs and 'users' in kwargs['initial']:
-                kwargs['initial']['users'] = ','.join(kwargs['initial']['users'])
         super(FormBase, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -43,30 +36,3 @@ class FormBase(forms.Form):
         #  even if they are not included in the layout
         self.helper.render_hidden_fields = True
         self.helper.field_template = 'draws/eas_crispy_field.html'
-
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        if not self._errors:
-            raw_items = cleaned_data.get('users')
-            cleaned_data['users'] = raw_items.split(",") if ',' in raw_items else raw_items.split()
-        return cleaned_data
-
-    def build_draw(self):
-        """Attempts to build a draw given its form
-
-        :returns the created draw
-        :raises DrawFormError if it cannot be built. check the forms errors for
-        more details
-        """
-        if not self.is_valid():
-            LOG.debug("Form is not valid: {0}".format(self.errors))
-            raise DrawFormError(_("Invalid values for the draw"))
-        else:
-            raw_draw = self.cleaned_data
-            LOG.debug("Form cleaned data: {0}".format(raw_draw))
-            # Create a draw object with the data coming in the POST
-            bom_draw = self.DrawClass(**raw_draw)
-            if not bom_draw.is_feasible():  # This should actually go in the form validation
-                self.add_error(None, _('The draw is not feasible'))
-                LOG.info("Draw {0} is not feasible".format(bom_draw))
-            return bom_draw
