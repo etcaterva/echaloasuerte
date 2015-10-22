@@ -49,6 +49,7 @@
 
         // Invite users when the "Send emails" button is clicked
         $('a#send-emails').click(function() {
+            $('#invite-options').find('.feedback').addClass('hidden');
             var users = $('input#invite-emails').val();
             var url_invite = $('#send-emails').attr('data-link-invite');
 
@@ -62,8 +63,10 @@
                 data: data,
                 url: url_invite
             }).done(function(){
+                $('#alert-invitation-success').removeClass('hidden');
                 console.log("users invited");
             }).fail(function(){
+                $('#alert-invitation-fail').removeClass('hidden');
                 console.log("users NOT invited");
             });
         });
@@ -119,10 +122,10 @@
                 <input class="url-share text-center" readonly>
                 <span class="invite-people-option">{% trans "Option 2)" %}</span>
                 <p>{% trans "Type their e-mails here to automatically send them an invitation" %}</p>
-                <div id="alert-invitation-failed" class="alert feedback alert-danger hide" role="alert">
+                <div id="alert-invitation-failed" class="alert feedback alert-danger hidden" role="alert">
                     <strong>{% trans "Oops!" %}</strong> {% trans "One or more emails contain errors..." %}
                 </div>
-                <div id="alert-invitation-success" class="alert feedback alert-success hide" role="alert">
+                <div id="alert-invitation-success" class="alert feedback alert-success hidden" role="alert">
                     <strong>{% trans "Everything went right!" %}</strong> {% trans "The invitation will arrive soon to these emails." %}
                 </div>
                 <input type="text" id="invite-emails" class="form-control" placeholder="{% trans "Type the emails here..."%}">
