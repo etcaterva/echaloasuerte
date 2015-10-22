@@ -71,7 +71,7 @@
             "is_enabled": {{bom.enable_chat|yesno:"true,false"}},
             "url_send_message": "{% url 'chat_add_message' %}",
             "url_send_message": "{% url 'api_draw_chat' api_name="v1" pk=bom.pk %}",
-            "user_id": "{{ user.pk }}",
+            "user_id": {% if user.is_authenticated %} "{{ user.pk }}" {% else %} null {% endif %},
             "user_alias": user_alias,
             "draw_id": "{{ bom.pk }}",
             "msg_type_your_message": "{% trans 'Type your message here...' %}",

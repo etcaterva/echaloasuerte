@@ -119,11 +119,13 @@ class DrawResource(resources.Resource):
                 data = json.loads(request.body.decode('utf-8'))
             try:
                 message = data['message']
-                user_id = data['user']
-                self._client.add_chat_message(draw_id, message, user_id)
+                if request.user.is_authenticated():
+                    self._client.add_chat_message(draw_id, message, user_id=request.user.pk)
+                else:
+                    self._client.add_chat_message(draw_id, message, user_alias=data['user_alias'])
             except KeyError:
                 raise exceptions.ImmediateHttpResponse(
-                    response=http.HttpBadRequest("Missing message or username"))
+                    response=http.HttpBadRequest("Missing message or alias"))
             return self.create_response(request, {})
         elif request.method == 'GET':
             # TODO: return only the list of messages
@@ -134,7 +136,7 @@ class DrawResource(resources.Resource):
                 except Exception:
                     return {}
                 else:
-                    return {"alias": user.alias, "avatar": user.user_image}
+                    return {"user_alias": user.alias, "avatar": user.user_image}
             try:
                 messages = self._client.retrieve_chat_messages(draw_id)
             except mongodb.MongoDriver.NotFoundError:
