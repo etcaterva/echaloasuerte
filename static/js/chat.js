@@ -93,6 +93,10 @@
             var message_object = {
                 message : message
             };
+            // Send the alias if the user is not authenticated
+            if (this.options.user_id == null){
+                message_object["user_alias"] = this.options.user_alias;
+            }
             var data = JSON.stringify(message_object);
 
             $.ajax({
