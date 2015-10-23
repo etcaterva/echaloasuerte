@@ -56,7 +56,8 @@ class BrowserStackTest(LiveServerTestCase):
         except NoSuchElementException:
             return False
 
-    def has_been_edited(self, condition):
+    def check_condition(self, condition):
+        """ Wait until a condition is satisfied with a timeout of 10 seconds """
         try:
             return WebDriverWait(self.driver, 10).until(condition)
         except TimeoutException:

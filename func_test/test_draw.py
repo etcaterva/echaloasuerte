@@ -18,10 +18,21 @@ class NormalDrawTest(BrowserStackTest):
         driver = self.driver
         draw_box = driver.find_element_by_id("coin-draw")
         draw_box.click()
+
+        # Toss with the button
         toss_btn = driver.find_element_by_id("create-and-toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
         self.assertTrue(result)
+
+        # Toss clicking the coin
+        driver.find_element_by_id('img-coin').click()
+
+        # Check if the results correspond with the edition
+        results_rendered = self.check_condition(
+            lambda driver: len(driver.find_elements_by_css_selector('.result')) == 2
+        )
+        self.assertTrue(results_rendered)
 
     def test_random_number_test(self):
         """Selenium: Random Number draw (normal draw)"""
@@ -50,9 +61,10 @@ class NormalDrawTest(BrowserStackTest):
         toss_btn.click()
 
         # Check if the results correspond with the edition
-        def condition(driver):
-            return len(driver.find_elements_by_css_selector('.result:first-of-type .list-group-item')) == 2
-        self.assertTrue(self.has_been_edited(condition))
+        draw_updated = self.check_condition(
+            lambda driver: len(driver.find_elements_by_css_selector('.result')) == 2
+        )
+        self.assertTrue(draw_updated)
 
     def test_random_card(self):
         """Selenium: Card draw (normal draw)"""
