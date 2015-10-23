@@ -1545,7 +1545,7 @@ class DrawResourceChat_Test(ResourceTestCase):
         self.assertHttpOK(resp)
         chats = self.mongo.retrieve_chat_messages(draw.pk)
         self.assertEqual(1, len(chats))
-        self.assertEqual(None, chats[0]["user"])
+        self.assertIsNone(chats[0]["user"])
         self.assertEqual("anon user", chats[0]["anonymous_alias"])
 
     def test_auth_with_alias_post_chat(self):
