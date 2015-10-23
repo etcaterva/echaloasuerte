@@ -1561,7 +1561,7 @@ class DrawResourceChat_Test(ResourceTestCase):
         chats = self.mongo.retrieve_chat_messages(draw.pk)
         self.assertEqual(1, len(chats))
         self.assertEqual(self.user.pk, chats[0]["user"])
-        self.assertRaises(Exception, lambda: chats[0]["anonymous_alias"])
+        self.assertFalse("anonymous_alias" in chats[0])
 
     def test_post_chat(self):
         self.login()
