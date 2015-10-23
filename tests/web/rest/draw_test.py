@@ -1548,6 +1548,21 @@ class DrawResourceChat_Test(ResourceTestCase):
         self.assertEqual(None, chats[0]["user"])
         self.assertEqual("anon user", chats[0]["anonymous_alias"])
 
+    def test_auth_with_alias_post_chat(self):
+        self.login()
+        draw = self.draw
+        resp = self.api_client.post(self.chat_uri(draw), data={
+            "user": self.user.pk,
+            "message": "chat message",
+            "anonymous_alias": "anon user"
+        })
+        print(resp)
+        self.assertHttpOK(resp)
+        chats = self.mongo.retrieve_chat_messages(draw.pk)
+        self.assertEqual(1, len(chats))
+        self.assertEqual(self.user.pk, chats[0]["user"])
+        self.assertRaises(Exception, lambda: chats[0]["anonymous_alias"])
+
     def test_post_chat(self):
         self.login()
         draw = self.draw
