@@ -122,7 +122,7 @@ class DrawResource(resources.Resource):
                 if request.user.is_authenticated():
                     self._client.add_chat_message(draw_id, message, user_id=request.user.pk)
                 else:
-                    self._client.add_chat_message(draw_id, message, user_alias=data['user_alias'])
+                    self._client.add_chat_message(draw_id, message, anonymous_alias=data['anonymous_alias'])
             except KeyError:
                 raise exceptions.ImmediateHttpResponse(
                     response=http.HttpBadRequest("Missing message or alias"))

@@ -95,7 +95,7 @@
             };
             // Send the alias if the user is not authenticated
             if (this.options.user_id == null){
-                message_object["user_alias"] = this.options.user_alias;
+                message_object["anonymous_alias"] = this.options.user_alias;
             }
             var data = JSON.stringify(message_object);
 
@@ -129,7 +129,7 @@
 
         // Given a chat entry generates and returns the html code necessarry to be rendered
         formatChatEntry: function (chat_entry){
-            var user = chat_entry.user_alias;
+            var user = (chat_entry.user != null) ? chat_entry.user_alias : chat_entry.anonymous_alias;
             var avatar = chat_entry.avatar || this.options.default_avatar;
             var content = chat_entry.content;
             var time = moment.utc(chat_entry.creation_time).fromNow();
