@@ -80,6 +80,29 @@
         }
     });
 
+    // ------------- Edit alias -----------------------
+    $('#save-alias').click(function (){
+        // Clean errors (if exist)
+        $('.has-error').removeClass('has-error');
+        $('.info-error').addClass('hidden');
+
+        var alias = $('#user-alias').val();
+        var data = JSON.stringify({"alias": alias});
+        console.log(data);
+        $.ajax({
+            method : "PATCH",
+            url   : "{% url 'api_dispatch_detail' api_name="v1" resource_name="user" pk=user.pk %}",
+            contentType : 'application/json',
+            data  : data
+        }).done(function (data){
+            window.location.reload();
+        })
+        .fail(function (e) {
+            //TODO Improve feedback
+            console.log("Couldn't change alias");
+        });
+    });
+
     // ------------- Edit password -----------------------
     $('#save-password').click(function (){
         // Clean errors (if exist)
@@ -180,8 +203,8 @@
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
                 <div id="user-settings" class="row text-center accordion">
-                    {# Edit Username #}
-                    <p class="h3 text-left">
+                    {# Edit alias #}
+                        <p id="profile-edit-alias" class="h3 text-left">
                         <span class="user-settings-label">{% trans "Alias" %}</span>
                         <span class="user-settings-content">{{ user.alias }}</span>
                         <span class="user-settings-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
@@ -189,10 +212,10 @@
                     <div class="panel">
                         <div class="row">
                             <div class="user-settings-label col-xs-4 text-right">{% trans "New alias" %}</div>
-                            <div class="col-xs-8 text-left"><input type="text"/></div>
+                            <div class="col-xs-8 text-left"><input id="user-alias" type="text"/></div>
                         </div>
                         <div class="col-xs-12 text-center">
-                            <button class="btn btn-primary btn-settings">{% trans "Save alias" %}</button>
+                            <button id="save-alias" class="btn btn-primary btn-settings">{% trans "Save alias" %}</button>
                             <button class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</button>
                         </div>
                     </div>
