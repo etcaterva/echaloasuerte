@@ -59,11 +59,31 @@ class UserTest(BrowserStackTest):
         result = driver.find_elements_by_id('account-dropdown')
         self.assertTrue(result)
 
-    '''def test_change_alias(self):
+    def test_change_alias(self):
         driver = self.driver
-        driver.get('/accounts/profile')
+        self.login()
 
-    def test_change_password(self):
+        # Check that the user has his default alias
+        alias = driver.find_element_by_id('account-dropdown').text.strip()
+        self.assertEqual('test', alias)
+
+        # Change the alias
+        driver.get(self.base_url + '/accounts/profile')
+        driver.find_element_by_id('profile-edit-alias').click()
+        driver.find_element_by_id('user-alias').send_keys("Cool alias")
+        driver.find_element_by_id('save-alias').click()
+
+        # Check if the alias has changed
+        alias_updated = self.check_condition(
+            lambda driver: driver.find_element_by_id('account-dropdown').text.strip() == "Cool alias"
+        )
+        self.assertTrue(alias_updated)
+        alias_in_table = driver.find_element_by_css_selector('#profile-edit-alias .user-settings-content').text.strip()
+        self.assertEqual("Cool alias", alias_in_table)
+
+
+
+    '''def test_change_password(self):
         driver = self.driver
         driver.get('/accounts/profile')
 

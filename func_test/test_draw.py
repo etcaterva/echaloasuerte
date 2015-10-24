@@ -1,4 +1,5 @@
 from func_test.browserstack_base import BrowserStackTest
+from selenium.webdriver.common.keys import Keys
 
 
 class NormalDrawTest(BrowserStackTest):
@@ -17,20 +18,53 @@ class NormalDrawTest(BrowserStackTest):
         driver = self.driver
         draw_box = driver.find_element_by_id("coin-draw")
         draw_box.click()
+
+        # Toss with the button
         toss_btn = driver.find_element_by_id("create-and-toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
         self.assertTrue(result)
+
+        # Toss clicking the coin
+        driver.find_element_by_id('img-coin').click()
+
+        # Check if the results correspond with the edition
+        results_rendered = self.check_condition(
+            lambda driver: len(driver.find_elements_by_css_selector('.result')) == 2
+        )
+        self.assertTrue(results_rendered)
 
     def test_random_number_test(self):
         """Selenium: Random Number draw (normal draw)"""
         driver = self.driver
         draw_box = driver.find_element_by_id("number-draw")
         draw_box.click()
+        # Check the "allow repeated" checkbox is hidden
+        self.assertTrue(self.is_element_present('#div_id_allow_repeat'))
+        self.assertFalse(self.is_element_visible('#div_id_allow_repeat'))
+
+        # Toss
         toss_btn = driver.find_element_by_id("create-and-toss")
         toss_btn.click()
         result = driver.find_elements_by_id("results")
         self.assertTrue(result)
+
+        # Edit details
+        number_of_results = driver.find_element_by_id('id_number_of_results')
+        number_of_results.send_keys(Keys.UP)
+
+        # Check the "allow repeated" checkbox is visible
+        self.assertTrue(self.is_element_visible('#div_id_allow_repeat'))
+
+        # Toss
+        toss_btn = driver.find_element_by_id("normal-draw-toss")
+        toss_btn.click()
+
+        # Check if the results correspond with the edition
+        draw_updated = self.check_condition(
+            lambda driver: len(driver.find_elements_by_css_selector('.result')) == 2
+        )
+        self.assertTrue(draw_updated)
 
     def test_random_card(self):
         """Selenium: Card draw (normal draw)"""
