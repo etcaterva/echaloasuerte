@@ -142,7 +142,7 @@ class DrawResource(resources.Resource):
             except mongodb.MongoDriver.NotFoundError:
                 messages = []
 
-            users = set([message["user"] for message in messages])
+            users = {message["user"] for message in messages if 'user' in message}
             users_map = {name: get_user_details(name) for name in users}
 
             for message in messages:
