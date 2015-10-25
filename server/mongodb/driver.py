@@ -146,14 +146,17 @@ class MongoDriver(object):
         logger.debug("Retrieved documment: {0}".format(doc))
         return build_draw(doc)
 
-    def add_chat_message(self, draw_id, content, user):
-        """ add a mesago to a chat. we'll use draw id as chat-id"""
+    def add_chat_message(self, draw_id, content, user_id=None, anonymous_alias=None):
+        """ Add a message to a chat. we'll use draw id as chat-id"""
         now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
         entry = {
-            "user": user,
             "content": content,
             "creation_time": now
         }
+        if user_id:
+            entry["user"] = user_id
+        else:
+            entry["anonymous_alias"] = anonymous_alias
         self._chats.update(
             {"_id": draw_id},
             {"$push": {"entries": entry}},
