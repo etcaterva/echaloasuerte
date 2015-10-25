@@ -335,6 +335,9 @@ class DrawResource(resources.Resource):
         except TypeError:
             data = json.loads(request.body.decode('utf-8'))
         if 'add_user' in data:
+            if not draw.check_write_access(request.user):
+                raise exceptions.ImmediateHttpResponse(
+                    response=http.HttpUnauthorized("Only the owner can add users"))
             new_users = [str(user) for user in data['add_user']
                                    if '@' in str(user)]
             draw.users.extend(new_users)
@@ -343,7 +346,7 @@ class DrawResource(resources.Resource):
         if 'remove_user' in data:
             if not draw.check_write_access(request.user):
                 raise exceptions.ImmediateHttpResponse(
-                    response=http.HttpUnauthorized("Only the owner can update"))
+                    response=http.HttpUnauthorized("Only the owner can remove users"))
             try:
                 draw.users.remove(str(data['remove_user']))
                 self._client.save_draw(draw)
