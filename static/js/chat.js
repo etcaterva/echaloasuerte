@@ -4,18 +4,18 @@
     var pluginName = 'EASchat',
         defaults = {
             is_enabled: true,
-            url_send_message: "",
-            draw_id: "",
-            user_alias: "",
-            user_id: "",
-            msg_type_your_message: "",
-            msg_chat: "",
-            msg_login_first: "",
-            msg_alias: "",
-            msg_error_alias: "",
-            msg_access_chat: "",
-            msg_send: "",
-            default_avatar: ""
+            url_send_message: false,
+            draw_id: false,
+            user_alias: false,
+            user_id: false,
+            msg_type_your_message: 'Type your message here...',
+            msg_chat: "Chat",
+            msg_login_first: "To use the chat you should <a href='#'>login</a> or <a href='#'>register</a>",
+            msg_alias: "If not, simply type an Alias that allows others to recognize you",
+            msg_error_alias: "The alias must have between 2 and 20 characters",
+            msg_access_chat: "Access chat",
+            msg_send: "Send",
+            default_avatar: false
         };
 
     /*********************************
