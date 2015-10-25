@@ -146,7 +146,8 @@ class DrawResource(resources.Resource):
             users_map = {name: get_user_details(name) for name in users}
 
             for message in messages:
-                message.update(users_map[message["user"]])
+                if 'user' in message:
+                    message.update(users_map[message["user"]])
 
             return self.create_response(request, {
                 "messages": messages,
