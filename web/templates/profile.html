@@ -109,7 +109,6 @@
         $('.has-error').removeClass('has-error');
         $('.info-error').addClass('hidden');
 
-        var current_password = $('#current_password').val();
         var new_password = $('#new_password').val();
         var new_password_repeat = $('#new_password_repeat').val();
         if (new_password != new_password_repeat){
@@ -119,29 +118,21 @@
             return;
         }
         $.ajax({
-            method : "POST",
-            url   : "{% url 'update_profile' %}",
-            data  : {
-                 current_password : current_password,
+            contentType : 'application/json',
+            method : "PATCH",
+            url: "{% url 'api_dispatch_detail' api_name="v1" resource_name="user" pk=request.user.pk %}",
+            data  : JSON.stringify({
                  password : new_password,
-                 csrfmiddlewaretoken : "{{csrf_token}}"
-            }
+            })
         }).done(function (data){
-            if (data=="ok"){
-                var label_password = $('#profile-edit-password .user-settings-content');
-                label_password.empty();
-                label_password.append("<strong>{% trans "Password updated" %}</strong>");
+            var label_password = $('#profile-edit-password .user-settings-content');
+            label_password.empty();
+            label_password.append("<strong>{% trans "Password updated" %}</strong>");
 
-                $('#user-settings').accordion({
-                    active: false,
-                    collapsible: true
-                });
-            }else {
-                $("#group-current-password").addClass('has-error');
-                $("#group-current-password .info-error").removeClass("hidden");
-                return;
-            }
-
+            $('#user-settings').accordion({
+                active: false,
+                collapsible: true
+            });
         })
         .fail(function () {
             console.log("Couldn't change password");
@@ -167,12 +158,12 @@
         var avatar_option = $('input[type=radio][name=option-avatar]:checked').val();
         use_gravatar = avatar_option == 'gravatar';
         $.ajax({
-            method : "POST",
-            url   : "{% url 'update_profile' %}",
-            data  : {
+            method : "PATCH",
+            contentType : 'application/json',
+            url: "{% url 'api_dispatch_detail' api_name="v1" resource_name="user" pk=request.user.pk %}",
+            data  : JSON.stringify({
                  use_gravatar : use_gravatar,
-                 csrfmiddlewaretoken : "{{csrf_token}}"
-            }
+            })
         }).done(function (){
             var label_avatar = $('#profile-edit-password .user-settings-content');
             label_avatar.empty();
@@ -228,15 +219,6 @@
                     </p>
                     <div class="panel">
                         <ul>
-                            <li>
-                                <div id="group-current-password" class="row">
-                                    <label class="user-settings-label col-xs-4 text-right">{% trans "Current" %}</label>
-                                    <div class="col-xs-8 text-left">
-                                        <input id="current_password" type="password"/>
-                                        <div class="info-error hidden">{% trans "That's not your current password, try again." %}</div>
-                                    </div>
-                                </div>
-                            </li>
                             <li>
                                 <div id="group-new-password" class="row">
                                     <label class="user-settings-label col-xs-4 text-right">{% trans "New" %}</label>
