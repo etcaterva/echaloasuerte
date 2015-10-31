@@ -12,6 +12,8 @@ This version is a rewrite of the old site.
 
 The dev version is on continuous deployment, all changes in master are automatically deployed to dev
 
+You need to run the nodejs app to get the draws updates at real time
+
 ## DNS
  - www.echaloasuerte.com: Root domain for the spanish version
  - www.chooserandom.com: Root domain for the english version

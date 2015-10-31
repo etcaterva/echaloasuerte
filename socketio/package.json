@@ -1,0 +1,9 @@
+{
+  "name": "echaloasuerte-socketio",
+  "version": "1.0.0",
+  "description": "Socketio server side for echaloasuerte",
+  "dependencies": {
+    "express": "^4.10.2",
+    "socket.io": "^1.3.7"
+  }
+}
