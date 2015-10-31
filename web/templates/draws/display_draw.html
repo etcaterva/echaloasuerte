@@ -10,6 +10,7 @@
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/favourites.js' %}"></script>
     <script src="{% static 'js/moment.js' %}"></script>
+    <script src="//js.pusher.com/3.0/pusher.min.js"></script>
     <!-- Bootstrap TokenField -->
     <script src="{% static 'js/bootstrap-tokenfield.min.js' %}"></script>
     <link href="{% static 'css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
@@ -53,6 +54,35 @@
         "msg_regsiter": "{% trans "You need an account to save your favourite draws" %}",
         "msg_toss": "{% trans "Click on the 'Toss' button to try the draw first" %}"
     });
+    {% if bom.is_shared %}
+
+        {% if user.is_authenticated %}
+            var user_alias = "{{ user.alias }}";
+        {% else %}
+            var user_alias = getCookie("user_alias");
+        {% endif %}
+
+        var pusher = new Pusher('61af23772ca14dff55e5', {
+            encrypted: true,
+            authEndPoint: "{% url 'pusher_auth' %}"
+        });
+        var channel = pusher.subscribe('private-{{bom.pk}}');
+        channel.bind('pusher:subscription_error', function(status) {
+            setInterval(PublicDraw.check_draw_changes,2000);
+        });
+        channel.bind('client-message', function () {
+            PublicDraw.check_draw_changes();
+        });
+        channel.bind('client-draw_update', function () {
+            PublicDraw.check_draw_changes();
+        });
+
+    {% else %}
+        //no op
+        var channel = {
+            trigger: function(){}
+        };
+    {% endif %}
 
     var $draw_maneger = $('#draw-form').drawManager({
         url_toss: "{% url 'api_draw_toss' api_name="v1" pk=bom.pk %}",
@@ -65,20 +95,20 @@
         translations: {
             head: "{% trans 'head' %}",
             tail: "{% trans 'tail' %}"
+        },
+        updated_callback: function() {
+            channel.trigger('client-draw_update');
         }
     });
 
     {% if bom.is_shared %}
-        // Anonimous users
-        {% if user.is_authenticated %}
-            var user_alias = "{{ user.alias }}";
-        {% else %}
-            var user_alias = getCookie("user_alias");
-        {% endif %}
-
         var $chat_containers = $('#chat-frame, #chat-column');
 		var $chats = $chat_containers.chat({
             "is_enabled": {{bom.enable_chat|yesno:"true,false"}},
+            "message_sent_callback": function(message){
+                PublicDraw.check_draw_changes();
+                channel.trigger('client-message', message);
+            },
             "url_send_message": "{% url 'api_draw_chat' api_name="v1" pk=bom.pk %}",
             "user_id": {% if user.is_authenticated %} "{{ user.pk }}" {% else %} null {% endif %},
             "user_alias": user_alias,
@@ -118,6 +148,8 @@
             $draw_maneger.drawManager('check_changes_and_toss');
         });
     {% endif %}
+
+
 {% endblock extra_jq_ready %}
 {% block content %}
     <form class="clearfix" method="post" id="draw-form">
