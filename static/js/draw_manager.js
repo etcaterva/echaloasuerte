@@ -109,7 +109,7 @@
         constructor: DrawManager,
 
         edited_fields: {},
-        
+
         init: function (element, options) {
             var that = this;
             this.$element = $(element);
@@ -407,7 +407,7 @@
         /**
          * Updates the current draw.
          * Only the fields stored in 'this.edited_fields' are updated
-         * 
+         *
          * @param callback_done Function executed if the update success
          * @param callback_fail Function executed if the update fails
          */

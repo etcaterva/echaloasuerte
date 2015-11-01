@@ -40,14 +40,14 @@
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 
     $('#fav-button').favourites({
-            "url_add": "{% url 'ws_add_favorite' %}",
-            "url_remove": "{% url 'ws_remove_favorite' %}",
-            "user_authenticated": {{ user.is_authenticated|yesno:"true,false" }},
-            "draw_id": "{{ bom.pk }}",
-            "path_img_star": "{% static "img/star.png" %}",
-            "path_img_star_empty": "{% static "img/star-o.png" %}",
-            "msg_regsiter": "{% trans "You need an account to save your favourite draws" %}",
-            "msg_toss": "{% trans "Click on the 'Toss' button to try the draw first" %}"
+        "url_add": "{% url 'api_dispatch_list' api_name="v1" resource_name="favourite" %}",
+        "url_remove": "{% url 'api_dispatch_detail' api_name="v1" resource_name="favourite" pk=bom.pk %}",
+        "user_authenticated": {{ user.is_authenticated|yesno:"true,false" }},
+        "draw_id": "{{ bom.pk }}",
+        "path_img_star": "{% static "img/star.png" %}",
+        "path_img_star_empty": "{% static "img/star-o.png" %}",
+        "msg_regsiter": "{% trans "You need an account to save your favourite draws" %}",
+        "msg_toss": "{% trans "Click on the 'Toss' button to try the draw first" %}"
     });
 
     var $draw_maneger = $('#draw-form').drawManager({
@@ -69,7 +69,6 @@
         var $chat_containers = $('#chat-frame, #chat-column');
 		var $chats = $chat_containers.chat({
             "is_enabled": {{bom.enable_chat|yesno:"true,false"}},
-            "url_send_message": "{% url 'chat_add_message' %}",
             "url_send_message": "{% url 'api_draw_chat' api_name="v1" pk=bom.pk %}",
             "user_id": {% if user.is_authenticated %} "{{ user.pk }}" {% else %} null {% endif %},
             "user_alias": user_alias,
@@ -103,16 +102,6 @@
         }
         PublicDraw.setup(public_draw_options);
     {% else %}
-        $('#fav-button').favourites({
-            "url_add": "{% url 'ws_add_favorite' %}",
-            "url_remove": "{% url 'ws_remove_favorite' %}",
-            "user_authenticated": {{ user.is_authenticated|yesno:"true,false" }},
-            "draw_id": "{{ bom.pk }}",
-            "path_img_star": "{% static "img/star.png" %}",
-            "path_img_star_empty": "{% static "img/star-o.png" %}",
-            "msg_regsiter": "You need an account to save your favourite draws",
-            "msg_toss": "Click on the 'Toss' button to try the draw first"
-        });
 
         $("#normal-draw-toss").click( function() {
             $draw_maneger.drawManager('check_changes_and_toss');
