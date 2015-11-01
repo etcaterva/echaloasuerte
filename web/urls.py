@@ -24,8 +24,6 @@ urlpatterns += patterns(
 
     # web services
     url(r'^ws/feedback/$', ws.feedback, name="ws_feedback"),
-    url(r'^ws/chat/add/$', ws.add_message_to_chat, name="chat_add_message"),
-
 
     # redirect
     url(r'index.php', RedirectView.as_view(url="/", permanent=True)),
@@ -35,6 +33,7 @@ urlpatterns += patterns(
     url(r'^ws/draw_add_users/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/draw_remove_users/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/chat/details/$', RedirectView.as_view(url="/", permanent=True)),
+    url(r'^ws/chat/add/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/draw/share_settings/update/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/draw/schedule-toss/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/draw/try/$', RedirectView.as_view(url="/", permanent=True)),
@@ -49,7 +48,6 @@ urlpatterns += patterns(
     url(r'^ws/check_access_to_draw/$', RedirectView.as_view(url="/", permanent=True)),
 
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
-
 
     url(r'^api/', include('web.rest_api.urls'))
 )

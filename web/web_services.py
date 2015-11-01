@@ -32,11 +32,3 @@ def feedback(request):
         return HttpResponse()
     else:
         return HttpResponseBadRequest("Invalid feedback, type or comment missing")
-
-def add_message_to_chat(request):
-    """Adds a message to a chat"""
-    draw_id = request.GET.get('draw_id')
-    message = request.GET.get('message')
-    user = request.GET.get('user_name')
-    MONGO.add_chat_message(draw_id, message, user)
-    return HttpResponse()
