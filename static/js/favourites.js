@@ -41,7 +41,11 @@
                         $fav_image.addClass("hidden");
                         $fav_loading.removeClass("hidden");
                         if (is_fav) {
-                            $.get(that.options.url_remove, {draw_id: that.options.draw_id}, function (data) {
+                            $.ajax({
+                                method : "DELETE",
+                                contentType : 'application/json',
+                                url : that.options.url_remove
+                            }).done(function (){
                                 that.$element.attr("data-active", "n");
                                 that.$element.find('img').attr("src", that.options.path_img_star_empty);
                                 $fav_loading.addClass("hidden");
@@ -49,7 +53,14 @@
                                 that.remove_from_favorite_panel();
                             });
                         } else {
-                            $.get(that.options.url_add, {draw_id: that.options.draw_id}, function (data) {
+                            $.ajax({
+                                method : "POST",
+                                contentType : 'application/json',
+                                data: JSON.stringify({
+                                    id: that.options.draw_id
+                                }),
+                                url : that.options.url_add
+                            }).done(function (){
                                 that.$element.attr("data-active", "y");
                                 that.$element.find('img').attr("src", that.options.path_img_star);
                                 $fav_loading.addClass("hidden");

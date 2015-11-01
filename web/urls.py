@@ -24,10 +24,8 @@ urlpatterns += patterns(
 
     # web services
     url(r'^ws/feedback/$', ws.feedback, name="ws_feedback"),
-    url(r'^ws/favourites/add/$', ws.add_favorite, name="ws_add_favorite"),
     url(r'^ws/chat/add/$', ws.add_message_to_chat, name="chat_add_message"),
 
-    url(r'^ws/favourites/remove/$', ws.remove_favorite, name="ws_remove_favorite"),
     url(r'^ws/check_access_to_draw/$', ws.check_access_to_draw, name="check_access_to_draw"),
 
     # redirect
@@ -47,6 +45,8 @@ urlpatterns += patterns(
     url(r'^draw/(?P<draw_id>[0-9a-g]+)/update/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^draw/try/(?P<draw_type>[^/]+)/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/update_profile/$',  RedirectView.as_view(url="/", permanent=True)),
+    url(r'^ws/favourites/remove/$', RedirectView.as_view(url="/", permanent=True)),
+    url(r'^ws/favourites/add/$', RedirectView.as_view(url="/", permanent=True)),
 
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
 

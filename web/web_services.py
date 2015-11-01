@@ -33,58 +33,6 @@ def feedback(request):
     else:
         return HttpResponseBadRequest("Invalid feedback, type or comment missing")
 
-@login_required
-@time_it
-def add_favorite(request):
-    """Add a draw to the list of favourites of an user"""
-    # DEPRECATE
-    draw_id = request.GET.get('draw_id')
-
-    if draw_id is None:
-        return HttpResponseBadRequest()
-
-    bom_draw = MONGO.retrieve_draw(draw_id)
-    user_can_write_draw(request.user, bom_draw)  # raises 500
-    user = MONGO.retrieve_user(request.user.pk)
-    if draw_id in user.favourites:
-        LOG.info("Draw {0} is favorite for user {1}".format(
-            draw_id, request.user.pk))
-        return HttpResponse()
-
-    user.favourites.append(draw_id)
-    MONGO.save_user(user)
-
-    LOG.info("Draw {0} added as favorite for user {1}".format(
-        draw_id, request.user.pk))
-    return HttpResponse()
-
-
-@login_required
-@time_it
-def remove_favorite(request):
-    """removes a draw from the list of favourites"""
-    # DEPRECATE
-    draw_id = request.GET.get('draw_id')
-
-    if draw_id is None:
-        return HttpResponseBadRequest()
-
-    bom_draw = MONGO.retrieve_draw(draw_id)
-    user_can_write_draw(request.user, bom_draw)  # raises 500
-    user = MONGO.retrieve_user(request.user.pk)
-    if draw_id not in user.favourites:
-        LOG.info("Draw {0} is not favorite for user {1}".format(
-            draw_id, request.user.pk))
-        return HttpResponse()
-
-    user.favourites.remove(draw_id)
-    MONGO.save_user(user)
-
-    LOG.info("Draw {0} removed as favorite for user {1}".format(
-        draw_id, request.user.pk))
-    return HttpResponse()
-
-
 def check_access_to_draw(request):
     """Checks whether an user can access to a draw"""
     # is this used?
