@@ -1,6 +1,8 @@
 import logging
+
 from django.core.exceptions import PermissionDenied
 from django.http.response import HttpResponseForbidden
+
 
 logger = logging.getLogger("echaloasuerte")
 from server.mongodb.driver import MongoDriver
@@ -21,7 +23,9 @@ class ExceptionMiddleware(object):
             return page_not_found(request)
 
         if isinstance(exception, MongoDriver.DecodingError):
-            logger.error("Unexpected Exception, returning not found. {0}".format(exception))
+            logger.error(
+                "Unexpected Exception, returning not found. {0}".format(
+                    exception))
             return page_not_found(request)
 
         if isinstance(exception, PermissionDenied):

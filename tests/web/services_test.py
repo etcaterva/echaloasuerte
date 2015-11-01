@@ -1,6 +1,5 @@
 from django.test import TestCase
 import django
-from django.core.exceptions import PermissionDenied
 
 from server.bom.user import User
 from server.bom import RandomNumberDraw
@@ -13,6 +12,7 @@ class TestServices(TestCase):
     def setUp(self):
         django.setup()
         self._driver = MongoDriver.instance()
+
 
 class TestToss(TestServices):
     """ Test the toss service

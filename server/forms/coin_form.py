@@ -1,6 +1,7 @@
 from django.templatetags.static import static
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.layout import Layout, HTML
+
 from server.forms.form_base import FormBase
 
 
@@ -18,5 +19,6 @@ class CoinDrawForm(FormBase):
                 '''onclick="$('#create-and-toss,#normal-draw-toss, #shared-draw-toss, #try').click();" />'''
                 '<a>'
                 '<p>{1}</p></div>'.format(
-                    static('img/img_coin/head.png'), _("Tap the coin to flip it")))
+                    static('img/img_coin/head.png'),
+                    _("Tap the coin to flip it")))
         )

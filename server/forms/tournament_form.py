@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.layout import Layout, Row, HTML
+
 from server.forms import FormBase
 
 
@@ -13,11 +14,13 @@ class TournamentDrawForm(FormBase):
 
     def __init__(self, *args, **kwargs):
         if 'initial' in kwargs and 'participants' in kwargs['initial']:
-            kwargs['initial']['participants'] = ','.join(kwargs['initial']['participants'])
+            kwargs['initial']['participants'] = ','.join(
+                kwargs['initial']['participants'])
         super(TournamentDrawForm, self).__init__(*args, **kwargs)
 
         # Add "protected" class to the input that will be read-only when the draw is public
-        self.fields['participants'].widget.attrs.update({'class': 'protected eas-tokenfield'})
+        self.fields['participants'].widget.attrs.update(
+            {'class': 'protected eas-tokenfield'})
 
         self.helper.label_class = 'col-xs-6 text-right'
         self.helper.field_class = 'col-xs-6'

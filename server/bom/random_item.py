@@ -1,4 +1,5 @@
 import random
+
 from server.bom.draw_base import BaseDraw, InvalidDraw
 
 

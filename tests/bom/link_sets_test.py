@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from server.bom.link_sets import *
 
 
@@ -39,11 +40,15 @@ class LinkSetsDrawTest(TestCase):
         tested_item.toss()
         self.assertEqual(1, len(tested_item.results))
         self.assertEqual(2, len(tested_item.results[0]["items"]))
-        self.assertTrue(1 in [tested_item.results[0]["items"][0][0], tested_item.results[0]["items"][1][0]])
-        self.assertTrue(2 in [tested_item.results[0]["items"][0][0], tested_item.results[0]["items"][1][0]])
+        self.assertTrue(1 in [tested_item.results[0]["items"][0][0],
+                              tested_item.results[0]["items"][1][0]])
+        self.assertTrue(2 in [tested_item.results[0]["items"][0][0],
+                              tested_item.results[0]["items"][1][0]])
 
-        self.assertTrue('a' in [tested_item.results[0]["items"][0][1], tested_item.results[0]["items"][1][1]])
-        self.assertTrue('b' in [tested_item.results[0]["items"][0][1], tested_item.results[0]["items"][1][1]])
+        self.assertTrue('a' in [tested_item.results[0]["items"][0][1],
+                                tested_item.results[0]["items"][1][1]])
+        self.assertTrue('b' in [tested_item.results[0]["items"][0][1],
+                                tested_item.results[0]["items"][1][1]])
 
 
     def toss_same_twice_test(self):

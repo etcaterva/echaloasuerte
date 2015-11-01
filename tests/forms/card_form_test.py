@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from server.forms.card_form import CardDrawForm
 
 

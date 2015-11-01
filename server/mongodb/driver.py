@@ -1,11 +1,12 @@
-from server.bom.user import User
-from bson.objectid import ObjectId
-from server.bom import *
-
-import pymongo
 import logging
 import datetime
+
+from bson.objectid import ObjectId
+import pymongo
 import pytz
+
+from server.bom import *
+
 
 logger = logging.getLogger("echaloasuerte")
 
@@ -16,8 +17,10 @@ def safe_connection(func):
     def _(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except (pymongo.errors.AutoReconnect, pymongo.errors.ConnectionFailure) as e:
-            logger.error("PymongoError: {0} resetting mongo connection... ".format(e))
+        except (
+        pymongo.errors.AutoReconnect, pymongo.errors.ConnectionFailure) as e:
+            logger.error(
+                "PymongoError: {0} resetting mongo connection... ".format(e))
             MongoDriver._instance = None
 
     return _
@@ -28,7 +31,9 @@ def build_draw(doc):
     try:
         return eval(doc["draw_type"])(**doc)
     except Exception as e:
-        logger.error("Error when decoding a draw. Exception: {1}. Draw: {0} ".format(doc, e))
+        logger.error(
+            "Error when decoding a draw. Exception: {1}. Draw: {0} ".format(doc,
+                                                                            e))
         raise
 
 
@@ -94,26 +99,34 @@ class MongoDriver(object):
     def retrieve_user(self, user_id):
         doc = self._users.find_one({"_id": user_id})
         if doc is None:
-            raise MongoDriver.NotFoundError("User not found: {0}".format(user_id))
-        logger.debug("Retrieved documment: {0} using id {1}".format(doc, user_id))
+            raise MongoDriver.NotFoundError(
+                "User not found: {0}".format(user_id))
+        logger.debug(
+            "Retrieved documment: {0} using id {1}".format(doc, user_id))
         return User(**doc)
 
     @safe_connection
     def get_draws_with_filter(self, d_filter, num_results=100):
         res_draws = [build_draw(x) for x in
-                     self._draws.find(d_filter).sort("creation_time", pymongo.DESCENDING).limit(num_results)]
+                     self._draws.find(d_filter).sort("creation_time",
+                                                     pymongo.DESCENDING).limit(
+                         num_results)]
         res_draws = [x for x in res_draws if x is not None]
-        logger.debug("Found {0} draws with filter {1}".format(len(res_draws), d_filter))
+        logger.debug(
+            "Found {0} draws with filter {1}".format(len(res_draws), d_filter))
         return res_draws
 
     @safe_connection
     def get_user_draws(self, user_id, num_results=50):
         owner_draws = [build_draw(x) for x in
-                       self._draws.find({"owner": user_id}).sort("creation_time", pymongo.DESCENDING).limit(
+                       self._draws.find({"owner": user_id}).sort(
+                           "creation_time", pymongo.DESCENDING).limit(
                            num_results)]
         owner_draws = [x for x in owner_draws if x is not None]
         # todo: related
-        logger.debug("Found {0} draws of which {1} is owner".format(len(owner_draws), user_id))
+        logger.debug(
+            "Found {0} draws of which {1} is owner".format(len(owner_draws),
+                                                           user_id))
         return {"user_id": user_id, "owner": owner_draws}
 
     @safe_connection
@@ -121,7 +134,8 @@ class MongoDriver(object):
         """Given a draw, saves it, update its ID if not set and returns the _id"""
         draw.mark_updated()
         doc = draw.__dict__
-        if "_id" in doc.keys() and doc["_id"] is None:  # Ask mongo to generate an id
+        if "_id" in doc.keys() and doc[
+            "_id"] is None:  # Ask mongo to generate an id
             doc.pop("_id")
         self._draws.save(doc)
         draw._id = doc["_id"]
@@ -139,14 +153,17 @@ class MongoDriver(object):
         try:
             raw_id = ObjectId(draw_id) if draw_id is not ObjectId else draw_id
         except:
-            raise MongoDriver.NotFoundError("Error with id: {0}".format(draw_id))
+            raise MongoDriver.NotFoundError(
+                "Error with id: {0}".format(draw_id))
         doc = self._draws.find_one({"_id": raw_id})
         if doc is None:
-            raise MongoDriver.NotFoundError("Draw not found: {0}".format(draw_id))
+            raise MongoDriver.NotFoundError(
+                "Draw not found: {0}".format(draw_id))
         logger.debug("Retrieved documment: {0}".format(doc))
         return build_draw(doc)
 
-    def add_chat_message(self, draw_id, content, user_id=None, anonymous_alias=None):
+    def add_chat_message(self, draw_id, content, user_id=None,
+                         anonymous_alias=None):
         """ Add a message to a chat. we'll use draw id as chat-id"""
         now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
         entry = {
@@ -168,12 +185,14 @@ class MongoDriver(object):
         logger.debug("Retrieving chat with id {0}".format(draw_id))
         doc = self._chats.find_one({"_id": draw_id})
         if doc is None:
-            raise MongoDriver.NotFoundError("Chat not found: {0}".format(draw_id))
+            raise MongoDriver.NotFoundError(
+                "Chat not found: {0}".format(draw_id))
         entries = doc["entries"]
         logger.debug("Retrieved document chat {0} with {1} entries "
                      .format(draw_id, len(entries)))
         for entry in entries:
-            entry['creation_time'] = entry['creation_time'].replace(tzinfo=pytz.utc)
+            entry['creation_time'] = entry['creation_time'].replace(
+                tzinfo=pytz.utc)
         return sorted(entries, key=lambda k: k['creation_time'], reverse=True)
 
     @staticmethod
@@ -190,9 +209,12 @@ class MongoDriver(object):
                     MongoDriver._instance = MongoDriver(**cnx_param)
                 except Exception as e:
                     logger.warning(
-                        "Imposible to connect to mongo DB using parameters {0}, exception: {1}".format(cnx_param, e))
+                        "Imposible to connect to mongo DB using parameters {0}, exception: {1}".format(
+                            cnx_param, e))
                 else:
-                    logger.info("Connected to to mongo using parameter {0}".format(cnx_param))
+                    logger.info(
+                        "Connected to to mongo using parameter {0}".format(
+                            cnx_param))
 
                 if MongoDriver._instance: break
 

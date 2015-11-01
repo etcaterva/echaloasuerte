@@ -43,9 +43,12 @@ def register_draw(draw_name, bom_class, form_class, template_name):
 register_draw('coin', CoinDraw, CoinDrawForm, 'CoinDraw')
 register_draw('dice', DiceDraw, DiceDrawForm, 'DiceDraw')
 register_draw('card', CardDraw, CardDrawForm, 'CardDraw')
-register_draw('number', RandomNumberDraw, RandomNumberDrawForm, 'RandomNumberDraw')
-register_draw('letter', RandomLetterDraw, RandomLetterDrawForm, 'RandomLetterDraw')
-register_draw('tournament', TournamentDraw, TournamentDrawForm, 'TournamentDraw')
+register_draw('number', RandomNumberDraw, RandomNumberDrawForm,
+              'RandomNumberDraw')
+register_draw('letter', RandomLetterDraw, RandomLetterDrawForm,
+              'RandomLetterDraw')
+register_draw('tournament', TournamentDraw, TournamentDrawForm,
+              'TournamentDraw')
 register_draw('item', RandomItemDraw, RandomItemDrawForm, 'RandomItemDraw')
 register_draw('link_sets', LinkSetsDraw, LinkSetsDrawForm, 'LinkSetsDraw')
 

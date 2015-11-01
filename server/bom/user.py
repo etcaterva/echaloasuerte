@@ -1,8 +1,8 @@
-from django.contrib.auth.hashers import (check_password, make_password)
-
 import logging
-from django.utils.http import urlencode
 import hashlib
+
+from django.contrib.auth.hashers import check_password, make_password
+from django.utils.http import urlencode
 
 logger = logging.getLogger("echaloasuerte")
 
@@ -18,7 +18,9 @@ class User(object):
             rd = server.mongodb.driver.MongoDriver.instance().retrieve_draw
             return [rd(f) for f in self.favourites]
         except Exception as e:
-            logger.error("Error when retrieving the list of favourites for user {0}. {1}".format(self.pk, e))
+            logger.error(
+                "Error when retrieving the list of favourites for user {0}. {1}".format(
+                    self.pk, e))
             return []
 
     @property
@@ -35,15 +37,17 @@ class User(object):
         default = "monsterid"
         size = 85
         email = self.email.lower()
-        gravatar_url = "//www.gravatar.com/avatar/" + hashlib.md5(email.encode('utf-8')).hexdigest() + "?"
-        parameters = {'d':default,
-                      's':str(size)}
+        gravatar_url = "//www.gravatar.com/avatar/" + hashlib.md5(
+            email.encode('utf-8')).hexdigest() + "?"
+        parameters = {'d': default,
+                      's': str(size)}
         if not self.use_gravatar:
             parameters['f'] = 'y'
         gravatar_url += urlencode(parameters)
         return gravatar_url
 
-    def __init__(self, _id, password = None, favourites = None, alias=None, use_gravatar=True):
+    def __init__(self, _id, password=None, favourites=None, alias=None,
+                 use_gravatar=True):
         self._id = _id
         """Email of the user"""
 

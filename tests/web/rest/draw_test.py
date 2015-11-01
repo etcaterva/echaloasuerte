@@ -1,5 +1,7 @@
 import datetime
+
 import pytz
+
 
 try:
     import urllib.parse as urllib
@@ -73,7 +75,7 @@ class DrawResource_ValidateTest(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
@@ -103,7 +105,7 @@ class DrawResource_ValidateTest(ResourceTestCase):
             'range_min': 'a',
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
@@ -218,7 +220,7 @@ class DrawResourceTest(ResourceTestCase):
 
         # Verify a new one has been added.
         self.assertEquals(sorted(self.mongo.retrieve_draw(self.item.pk).users),
-                         sorted(['FAKE@USER.es', self.user.pk]))
+                          sorted(['FAKE@USER.es', self.user.pk]))
 
     def test_anon_delete_detail(self):
         self.assertHttpUnauthorized(self.api_client.delete(self.detail_url,
@@ -228,10 +230,10 @@ class DrawResourceTest(ResourceTestCase):
         self.item.owner = self.user.pk
         self.mongo.save_draw(self.item)
         self.assertHttpUnauthorized(self.api_client.post(self.detail_url,
-                                                    format='json',
-                                                    data={
-                                                        'remove_user': 'test@user.com'
-                                                    }))
+                                                         format='json',
+                                                         data={
+                                                             'remove_user': 'test@user.com'
+                                                         }))
 
     def test_post_detail_anon_add_other_unauthorised(self):
         # Check how many are there first.
@@ -241,10 +243,11 @@ class DrawResourceTest(ResourceTestCase):
                           [self.user.pk])
         # create it
         self.assertHttpUnauthorized(self.api_client.post(self.detail_url,
-                                                    format='json',
-                                                    data={
-                                                        'add_user': ['FAKE@USER.es']
-                                                    }))
+                                                         format='json',
+                                                         data={
+                                                             'add_user': [
+                                                                 'FAKE@USER.es']
+                                                         }))
 
     def test_post_detail_add_other(self):
         self.login()
@@ -256,10 +259,11 @@ class DrawResourceTest(ResourceTestCase):
         self.assertHttpCreated(self.api_client.post(self.detail_url,
                                                     format='json',
                                                     data={
-                                                        'add_user': ['FAKE@USER.es']
+                                                        'add_user': [
+                                                            'FAKE@USER.es']
                                                     }))
         self.assertEquals(sorted(self.mongo.retrieve_draw(self.item.pk).users),
-                         sorted(['FAKE@USER.es', self.user.pk]))
+                          sorted(['FAKE@USER.es', self.user.pk]))
 
     def test_post_detail_remove_other(self):
         self.login()
@@ -267,7 +271,7 @@ class DrawResourceTest(ResourceTestCase):
         self.item.users.append('FAKE@USER.es')
         self.mongo.save_draw(self.item)
         self.assertEquals(sorted(self.mongo.retrieve_draw(self.item.pk).users),
-                         sorted(['FAKE@USER.es', self.user.pk]))
+                          sorted(['FAKE@USER.es', self.user.pk]))
         # remove it
         self.assertHttpCreated(self.api_client.post(self.detail_url,
                                                     format='json',
@@ -427,7 +431,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         for attr in ['results', 'owner', '_id', 'pk', 'creation_time',
                      'last_updated_time', 'audit']:
             data[attr] = "something"
@@ -451,7 +455,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
@@ -523,7 +527,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
             'range_min': "2",
             'range_max': 2,
             'allow_repeat': False,
-            }
+        }
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
@@ -538,7 +542,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
             'enable_chat': False,
             'users': ['ruben@prueba.com'],
             'type': 'letter',
-            }
+        }
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
@@ -561,7 +565,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
             'number_of_results': 5,
             'users': ['ruben@prueba.com'],
             'type': 'coin',
-            }
+        }
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
@@ -584,7 +588,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
             'number_of_results': 5,
             'users': ['ruben@prueba.com'],
             'type': 'dice',
-            }
+        }
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
@@ -608,7 +612,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
             'type_of_deck': 'french',
             'users': ['ruben@prueba.com'],
             'type': 'card',
-            }
+        }
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
@@ -631,7 +635,7 @@ class DrawResourceCreate_Test(ResourceTestCase):
             'users': ['ruben@prueba.com'],
             'type': 'tournament',
             'participants': ["1", "2", "3", "4"]
-            }
+        }
         resp = self.api_client.post(self.base_url,
                                     format='json',
                                     data=data)
@@ -752,7 +756,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         draw = RandomNumberDraw(**data)
         self.mongo.save_draw(draw)
         resp = self.toss(draw)
@@ -769,7 +773,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         draw = RandomNumberDraw(**data)
         draw.owner = "random@user.si"
         self.mongo.save_draw(draw)
@@ -787,7 +791,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 5,
             'allow_repeat': True,
-            }
+        }
         draw = RandomNumberDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -809,7 +813,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         draw = RandomNumberDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -828,7 +832,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'enable_chat': True,
             'users': ['user_anon@user.es'],
             'allow_repeat': True,
-            }
+        }
         draw = RandomLetterDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -847,7 +851,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'enable_chat': True,
             'users': ['user_anon@user.es'],
             'allow_repeat': True,
-            }
+        }
         draw = CoinDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -866,7 +870,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'enable_chat': True,
             'users': ['user_anon@user.es'],
             'allow_repeat': True,
-            }
+        }
         draw = DiceDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -886,7 +890,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'type_of_deck': 'french',
             'allow_repeat': True,
-            }
+        }
         draw = CardDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -906,7 +910,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'participants': ["a", "b"],
             'allow_repeat': True,
-            }
+        }
         draw = TournamentDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -926,7 +930,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'items': ["1"],
             'allow_repeat': True,
-            }
+        }
         draw = RandomItemDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -946,7 +950,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'sets': [[1, 2], [2, 3]],
             'allow_repeat': True,
-            }
+        }
         draw = LinkSetsDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -966,7 +970,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'type': 'link_sets',
             'users': ['ruben@prueba.com'],
             'sets': [[],
-                     ["a", "b", "c", "d"]]
+                ["a", "b", "c", "d"]]
         }
         resp = self.try_(data)
         print(resp)
@@ -1011,7 +1015,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'type': 'link_sets',
             'sets': [[1], [2]],
             'allow_repeat': True,
-            }
+        }
         resp = self.try_(data)
         print(resp)
         self.assertHttpOK(resp)
@@ -1026,7 +1030,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'sets': [[1], [2]],
             'allow_repeat': True,
-            }
+        }
         draw = LinkSetsDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1042,8 +1046,10 @@ class DrawResourceToss_Test(ResourceTestCase):
 
     def test_schedule_empty_id_not_found(self):
         self.login()
+
         class FakeDraw(object):
             pk = ""
+
         resp = self.schedule_toss(FakeDraw(), '2015-10-21T00:00:00Z')
         print(resp)
         self.assertHttpNotFound(resp)
@@ -1051,8 +1057,10 @@ class DrawResourceToss_Test(ResourceTestCase):
 
     def test_schedule_bad_id_not_found(self):
         self.login()
+
         class FakeDraw(object):
             pk = "INVALID_DRAW_ID"
+
         resp = self.schedule_toss(FakeDraw(), '2015-10-21T00:00:00Z')
         print(resp)
         self.assertHttpNotFound(resp)
@@ -1066,7 +1074,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'sets': [[1], [2]],
             'allow_repeat': True,
-            }
+        }
         draw = LinkSetsDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1084,7 +1092,7 @@ class DrawResourceToss_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'sets': [[1], [2]],
             'allow_repeat': True,
-            }
+        }
         draw = LinkSetsDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1138,7 +1146,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         draw = RandomNumberDraw(**data)
         self.mongo.save_draw(draw)
         resp = self.api_client.patch(self.detail_uri(draw), data={})
@@ -1155,7 +1163,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         draw = RandomNumberDraw(**data)
         draw.owner = "random@user.si"
         self.mongo.save_draw(draw)
@@ -1173,7 +1181,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         draw = RandomNumberDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1196,7 +1204,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         draw = RandomNumberDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1221,7 +1229,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         draw = RandomNumberDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1245,7 +1253,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'range_min': 5,
             'range_max': 6,
             'allow_repeat': True,
-            }
+        }
         draw = RandomNumberDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1269,7 +1277,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'enable_chat': True,
             'users': ['user_anon@user.es'],
             'allow_repeat': True,
-            }
+        }
         draw = RandomLetterDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1292,7 +1300,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'enable_chat': True,
             'users': ['user_anon@user.es'],
             'allow_repeat': True,
-            }
+        }
         draw = CoinDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1315,7 +1323,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'enable_chat': True,
             'users': ['user_anon@user.es'],
             'allow_repeat': True,
-            }
+        }
         draw = DiceDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1339,7 +1347,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'type_of_deck': 'french',
             'allow_repeat': True,
-            }
+        }
         draw = CardDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1362,7 +1370,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'enable_chat': True,
             'users': ['user_anon@user.es'],
             'participants': ["a", "b"],
-            }
+        }
         draw = TournamentDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1387,7 +1395,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'items': ["1"],
             'allow_repeat': True,
-            }
+        }
         draw = RandomItemDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1412,7 +1420,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'sets': [[1, 2], [2, 3]],
             'allow_repeat': True,
-            }
+        }
         draw = LinkSetsDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
@@ -1455,7 +1463,7 @@ class DrawResourceChat_Test(ResourceTestCase):
             'users': ['user_anon@user.es'],
             'sets': [[1, 2], [2, 3]],
             'allow_repeat': True,
-            }
+        }
         draw = LinkSetsDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)

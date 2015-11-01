@@ -1,6 +1,7 @@
 from crispy_forms.layout import Layout, Row
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+
 from server.forms.form_base import FormBase
 
 
@@ -15,7 +16,8 @@ class DiceDrawForm(FormBase):
         super(DiceDrawForm, self).__init__(*args, **kwargs)
 
         # Add "protected" class to the input that will be read-only when the draw is public
-        self.fields['number_of_results'].widget.attrs.update({'class': 'protected'})
+        self.fields['number_of_results'].widget.attrs.update(
+            {'class': 'protected'})
 
         self.helper.label_class = 'col-xs-7 text-right'
         self.helper.field_class = 'col-xs-5'

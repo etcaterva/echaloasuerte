@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from server.bom.card import *
 
 
@@ -44,7 +45,8 @@ class DiceDrawTest(TestCase):
 
     def is_feasible_deck_not_found_ko_test(self):
         """CardDraw: Invalid type of deck is not feasible"""
-        tested_item = CardDraw(number_of_results=5, type_of_deck="what are you doing here?")
+        tested_item = CardDraw(number_of_results=5,
+                               type_of_deck="what are you doing here?")
         self.assertFalse(tested_item.is_feasible())
 
     def is_feasible_not_enough_results_ko_test(self):

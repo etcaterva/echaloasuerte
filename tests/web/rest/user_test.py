@@ -144,7 +144,7 @@ class UserResourceTest(ResourceTestCase):
         self.assertEqual(self.mongo._users.count(), count_users)
         # check unchanged data
         self.assertEqual(self.mongo.retrieve_user(self.item.pk).email,
-            self.item.email)
+                         self.item.email)
         self.assertEqual(self.mongo.retrieve_user(self.item.pk).use_gravatar,
                          self.item.use_gravatar)
         # Check for updated data.

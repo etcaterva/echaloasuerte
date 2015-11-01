@@ -42,13 +42,16 @@ class UserTest(BrowserStackTest):
         driver = self.driver
         login_button = driver.find_element_by_css_selector('#login-dropdown a')
         login_button.click()
-        email_input = driver.find_element_by_css_selector("#login-dropdown #email")
-        password_input = driver.find_element_by_css_selector("#login-dropdown #password")
+        email_input = driver.find_element_by_css_selector(
+            "#login-dropdown #email")
+        password_input = driver.find_element_by_css_selector(
+            "#login-dropdown #password")
         email_input.clear()
         email_input.send_keys("test@test.com")
         password_input.clear()
         password_input.send_keys('test')
-        driver.find_element_by_css_selector("#login-dropdown #login-button").click()
+        driver.find_element_by_css_selector(
+            "#login-dropdown #login-button").click()
         result = driver.find_elements_by_id('account-dropdown')
         self.assertTrue(result)
 
@@ -75,12 +78,13 @@ class UserTest(BrowserStackTest):
 
         # Check if the alias has changed
         alias_updated = self.check_condition(
-            lambda driver: driver.find_element_by_id('account-dropdown').text.strip() == "Cool alias"
+            lambda driver: driver.find_element_by_id(
+                'account-dropdown').text.strip() == "Cool alias"
         )
         self.assertTrue(alias_updated)
-        alias_in_table = driver.find_element_by_css_selector('#profile-edit-alias .user-settings-content').text.strip()
+        alias_in_table = driver.find_element_by_css_selector(
+            '#profile-edit-alias .user-settings-content').text.strip()
         self.assertEqual("Cool alias", alias_in_table)
-
 
 
     '''def test_change_password(self):

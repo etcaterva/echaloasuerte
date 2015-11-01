@@ -1,6 +1,8 @@
-from django.test import TestCase
-from server.bom.random_letter import *
 import string
+
+from django.test import TestCase
+
+from server.bom.random_letter import *
 
 
 class RandomLetterDrawTest(TestCase):
@@ -78,7 +80,8 @@ class RandomLetterDrawTest(TestCase):
 
     def toss_on_existing_test(self):
         """RandomLetterDraw: Toss when list created with results already"""
-        tested_item2 = RandomLetterDraw(number_of_results=2, results=[{"items": ['a']}])
+        tested_item2 = RandomLetterDraw(number_of_results=2,
+                                        results=[{"items": ['a']}])
         self.assertEqual(1, len(tested_item2.results))
         self.assertTrue(tested_item2.toss()["items"][0] in string.ascii_letters)
         self.assertEqual(2, len(tested_item2.results))

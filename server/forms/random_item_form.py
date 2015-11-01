@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.layout import Layout, Row, HTML
+
 from server.forms import FormBase
 
 
@@ -20,8 +21,10 @@ class RandomItemDrawForm(FormBase):
         super(RandomItemDrawForm, self).__init__(*args, **kwargs)
 
         # Add "protected" class to the input that will be read-only when the draw is public
-        self.fields['number_of_results'].widget.attrs.update({'class': 'protected', 'min': 1})
-        self.fields['items'].widget.attrs.update({'class': 'protected eas-tokenfield'})
+        self.fields['number_of_results'].widget.attrs.update(
+            {'class': 'protected', 'min': 1})
+        self.fields['items'].widget.attrs.update(
+            {'class': 'protected eas-tokenfield'})
         self.fields['allow_repeat'].widget.attrs.update({'class': 'protected'})
 
         self.helper.label_class = 'col-xs-6 text-right'
@@ -40,5 +43,6 @@ class RandomItemDrawForm(FormBase):
         cleaned_data = super(RandomItemDrawForm, self).clean()
         if not self._errors:
             raw_items = cleaned_data.get('items')
-            cleaned_data['items'] = raw_items.split(",") if ',' in raw_items else raw_items.split()
+            cleaned_data['items'] = raw_items.split(
+                ",") if ',' in raw_items else raw_items.split()
         return cleaned_data

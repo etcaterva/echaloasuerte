@@ -1,9 +1,11 @@
 from os import environ
+
 import django
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
+
 from server.mongodb.driver import MongoDriver
 
 
@@ -13,7 +15,6 @@ REPOSITORY_PATH = environ.get('TRAVIS_REPO_SLUG')
 
 
 class BrowserStackTest(LiveServerTestCase):
-
     def __init__(self, *args, **kwargs):
         super(BrowserStackTest, self).__init__(*args, **kwargs)
         django.setup()
@@ -22,7 +23,8 @@ class BrowserStackTest(LiveServerTestCase):
         self.db = MongoDriver.instance()
         self.base_url = self.live_server_url
         if BROWSERSTACK_KEY:
-            test_url = "http://{0}:{1}@hub.browserstack.com:80/wd/hub".format(BROWSERSTACK_USERNAME, BROWSERSTACK_KEY)
+            test_url = "http://{0}:{1}@hub.browserstack.com:80/wd/hub".format(
+                BROWSERSTACK_USERNAME, BROWSERSTACK_KEY)
             # Specify capabilities
             desired_cap = {'browser': 'Firefox',
                            'browser_version': '40.0',
@@ -32,7 +34,8 @@ class BrowserStackTest(LiveServerTestCase):
                            'browserstack.local': True,
                            'browserstack.debug': True
                            }
-            self.driver = webdriver.Remote(command_executor=test_url, desired_capabilities=desired_cap)
+            self.driver = webdriver.Remote(command_executor=test_url,
+                                           desired_capabilities=desired_cap)
         else:
             # PhantomJS (Silent mode)
             self.driver = webdriver.PhantomJS()
@@ -52,7 +55,8 @@ class BrowserStackTest(LiveServerTestCase):
 
     def is_element_visible(self, css_selector):
         try:
-            return self.driver.find_element_by_css_selector(css_selector).is_displayed()
+            return self.driver.find_element_by_css_selector(
+                css_selector).is_displayed()
         except NoSuchElementException:
             return False
 

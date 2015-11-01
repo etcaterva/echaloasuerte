@@ -22,8 +22,9 @@ class CardDrawForm(FormBase):
         super(CardDrawForm, self).__init__(*args, **kwargs)
 
         # Add "protected" class to the input that will be read-only when the draw is public
-        self.fields['number_of_results'].widget.attrs.update({'class': 'protected'})
-        #self.fields['type_of_deck'].widget.attrs.update({'class': 'protected'})
+        self.fields['number_of_results'].widget.attrs.update(
+            {'class': 'protected'})
+        # self.fields['type_of_deck'].widget.attrs.update({'class': 'protected'})
 
         self.helper.label_class = 'col-xs-7 text-right'
         self.helper.field_class = 'col-xs-5'
