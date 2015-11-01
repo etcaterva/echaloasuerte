@@ -1,21 +1,18 @@
 """Definition of views for the website"""
 import logging
+import random
 
-from django.http import *
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
 from django.templatetags.static import static
 
 from server import draw_factory
-from server.bom import *
 from server.bom.user import User
-from server.forms.form_base import DrawFormError
 from server.mongodb.driver import MongoDriver
-from web.common import user_can_write_draw, time_it, invite_user, set_owner, \
-    ga_track_draw
+from web.common import time_it
 from web.google_analytics import ga_track_event
 
 
@@ -65,10 +62,12 @@ def register(request):
         u.set_password(password)
         try:
             MONGO.create_user(u)
-            ga_track_event(category="user", action="registration")
-            return login_user(request)
         except Exception:
             context = {'error': _("The email is already registered.")}
+        else:
+            ga_track_event(category="user", action="registration")
+            return login_user(request)
+
     return render(request, 'register.html', context)
 
 
@@ -80,7 +79,8 @@ def profile(request):
     try:
         draws = MONGO.get_user_draws(request.user.pk)
     except Exception as e:
-        LOG.error("There was an issue when retrieving user draws. {0}".format(e))
+        LOG.error(
+            "There was an issue when retrieving user draws. {0}".format(e))
 
     context = {'draws': draws}
     return render(request, 'profile.html', context)
@@ -94,7 +94,7 @@ def join_draw(request):
     return render(request, 'join_draw.html', context)
 
 
-# stores pairs of sentences and image url undder static/img/sentences/
+# stores pairs of sentences and image url under static/img/sentences/
 SENTENCES = (
     (_("10 seconds, which wire should you cut?"), "dinamite.png"),
     (_("Who takes care of the trash?"), "basura.png"),
@@ -130,6 +130,7 @@ def index(request, is_public=None):
     }
     return render(request, 'index.html', context)
 
+
 @time_it
 def create_draw(request, draw_type, is_public):
     """create_draw view
@@ -141,11 +142,16 @@ def create_draw(request, draw_type, is_public):
 
     if request.method == 'GET':
         LOG.debug("Serving view to create a draw: {0}".format(draw_type))
-        draw_form = draw_factory.create_form(draw_type, initial={'is_shared': is_public})
+        draw_form = draw_factory.create_form(draw_type,
+                                             initial={'is_shared': is_public})
         return render(request, 'draws/new_draw.html',
-                      {"draw": draw_form, "is_public": is_public, "draw_type": draw_type, "default_title": draw_form.DEFAULT_TITLE})
+                      {"draw": draw_form, "is_public": is_public,
+                       "draw_type": draw_type,
+                       "default_title": draw_form.DEFAULT_TITLE})
     else:
-        LOG.error("Deprecated draw creation, the api should have been used instead")
+        LOG.error(
+            "Deprecated draw creation, the api should have been used instead")
+
 
 @time_it
 def display_draw(request, draw_id):
@@ -157,9 +163,11 @@ def display_draw(request, draw_id):
     if bom_draw.check_read_access(request.user):
         draw_data = bom_draw.__dict__.copy()
         draw_form = draw_factory.create_form(draw_type, initial=draw_data)
-        return render(request, "draws/display_draw.html", {"draw": draw_form, "bom": bom_draw})
+        return render(request, "draws/display_draw.html",
+                      {"draw": draw_form, "bom": bom_draw})
     else:
         return render(request, "draws/secure_draw.html", {"bom": bom_draw})
+
 
 @time_it
 def under_construction(request):
