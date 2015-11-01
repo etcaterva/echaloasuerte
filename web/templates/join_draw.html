@@ -86,22 +86,6 @@
         set_table_size();
     });
 
-    /**
-     * Check whether an user can access and, if possible, access to it
-    **/
-    function access_draw(draw_id, target_url){
-        $.ajax({
-            method : "GET",
-            url   : "{% url 'check_access_to_draw' %}",
-            data  : {draw_id : draw_id}
-        }).done(function (){
-            window.location = target_url;
-        })
-        .fail(function () {
-            console.log("It was not possible to access the draw");
-        });
-    }
-
     // Set action when a draw row is clicked
     $('.data-table').on( 'click', 'tr', function () {
         if(!($(this).attr('alt')))
@@ -110,7 +94,7 @@
         // Get url and draw id
         var target_url = $(this).attr('alt');
         var draw_id = $(this).attr('data-draw_id');
-        access_draw(draw_id,target_url);
+        window.location = target_url;
 
         return false;
     } );

@@ -26,7 +26,6 @@ urlpatterns += patterns(
     url(r'^ws/feedback/$', ws.feedback, name="ws_feedback"),
     url(r'^ws/chat/add/$', ws.add_message_to_chat, name="chat_add_message"),
 
-    url(r'^ws/check_access_to_draw/$', ws.check_access_to_draw, name="check_access_to_draw"),
 
     # redirect
     url(r'index.php', RedirectView.as_view(url="/", permanent=True)),
@@ -47,6 +46,7 @@ urlpatterns += patterns(
     url(r'^ws/update_profile/$',  RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/favourites/remove/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/favourites/add/$', RedirectView.as_view(url="/", permanent=True)),
+    url(r'^ws/check_access_to_draw/$', RedirectView.as_view(url="/", permanent=True)),
 
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
 

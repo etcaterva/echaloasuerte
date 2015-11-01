@@ -33,16 +33,6 @@ def feedback(request):
     else:
         return HttpResponseBadRequest("Invalid feedback, type or comment missing")
 
-def check_access_to_draw(request):
-    """Checks whether an user can access to a draw"""
-    # is this used?
-    draw_id = request.GET.get('draw_id')
-    draw = MONGO.retrieve_draw(draw_id)
-
-    user_can_read_draw(request.user, draw)
-    return HttpResponse()
-
-
 def add_message_to_chat(request):
     """Adds a message to a chat"""
     draw_id = request.GET.get('draw_id')
