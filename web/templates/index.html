@@ -3,9 +3,11 @@
 {% load i18n %}
 
 {% block extra_jq_ready %}
-    var tooltip_text =  "<p><b>Normal Draw:</b> Personal draw in which only you will be able to see the result.</p>" +
-                        "<p><b>Shared Draw: </b> You will be able to invite other users in, see the results in live and discuss in the chat.</p>" +
-                        "<p class='text-center'><i>(Click to switch between modes)</i></p>";
+    var tooltip_text =  {% blocktrans %}
+                            "<p><b>Normal Draw:</b> Personal draw in which only you will be able to see the result.</p>" +
+                            "<p><b>Shared Draw: </b> You will be able to invite other users in, see the results in live and discuss in the chat.</p>" +
+                            "<p class='text-center'><i>(Click to switch between modes)</i></p>";
+                        {% endblocktrans %}
     $('#switch-draw-mode').tooltip({
         track: true,
         show: {
@@ -13,7 +15,7 @@
         },
         items: "div[title]",
         content: function() {
-            return {% trans tooltip_text %};
+            return tooltip_text;
         }
     });
 
@@ -41,7 +43,7 @@ window.cookieconsent_options = {"message":"{% trans 'This website uses cookies t
 {% block content %}
     <script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
     <div title="" id="switch-draw-mode" class="col-sm-6 col-sm-offset-3">
-        <label class="switch-light switch-candy" onclick="">
+        <label class="switch-light switch-candy" >
             <input id='is-shared' type="checkbox">
             <span>
                 <span>{% trans "Normal Draw" %}</span>
