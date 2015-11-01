@@ -1,19 +1,13 @@
 """definition of basic web services"""
-from django.contrib.auth.decorators import login_required
+import logging
+
 from django.core.mail import mail_admins
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
-from django.core.validators import validate_email
-from server import draw_factory
-from server.mongodb.driver import MongoDriver
-from web.common import user_can_read_draw, user_can_write_draw, time_it, invite_user, \
-    set_owner, ga_track_draw
-from server.forms import *
-from server.bom import *
-import dateutil.parser
+from django.http import HttpResponseBadRequest, HttpResponse
+
+from web.common import time_it
+
 
 LOG = logging.getLogger("echaloasuerte")
-MONGO = MongoDriver.instance()
 
 
 @time_it
@@ -31,4 +25,5 @@ def feedback(request):
         mail_admins(subject, message, True)
         return HttpResponse()
     else:
-        return HttpResponseBadRequest("Invalid feedback, type or comment missing")
+        return HttpResponseBadRequest(
+            "Invalid feedback, type or comment missing")
