@@ -34,10 +34,13 @@ import argparse
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Generates the scheleton of a draw",
-                                     usage='%(prog)s DrawName attr1 [attr2 ...] ')
-    parser.add_argument("-c", nargs=1, type=str, help="Name of the draw. (eg: RandomItem)")
-    parser.add_argument("attr", nargs=argparse.REMAINDER, help="list of attributes to generate")
+    parser = argparse.ArgumentParser(
+        description="Generates the scheleton of a draw",
+        usage='%(prog)s DrawName attr1 [attr2 ...] ')
+    parser.add_argument("-c", nargs=1, type=str,
+                        help="Name of the draw. (eg: RandomItem)")
+    parser.add_argument("attr", nargs=argparse.REMAINDER,
+                        help="list of attributes to generate")
     args = parser.parse_args()
     if not args.c or not args.attr:
         parser.print_help()

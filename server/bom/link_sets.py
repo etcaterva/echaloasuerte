@@ -1,7 +1,9 @@
-from server.bom.draw_base import BaseDraw, InvalidDraw
 from random import shuffle
 from itertools import cycle
 import logging
+
+from server.bom.draw_base import BaseDraw, InvalidDraw
+
 
 logger = logging.getLogger("echaloasuerte")
 

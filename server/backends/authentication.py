@@ -1,5 +1,7 @@
-from server.mongodb.driver import *
 import logging
+
+from server.mongodb.driver import *
+
 
 logger = logging.getLogger("echaloasuerte")
 
@@ -17,7 +19,8 @@ class EchaloasuerteAuthBE(object):
                 logger.debug("Success")
                 return user
         except Exception as e:
-            logger.info("Exception when autenticating {0}: {1}".format(username, e))
+            logger.info(
+                "Exception when autenticating {0}: {1}".format(username, e))
         logger.debug("Failed")
         return None
 
@@ -25,5 +28,6 @@ class EchaloasuerteAuthBE(object):
         try:
             return MongoDriver.instance().retrieve_user(user_id)
         except Exception as e:
-            logger.debug("When retrieving user {0}, Exception: {1}".format(user_id, e))
+            logger.debug(
+                "When retrieving user {0}, Exception: {1}".format(user_id, e))
             return None

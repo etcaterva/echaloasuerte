@@ -1,7 +1,9 @@
+import logging
+
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
-import logging
+
 
 LOG = logging.getLogger("echaloasuerte")
 
@@ -33,6 +35,6 @@ class FormBase(forms.Form):
         self.helper = FormHelper()
         self.helper.form_tag = False
         # All hidden fields will be automatically rendered,
-        #  even if they are not included in the layout
+        # even if they are not included in the layout
         self.helper.render_hidden_fields = True
         self.helper.field_template = 'draws/eas_crispy_field.html'

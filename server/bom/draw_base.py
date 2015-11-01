@@ -1,12 +1,12 @@
-from django.utils.translation import ugettext_lazy as _
-import random
 import datetime
 from abc import ABCMeta, abstractmethod
 import logging
 
+from django.utils.translation import ugettext_lazy as _
 from six import string_types
 import pytz
 import six
+
 
 logger = logging.getLogger("echaloasuerte")
 

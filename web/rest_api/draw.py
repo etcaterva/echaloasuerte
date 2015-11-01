@@ -1,4 +1,5 @@
 import json
+
 import pytz
 from tastypie import fields, resources, http, exceptions
 from tastypie.utils import trailing_slash
@@ -120,9 +121,12 @@ class DrawResource(resources.Resource):
             try:
                 message = data['message']
                 if request.user.is_authenticated():
-                    self._client.add_chat_message(draw_id, message, user_id=request.user.pk)
+                    self._client.add_chat_message(draw_id, message,
+                                                  user_id=request.user.pk)
                 else:
-                    self._client.add_chat_message(draw_id, message, anonymous_alias=data['anonymous_alias'])
+                    self._client.add_chat_message(draw_id, message,
+                                                  anonymous_alias=data[
+                                                      'anonymous_alias'])
             except KeyError:
                 raise exceptions.ImmediateHttpResponse(
                     response=http.HttpBadRequest("Missing message or alias"))
@@ -137,12 +141,14 @@ class DrawResource(resources.Resource):
                     return {}
                 else:
                     return {"user_alias": user.alias, "avatar": user.user_image}
+
             try:
                 messages = self._client.retrieve_chat_messages(draw_id)
             except mongodb.MongoDriver.NotFoundError:
                 messages = []
 
-            users = {message["user"] for message in messages if 'user' in message}
+            users = {message["user"] for message in messages if
+                     'user' in message}
             users_map = {name: get_user_details(name) for name in users}
 
             for message in messages:
@@ -337,16 +343,18 @@ class DrawResource(resources.Resource):
         if 'add_user' in data:
             if not draw.check_write_access(request.user):
                 raise exceptions.ImmediateHttpResponse(
-                    response=http.HttpUnauthorized("Only the owner can add users"))
+                    response=http.HttpUnauthorized(
+                        "Only the owner can add users"))
             new_users = [str(user) for user in data['add_user']
-                                   if '@' in str(user)]
+                         if '@' in str(user)]
             draw.users.extend(new_users)
             self._client.save_draw(draw)
             invite_user(new_users, draw)
         if 'remove_user' in data:
             if not draw.check_write_access(request.user):
                 raise exceptions.ImmediateHttpResponse(
-                    response=http.HttpUnauthorized("Only the owner can remove users"))
+                    response=http.HttpUnauthorized(
+                        "Only the owner can remove users"))
             try:
                 draw.users.remove(str(data['remove_user']))
                 self._client.save_draw(draw)

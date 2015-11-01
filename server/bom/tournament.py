@@ -1,5 +1,6 @@
-from server.bom.draw_base import BaseDraw
 import random
+
+from server.bom.draw_base import BaseDraw
 
 
 def is_power_of_two(num):

@@ -1,5 +1,6 @@
-from func_test.browserstack_base import BrowserStackTest
 from selenium.webdriver.common.keys import Keys
+
+from func_test.browserstack_base import BrowserStackTest
 
 
 class NormalDrawTest(BrowserStackTest):
@@ -30,7 +31,8 @@ class NormalDrawTest(BrowserStackTest):
 
         # Check if the results correspond with the edition
         results_rendered = self.check_condition(
-            lambda driver: len(driver.find_elements_by_css_selector('.result')) == 2
+            lambda driver: len(
+                driver.find_elements_by_css_selector('.result')) == 2
         )
         self.assertTrue(results_rendered)
 
@@ -62,7 +64,8 @@ class NormalDrawTest(BrowserStackTest):
 
         # Check if the results correspond with the edition
         draw_updated = self.check_condition(
-            lambda driver: len(driver.find_elements_by_css_selector('.result')) == 2
+            lambda driver: len(
+                driver.find_elements_by_css_selector('.result')) == 2
         )
         self.assertTrue(draw_updated)
 

@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from server.bom.random_item import *
 
 
@@ -35,27 +36,32 @@ class RandomItemDrawTest(TestCase):
 
     def is_feasible_range_and_results_ok_test(self):
         """RandomItemDraw: Tight draw results is feasible"""
-        tested_item = RandomItemDraw(items=[1, 2, 3], number_of_results=3, allow_repeat=False)
+        tested_item = RandomItemDraw(items=[1, 2, 3], number_of_results=3,
+                                     allow_repeat=False)
         self.assertTrue(tested_item.is_feasible())
 
     def is_feasible_not_enought_results_ko_test(self):
         """RandomItemDraw: Number of results requested less than one is not feasible"""
-        tested_item = RandomItemDraw(items=[1, 2, 3], number_of_results=0, allow_repeat=True)
+        tested_item = RandomItemDraw(items=[1, 2, 3], number_of_results=0,
+                                     allow_repeat=True)
         self.assertFalse(tested_item.is_feasible())
 
     def is_feasible_results_over_the_limit_ko_test(self):
         """RandomItemDraw: Too many results requested (over the limit) is not feasible"""
-        tested_item = RandomItemDraw(items=[1, 2, 3], number_of_results=100, allow_repeat=False)
+        tested_item = RandomItemDraw(items=[1, 2, 3], number_of_results=100,
+                                     allow_repeat=False)
         self.assertFalse(tested_item.is_feasible())
 
     def is_feasible_too_many_results_ko_test(self):
         """RandomItemDraw: Too many results requested is not feasible"""
-        tested_item = RandomItemDraw(items=[1, 2, 3], number_of_results=4, allow_repeat=False)
+        tested_item = RandomItemDraw(items=[1, 2, 3], number_of_results=4,
+                                     allow_repeat=False)
         self.assertFalse(tested_item.is_feasible())
 
     def is_feasible_many_results_with_repeat_ok_test(self):
         """RandomItemDraw: Many results requested with repeat is feasible"""
-        tested_item = RandomItemDraw(items=["A"], number_of_results=4, allow_repeat=True)
+        tested_item = RandomItemDraw(items=["A"], number_of_results=4,
+                                     allow_repeat=True)
         self.assertTrue(tested_item.is_feasible())
 
     def toss_once_test(self):
@@ -78,7 +84,8 @@ class RandomItemDrawTest(TestCase):
 
     def toss_two_items_test(self):
         """RandomItemDraw: Toss generate two items"""
-        tested_item2 = RandomItemDraw(items=[0], number_of_results=2, allow_repeat=True, results=[])
+        tested_item2 = RandomItemDraw(items=[0], number_of_results=2,
+                                      allow_repeat=True, results=[])
         self.assertEqual(0, len(tested_item2.results))
         self.assertEqual(0, tested_item2.toss()["items"][0])
         self.assertEqual(1, len(tested_item2.results))
@@ -86,7 +93,9 @@ class RandomItemDrawTest(TestCase):
 
     def toss_on_existing_test(self):
         """RandomItemDraw: Toss when list created with results already"""
-        tested_item2 = RandomItemDraw(items=[0], number_of_results=2, allow_repeat=True, results=[{"items": [0]}])
+        tested_item2 = RandomItemDraw(items=[0], number_of_results=2,
+                                      allow_repeat=True,
+                                      results=[{"items": [0]}])
         self.assertEqual(1, len(tested_item2.results))
         self.assertEqual(0, tested_item2.toss()["items"][0])
         self.assertEqual(2, len(tested_item2.results))
