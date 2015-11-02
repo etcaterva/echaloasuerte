@@ -1,3 +1,4 @@
+from selenium.common.exceptions import StaleElementReferenceException
 from func_test.browserstack_base import BrowserStackTest, init_browser
 from selenium.webdriver.common.keys import Keys
 from server.bom import User
@@ -57,6 +58,7 @@ class UserTest(BrowserStackTest):
         driver.find_element_by_id("publish").click()
 
         # Invite another user
+        driver.is_element_visible('#invite-emails-tokenfield')
         driver.find_element_by_id('invite-emails-tokenfield').send_keys('invited_user@test.com')
         driver.find_element_by_id('send-emails').click()
 
@@ -89,15 +91,29 @@ class UserTest(BrowserStackTest):
         driver_guest.find_element_by_css_selector('#chat-frame #access-chat').click()
 
         driver_guest.find_element_by_css_selector('#chat-frame #chat-message-box').send_keys('First chat message')
+        driver_guest.find_element_by_css_selector('#chat-frame #chat-send').click()
         driver.find_element_by_css_selector('#chat-frame #chat-message-box').send_keys('Second chat message')
+        driver.find_element_by_css_selector('#chat-frame #chat-send').click()
 
-        # TODO Check that messages are sent and alias is correct
-        '''two_messsages = self.check_condition(
-            lambda driver: len(driver.find_elements_by_css_selector('.result')) == 2
-        )'''
+        # Check that messages are sent and alias is correct
+        two_messages = driver.check_condition(
+            lambda current_driver: len(current_driver.find_elements_by_css_selector('#chat-frame .chatline-details')) == 2
+        )
+        self.assertTrue(two_messages)
+        details = [chatline.get_attribute('innerHTML') for chatline in driver.find_elements_by_css_selector('#chat-frame .chatline-details')]
+        for chatline in details:
+            if 'test' in chatline:
+                owner_in_chat = True
+            if 'Mr. Nobody' in chatline:
+                guest_in_chat = True
+        self.assertTrue(owner_in_chat)
+        self.assertTrue(guest_in_chat)
 
-        # TODO disable chat
+        # Check that chat can be disables
         driver.find_element_by_id('edit-settings-button').click()
+        driver.check_condition(
+            lambda current_driver: current_driver.is_element_visible('#settings-chat-enabled')
+        )
         driver.find_element_by_id('settings-chat-enabled').click()
         driver.find_element_by_id('save-settings').click()
         chat_invisible_guest = driver_guest.check_condition(
@@ -112,23 +128,47 @@ class UserTest(BrowserStackTest):
         # Check that fields are readonly
         self.assertTrue(driver_guest.find_element_by_id('id_range_min').get_attribute('readonly'))
 
-        # TODO edit draw
+        # Edit draw
         driver.find_element_by_id('edit-settings-button').click()
+        driver.check_condition(
+            lambda current_driver: current_driver.is_element_visible('#edit-draw')
+        )
         driver.find_element_by_id('edit-draw').click()
         driver.find_element_by_id('edit-draw-confirmation').click()
         range_min_input = driver.find_element_by_id('id_range_min')
-        range_min_input.clear()
-        range_min_input.send_keys(5)
+        range_min_input.send_keys(Keys.UP)
         driver.find_element_by_id('edit-draw-save').click()
 
-        # Check changes are applied
-        def check_changes_applied(driver):
-            range_min_input = driver.find_element_by_id('id_range_min')
-            return range_min_input.get_attribute('readonly') and range_min_input.get_attribute('value') == '5'
+        # Check changes are appliedsend_keys(Keys.UP)
+        def check_changes_applied(current_driver):
+            checked_input = current_driver.find_element_by_id('id_range_min')
+            try:
+                return checked_input.get_attribute('value') == '1'
+            except StaleElementReferenceException:
+                # This exception rise if the page reloaded between finding the input and getting its value
+                return current_driver.find_element_by_id('id_range_min').get_attribute('value') == '1'
+
         self.assertTrue(driver.check_condition(check_changes_applied))
         self.assertTrue(driver_guest.check_condition(check_changes_applied))
 
-        # TODO invite people
-        pass
+        # Invite another user
+        driver.find_element_by_id('edit-settings-button').click()
+        driver.check_condition(
+            lambda current_driver: current_driver.is_element_visible('#invite')
+        )
+        driver.find_element_by_id('invite').click()
+        url_invite = driver.find_element_by_css_selector('#settings-invite .url-share').get_attribute('value')
+        self.assertEqual(url_draw, url_invite)
+        driver.find_element_by_id('invite-emails-tokenfield').send_keys('iker_jimenez@test.com')
+        driver.find_element_by_id('send-emails').click()
+
+        # Check that the user has been invited
+        def check_user_invited(current_driver):
+            users_invited = [token.get_attribute('innerHTML') for token in current_driver.find_elements_by_css_selector('.token-label')]
+            return 'iker_jimenez@test.com' in users_invited
+        self.assertTrue(driver.check_condition(check_user_invited))
+
+        driver_guest.quit()
+
 
 

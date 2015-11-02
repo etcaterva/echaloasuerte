@@ -34,9 +34,6 @@ def init_browser():
         # Firefox (Graphic mode)
         #driver = webdriver.Firefox()
         driver = CustomWebDriver()
-
-        driver.set_window_size(1000, 900)
-    driver.implicitly_wait(10)
     return driver
 
 

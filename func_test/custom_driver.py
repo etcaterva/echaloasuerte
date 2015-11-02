@@ -3,7 +3,13 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-class CustomWebDriver(webdriver.Firefox):
+class CustomWebDriver(webdriver.PhantomJS):
+
+    def __init__(self, **kwargs):
+        super(CustomWebDriver, self).__init__(**kwargs)
+
+        self.set_window_size(1000, 900)
+        self.implicitly_wait(5)
 
     def is_element_present(self, css_selector):
         try:
