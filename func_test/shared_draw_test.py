@@ -4,16 +4,16 @@ from selenium.webdriver.common.keys import Keys
 from server.bom import User
 
 
-class UserTest(BrowserStackTest):
+class SharedDrawTest(BrowserStackTest):
     """
-    Test that all draw types can be accessed and generate results.
+    Test shared draw functionalities.
     """
 
     def remove_user(self, user_id):
         self.db._users.remove({'_id': user_id})
 
     def setUp(self):
-        super(UserTest, self).setUp()
+        super(SharedDrawTest, self).setUp()
 
         self.remove_user('test@test.com')
         test_user = User('test@test.com')
@@ -25,7 +25,7 @@ class UserTest(BrowserStackTest):
         self.driver.get(self.base_url + "/")
 
     def tearDown(self):
-        super(UserTest, self).tearDown()
+        super(SharedDrawTest, self).tearDown()
 
         self.db.remove_user(self.test_user.pk)
 

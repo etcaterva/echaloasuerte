@@ -29,7 +29,7 @@ class NormalDrawTest(BrowserStackTest):
         driver.find_element_by_id('img-coin').click()
 
         # Check if the results correspond with the edition
-        results_rendered = self.check_condition(
+        results_rendered = driver.check_condition(
             lambda driver: len(driver.find_elements_by_css_selector('.result')) == 2
         )
         self.assertTrue(results_rendered)
@@ -40,8 +40,8 @@ class NormalDrawTest(BrowserStackTest):
         draw_box = driver.find_element_by_id("number-draw")
         draw_box.click()
         # Check the "allow repeated" checkbox is hidden
-        self.assertTrue(self.is_element_present('#div_id_allow_repeat'))
-        self.assertFalse(self.is_element_visible('#div_id_allow_repeat'))
+        self.assertTrue(driver.is_element_present('#div_id_allow_repeat'))
+        self.assertFalse(driver.is_element_visible('#div_id_allow_repeat'))
 
         # Toss
         toss_btn = driver.find_element_by_id("create-and-toss")
@@ -54,14 +54,14 @@ class NormalDrawTest(BrowserStackTest):
         number_of_results.send_keys(Keys.UP)
 
         # Check the "allow repeated" checkbox is visible
-        self.assertTrue(self.is_element_visible('#div_id_allow_repeat'))
+        self.assertTrue(driver.is_element_visible('#div_id_allow_repeat'))
 
         # Toss
         toss_btn = driver.find_element_by_id("normal-draw-toss")
         toss_btn.click()
 
         # Check if the results correspond with the edition
-        draw_updated = self.check_condition(
+        draw_updated = driver.check_condition(
             lambda driver: len(driver.find_elements_by_css_selector('.result')) == 2
         )
         self.assertTrue(draw_updated)

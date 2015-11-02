@@ -74,7 +74,7 @@ class UserTest(BrowserStackTest):
         driver.find_element_by_id('save-alias').click()
 
         # Check if the alias has changed
-        alias_updated = self.check_condition(
+        alias_updated = driver.check_condition(
             lambda driver: driver.find_element_by_id('account-dropdown').text.strip() == "Cool alias"
         )
         self.assertTrue(alias_updated)
