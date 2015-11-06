@@ -139,7 +139,7 @@ class SharedDrawTest(BrowserStackTest):
         range_min_input.send_keys(Keys.UP)
         driver.find_element_by_id('edit-draw-save').click()
 
-        # Check changes are appliedsend_keys(Keys.UP)
+        # Check changes are applied
         def check_changes_applied(current_driver):
             checked_input = current_driver.find_element_by_id('id_range_min')
             try:
