@@ -126,8 +126,10 @@ a.fa:focus {
     margin-top: 20px;
 }
 
-#draw-form [type=submit]:disabled,
-#toss-button:disabled {
+#create-and-toss:disabled,
+#try:disabled,
+#publish:disabled,
+#shared-draw-toss:disabled{
     cursor: default
 }
 
