@@ -9,7 +9,6 @@ from django.core.mail import send_mail
 
 import logging
 import time
-from web.google_analytics import ga_track_event
 
 
 LOG = logging.getLogger("echaloasuerte")
@@ -142,17 +141,6 @@ def time_it(func):
             return func(*args, **kwargs)
 
     return _
-
-
-def ga_track_draw(bom_draw, action):
-    """Sends a notification of action to google analytics
-
-    :bom_draw: draw to send information about
-    :action: action to send
-    """
-    shared_type = 'public' if bom_draw.is_shared else 'private'
-    ga_track_event(category=action, action=bom_draw.draw_type, label=shared_type)
-
 
 def set_owner(draw, request):
     """Best effort to set the owner given a request"""
