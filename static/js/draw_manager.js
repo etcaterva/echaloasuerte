@@ -224,6 +224,9 @@
 
             this.create_draw(
                 callback_done = function( data, textStatus, xhr ){
+                    // Register the event in Google Analytics
+                    ga('send', 'event', 'create_draw', that.options.draw_type, 'shared');
+
                     // Get the url to the draw
                     var url_draw_api = xhr.getResponseHeader('Location');
                     var url_draw_web = url_draw_api.replace(/api\/v[\d\.]+\//g,'');
@@ -261,6 +264,9 @@
 
             this.create_draw(
                 callback_done = function( data, textStatus, xhr ){
+                    // Register the event in Google Analytics
+                    ga('send', 'event', 'create_draw', that.options.draw_type, 'private');
+
                     // Get the url to the draw
                     var url_draw_api = xhr.getResponseHeader('Location');
                     var url_draw_web = url_draw_api.replace(/api\/v[\d\.]+\//g,'');
