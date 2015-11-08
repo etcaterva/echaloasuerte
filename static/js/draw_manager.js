@@ -195,6 +195,7 @@
          * Toss the current draw and reload the page
          */
         toss: function(){
+            var that = this;
             // Lock submit buttons to avoid unintentional submitions
             $('.submit-lockable').prop('disabled',true);
 
@@ -203,6 +204,10 @@
                 contentType : 'application/json',
                 url : this.options.url_toss
             }).done(function (){
+                // Register the event in Google Analytics
+                var is_shared = that.options.is_shared ? 'shared' : 'private';
+                ga('send', 'event', 'toss', that.options.draw_type, is_shared);
+
                 // Here results should be rendered without reloading
                 window.location.reload();
             }).fail(function () {
@@ -266,6 +271,7 @@
                 callback_done = function( data, textStatus, xhr ){
                     // Register the event in Google Analytics
                     ga('send', 'event', 'create_draw', that.options.draw_type, 'private');
+                    ga('send', 'event', 'toss', that.options.draw_type, 'private');
 
                     // Get the url to the draw
                     var url_draw_api = xhr.getResponseHeader('Location');
