@@ -175,12 +175,12 @@
                                 <i class="fa fa-clock-o" ></i>
                             </button>
                             {# Buttons to save changes when editing an already published public draw #}
-                            <div id="edit-draw-save-changes" class="hide">
+                            <div id="edit-draw-save-changes" class="btn-row hide">
                                 <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
                                 <button type="button" id="edit-draw-save" class="col-xs-6 btn btn-primary submit-lockable" autocomplete="off">{% trans 'Save changes' %}</button>
                             </div>
                         {%else%}
-                            <a id="toss-disabled-button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</a>
+                            <button id="toss-disabled-button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</button>
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <a class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></a>
                                 {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
