@@ -168,6 +168,10 @@ class SharedDrawTest(BrowserStackTest):
             return 'iker_jimenez@test.com' in users_invited
         self.assertTrue(driver.check_condition(check_user_invited))
 
+        driver.find_element_by_id('close-invite').click()
+        driver.find_element_by_id('shared-draw-toss').click()
+        driver.is_element_present('results')
+
         driver_guest.quit()
 
 

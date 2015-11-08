@@ -9,7 +9,7 @@ class CustomWebDriver(webdriver.PhantomJS):
         super(CustomWebDriver, self).__init__(**kwargs)
 
         self.set_window_size(1000, 900)
-        self.implicitly_wait(5)
+        self.implicitly_wait(10)
 
     def is_element_present(self, css_selector):
         try:
