@@ -1,12 +1,3 @@
-{% if forloop.counter == 1 %}
-    <script>
-        //Precaching the images
-        D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
-        D6Animator.getImageBank("", D6.baseUrl);
-        D6.dice({{ results }});
-    </script>
-{% else %}
-    <script>
-        D6.showPastResult({{ results}})
-    </script>
-{% endif %}
+{% for result in results %}
+    <img class='die' src='{{ STATIC_URL }}img/img_dice/die-{{ result }}.gif' alt='dice {{ result }}'/>
+{% endfor %}

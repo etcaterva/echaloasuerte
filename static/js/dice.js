@@ -416,7 +416,7 @@ D6.dice = function(forced_results, callback, callbackData, useImages) {
 	};
 	D6.genHtml = builder.genDiceHtml(layout, D6.middleManCallback, middleManData);
 	document.write(D6.genHtml);
-    D6.roll(forced_results)
+    D6.roll(forced_results);
 }
 
 D6.roll = function(results) {
@@ -460,12 +460,22 @@ D6.middleManCallback = function(middleManData) {
 }
 
 
-D6.showPastResult = function(results) {
-    var html;
-    for (var i=0;i<results.length;i++){
-        var result = "die"+ results[i];
-        var src = this.builder.animGroups[0].animators[0][result].die.src;
-        html = "<img id='dice"+"' class='die' src='"+ src + "' alt='dice "+result+"'></img>";
-        document.write(html);
+D6.render_dice = function(num_dice) {
+    if (!num_dice || num_dice < 1) num_dice = 1;
+    D6.numDice = num_dice;
+    D6.numDiceShown = num_dice;
+    var results = [];
+    for (var i=0; i<num_dice; ++i) {
+        results[i] = 0;
     }
+    var builder = new D6AnimBuilder("dice", results, null, D6.baseUrl, num_dice, 50, true);
+    D6.builder = builder;
+    var layout = [1];
+    var middleManData = {
+        "id" : "dice",
+        "callback" : D6Sample.noop,
+        "callbackData" : null
+    };
+    D6.genHtml = builder.genDiceHtml(layout, D6.middleManCallback, middleManData);
+    return D6.genHtml;
 }

@@ -163,12 +163,27 @@
             }
         },
 
+        draw_callbacks: {
+            'dice': {
+                'render': function(result){
+                    return D6.render_dice(result.length);
+                },
+                'animate': function(result){
+                    D6.roll(result);
+                }
+            },
+            'card': {}
+        },
+
         /**
          * Add a result to the list of previous results
          *
          * @param result Result to add
          */
         add_result: function (result){
+            var draw_type;
+            if (this.options.draw_type == 'Draw')
+            var callbacks = this.draw_callbacks[this.options.draw_type];
             var $results = $('#results').find('.accordion');
 
             // Add the new result to the accordion
@@ -178,7 +193,7 @@
                                 '   </small>' +
                                 '</p>' +
                                 '<div class="result">';
-            result_html += this.options.callback_render(result.items) + '</div>';
+            result_html += callbacks.render(result.items) + '</div>';
             $results.prepend(result_html);
             $results.accordion('refresh');
 
@@ -186,8 +201,8 @@
             $results.accordion({active:0});
 
             // Animate the result when necessary
-            if (this.options.callback_animate){
-                this.options.callback_animate(result.items);
+            if (callbacks.animate){
+                callbacks.animate(result.items);
             }
         },
 
@@ -203,13 +218,14 @@
                 method : "POST",
                 contentType : 'application/json',
                 url : this.options.url_toss
-            }).done(function (){
+            }).done(function (results){
                 // Register the event in Google Analytics
                 var is_shared = that.options.is_shared ? 'shared' : 'private';
                 ga('send', 'event', 'toss', that.options.draw_type, is_shared);
 
                 // Here results should be rendered without reloading
-                window.location.reload();
+                //window.location.reload();
+                that.add_result(results);
             }).fail(function () {
                 alert("{% trans 'There was an issue when tossing the draw :(' %}");
             }).always(function(){
