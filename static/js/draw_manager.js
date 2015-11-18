@@ -170,16 +170,16 @@
          */
         draw_callbacks: {
             'dice': {
-                'render': function(result){
-                    return D6.render_dice(result.length);
+                'render': function(results){
+                    return D6.render_dice(results.length);
                 },
-                'animate': function(result){
-                    D6.roll(result);
+                'animate': function(results){
+                    D6.roll(results);
                 }
             },
             'card': {
-                'render': function(result){
-                    return Card.draw(result);
+                'render': function(results){
+                    return Card.draw(results);
                 }
             },
             'coin': {
@@ -191,20 +191,30 @@
                 }
             },
             'number': {
-                'render': function(result){
-                    return result;
+                'render': function(results){
+                    var html = '<ul class="list-group">';
+                        for (var res in results){
+                            html += '<li class="list-group-item">' + results[res] + '</li>';
+                        }
+                    html += '</ul>';
+                    return html;
                 }
             },
             'letter': {
-                'render': function(result){
-                    return result;
+                'render': function(results){
+                    var html = '<ul class="list-group">';
+                        for (var res in results){
+                            html += '<li class="list-group-item">' + results[res] + '</li>';
+                        }
+                    html += '</ul>';
+                    return html;
                 }
             },
             'tournament': {
                 'render': function(_){
                     return '<div id="bracket-result"></div>';
                 },
-                'animate': function (result) {
+                'animate': function (results) {
                     function cleanBracketDisplay(){
                         $('.team .label').css('color', 'black')
                                         .css('text-align','left')
@@ -213,7 +223,7 @@
                     }
 
                     $('#bracket-result').bracket({
-                        init: {teams: result},
+                        init: {teams: results},
                         save: cleanBracketDisplay,
                     });
                     $('.result').css('height','auto','important');
