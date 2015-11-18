@@ -240,6 +240,21 @@
                     return html;
                 }
             },
+            'link_sets': {
+                'render': function(results){
+                    var html = '<ul class="list-group">';
+                        for (var result in results){
+                            html += '<li class="list-group-item">';
+                            html += results[result][0];
+                            if (results[result].length > 1){
+                                html += ' - ' + results[result][1];
+                            }
+                            html += '</li>';
+                        }
+                    html += '</ul>';
+                    return html;
+                }
+            }
         },
         /**
          * Get the callback functions to render the current draw type
