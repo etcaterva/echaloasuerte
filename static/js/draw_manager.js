@@ -93,7 +93,8 @@
             url_try: "",
             url_schedule_toss: "",
             msg_result: "Result",
-            msg_generated_on: "generated on"
+            msg_generated_on: "generated on",
+            msg_audit: "Warning! The draw was modified after the generation of this result"
         };
 
 
@@ -118,7 +119,14 @@
             // Record in 'edited_fields' when inputs are changed
             this.$element.find(":input").change(function() {
                 var $this = $(this);
-                that.edited_fields[$this.attr('name')] = $this.cast_input_value();
+                var regex_set = /^set_[0-9]/i;
+                if (regex_set.test($this.attr('name'))){
+                    var form_fields = that.$element.serializeForm();
+                    that.edited_fields['sets'] = form_fields['sets'];
+                }
+                else{
+                    that.edited_fields[$this.attr('name')] = $this.cast_input_value();
+                }
             });
 
             // Add toggle behaviour to show and hide "allow repeat" checkbox based on the number of results
@@ -400,7 +408,7 @@
 
             // Serialize and clean the form
             var fields_skipped = ["csrfmiddlewaretoken", "_id"];
-            var form_fields = $('#draw-form').serializeForm(fields_skipped);
+            var form_fields = this.$element.serializeForm(fields_skipped);
             form_fields["type"] = this.options.draw_type;
             var data = JSON.stringify(form_fields);
 
@@ -486,6 +494,15 @@
             if (Object.keys(this.edited_fields).length > 0) {
                 this.update(
                     callback_done = function (){
+                        var $result_headers = $('.ui-accordion-header');
+                        $result_headers.each(function(){
+                            var $this = $(this);
+                            if (!$this.has('i.fa-exclamation-triangle').length){
+                                var html_audit = '<i class="fa fa-exclamation-triangle" title="' + that.options.msg_audit + '"></i>';
+                                $this.append(html_audit);
+                            }
+                        });
+                        that.edited_fields = {};
                         that.toss();
                     },
                     callback_fail = function (e) {
