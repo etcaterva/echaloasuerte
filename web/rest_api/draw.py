@@ -232,7 +232,6 @@ class DrawResource(resources.Resource):
                 bundle.data[att] = getattr(bundle.obj, att)
         for att in self.HIDDEN_ATTRIBUTES:
             bundle.data.pop(att)
-        bundle.data["type"] = draw_factory.get_draw_name(bundle.data["type"])
         return bundle
 
     def detail_uri_kwargs(self, bundle_or_obj):
