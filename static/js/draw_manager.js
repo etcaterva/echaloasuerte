@@ -199,6 +199,26 @@
                 'render': function(result){
                     return result;
                 }
+            },
+            'tournament': {
+                'render': function(_){
+                    return '<div id="bracket-result"></div>';
+                },
+                'animate': function (result) {
+                    function cleanBracketDisplay(){
+                        $('.team .label').css('color', 'black')
+                                        .css('text-align','left')
+                                        .css('position','relative');
+                        $('.jQBracket .tools span').css('display','none');
+                    }
+
+                    $('#bracket-result').bracket({
+                        init: {teams: result},
+                        save: cleanBracketDisplay,
+                    });
+                    $('.result').css('height','auto','important');
+                    cleanBracketDisplay();
+                }
             }
         },
         /**
