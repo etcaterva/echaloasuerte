@@ -163,6 +163,11 @@
             }
         },
 
+        /**
+         * Store callback functions to render results dynamically
+         * render: Specify how to render the result
+         * animate: Optional function. Only needed in case it needs animation (i.e. roll dice)
+         */
         draw_callbacks: {
             'dice': {
                 'render': function(result){
@@ -174,6 +179,13 @@
             },
             'card': {}
         },
+        /**
+         * Get the callback functions to render the current draw type
+         * @returns {*}
+         */
+        get_callbacks: function(){
+          return this.draw_callbacks[this.options.draw_type];
+        },
 
         /**
          * Add a result to the list of previous results
@@ -181,9 +193,7 @@
          * @param result Result to add
          */
         add_result: function (result){
-            var draw_type;
-            if (this.options.draw_type == 'Draw')
-            var callbacks = this.draw_callbacks[this.options.draw_type];
+            var callbacks = this.get_callbacks();
             var $results = $('#results').find('.accordion');
 
             // Add the new result to the accordion
