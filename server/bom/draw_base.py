@@ -78,7 +78,8 @@ class BaseDraw(object):
         self.owner = owner
         """ID of the owner of the draw"""
 
-        self.draw_type = type(self).__name__
+        from server import draw_factory
+        self.draw_type = draw_factory.get_draw_name(type(self).__name__)
         """Type of the draw"""
 
         self.creation_time = creation_time if creation_time is not None else datetime.datetime.utcnow().replace(

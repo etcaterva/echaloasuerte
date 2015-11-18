@@ -159,10 +159,9 @@ def display_draw(request, draw_id):
     Given a draw id, retrieves it and returns the data required to display it
     """
     bom_draw = MONGO.retrieve_draw(draw_id)
-    draw_type = draw_factory.get_draw_name(bom_draw.draw_type)
     if bom_draw.check_read_access(request.user):
         draw_data = bom_draw.__dict__.copy()
-        draw_form = draw_factory.create_form(draw_type, initial=draw_data)
+        draw_form = draw_factory.create_form(bom_draw.draw_type, initial=draw_data)
         return render(request, "draws/display_draw.html",
                       {"draw": draw_form, "bom": bom_draw})
     else:

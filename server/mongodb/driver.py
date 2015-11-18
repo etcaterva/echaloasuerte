@@ -7,6 +7,8 @@ import logging
 import datetime
 import pytz
 
+from server import draw_factory
+
 logger = logging.getLogger("echaloasuerte")
 
 
@@ -26,7 +28,7 @@ def safe_connection(func):
 def build_draw(doc):
     """Given a python dict that represnets a draw, builds it"""
     try:
-        return eval(doc["draw_type"])(**doc)
+        return draw_factory.create_draw(doc["draw_type"], doc)
     except Exception as e:
         logger.error("Error when decoding a draw. Exception: {1}. Draw: {0} ".format(doc, e))
         raise
