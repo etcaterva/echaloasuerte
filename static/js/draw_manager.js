@@ -194,6 +194,11 @@
                 'render': function(result){
                     return result;
                 }
+            },
+            'letter': {
+                'render': function(result){
+                    return result;
+                }
             }
         },
         /**
