@@ -1,16 +1,12 @@
-
 var Card = {};
 
 /* Pre: the baseUrl has to point to the folder with the images through static files*/
 Card.baseUrl = "";
-Card.results = [];
 Card.css_class = "card-container ";
 
-Card.setup = function(baseUrl, results){
-    Card.baseUrl = baseUrl + "img_cards/";
-    Card.results = results;
-
-    switch (Card.results.length) {
+Card.draw = function(results){
+    // Set widths based on the number of cards to show
+    switch (results.length) {
         case 1:
             Card.css_class += "col-xs-12";
             break;
@@ -24,14 +20,14 @@ Card.setup = function(baseUrl, results){
             Card.css_class += "col-xs-6 col-sm-3";
             break;
     }
-}
 
-Card.draw = function(){
-    document.write("<div class='row'>");
-    for (i = 0; i < Card.results.length; i++) {
-        var img_path = Card.baseUrl + Card.results[i] + ".png";
-        var html = "<div class='" + Card.css_class + "'><img src='" + img_path + "' alt='card"+Card.results[i]+"'/></div>";
-        document.write(html);
+
+    var render_html = "<div class='row'>";
+    for (var i = 0; i < results.length; i++) {
+        var img_path = Card.baseUrl + results[i] + ".png";
+        var html = "<div class='" + Card.css_class + "'><img src='" + img_path + "' alt='card"+results[i]+"'/></div>";
+        render_html += html;
     }
-    document.write("</div>");
-}
+    render_html += "</div>";
+    return render_html;
+};

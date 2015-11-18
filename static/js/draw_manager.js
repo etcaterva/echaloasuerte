@@ -177,7 +177,11 @@
                     D6.roll(result);
                 }
             },
-            'card': {},
+            'card': {
+                'render': function(result){
+                    return Card.draw(result);
+                }
+            },
             'coin': {
                 'render': function(result){
                     return result;

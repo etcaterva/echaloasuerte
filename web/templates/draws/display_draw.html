@@ -37,6 +37,8 @@
         D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
         //Precaching the images
         D6Animator.getImageBank("", D6.baseUrl);
+    {% elif bom.draw_type == "card" %}
+        Card.baseUrl = '{{ STATIC_URL }}' + "img/img_cards/"
     {% endif %}
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
