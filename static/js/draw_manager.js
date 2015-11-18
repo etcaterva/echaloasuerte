@@ -189,6 +189,11 @@
                 'animate': function(result){
                     $('#img-coin').coin('flip', result);
                 }
+            },
+            'number': {
+                'render': function(result){
+                    return result;
+                }
             }
         },
         /**
