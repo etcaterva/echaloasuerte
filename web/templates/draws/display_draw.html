@@ -27,16 +27,18 @@
         <script src="{% static 'js/jquery.datetimepicker.min.js' %}"></script>
     {% endif %}
 {% endblock extra_head %}
-{% block extra_js %}
-    //Precaching the images
+{% block extra_jq_ready %}
     {% if bom.draw_type == "coin" %}
-        coin.setup('{{ STATIC_URL }}' + "img/img_coin/");
-    {% elif bom.draw_type == "dice"  %}
+        var base_url = '{{ STATIC_URL }}' + "img/img_coin/";
+        var $coin = $('#img-coin').coin({
+            "base_url": base_url
+        });
+    {% elif bom.draw_type == "dice" %}
         D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
+        //Precaching the images
         D6Animator.getImageBank("", D6.baseUrl);
     {% endif %}
-{% endblock extra_js %}
-{% block extra_jq_ready %}
+
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 
     $('#fav-button').favourites({

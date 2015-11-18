@@ -177,7 +177,15 @@
                     D6.roll(result);
                 }
             },
-            'card': {}
+            'card': {},
+            'coin': {
+                'render': function(result){
+                    return result;
+                },
+                'animate': function(result){
+                    $('#img-coin').coin('flip', result);
+                }
+            }
         },
         /**
          * Get the callback functions to render the current draw type
