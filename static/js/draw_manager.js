@@ -229,7 +229,17 @@
                     $('.result').css('height','auto','important');
                     cleanBracketDisplay();
                 }
-            }
+            },
+            'item': {
+                'render': function(results){
+                    var html = '<ul class="list-group">';
+                        for (var res in results){
+                            html += '<li class="list-group-item">' + results[res] + '</li>';
+                        }
+                    html += '</ul>';
+                    return html;
+                }
+            },
         },
         /**
          * Get the callback functions to render the current draw type
