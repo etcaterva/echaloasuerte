@@ -56,6 +56,39 @@ class UserResourceTest(ResourceTestCase):
         self.api_client.client.login(username='test@test.te',
                                      password='test')
 
+    def test_logout(self):
+        self.login()
+        login_url = self.base_url + 'logout/'
+        resp = self.api_client.post(login_url, format='json')
+        self.assertHttpOK(resp)
+
+    def test_login_ok(self):
+        credentials = {
+            "email": "test@test.te",
+            "password": "test"
+        }
+        login_url = self.base_url + 'login/'
+        resp = self.api_client.post(login_url, format='json', data=credentials)
+        self.assertHttpOK(resp)
+
+    def test_login_wrong_email(self):
+        credentials = {
+            "email": "non_existing@test.te",
+            "password": "test"
+        }
+        login_url = self.base_url + 'login/'
+        resp = self.api_client.post(login_url, format='json', data=credentials)
+        self.assertHttpUnauthorized(resp)
+
+    def test_login_wrong_password(self):
+        credentials = {
+            "email": "test@test.te",
+            "password": "wrong_password"
+        }
+        login_url = self.base_url + 'login/'
+        resp = self.api_client.post(login_url, format='json', data=credentials)
+        self.assertHttpUnauthorized(resp)
+
     def test_anon_get_list_none(self):
         resp = self.api_client.get(self.base_url, format='json')
         self.assertValidJSONResponse(resp)
