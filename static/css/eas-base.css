@@ -1101,3 +1101,11 @@ a[disabled] {
 }
 
 
+#registration-success img {
+    width: 200px;
+    height: auto;
+}
+
+#registration-success #subtitle {
+    margin-bottom: 20px;
+}
