@@ -1,4 +1,8 @@
+import json
+from django.conf.urls import url
+from django.contrib.auth import authenticate, login, logout
 from tastypie import fields, resources, exceptions, http
+from tastypie.utils import trailing_slash
 from tastypie.bundle import Bundle
 
 from server import bom, mongodb
@@ -25,10 +29,66 @@ class UserResource(resources.Resource):
         resource_name = 'user'
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'patch']
+        extra_actions = [
+            {
+                "name": "login",
+                "http_method": "POST",
+                "resource_type": "list",
+                "description": "Authenticate user",
+            },
+            {
+                "name": "logout",
+                "http_method": "POST",
+                "resource_type": "list",
+                "description": "Logout user",
+            },
+        ]
 
     @property
     def _client(self):
         return mongodb.MongoDriver.instance()
+
+    def prepend_urls(self):
+        return [
+            url(r"^%s/login%s$"
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('user_login'),
+                name="api_login"),
+            url(r"^%s/logout%s$"
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('user_logout'),
+                name="api_logout"),
+        ]
+
+    def user_login(self, request, **_):
+        self.method_check(request, allowed=['post'])
+        self.throttle_check(request)
+        try:
+            data = json.loads(request.body)
+        except TypeError:
+            data = json.loads(request.body.decode('utf-8'))
+
+        email = data.pop('email')
+        password = data.pop('password')
+
+        user = authenticate(username=email, password=password)
+        if user:
+            if user.is_active:
+                if 'keep-logged' in request.POST:
+                    request.session.set_expiry(31556926)  # 1 year
+                login(request, user)
+                return self.create_response(request, "User authenticated")
+            else:
+                raise exceptions.ImmediateHttpResponse(
+                    response=http.HttpUnauthorized("The user is not ativated"))
+        else:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpUnauthorized("Incorrect credentials"))
+
+    def user_logout(self, request, **_):
+        self.method_check(request, allowed=['post'])
+        logout(request)
+        return self.create_response(request, "User logged out")
 
     def detail_uri_kwargs(self, bundle_or_obj):
         if isinstance(bundle_or_obj, Bundle):
@@ -58,7 +118,10 @@ class UserResource(resources.Resource):
     def obj_create(self, bundle, **kwargs):
         bundle.obj = bom.User(_id=bundle.data["email"])
         bundle.obj.set_password(bundle.data["password"])
-        self._client.save_user(bundle.obj)
+        try:
+            self._client.create_user(bundle.obj)
+        except mongodb.MongoDriver.UserExistsError as e:
+            raise exceptions.ImmediateHttpResponse(response=http.HttpConflict(e))
         return bundle
 
     def obj_update(self, bundle, **kwargs):

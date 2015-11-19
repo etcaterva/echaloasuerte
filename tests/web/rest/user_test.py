@@ -56,6 +56,39 @@ class UserResourceTest(ResourceTestCase):
         self.api_client.client.login(username='test@test.te',
                                      password='test')
 
+    def test_logout(self):
+        self.login()
+        login_url = self.base_url + 'logout/'
+        resp = self.api_client.post(login_url, format='json')
+        self.assertHttpOK(resp)
+
+    def test_login_ok(self):
+        credentials = {
+            "email": "test@test.te",
+            "password": "test"
+        }
+        login_url = self.base_url + 'login/'
+        resp = self.api_client.post(login_url, format='json', data=credentials)
+        self.assertHttpOK(resp)
+
+    def test_login_wrong_email(self):
+        credentials = {
+            "email": "non_existing@test.te",
+            "password": "test"
+        }
+        login_url = self.base_url + 'login/'
+        resp = self.api_client.post(login_url, format='json', data=credentials)
+        self.assertHttpUnauthorized(resp)
+
+    def test_login_wrong_password(self):
+        credentials = {
+            "email": "test@test.te",
+            "password": "wrong_password"
+        }
+        login_url = self.base_url + 'login/'
+        resp = self.api_client.post(login_url, format='json', data=credentials)
+        self.assertHttpUnauthorized(resp)
+
     def test_anon_get_list_none(self):
         resp = self.api_client.get(self.base_url, format='json')
         self.assertValidJSONResponse(resp)
@@ -101,10 +134,7 @@ class UserResourceTest(ResourceTestCase):
             'use_gravatar': self.item.use_gravatar
         })
 
-    def test_anon_post_list(self):
-        self.assertRaises(mongodb.MongoDriver.NotFoundError,
-                          lambda: self.mongo.retrieve_user(
-                              self.post_data['email']))
+    def test_register(self):
         count_users = self.mongo._users.count()
         self.assertHttpCreated(self.api_client.post(self.base_url,
                                                     format='json',
@@ -113,18 +143,15 @@ class UserResourceTest(ResourceTestCase):
         self.assertIsNotNone(self.mongo.retrieve_user(self.post_data['email']))
         self.assertEqual(self.mongo._users.count(), count_users + 1)
 
-    def test_post_list(self):
-        self.assertRaises(mongodb.MongoDriver.NotFoundError,
-                          lambda: self.mongo.retrieve_user(
-                              self.post_data['email']))
-        self.login()
-        # Check how many are there first.
+    def test_register_already_exists(self):
         count_users = self.mongo._users.count()
         self.assertHttpCreated(self.api_client.post(self.base_url,
-                                                    format='json',
-                                                    data=self.post_data))
-        # Verify a new one has been added.
-        self.assertIsNotNone(self.mongo.retrieve_user(self.post_data['email']))
+                                            format='json',
+                                            data=self.post_data))
+        self.assertEqual(self.mongo._users.count(), count_users + 1)
+        self.assertHttpConflict(self.api_client.post(self.base_url,
+                                            format='json',
+                                            data=self.post_data))
         self.assertEqual(self.mongo._users.count(), count_users + 1)
 
     def test_anon_patch_detail(self):
