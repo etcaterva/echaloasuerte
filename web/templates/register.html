@@ -3,16 +3,7 @@
 {% load i18n %}
 {% block content %}
     <div class="row">
-        <div id="benefits-register" class="col-md-6">
-            <div class="h3 text-center">{% trans "Why should you register?" %}</div>
-            <ul>
-                <li><span class="fa fa-check text-success"></span>{% trans "<b>Only you have rights</b> to edit or invite people to your shared draws" %}</li>
-                <li><span class="fa fa-check text-success"></span>{% trans "Store your <b>favourite draws</b>" %}</li>
-                <li><span class="fa fa-check text-success"></span>{% trans "Keep track of your <b>history</b>" %}</li>
-                <li><span class="fa fa-check text-success"></span>{% trans "It's <b>totally FREE!</b>" %}</li>
-            </ul>
-        </div>
-        <div class="col-md-6 ">
+        <div class="col-md-6 col-md-push-6">
             <div class="panel panel-login">
                 <div class="panel-heading">
                     <div class="row">
@@ -62,8 +53,16 @@
                 </div>
             </div>
         </div>
+        <div id="benefits-register" class="col-md-6 col-md-pull-6">
+            <div class="h3 text-center">{% trans "Why should you register?" %}</div>
+            <ul>
+                <li><span class="fa fa-check text-success"></span>{% trans "<b>Only you have rights</b> to edit or invite people to your shared draws" %}</li>
+                <li><span class="fa fa-check text-success"></span>{% trans "Store your <b>favourite draws</b>" %}</li>
+                <li><span class="fa fa-check text-success"></span>{% trans "Keep track of your <b>history</b>" %}</li>
+                <li><span class="fa fa-check text-success"></span>{% trans "It's <b>totally FREE!</b>" %}</li>
+            </ul>
+        </div>
     </div>
-
 
 
 
