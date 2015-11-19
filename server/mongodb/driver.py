@@ -51,6 +51,10 @@ class MongoDriver(object):
         """
         pass
 
+    class UserExistsError(MongoException):
+        """
+        Exception thrown when trying register a user which is already in the database
+        """
 
     class DecodingError(MongoException):
         """
@@ -74,7 +78,7 @@ class MongoDriver(object):
             self.save_user(user)
         else:
             logger.debug("User {0} already exists".format(user._id))
-            raise Exception("User already exists")
+            raise MongoDriver.UserExistsError("{0} is already registered".format(user._id))
 
     @safe_connection
     def save_user(self, user):

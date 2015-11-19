@@ -118,7 +118,10 @@ class UserResource(resources.Resource):
     def obj_create(self, bundle, **kwargs):
         bundle.obj = bom.User(_id=bundle.data["email"])
         bundle.obj.set_password(bundle.data["password"])
-        self._client.save_user(bundle.obj)
+        try:
+            self._client.create_user(bundle.obj)
+        except mongodb.MongoDriver.UserExistsError as e:
+            raise exceptions.ImmediateHttpResponse(response=http.HttpConflict(e))
         return bundle
 
     def obj_update(self, bundle, **kwargs):

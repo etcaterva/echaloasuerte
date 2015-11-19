@@ -134,10 +134,7 @@ class UserResourceTest(ResourceTestCase):
             'use_gravatar': self.item.use_gravatar
         })
 
-    def test_anon_post_list(self):
-        self.assertRaises(mongodb.MongoDriver.NotFoundError,
-                          lambda: self.mongo.retrieve_user(
-                              self.post_data['email']))
+    def test_register(self):
         count_users = self.mongo._users.count()
         self.assertHttpCreated(self.api_client.post(self.base_url,
                                                     format='json',
@@ -146,18 +143,15 @@ class UserResourceTest(ResourceTestCase):
         self.assertIsNotNone(self.mongo.retrieve_user(self.post_data['email']))
         self.assertEqual(self.mongo._users.count(), count_users + 1)
 
-    def test_post_list(self):
-        self.assertRaises(mongodb.MongoDriver.NotFoundError,
-                          lambda: self.mongo.retrieve_user(
-                              self.post_data['email']))
-        self.login()
-        # Check how many are there first.
+    def test_register_already_exists(self):
         count_users = self.mongo._users.count()
         self.assertHttpCreated(self.api_client.post(self.base_url,
-                                                    format='json',
-                                                    data=self.post_data))
-        # Verify a new one has been added.
-        self.assertIsNotNone(self.mongo.retrieve_user(self.post_data['email']))
+                                            format='json',
+                                            data=self.post_data))
+        self.assertEqual(self.mongo._users.count(), count_users + 1)
+        self.assertHttpConflict(self.api_client.post(self.base_url,
+                                            format='json',
+                                            data=self.post_data))
         self.assertEqual(self.mongo._users.count(), count_users + 1)
 
     def test_anon_patch_detail(self):
