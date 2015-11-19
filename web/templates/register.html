@@ -1,6 +1,62 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% load i18n %}
+{% load staticfiles %}
+{% block extra_jq_ready %}
+    $('#register-submit').click(function(){
+        var $form = $('form#register-form');
+
+        // Clean previous errors
+        var $registration_error = $form.find('#registration-error');
+        var $email_group = $form.find('#email-group');
+        var $error_message = $email_group.find('.with-errors');
+        $registration_error.toggleClass('hidden', true);
+        $email_group.toggleClass('has-error', true);
+        $error_message.empty();
+
+        var login = function(credentials){
+            $.ajax({
+                type : 'POST',
+                contentType : 'application/json',
+                url : "{% url 'api_login' api_name="v1" %}",
+                data: credentials
+            }).done(function() {
+                window.location = "{% url 'registration_success' %}"
+            }).fail(function (e){
+                console.log("ERROR: " + e.responseText);
+            });
+        };
+
+        var data = {
+            'email': $form.find('#email').val(),
+            'password': $form.find('#password').val(),
+        };
+        var data = JSON.stringify(data);
+
+        $.ajax({
+            type : 'POST',
+            contentType : 'application/json',
+            url : "{% url 'api_dispatch_list' api_name="v1" resource_name="user" %}",
+            data: data
+        }).done(function(response) {
+            // Track user registration in Google Analytics
+            ga('send', 'event', 'registration');
+
+            // TODO Login
+            login(data);
+        }).fail(function (e){
+            if (e.statusText == 'CONFLICT'){
+                $email_group.toggleClass('has-error', true);
+                $error_message.empty();
+                $error_message.append("{% trans "This email is already registered" %}");
+            }else{
+                $registration_error.toggleClass('hidden', false);
+                console.log("ERROR: " + e.responseText);
+            }
+        });
+    });
+
+{% endblock extra_jq_ready %}
 {% block content %}
     <div class="row">
         <div class="col-md-6 col-md-push-6">
@@ -19,31 +75,28 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <form id="register-form" action="{% url 'register' %}" method="post" role="form" data-toggle="validator">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="{% trans "Email Address" %}" value="">
+                            <form id="register-form" role="form" data-toggle="validator">
+                                <div id="email-group" class="form-group">
+                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="{% trans "Email Address" %}" >
                                     <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="password" data-minlength="6" class="form-control" id="inputPassword" placeholder="{% trans "Password" %}" required>
+                                    <input type="password" name="password" data-minlength="6" class="form-control" id="password" placeholder="{% trans "Password" %}" required >
                                     <span class="help-block with-errors"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="{% trans "Whoops, these don't match" %}" placeholder="{% trans "Confirm Password" %}" required>
+                                    <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#password" data-match-error="{% trans "Whoops, these don't match" %}" placeholder="{% trans "Confirm Password" %}" required>
                                     <div class="help-block with-errors"></div>
                                 </div>
-                                {% if error %}
-                                    <div class="alert alert-danger" role="alert">
-                                      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                      <span class="sr-only">{% trans "Error" %}:</span>
-                                      {{error}}
-                                    </div>
-                                {% endif %}
+                                <div id="registration-error" class="alert alert-danger hidden" role="alert">
+                                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                  <span class="sr-only">{% trans "Error" %}:</span>
+                                  {% trans "Impossible to register. Please, try again later" %}
+                                </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="{% trans "Register Now" %}">
+                                            <button type="button" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register">{% trans "Register Now" %}</button>
                                         </div>
                                     </div>
                                 </div>

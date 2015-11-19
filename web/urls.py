@@ -17,6 +17,8 @@ urlpatterns += patterns(
         name="create_public_draw"),
     url(r'^draw/new/(?P<draw_type>[^/]+)/$', views.create_draw, {'is_public': False},
         name="create_draw"),
+    url(r'^registration_success/$', TemplateView.as_view(template_name='registration_success.html'),
+        name='registration_success'),
     url(r'^accounts/signup/$', views.register, name='register'),
     url(r'^accounts/forgot_password/$', views.under_construction, name='forgot_password'),
     url(r'^accounts/login/$', views.login_user, name='login'),
