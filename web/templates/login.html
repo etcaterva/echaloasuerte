@@ -1,45 +1,130 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% load i18n %}
+{% block extra_jq_ready %}
+    // Submit with enter key
+    $('input').keypress(function (e) {
+        if (e.which == 13) {
+            $('#login-submit').click();
+        }
+    });
+
+    var login = function(credentials){
+        $.ajax({
+            type : 'POST',
+            contentType : 'application/json',
+            url : "{% url 'api_login' api_name="v1" %}",
+            data: credentials
+        }).done(function() {
+            window.location = "{% url 'registration_success' %}"
+        }).fail(function (e){
+            console.log("ERROR: " + e.responseText);
+        });
+    };
+
+    $('#login-submit').click(function(){
+        var $form = $('form#login-form');
+
+        // Clean previous errors
+        var $login_error = $form.find('#login-error');
+        var $email_group = $form.find('#email-group');
+        var $email_error_message = $email_group.find('.with-errors');
+        $login_error.toggleClass('hidden', true);
+        $email_group.toggleClass('has-error', true);
+        $email_error_message.empty();
+
+        var data = {
+            'email': $form.find('#email').val(),
+            'password': $form.find('#password').val(),
+        };
+        var credentials = JSON.stringify(data);
+
+        $.ajax({
+            type : 'POST',
+            contentType : 'application/json',
+            url : "{% url 'api_login' api_name="v1" %}",
+            data: credentials
+        }).done(function() {
+            window.location = "{% url 'index' %}"
+        }).fail(function (e){
+            var $general_error_message = $login_error.find('#error-message');
+            $general_error_message.empty();
+            if (e.status == "404"){  // NOT FOUND
+                $general_error_message.append("{% trans "This email is not registered" %}");
+            } else if (e.status == "401"){  // UNAUTHORIZED
+                $general_error_message.append("{% trans "Incorrect password" %}");
+            } else {
+                $general_error_message.append("{% trans "Impossible to login. Please, try again later" %}");
+            }
+            $login_error.toggleClass('hidden', false);
+        });
+    });
+
+{% endblock extra_jq_ready %}
 {% block content %}
     <div id="login" class="row">
-        <div class="col-sm-6 col-sm-offset-3 text-center">
-            <h1>{% trans "Log in" %}</h1>
-            <form class="form-horizontal" name="LoginForm" action="{% url 'login' %}" method="post">
-            {% csrf_token %}
-            {% if next %}
-                <input type="hidden" name="next" value="{{ next }}" />
-            {% endif %}
-            <div class="row control-group">
-                <label class="control-label col-xs-4" for="username">{% trans "Email" %}</label>
-                <div class="controls col-xs-8">
-                    <input class="form-control" type="email" id="email" name="email"  placeholder="{% trans "Email" %}">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-login">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <a href="#" class="active" id="login-form-link">{% trans "Login" %}</a>
+                        </div>
+                        <div class="col-xs-6">
+                            <a href="{% url 'register' %}" id="register-form-link">{% trans "Register" %}</a>
+                        </div>
+                    </div>
+                    <hr>
                 </div>
-            </div>
-            <div class="row control-group">
-                <label class="control-label col-xs-4" for="password">{% trans "Password" %}</label>
-                <div class="controls col-xs-8">
-                    <input class="form-control" type="password" name="password" id="password" placeholder="{% trans "Password" %}">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form id="login-form" role="form" data-toggle="validator">
+                                <div id="email-group" class="form-group">
+                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="{% trans "Email Address" %}" >
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" data-minlength="6" class="form-control" id="password" placeholder="{% trans "Password" %}" required >
+                                    <span class="help-block with-errors"></span>
+                                </div>
+                                <div class="form-group text-center">
+                                    <input type="checkbox" tabindex="3" class="" name="keep-logged" id="remember">
+                                    <label for="remember">{% trans "Keep me logged in" %}</label>
+                                </div>
+                                <div id="login-error" class="alert alert-danger hidden" role="alert">
+                                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                  <span class="sr-only">{% trans "Error" %}:</span>
+                                  <span id="error-message"></span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-sm-offset-3">
+                                            <button type="button" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login">{% trans "Log In" %}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="text-center">
+                                                <a href="{% url 'forgot_password' %}" tabindex="5" class="forgot-password">{% trans "Forgot your password?" %}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            {% if error %}
-                <div class="alert alert-danger alert-login" role="alert">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">{% trans "Error" %}</span>
-                    {{error}}
-                </div>
-            {% endif %}
-            <div class="row control-group">
-                <div class="controls text-center">
-                    <button id="login-button" type="submit" class="btn btn-success">{% trans "Log in" %}</button>
-                </div>
-                <a href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a>
-            </div>
-            </form>
-            <div class="row text-center">
-                <div class="text-separator"><span>{% trans "Or" %}</span></div>
-                <a href="{% url 'register' %}"><button type="button" class="btn btn-primary">{% trans "Sign up" %}</button></a>
             </div>
         </div>
     </div>
 {% endblock %}
+
+{% block extra_body %}
+    <script>
+        // Form validator: https://github.com/1000hz/bootstrap-validator
+        +function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=a.extend({},c.DEFAULTS,d.data(),"object"==typeof b&&b),f=d.data("bs.validator");(f||"destroy"!=b)&&(f||d.data("bs.validator",f=new c(this,e)),"string"==typeof b&&f[b]())})}var c=function(b,d){this.$element=a(b),this.options=d,d.errors=a.extend({},c.DEFAULTS.errors,d.errors);for(var e in d.custom)if(!d.errors[e])throw new Error("Missing default error message for custom validator: "+e);a.extend(c.VALIDATORS,d.custom),this.$element.attr("novalidate",!0),this.toggleSubmit(),this.$element.on("input.bs.validator change.bs.validator focusout.bs.validator",a.proxy(this.validateInput,this)),this.$element.on("submit.bs.validator",a.proxy(this.onSubmit,this)),this.$element.find("[data-match]").each(function(){var b=a(this),c=b.data("match");a(c).on("input.bs.validator",function(){b.val()&&b.trigger("input.bs.validator")})})};c.INPUT_SELECTOR=':input:not([type="submit"], button):enabled:visible',c.DEFAULTS={delay:500,html:!1,disable:!0,custom:{},errors:{match:"Does not match",minlength:"{% trans "The password must have at least 6 characters" %}"},feedback:{success:"glyphicon-ok",error:"glyphicon-remove"}},c.VALIDATORS={"native":function(a){var b=a[0];return b.checkValidity?b.checkValidity():!0},match:function(b){var c=b.data("match");return!b.val()||b.val()===a(c).val()},minlength:function(a){var b=a.data("minlength");return!a.val()||a.val().length>=b}},c.prototype.validateInput=function(b){var c=a(b.target),d=c.data("bs.validator.errors");if(c.is('[type="radio"]')&&(c=this.$element.find('input[name="'+c.attr("name")+'"]')),this.$element.trigger(b=a.Event("validate.bs.validator",{relatedTarget:c[0]})),!b.isDefaultPrevented()){var e=this;this.runValidators(c).done(function(f){c.data("bs.validator.errors",f),f.length?e.showErrors(c):e.clearErrors(c),d&&f.toString()===d.toString()||(b=f.length?a.Event("invalid.bs.validator",{relatedTarget:c[0],detail:f}):a.Event("valid.bs.validator",{relatedTarget:c[0],detail:d}),e.$element.trigger(b)),e.toggleSubmit(),e.$element.trigger(a.Event("validated.bs.validator",{relatedTarget:c[0]}))})}},c.prototype.runValidators=function(b){function d(a){return b.data(a+"-error")||b.data("error")||"native"==a&&b[0].validationMessage||g.errors[a]}var e=[],f=a.Deferred(),g=this.options;return b.data("bs.validator.deferred")&&b.data("bs.validator.deferred").reject(),b.data("bs.validator.deferred",f),a.each(c.VALIDATORS,a.proxy(function(a,c){if((b.data(a)||"native"==a)&&!c.call(this,b)){var f=d(a);!~e.indexOf(f)&&e.push(f)}},this)),!e.length&&b.val()&&b.data("remote")?this.defer(b,function(){var c={};c[b.attr("name")]=b.val(),a.get(b.data("remote"),c).fail(function(a,b,c){e.push(d("remote")||c)}).always(function(){f.resolve(e)})}):f.resolve(e),f.promise()},c.prototype.validate=function(){var a=this.options.delay;return this.options.delay=0,this.$element.find(c.INPUT_SELECTOR).trigger("input.bs.validator"),this.options.delay=a,this},c.prototype.showErrors=function(b){var c=this.options.html?"html":"text";this.defer(b,function(){var d=b.closest(".form-group"),e=d.find(".help-block.with-errors"),f=d.find(".form-control-feedback"),g=b.data("bs.validator.errors");g.length&&(g=a("<ul/>").addClass("list-unstyled").append(a.map(g,function(b){return a("<li/>")[c](b)})),void 0===e.data("bs.validator.originalContent")&&e.data("bs.validator.originalContent",e.html()),e.empty().append(g),d.addClass("has-error"),f.length&&f.removeClass(this.options.feedback.success)&&f.addClass(this.options.feedback.error)&&d.removeClass("has-success"))})},c.prototype.clearErrors=function(a){var b=a.closest(".form-group"),c=b.find(".help-block.with-errors"),d=b.find(".form-control-feedback");c.html(c.data("bs.validator.originalContent")),b.removeClass("has-error"),d.length&&d.removeClass(this.options.feedback.error)&&d.addClass(this.options.feedback.success)&&b.addClass("has-success")},c.prototype.hasErrors=function(){function b(){return!!(a(this).data("bs.validator.errors")||[]).length}return!!this.$element.find(c.INPUT_SELECTOR).filter(b).length},c.prototype.isIncomplete=function(){function b(){return"checkbox"===this.type?!this.checked:"radio"===this.type?!a('[name="'+this.name+'"]:checked').length:""===a.trim(this.value)}return!!this.$element.find(c.INPUT_SELECTOR).filter("[required]").filter(b).length},c.prototype.onSubmit=function(a){this.validate(),(this.isIncomplete()||this.hasErrors())&&a.preventDefault()},c.prototype.toggleSubmit=function(){if(this.options.disable){var b=a('button[type="submit"], input[type="submit"]').filter('[form="'+this.$element.attr("id")+'"]').add(this.$element.find('input[type="submit"], button[type="submit"]'));b.toggleClass("disabled",this.isIncomplete()||this.hasErrors())}},c.prototype.defer=function(b,c){return c=a.proxy(c,this),this.options.delay?(window.clearTimeout(b.data("bs.validator.timeout")),void b.data("bs.validator.timeout",window.setTimeout(c,this.options.delay))):c()},c.prototype.destroy=function(){return this.$element.removeAttr("novalidate").removeData("bs.validator").off(".bs.validator"),this.$element.find(c.INPUT_SELECTOR).off(".bs.validator").removeData(["bs.validator.errors","bs.validator.deferred"]).each(function(){var b=a(this),c=b.data("bs.validator.timeout");window.clearTimeout(c)&&b.removeData("bs.validator.timeout")}),this.$element.find(".help-block.with-errors").each(function(){var b=a(this),c=b.data("bs.validator.originalContent");b.removeData("bs.validator.originalContent").html(c)}),this.$element.find('input[type="submit"], button[type="submit"]').removeClass("disabled"),this.$element.find(".has-error").removeClass("has-error"),this};var d=a.fn.validator;a.fn.validator=b,a.fn.validator.Constructor=c,a.fn.validator.noConflict=function(){return a.fn.validator=d,this},a(window).on("load",function(){a('form[data-toggle="validator"]').each(function(){var c=a(this);b.call(c,c.data())})})}(jQuery);
+    </script>
+{% endblock extra_body %}
