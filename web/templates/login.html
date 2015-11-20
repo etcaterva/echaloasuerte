@@ -20,12 +20,11 @@
         $email_group.toggleClass('has-error', true);
         $email_error_message.empty();
 
-        var data = {
+        var credentials = {
             'email': $form.find('#email').val(),
             'password': $form.find('#password').val(),
         };
 
-        var credentials = JSON.stringify(data);
         var callback_done = function(){
             window.location = "{% url 'index' %}";
         };

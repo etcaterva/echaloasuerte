@@ -234,6 +234,17 @@
                     data: data
                 }).done(callback_done).fail(callback_fail);
             };
+            var user_logout = function(){
+                $.ajax({
+                    type : 'POST',
+                    contentType : 'application/json',
+                    url : "{% url 'api_logout' api_name="v1" %}",
+                }).done(function(){
+                    window.location = "{% url 'login' %}";
+                }).fail(function(){
+                    console.log("Impossible to logout");
+                });
+            };
             var $login_dropdown = $('#login-dropdown');
             $login_dropdown.find('#login-button').click(function(){
                 var credentials = {
@@ -248,6 +259,7 @@
                 };
                user_login(credentials,callback_done, callback_fail) ;
             });
+            $('#logout').click(user_logout);
 
             {% block extra_jq_ready %}{% endblock extra_jq_ready %}
 
@@ -385,7 +397,7 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <p>
-                                                    <a id="sign-out" href="{% url 'login' %}" class="btn btn-danger btn-block">{% trans "Sign out" %}</a>
+                                                    <a id="logout" class="btn btn-danger btn-block">{% trans "Logout" %}</a>
                                                 </p>
                                             </div>
                                         </div>
