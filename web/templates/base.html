@@ -225,6 +225,30 @@
                 ga('send', 'event', 'link', 'go to old site');
             });
 
+            var user_login = function(credentials, callback_done, callback_fail){
+                var data = JSON.stringify(credentials);
+                $.ajax({
+                    type : 'POST',
+                    contentType : 'application/json',
+                    url : "{% url 'api_login' api_name="v1" %}",
+                    data: data
+                }).done(callback_done).fail(callback_fail);
+            };
+            var $login_dropdown = $('#login-dropdown');
+            $login_dropdown.find('#login-button').click(function(){
+                var credentials = {
+                    'email': $login_dropdown.find('#email').val(),
+                    'password': $login_dropdown.find('#password').val(),
+                };
+                var callback_done = function(){
+                    window.location.reload();
+                };
+                var callback_fail = function(){
+                    window.location = "{% url 'login' %}";
+                };
+               user_login(credentials,callback_done, callback_fail) ;
+            });
+
             {% block extra_jq_ready %}{% endblock extra_jq_ready %}
 
             // disable tooltips in mobile
@@ -396,8 +420,7 @@
                                                     </label>
                                                 </div>
                                                 <div class="form-group">
-                                                    <button id="login-button" type="submit" class="btn btn-success btn-block">{% trans "Log in"%}
-                                                    </button>
+                                                    <button id="login-button" type="button" class="btn btn-success btn-block">{% trans "Log in"%}</button>
                                                     <a class="forgot-password"
                                                        href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a>
                                                 </div>

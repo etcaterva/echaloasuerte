@@ -9,19 +9,6 @@
         }
     });
 
-    var login = function(credentials){
-        $.ajax({
-            type : 'POST',
-            contentType : 'application/json',
-            url : "{% url 'api_login' api_name="v1" %}",
-            data: credentials
-        }).done(function() {
-            window.location = "{% url 'registration_success' %}"
-        }).fail(function (e){
-            console.log("ERROR: " + e.responseText);
-        });
-    };
-
     $('#login-submit').click(function(){
         var $form = $('form#login-form');
 
@@ -37,16 +24,12 @@
             'email': $form.find('#email').val(),
             'password': $form.find('#password').val(),
         };
-        var credentials = JSON.stringify(data);
 
-        $.ajax({
-            type : 'POST',
-            contentType : 'application/json',
-            url : "{% url 'api_login' api_name="v1" %}",
-            data: credentials
-        }).done(function() {
-            window.location = "{% url 'index' %}"
-        }).fail(function (e){
+        var credentials = JSON.stringify(data);
+        var callback_done = function(){
+            window.location = "{% url 'index' %}";
+        };
+        var callback_fail = function(e){
             var $general_error_message = $login_error.find('#error-message');
             $general_error_message.empty();
             if (e.status == "404"){  // NOT FOUND
@@ -57,7 +40,9 @@
                 $general_error_message.append("{% trans "Impossible to login. Please, try again later" %}");
             }
             $login_error.toggleClass('hidden', false);
-        });
+        };
+
+        user_login(credentials, callback_done, callback_fail);
     });
 
 {% endblock extra_jq_ready %}
@@ -85,7 +70,7 @@
                                     <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="password" data-minlength="6" class="form-control" id="password" placeholder="{% trans "Password" %}" required >
+                                    <input type="password" name="password" data-minlength="6" tabindex="2" class="form-control" id="password" placeholder="{% trans "Password" %}" required >
                                     <span class="help-block with-errors"></span>
                                 </div>
                                 <div class="form-group text-center">

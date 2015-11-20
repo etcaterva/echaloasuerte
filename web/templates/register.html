@@ -3,19 +3,6 @@
 {% load i18n %}
 {% load staticfiles %}
 {% block extra_jq_ready %}
-    var login = function(credentials){
-        $.ajax({
-            type : 'POST',
-            contentType : 'application/json',
-            url : "{% url 'api_login' api_name="v1" %}",
-            data: credentials
-        }).done(function() {
-            window.location = "{% url 'registration_success' %}"
-        }).fail(function (e){
-            console.log("ERROR: " + e.responseText);
-        });
-    };
-
     $('#register-submit').click(function(){
         var $form = $('form#register-form');
 
@@ -31,19 +18,25 @@
             'email': $form.find('#email').val(),
             'password': $form.find('#password').val(),
         };
-        var data = JSON.stringify(data);
+        var json_data = JSON.stringify(data);
 
         $.ajax({
             type : 'POST',
             contentType : 'application/json',
             url : "{% url 'api_dispatch_list' api_name="v1" resource_name="user" %}",
-            data: data
+            data: json_data
         }).done(function(response) {
             // Track user registration in Google Analytics
             ga('send', 'event', 'registration');
 
             // TODO Login
-            login(data);
+            var callback_done = function(){
+                window.location = "{% url 'registration_success' %}";
+            };
+            var callback_fail = function(){
+                console.log("ERROR: " + e.responseText);
+            };
+            user_login(data, callback_done, callback_fail);
         }).fail(function (e){
             if (e.statusText == 'CONFLICT'){
                 $email_group.toggleClass('has-error', true);
@@ -77,15 +70,15 @@
                         <div class="col-lg-12">
                             <form id="register-form" role="form" data-toggle="validator">
                                 <div id="email-group" class="form-group">
-                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="{% trans "Email Address" %}" >
+                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="{% trans "Email Address" %}" required>
                                     <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="password" data-minlength="6" class="form-control" id="password" placeholder="{% trans "Password" %}" required >
+                                    <input type="password" name="password" tabindex="2" data-minlength="6" class="form-control" id="password" placeholder="{% trans "Password" %}" required >
                                     <span class="help-block with-errors"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#password" data-match-error="{% trans "Whoops, these don't match" %}" placeholder="{% trans "Confirm Password" %}" required>
+                                    <input type="password" class="form-control" tabindex="3" id="inputPasswordConfirm" data-match="#register-form #password" data-match-error="{% trans "Whoops, these don't match" %}" placeholder="{% trans "Confirm Password" %}" required>
                                     <div class="help-block with-errors"></div>
                                 </div>
                                 <div id="registration-error" class="alert alert-danger hidden" role="alert">
