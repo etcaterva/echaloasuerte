@@ -60,7 +60,7 @@ def get_draw_name(draw_type=None):
         if values["bom"].__name__ == draw_type:
             return draw_name
     else:
-        raise DrawNotRegistered()
+        raise DrawNotRegistered(draw_type)
 
 
 def create_form(draw_type, *args, **kwargs):

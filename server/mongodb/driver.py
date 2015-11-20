@@ -29,6 +29,8 @@ def build_draw(doc):
     """Given a python dict that represnets a draw, builds it"""
     try:
         return draw_factory.create_draw(doc["draw_type"], doc)
+    except draw_factory.DrawNotRegistered:
+        return eval(doc["draw_type"])(**doc)
     except Exception as e:
         logger.error("Error when decoding a draw. Exception: {1}. Draw: {0} ".format(doc, e))
         raise
