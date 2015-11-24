@@ -6,7 +6,6 @@
             base_url: null
         };
 
-
     /*********************************
      *     COIN CLASS DEFINITION
      ********************************/
@@ -15,13 +14,9 @@
     };
 
     Coin.prototype = {
-
         constructor: Coin,
-
         image_store: [],
-
         animation_frame_counter: 0,
-
         result: null,
 
         init: function (element, options) {
@@ -50,7 +45,7 @@
         animate: function(){
             var that = this;
             function animate_loop(){
-                var image_frame = (that.animation_frame_counter) % 4;
+                var image_frame = that.animation_frame_counter % that.blurry_images_array.length;
                 that.$element.attr("src", that.image_store[that.blurry_images_array[image_frame]].src);
                 that.animation_frame_counter++;
                 if ((that.animation_frame_counter > 8) && (image_frame == that.result)) {
@@ -79,9 +74,9 @@
      ********************************/
     $.fn.coin = function (option, param) {
         return this.each(function () {
-            var $this = $(this)
-                , data = $this.data('plugin_' + pluginName)
-                , options = typeof option == 'object' && option;
+            var $this = $(this);
+            var data = $this.data('plugin_' + pluginName);
+            var options = typeof option == 'object' && option;
 
             if (typeof option === 'string') {
                 data[option].apply(data, param);
