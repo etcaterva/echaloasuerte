@@ -432,6 +432,7 @@
          * ONLY USED IN SHARED DRAWS
          */
         try_draw: function(){
+            var that = this;
             // Lock submit buttons to avoid unintentional submitions
             $('.submit-lockable').prop('disabled',true);
 
@@ -447,13 +448,8 @@
                 url : this.options.url_try,
                 data: data
             }).done(function( data ) {
-                // TODO Results should be rendered properly
-                var result = data.items;
-                var result_cad = "Result: ";
-                for (var i=0; i<result.length; i++){
-                    result_cad += result[i] + ", ";
-                }
-                alert(result_cad);
+                // Render result
+                that.add_result(data);
             }).fail(function (e){
                 // TODO Improve feedback
                 console.log("ERROR: " + e.responseText);
