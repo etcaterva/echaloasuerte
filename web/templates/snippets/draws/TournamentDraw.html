@@ -17,16 +17,12 @@
         $('.jQBracket .tools span').css('display','none');
     }
 
-    $(function() {
-        $('#bracket-result{{iteration}}').bracket({
-            init: {teams: teams{{forloop.counter}}},
-            save: cleanBracketDisplay,
-        });
+    $('#bracket-result{{iteration}}').bracket({
+        init: {teams: teams{{forloop.counter}}},
+        save: cleanBracketDisplay,
     });
-    $(window).load(function(){
-        $('.result').css('height','auto','important');
-        cleanBracketDisplay();
-    });
+    $('.result').css('height','auto','important');
+    cleanBracketDisplay();
 
 </script>
 {%endwith%}

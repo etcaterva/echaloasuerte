@@ -1,5 +1,4 @@
 <script>
-    var baseUrl = '{{ STATIC_URL }}' + "img/";
-    Card.setup(baseUrl, {{ results }});
-    Card.draw();
+    Card.baseUrl = '{{ STATIC_URL }}' + "img/img_cards/";
+    document.write(Card.draw({{ results }}));
 </script>

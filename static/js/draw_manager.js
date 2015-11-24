@@ -93,7 +93,8 @@
             url_try: "",
             url_schedule_toss: "",
             msg_result: "Result",
-            msg_generated_on: "generated on"
+            msg_generated_on: "generated on",
+            msg_audit: "Warning! The draw was modified after the generation of this result"
         };
 
 
@@ -118,7 +119,14 @@
             // Record in 'edited_fields' when inputs are changed
             this.$element.find(":input").change(function() {
                 var $this = $(this);
-                that.edited_fields[$this.attr('name')] = $this.cast_input_value();
+                var regex_set = /^set_[0-9]/i;
+                if (regex_set.test($this.attr('name'))){
+                    var form_fields = that.$element.serializeForm();
+                    that.edited_fields['sets'] = form_fields['sets'];
+                }
+                else{
+                    that.edited_fields[$this.attr('name')] = $this.cast_input_value();
+                }
             });
 
             // Add toggle behaviour to show and hide "allow repeat" checkbox based on the number of results
@@ -164,11 +172,113 @@
         },
 
         /**
+         * Store callback functions to render results dynamically
+         * render: Specify how to render the result
+         * animate: Optional function. Only needed in case it needs animation (i.e. roll dice)
+         */
+        draw_callbacks: {
+            'dice': {
+                'render': function(results){
+                    return D6.render_dice(results.length);
+                },
+                'animate': function(results){
+                    D6.roll(results);
+                }
+            },
+            'card': {
+                'render': function(results){
+                    return Card.draw(results);
+                }
+            },
+            'coin': {
+                'render': function(result){
+                    return result;
+                },
+                'animate': function(result){
+                    $('#img-coin').coin('flip', result);
+                }
+            },
+            'number': {
+                'render': function(results){
+                    var html = '<ul class="list-group">';
+                        for (var res in results){
+                            html += '<li class="list-group-item">' + results[res] + '</li>';
+                        }
+                    html += '</ul>';
+                    return html;
+                }
+            },
+            'letter': {
+                'render': function(results){
+                    var html = '<ul class="list-group">';
+                        for (var res in results){
+                            html += '<li class="list-group-item">' + results[res] + '</li>';
+                        }
+                    html += '</ul>';
+                    return html;
+                }
+            },
+            'tournament': {
+                'render': function(_){
+                    return '<div id="bracket-result"></div>';
+                },
+                'animate': function (results) {
+                    function cleanBracketDisplay(){
+                        $('.team .label').css('color', 'black')
+                                        .css('text-align','left')
+                                        .css('position','relative');
+                        $('.jQBracket .tools span').css('display','none');
+                    }
+
+                    $('#bracket-result').bracket({
+                        init: {teams: results},
+                        save: cleanBracketDisplay,
+                    });
+                    $('.result').css('height','auto','important');
+                    cleanBracketDisplay();
+                }
+            },
+            'item': {
+                'render': function(results){
+                    var html = '<ul class="list-group">';
+                        for (var res in results){
+                            html += '<li class="list-group-item">' + results[res] + '</li>';
+                        }
+                    html += '</ul>';
+                    return html;
+                }
+            },
+            'link_sets': {
+                'render': function(results){
+                    var html = '<ul class="list-group">';
+                        for (var result in results){
+                            html += '<li class="list-group-item">';
+                            html += results[result][0];
+                            if (results[result].length > 1){
+                                html += ' - ' + results[result][1];
+                            }
+                            html += '</li>';
+                        }
+                    html += '</ul>';
+                    return html;
+                }
+            }
+        },
+        /**
+         * Get the callback functions to render the current draw type
+         * @returns {*}
+         */
+        get_callbacks: function(){
+          return this.draw_callbacks[this.options.draw_type];
+        },
+
+        /**
          * Add a result to the list of previous results
          *
          * @param result Result to add
          */
         add_result: function (result){
+            var callbacks = this.get_callbacks();
             var $results = $('#results').find('.accordion');
 
             // Add the new result to the accordion
@@ -178,7 +288,7 @@
                                 '   </small>' +
                                 '</p>' +
                                 '<div class="result">';
-            result_html += this.options.callback_render(result.items) + '</div>';
+            result_html += callbacks.render(result.items) + '</div>';
             $results.prepend(result_html);
             $results.accordion('refresh');
 
@@ -186,8 +296,8 @@
             $results.accordion({active:0});
 
             // Animate the result when necessary
-            if (this.options.callback_animate){
-                this.options.callback_animate(result.items);
+            if (callbacks.animate){
+                callbacks.animate(result.items);
             }
         },
 
@@ -203,13 +313,14 @@
                 method : "POST",
                 contentType : 'application/json',
                 url : this.options.url_toss
-            }).done(function (){
+            }).done(function (results){
                 // Register the event in Google Analytics
                 var is_shared = that.options.is_shared ? 'shared' : 'private';
                 ga('send', 'event', 'toss', that.options.draw_type, is_shared);
 
                 // Here results should be rendered without reloading
-                window.location.reload();
+                //window.location.reload();
+                that.add_result(results);
             }).fail(function () {
                 alert("{% trans 'There was an issue when tossing the draw :(' %}");
             }).always(function(){
@@ -297,7 +408,7 @@
 
             // Serialize and clean the form
             var fields_skipped = ["csrfmiddlewaretoken", "_id"];
-            var form_fields = $('#draw-form').serializeForm(fields_skipped);
+            var form_fields = this.$element.serializeForm(fields_skipped);
             form_fields["type"] = this.options.draw_type;
             var data = JSON.stringify(form_fields);
 
@@ -321,6 +432,7 @@
          * ONLY USED IN SHARED DRAWS
          */
         try_draw: function(){
+            var that = this;
             // Lock submit buttons to avoid unintentional submitions
             $('.submit-lockable').prop('disabled',true);
 
@@ -336,13 +448,8 @@
                 url : this.options.url_try,
                 data: data
             }).done(function( data ) {
-                // TODO Results should be rendered properly
-                var result = data.items;
-                var result_cad = "Result: ";
-                for (var i=0; i<result.length; i++){
-                    result_cad += result[i] + ", ";
-                }
-                alert(result_cad);
+                // Render result
+                that.add_result(data);
             }).fail(function (e){
                 // TODO Improve feedback
                 console.log("ERROR: " + e.responseText);
@@ -383,6 +490,15 @@
             if (Object.keys(this.edited_fields).length > 0) {
                 this.update(
                     callback_done = function (){
+                        var $result_headers = $('.ui-accordion-header');
+                        $result_headers.each(function(){
+                            var $this = $(this);
+                            if (!$this.has('i.fa-exclamation-triangle').length){
+                                var html_audit = '<i class="fa fa-exclamation-triangle" title="' + that.options.msg_audit + '"></i>';
+                                $this.append(html_audit);
+                            }
+                        });
+                        that.edited_fields = {};
                         that.toss();
                     },
                     callback_fail = function (e) {

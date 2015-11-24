@@ -22,7 +22,19 @@
     <script src="{% static 'js/draw_manager.js' %}"></script>
 {% endblock extra_head %}
 {% block extra_jq_ready %}
-    {% block draw_extra_jq_ready %}{% endblock draw_extra_jq_ready %}
+    {% if draw_type == "coin" %}
+        var base_url = '{{ STATIC_URL }}' + "img/img_coin/";
+        var $coin = $('#img-coin').coin({
+            "base_url": base_url
+        });
+    {% elif draw_type == "dice" %}
+        D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
+        //Precaching the images
+        D6Animator.getImageBank("", D6.baseUrl);
+    {% elif draw_type == "card" %}
+        Card.baseUrl = '{{ STATIC_URL }}' + "img/img_cards/"
+    {% endif %}
+
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 
     // When fields are focused, all the content is pre-selected
@@ -163,24 +175,22 @@
 
     {% if is_public %}
         {# Show results, in case the user tries the configuration (through the button "Try") #}
-        {% if bom.results %}
-            <!-- Results -->
-            <div class="step-configure col-sm-8 col-sm-offset-2">
-                <div class="row text-center accordion">
-                    {% for result in bom.results reversed %}
-                    {% with result.items as results%}
-                        {% if results %}
-                            <p id="header-try-result" class="h3">
-                                {%trans 'Result' %}{{results|length|pluralize}}
-                            <div class="result">
-                                {% include draw.TEMPLATE_PATH %}
-                            </div>
-                        {% endif %}
-                    {% endwith %}
-                    {% endfor %}
-                </div>
+        <!-- Results -->
+        <div id="results" class="step-configure col-sm-8 col-sm-offset-2">
+            <div class="row text-center accordion">
+                {% for result in bom.results reversed %}
+                {% with result.items as results%}
+                    {% if results %}
+                        <p id="header-try-result" class="h3">
+                            {%trans 'Result' %}{{results|length|pluralize}}
+                        <div class="result">
+                            {% include draw.TEMPLATE_PATH %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% endfor %}
             </div>
-        {% endif %}
+        </div>
         <!-- End Results -->
     {% endif %}
 {% endblock %}
