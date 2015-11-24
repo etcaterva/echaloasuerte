@@ -337,8 +337,9 @@ class DrawResource(resources.Resource):
             if not draw.check_write_access(request.user):
                 raise exceptions.ImmediateHttpResponse(
                     response=http.HttpUnauthorized("Only the owner can add users"))
-            new_users = [str(user) for user in data['add_user']
-                                   if '@' in str(user)]
+            new_users = {str(user) for user in data['add_user']
+                                   if '@' in str(user)}
+            new_users = [user for user in new_users if user not in draw.users]
             draw.users.extend(new_users)
             self._client.save_draw(draw)
             invite_user(new_users, draw)
