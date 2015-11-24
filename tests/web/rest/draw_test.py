@@ -261,6 +261,38 @@ class DrawResourceTest(ResourceTestCase):
         self.assertEquals(sorted(self.mongo.retrieve_draw(self.item.pk).users),
                          sorted(['FAKE@USER.es', self.user.pk]))
 
+    def test_post_detail_add_user_twice_just_adds_once(self):
+        self.login()
+        # Check how many are there first.
+        self.mongo.save_draw(self.item)
+        self.assertEquals(self.mongo.retrieve_draw(self.item.pk).users,
+                          [self.user.pk])
+        # create it
+        self.assertHttpCreated(self.api_client.post(
+            self.detail_url,
+            format='json',
+            data={
+                'add_user': ['FAKE@USER.es', 'FAKE@USER.es']
+            }))
+        self.assertEquals(sorted(self.mongo.retrieve_draw(self.item.pk).users),
+                         sorted(['FAKE@USER.es', self.user.pk]))
+
+    def test_post_detail_add_existing_user_not_added(self):
+        self.login()
+        # Check how many are there first.
+        self.mongo.save_draw(self.item)
+        self.assertEquals(self.mongo.retrieve_draw(self.item.pk).users,
+                          [self.user.pk])
+        # create it
+        self.assertHttpCreated(self.api_client.post(
+            self.detail_url,
+            format='json',
+            data={
+                'add_user': [self.user.pk]
+            }))
+        self.assertEquals(sorted(self.mongo.retrieve_draw(self.item.pk).users),
+                         sorted([self.user.pk]))
+
     def test_post_detail_remove_other(self):
         self.login()
         # Check how many are there first.
