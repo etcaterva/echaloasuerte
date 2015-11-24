@@ -35,7 +35,7 @@ class UserTest(BrowserStackTest):
         email_input.send_keys("test@test.com")
         password_input.clear()
         password_input.send_keys('test')
-        driver.find_element_by_css_selector("#login #login-button").click()
+        driver.find_element_by_css_selector("#login #login-submit").click()
 
     def test_login_dropdown(self):
         """ User login (from dropdown panel) """
@@ -83,7 +83,17 @@ class UserTest(BrowserStackTest):
             '#profile-edit-alias .user-settings-content').text.strip()
         self.assertEqual("Cool alias", alias_in_table)
 
-
+    def test_register(self):
+        """ User registration """
+        driver = self.driver
+        self.db.remove_user('the_dude@boh.com')
+        self.driver.get(self.base_url + "/accounts/register/")
+        driver.find_element_by_css_selector('#register-form #email').send_keys('the_dude@boh.com')
+        driver.find_element_by_css_selector('#register-form #password').send_keys('123456')
+        driver.find_element_by_css_selector('#register-form #inputPasswordConfirm').send_keys('123456')
+        driver.find_element_by_id('register-submit').click()
+        created_user = self.db.retrieve_user('the_dude@boh.com')
+        self.assertTrue(driver.find_element_by_id('registration-success'))
     '''def test_change_password(self):
         driver = self.driver
         driver.get('/accounts/profile')
