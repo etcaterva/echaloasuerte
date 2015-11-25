@@ -1216,6 +1216,7 @@ class DrawResourceUpdate_Test(ResourceTestCase):
         resp = self.api_client.patch(self.detail_uri(draw), data=update_data)
         print(resp)
         self.assertHttpBadRequest(resp)
+        self.assertTrue("Range too small" in str(resp.serialize()))
         self.mongo.remove_draw(draw.pk)
 
     def test_update_random_number_fake_attributes(self):
