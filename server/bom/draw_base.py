@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 import random
+import json
 import datetime
 from abc import ABCMeta, abstractmethod
 import logging
@@ -35,7 +36,8 @@ class InvalidDraw(RuntimeError):
                                                            self.message)
 
     def serialize(self):
-        return str({'attributes': self.attributes, 'message': self.message})
+        return json.dumps({'attributes': self.attributes,
+                           'message': six.text_type(self.message)})
 
 
 def get_utc_now():
