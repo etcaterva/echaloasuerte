@@ -76,6 +76,17 @@ class NormalDrawTest(BrowserStackTest):
         result = driver.find_elements_by_id("results")
         self.assertTrue(result)
 
+    def test_groups(self):
+        """Selenium: Group draw (normal draw)"""
+        driver = self.driver
+        draw_box = driver.find_element_by_id("groups-draw")
+        draw_box.click()
+        driver.find_element_by_id("id_items-tokenfield").send_keys("a,b,c")
+        toss_btn = driver.find_element_by_id("create-and-toss")
+        toss_btn.click()
+        result = driver.find_elements_by_id("results")
+        self.assertTrue(result)
+
     def test_random_item(self):
         """Selenium: Random item draw (normal draw)"""
         driver = self.driver

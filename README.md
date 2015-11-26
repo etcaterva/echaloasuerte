@@ -17,8 +17,8 @@ The dev version is on continuous deployment, all changes in master are automatic
  - www.chooserandom.com: Root domain for the english version
  - prod.*: latest version deployed to the prod server
  - dev.*: latest version deployed to the dev servier
-  
-All domains can be accessed through http and https and are served through cloudflare. 
+
+All domains can be accessed through http and https and are served through cloudflare.
 
 ## CI builds
 - Travis: [![Travis Master](https://travis-ci.org/etcaterva/EchaloASuerte.svg?branch=master)](https://travis-ci.org/etcaterva/EchaloASuerte)
@@ -27,3 +27,13 @@ All domains can be accessed through http and https and are served through cloudf
 
 ## Acknowledgements
 * Selenium tests running on [BrowserStack](www.browserstack.com)
+
+## How to create a new draw
+* Define a bom within server/bom and add it to the __init__
+* Define a form within server/forms and add it to the __init__
+* Add the draw snippet in web/templates/snippets/draws
+* Register the draw, form and snippet within the draw factory (server/draw_factory)
+* Get an icon for it into static/img/draw_icons
+* Add the draw to the index menu (web/template/index.html)
+* if you need extra js, add a file and include it in the new and display templates
+* Add unit and functional tests

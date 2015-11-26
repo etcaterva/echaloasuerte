@@ -15,6 +15,7 @@ from server.bom.coin import CoinDraw
 from server.bom.dice import DiceDraw
 from server.bom.link_sets import LinkSetsDraw
 from server.bom.random_item import RandomItemDraw
+from server.bom.group import GroupsDraw
 from server.bom.random_letter import RandomLetterDraw
 from server.bom.random_number import RandomNumberDraw
 from server.bom.tournament import TournamentDraw
@@ -940,6 +941,26 @@ class DrawResourceToss_Test(ResourceTestCase):
             'allow_repeat': True,
             }
         draw = TournamentDraw(**data)
+        draw.owner = self.user.pk
+        self.mongo.save_draw(draw)
+        resp = self.toss(draw)
+        print(resp)
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.results))
+        self.mongo.remove_draw(draw.pk)
+
+    def test_toss_group_ok(self):
+        self.login()
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'enable_chat': True,
+            'users': ['user_anon@user.es'],
+            'items': ["1", "2"],
+            'allow_repeat': True,
+            }
+        draw = GroupsDraw(**data)
         draw.owner = self.user.pk
         self.mongo.save_draw(draw)
         resp = self.toss(draw)

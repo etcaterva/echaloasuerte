@@ -1,0 +1,7 @@
+<ul class="list-group">
+    {% for group in results %}
+        <li class="list-group-item col-xs-6 col-xs-offset-3">
+            {{ group|join:", "}}
+        </li>
+    {% endfor %}
+</ul>

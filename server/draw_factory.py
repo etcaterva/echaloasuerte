@@ -1,16 +1,11 @@
 """File defining a helper function to be able to create forms using its string
  type name
 """
-from server.forms.card_form import CardDrawForm
-from server.forms.coin_form import CoinDrawForm
-from server.forms.dice_form import DiceDrawForm
-from server.forms.link_sets_form import LinkSetsDrawForm
-from server.forms.random_item_form import RandomItemDrawForm
-from server.forms.random_number_form import RandomNumberDrawForm
-from server.forms.random_letter_form import RandomLetterDrawForm
-from server.forms.tournament_form import TournamentDrawForm
+from server.forms import CardDrawForm, CoinDrawForm, DiceDrawForm,\
+    LinkSetsDrawForm, RandomItemDrawForm, RandomNumberDrawForm, \
+    RandomLetterDrawForm, TournamentDrawForm, GroupsDrawForm
 from server.bom import CoinDraw, DiceDraw, CardDraw, RandomNumberDraw, \
-    RandomLetterDraw, TournamentDraw, LinkSetsDraw, RandomItemDraw
+    RandomLetterDraw, TournamentDraw, LinkSetsDraw, RandomItemDraw, GroupsDraw
 
 REGISTRY = {}
 
@@ -48,6 +43,7 @@ register_draw('letter', RandomLetterDraw, RandomLetterDrawForm, 'RandomLetterDra
 register_draw('tournament', TournamentDraw, TournamentDrawForm, 'TournamentDraw')
 register_draw('item', RandomItemDraw, RandomItemDrawForm, 'RandomItemDraw')
 register_draw('link_sets', LinkSetsDraw, LinkSetsDrawForm, 'LinkSetsDraw')
+register_draw('groups', GroupsDraw, GroupsDrawForm, 'GroupsDraw')
 
 
 def get_draw_name(draw_type=None):
