@@ -262,6 +262,16 @@
                     html += '</ul>';
                     return html;
                 }
+            },
+            'groups': {
+                'render': function(results){
+                    var html = '<ul class="list-group">';
+                    results.forEach(function(result){
+                        html += '<li class="list-group-item">' + result.join() + '</li>';
+                    });
+                    html += '</ul>';
+                    return html;
+                }
             }
         },
         /**
