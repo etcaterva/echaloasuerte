@@ -201,9 +201,9 @@
             'number': {
                 'render': function(results){
                     var html = '<ul class="list-group">';
-                        for (var res in results){
-                            html += '<li class="list-group-item">' + results[res] + '</li>';
-                        }
+                    results.forEach(function(result){
+                        html += '<li class="list-group-item">' + result + '</li>';
+                    });
                     html += '</ul>';
                     return html;
                 }
@@ -211,15 +211,15 @@
             'letter': {
                 'render': function(results){
                     var html = '<ul class="list-group">';
-                        for (var res in results){
-                            html += '<li class="list-group-item">' + results[res] + '</li>';
-                        }
+                    results.forEach(function(result){
+                        html += '<li class="list-group-item">' + result + '</li>';
+                    });
                     html += '</ul>';
                     return html;
                 }
             },
             'tournament': {
-                'render': function(_){
+                'render': function(){
                     return '<div id="bracket-result"></div>';
                 },
                 'animate': function (results) {
@@ -241,9 +241,9 @@
             'item': {
                 'render': function(results){
                     var html = '<ul class="list-group">';
-                        for (var res in results){
-                            html += '<li class="list-group-item">' + results[res] + '</li>';
-                        }
+                    results.forEach(function(result){
+                        html += '<li class="list-group-item">' + result + '</li>';
+                    });
                     html += '</ul>';
                     return html;
                 }
@@ -251,14 +251,9 @@
             'link_sets': {
                 'render': function(results){
                     var html = '<ul class="list-group">';
-                        for (var result in results){
-                            html += '<li class="list-group-item">';
-                            html += results[result][0];
-                            if (results[result].length > 1){
-                                html += ' - ' + results[result][1];
-                            }
-                            html += '</li>';
-                        }
+                    results.forEach(function(result){
+                        html += '<li class="list-group-item">' + result.join(' - ') + '</li>';
+                    });
                     html += '</ul>';
                     return html;
                 }
