@@ -2,9 +2,9 @@
 =============
 Echaloasuerte/ChooseRandom is a simple website that allows people to take decisions base on random factors.
 
-It gives you random numers, chose an random element from a list, flip a coin to the air, etc... and one of the nicest features is that several people can see the result at the same time, which make the site great to perform draws with people that are not phisically together.
+It gives you random numbers, chose an random element from a list, flip a coin to the air, etc... and one of the nicest features is that several people can see the result at the same time, which make the site great to perform draws with people that are not physically together.
 
-This version is a rewrite of the oldsite.
+This version is a rewrite of the old site.
 
 ## Deployment
 - [Dev](http://dev.echaloasuerte.com)
@@ -16,7 +16,7 @@ The dev version is on continuous deployment, all changes in master are automatic
  - www.echaloasuerte.com: Root domain for the spanish version
  - www.chooserandom.com: Root domain for the english version
  - prod.*: latest version deployed to the prod server
- - dev.*: latest version deployed to the dev servier
+ - dev.*: latest version deployed to the dev server
 
 All domains can be accessed through http and https and are served through cloudflare.
 
@@ -32,6 +32,7 @@ All domains can be accessed through http and https and are served through cloudf
 * Define a bom within server/bom and add it to the __init__
 * Define a form within server/forms and add it to the __init__
 * Add the draw snippet in web/templates/snippets/draws
+* Add the callback to render the results dynamically in draw_manager.js
 * Register the draw, form and snippet within the draw factory (server/draw_factory)
 * Get an icon for it into static/img/draw_icons
 * Add the draw to the index menu (web/template/index.html)
