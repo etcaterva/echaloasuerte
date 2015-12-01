@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-29 21:04+0000\n"
+"POT-Creation-Date: 2015-12-01 22:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mario Corchero\n"
 "Language: Spanish\n"
@@ -74,9 +74,9 @@ msgstr "Nueva Tirada"
 msgid "Number of groups"
 msgstr "Número de grupos"
 
-#: server/forms/group_form.py:11 server/forms/random_item_form.py:12
-msgid "Items"
-msgstr "Elementos"
+#: server/forms/group_form.py:11
+msgid "Members"
+msgstr "Miembros"
 
 #: server/forms/group_form.py:14 web/templates/index.html:61
 msgid "Random Groups"
@@ -111,6 +111,10 @@ msgstr "Número de resultados"
 #: server/forms/random_item_form.py:10 server/forms/random_number_form.py:14
 msgid "Allow repetitions"
 msgstr "Permitir repeticiones"
+
+#: server/forms/random_item_form.py:12
+msgid "Items"
+msgstr "Elementos"
 
 #: server/forms/random_item_form.py:15
 msgid "Random Item"
