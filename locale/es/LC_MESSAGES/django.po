@@ -524,7 +524,7 @@ msgstr "generado el"
 
 #: web/templates/draws/display_draw.html:64
 msgid "Warning! The draw was modified after the generation of this result"
-msgstr ""
+msgstr "¡Atención! La tirada fué modificada más tarde de la generacion de este resultado."
 
 #: web/templates/draws/display_draw.html:82
 msgid "Type your message here..."
@@ -535,7 +535,7 @@ msgid ""
 "To use the chat you should <a href='#'>login</a> or <a href='#'>register</a>"
 msgstr ""
 "Para user el chat debes <a href='#'>iniciar sesión</a> o <a "
-"href='#'>registrarte</a>"
+"href='#'>regístrarte</a>"
 
 #: web/templates/draws/display_draw.html:84
 msgid "If not, simply type an Alias that allows others to recognize you"
@@ -543,7 +543,7 @@ msgstr "También puedes escribir un alias para que el resto te reconozca."
 
 #: web/templates/draws/display_draw.html:85
 msgid "The alias must have between 2 and 20 characters"
-msgstr "Ela alias debe tener entre 2 y 20 caracteres"
+msgstr "El alias debe tener entre 2 y 20 caracteres"
 
 #: web/templates/draws/display_draw.html:86
 msgid "Access chat"
@@ -563,7 +563,7 @@ msgstr "Hubo un problema al desubscribirte de la tirada"
 
 #: web/templates/draws/display_draw.html:106
 msgid "To edit the details go to Settings"
-msgstr "Para editar la tirada ve al panel de configuracion"
+msgstr "Para editar la tirada ve al panel de configuración"
 
 #: web/templates/draws/display_draw.html:122 web/templates/profile.html:190
 #: web/templates/under_construction.html:7
@@ -592,7 +592,7 @@ msgstr "Añadir a favoritos"
 
 #: web/templates/draws/display_draw.html:153
 msgid "Create a public one"
-msgstr "Crear tirada publica"
+msgstr "Crear tirada compartida"
 
 #: web/templates/draws/display_draw.html:176
 #: web/templates/draws/display_draw.html:179
@@ -615,7 +615,7 @@ msgstr "Guardar cambios"
 
 #: web/templates/draws/display_draw.html:192
 msgid "Only the owner of the draw can toss. "
-msgstr "Solo el propietario puede tirar"
+msgstr "Sólo el propietario puede tirar"
 
 #: web/templates/draws/display_draw.html:213
 msgid " published on "
@@ -627,7 +627,7 @@ msgstr " generado el "
 
 #: web/templates/draws/display_draw.html:224
 msgid "This result will be available in "
-msgstr "Este resultado sera visible "
+msgstr "Este resultado será visible en "
 
 #: web/templates/draws/display_draw.html:251
 msgid "Public draw settings"
@@ -773,16 +773,16 @@ msgstr ":D"
 msgid ""
 "Use any of the methods below to invite people to join and see the results."
 msgstr ""
-"Utiliza cualquiera de los metodos a continuación para invitar a mas personas "
+"Utiliza cualquiera de los métodos a continuación para invitar a mas personas "
 "a la tirada."
 
 #: web/templates/draws/new_draw.html:133
 msgid "Send this link to anyone you wish to invite"
-msgstr "Envia este enlace a cualquier persona que desees invitar"
+msgstr "Envía este enlace a cualquier persona que desees invitar"
 
 #: web/templates/draws/new_draw.html:136
 msgid "Type their e-mails here to automatically send them an invitation"
-msgstr "Escribe emails para enviar una invitacion automáticament"
+msgstr "Escribe emails para enviar una invitacion automáticamente"
 
 #: web/templates/draws/new_draw.html:158
 msgid "Try it!"
@@ -879,11 +879,11 @@ msgstr "¿Quieres organizar una competición? ¡Esta es tu tirada!"
 
 #: web/templates/index.html:61
 msgid "Needs to group a bunch of people or items? Click here!"
-msgstr ""
+msgstr "¿Necesitas agrupar personas o elementos? ¡Usa este!"
 
 #: web/templates/index.html:64
 msgid "Random number"
-msgstr "Número Aleatorio"
+msgstr "Número aleatorio"
 
 #: web/templates/index.html:64 web/templates/index.html.py:66
 msgid "Doing a raffle? Luck will decide who is the winner"
@@ -923,7 +923,7 @@ msgstr ""
 
 #: web/templates/index.html:82
 msgid "Only you can toss"
-msgstr "Solo tu puedes tirar"
+msgstr "Sólo tu puedes tirar"
 
 #: web/templates/index.html:83
 msgid "Only you can edit the details of the draw"
@@ -931,7 +931,7 @@ msgstr "Nadie más puede editar los detalles de la tirada"
 
 #: web/templates/index.html:84
 msgid "Only you can invite or remove people"
-msgstr "Solo tu puedes invitar a gente"
+msgstr "Sólo tu puedes invitar a gente"
 
 #: web/templates/index.html:85
 msgid "The draw will be in your history for future access"
@@ -943,7 +943,7 @@ msgstr "¿Aún no tienes cuenta?"
 
 #: web/templates/index.html:91
 msgid "It takes only 30 seconds, and <strong>it's totally FREE!</strong>"
-msgstr "Solo tardarás 30 segundos, y <strong>es totalmente GRATIS!</strong>"
+msgstr "Sólo tardarás 30 segundos, y <strong>es totalmente GRATIS!</strong>"
 
 #: web/templates/index.html:92
 msgid "Create an account"
