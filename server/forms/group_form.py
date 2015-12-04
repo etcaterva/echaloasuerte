@@ -8,7 +8,7 @@ from server.forms import FormBase
 class GroupsDrawForm(FormBase):
     number_of_results = forms.IntegerField(label=_("Number of groups"),
                                            required=True, initial=2)
-    items = forms.CharField(label=_("Items"), widget=forms.TextInput(),
+    items = forms.CharField(label=_("Members"), widget=forms.TextInput(),
                             required=True, min_length=2)
 
     DEFAULT_TITLE = _("Random Groups")
