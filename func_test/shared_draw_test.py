@@ -158,7 +158,8 @@ class SharedDrawTest(BrowserStackTest):
         )
         driver.find_element_by_id('invite').click()
         url_invite = driver.find_element_by_css_selector('#settings-invite .url-share').get_attribute('value')
-        self.assertEqual(url_draw, url_invite)
+        self.assertEqual(url_draw.split('draw')[-1],
+                         url_invite.split('draw')[-1])
         driver.find_element_by_id('invite-emails-tokenfield').send_keys('iker_jimenez@test.com')
         driver.find_element_by_id('send-emails').click()
 
