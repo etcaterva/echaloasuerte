@@ -1,10 +1,18 @@
 from django.conf.urls import patterns, include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic import TemplateView, RedirectView
+from django.contrib.sitemaps.views import sitemap
+from web.sitemap import LandingSitemap, DrawSitemap, OthersSitemap
 
 from django.contrib import admin
 
 admin.autodiscover()
+
+sitemaps = {
+    'landing': LandingSitemap,
+    'draws': DrawSitemap,
+    'others': OthersSitemap
+}
 
 urlpatterns = patterns(
     '',
@@ -12,6 +20,8 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
     url(r'^manifest\.json$', TemplateView.as_view(template_name='manifest.json')),
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap')
 )
 
 urlpatterns += patterns(
