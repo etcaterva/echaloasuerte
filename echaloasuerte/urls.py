@@ -13,7 +13,7 @@ urlpatterns = patterns(
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
 )
 
-urlpatterns += i18n_patterns(
+urlpatterns += patterns(
     '',
     url(r'^', include('web.urls')),
 )
@@ -46,4 +46,6 @@ urlpatterns += patterns(
     url(r'^ws/favourites/remove/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/favourites/add/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/check_access_to_draw/$', RedirectView.as_view(url="/", permanent=True)),
+    url(r'^es/$', RedirectView.as_view(url="/", permanent=True)),
+    url(r'^en/$', RedirectView.as_view(url="/", permanent=True)),
 )

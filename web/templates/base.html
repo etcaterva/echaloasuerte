@@ -108,11 +108,6 @@
         });
 
         $(document).ready(function () {
-            $('#language-dropdown li a').click(function () {
-                var lang_code = $(this).attr('data-code');
-                $("#language-option"). attr("value",lang_code);
-                $("#change_language_but").click();
-            });
             // Collapsed navbar
             var sideslider = $('[data-toggle=collapse-side]');
             var sel = sideslider.attr('data-target');
@@ -447,44 +442,20 @@
                     {{ LANGUAGE_CODE|language_name }} ▾
                 </a>
                 <ul id="language-dropdown" class="dropdown-menu pull-right drop-up" role="menu">
-                    {% for language in languages %}
-                        <li><a href="#" {% if language.code == LANGUAGE_CODE %} class="selected"{% endif %} data-code="{{ language.code }}">
-                            {{ language.name_local }} ({{ language.code }})</a></li>
-                    {% endfor %}
+                    <li><a href="//chooserandom.com" > {% trans 'English' %}</a></li>
+                    <li><a href="//echaloasuerte.com" > {% trans 'Spanish' %}</a></li>
                 </ul>
             </div>
             <!-- Language dropdown menu for XS -->
             <div class="visible-xs col-xs-5 text-right">
-            <form action="{% url 'set_language' %}" method="post">
-                {% csrf_token %}
-                <input name="next" type="hidden" value="/"/> <!--check below to know why / -->
-                <select id="language-selector" name="language" onchange="this.form.submit()">
-                    {% for language in languages %}
-                    <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}
-                    selected="selected"{% endif %}>{{ language.name_local }}
-                        </option>
-                    {% endfor %}
+            <form action="#">
+                <select id="language-selector" name="language" onchange="location = this.options[this.selectedIndex].value;">
+                    <option value="//chooserandom.com" > {% trans 'English' %}</option>
+                    <option value="//echaloasuerte.com"> {% trans 'Spanish' %}</option>
                 </select>
             </form>
             </div>
 
-            <!-- hidden form to change language -->
-            <div class="hidden">
-                <form action="{% url 'set_language' %}" method="post">
-                    {% csrf_token %}
-                    <!--
-                       next needs to be / and not { % url 'index' % } as url index is within the
-                       lang specific urls which is processed and resolved before loading this page
-                       IN BRIEF: DONT BE A SMART ASS TRYING TO CHANGE IT
-                    -->
-                    <input name="next" type="hidden" value="/"/>
-                    <select name="language" id="language-form">
-                            <option id="language-option" value="">
-                            </option>
-                    </select>
-                    <input type="submit" value="Go" id="change_language_but"/>
-                </form>
-            </div>
         </div>
     </div><!-- #footer -->
 </div>
