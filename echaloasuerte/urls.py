@@ -11,6 +11,7 @@ urlpatterns = patterns(
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
+    url(r'^manifest\.json$', TemplateView.as_view(template_name='manifest.json')),
 )
 
 urlpatterns += patterns(
