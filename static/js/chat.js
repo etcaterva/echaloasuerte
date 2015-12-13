@@ -9,6 +9,7 @@
             user_alias: false,
             user_id: false,
             msg_type_your_message: 'Type your message here...',
+            msg_type_your_alias: 'Type your alias',
             msg_chat: "Chat",
             msg_login_first: "To use the chat you should <a href='#'>login</a> or <a href='#'>register</a>",
             msg_alias: "If not, simply type an Alias that allows others to recognize you",
@@ -169,7 +170,7 @@
                         '   <p>' + this.options.msg_alias + '</p>' +
                         '   <div class="form-group">' +
                         '       <label class="control-label hidden" for="inputError">' + this.options.msg_error_alias + '</label>' +
-                        '       <input type="text" class="alias-chat form-control" placeholder="Type your alias">' +
+                        '       <input type="text" class="alias-chat form-control" placeholder="'+this.options.msg_type_your_alias+'">' +
                         '   </div>' +
                         '   <a id="access-chat" class="btn btn-primary" href="javascript:void(0)" role="button">' + this.options.msg_access_chat + '</a>' +
                         '</div>';
