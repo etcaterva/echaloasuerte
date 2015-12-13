@@ -1,8 +1,8 @@
 from django.contrib import sitemaps
 import datetime
 from django.core.urlresolvers import reverse
-
 from server.draw_factory import REGISTRY
+
 
 class LandingSitemap(sitemaps.Sitemap):
     changefreq = "weekly"
@@ -15,6 +15,7 @@ class LandingSitemap(sitemaps.Sitemap):
     def location(self, obj):
         return reverse(obj)
 
+
 class DrawSitemap(sitemaps.Sitemap):
     changefreq = "weekly"
     priority = 0.8
@@ -25,6 +26,7 @@ class DrawSitemap(sitemaps.Sitemap):
 
     def location(self, obj):
         return reverse('create_draw', args=[obj])
+
 
 class OthersSitemap(sitemaps.Sitemap):
     changefreq = "weekly"

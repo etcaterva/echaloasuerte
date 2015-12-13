@@ -158,7 +158,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    # If 'django.contrib.sites' is added, check that the urls in the sitemap.xml point to the right
+    # domain (based on the language). Probably they wont so check https://codeshare.io/P1GAj
     'django.contrib.sitemaps',
     'crispy_forms',
     'tastypie',
