@@ -458,8 +458,8 @@
             <div class="visible-xs col-xs-5 text-right">
             <form action="#">
                 <select id="language-selector" name="language" onchange="location = this.options[this.selectedIndex].value;">
-                    <option value="//chooserandom.com" > {% trans 'English' %}</option>
-                    <option value="//echaloasuerte.com"> {% trans 'Spanish' %}</option>
+                    <option {% if 'en' == LANGUAGE_CODE %}selected="selected"{%endif%} value="//chooserandom.com" > {% trans 'English' %}</option>
+                    <option {% if 'es' == LANGUAGE_CODE %}SELECTED="selected"{%endif%} value="//echaloasuerte.com"> {% trans 'Spanish' %}</option>
                 </select>
             </form>
             </div>
