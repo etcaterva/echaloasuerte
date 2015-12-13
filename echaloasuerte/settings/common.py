@@ -138,6 +138,7 @@ MIDDLEWARE_CLASSES = (
     'server.middleware.exception_mdw.ExceptionMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'echaloasuerte.language_mw.LangInDomainMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
