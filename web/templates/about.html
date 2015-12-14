@@ -2,6 +2,23 @@
 {% load staticfiles %}
 {% load url from future %}
 {% load i18n %}
+{% block extra_head %}
+    <!-- Semantic schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://{% trans 'chooserandom.com' %}",
+      "name": "{% trans 'ChooseRandom' %}",
+      {% if LANGUAGE_CODE == 'es' %}
+          "logo": "https://www.echaloasuerte.com{% static "img/brand/brand_es.png" %}",
+      {% else %}
+          "logo": "https://www.chooserandom.com/{% static "img/brand/brand_en.png" %}",
+      {% endif %}
+      "description": "{%trans 'Not sure about a choice? Choose random! Heads or tails, lottery, etc...'%}"
+    }
+    </script>
+{% endblock extra_head %}
 {% block content %}
     {% blocktrans %}
         <h1 class="h2">About EchaloASuerte.com</h1>
