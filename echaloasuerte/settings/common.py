@@ -207,6 +207,8 @@ if not hasattr(globals(), 'SECRET_KEY'):
         except EnvironmentError:
             raise Exception('Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)
 
+PREPEND_WWW=True
+
 # Fixing 1_6.W001
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
