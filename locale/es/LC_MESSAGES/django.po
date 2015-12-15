@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-13 22:15+0000\n"
+"POT-Creation-Date: 2015-12-14 21:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mario Corchero\n"
 "Language: Spanish\n"
@@ -254,7 +254,19 @@ msgstr "Tiarada sin título"
 msgid "Choose Random"
 msgstr "Echalo A Suerte"
 
-#: web/templates/about.html:6
+#: web/templates/about.html:11
+msgid "chooserandom.com"
+msgstr "echaloasuerte.com"
+
+#: web/templates/about.html:12
+msgid "ChooseRandom"
+msgstr "EchaloASuerte"
+
+#: web/templates/about.html:18
+msgid "Not sure about a choice? Choose random! Heads or tails, lottery, etc..."
+msgstr "¿No tienes clara una decision? ¡Echalo A Suerte! Cara o cruz, loteria, sorteos, etc..."
+
+#: web/templates/about.html:23
 msgid ""
 "\n"
 "        <h1 class=\"h2\">About EchaloASuerte.com</h1>\n"
@@ -283,7 +295,7 @@ msgstr ""
 "crear y administrar tiradas en cualquier sitio!</p>\n"
 "    "
 
-#: web/templates/about.html:13
+#: web/templates/about.html:30
 msgid ""
 "\n"
 "        <h2>The team</h2>\n"
@@ -295,7 +307,7 @@ msgstr ""
 "        <p>Echaloasuerte está compuesto por tres personas.</p>\n"
 "    "
 
-#: web/templates/about.html:73
+#: web/templates/about.html:90
 msgid ""
 "\n"
 "    <h2>History</h2>\n"
@@ -339,7 +351,7 @@ msgstr ""
 "(como las tiradas públicas).</p>\n"
 "    "
 
-#: web/templates/about.html:81
+#: web/templates/about.html:98
 msgid ""
 "\n"
 "        <h2>Contributions</h2>\n"
