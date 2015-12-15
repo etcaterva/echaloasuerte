@@ -1,0 +1,30 @@
+https://jsfiddle.net/6rjh4bzy/2/
+
+
+ <body>
+   <canvas id="canvas" width="200" data-pending="y" height="200" data-url="https://mdn.mozillademos.org/files/5397/rhino.jpg" data-points="25,25;50,50"></canvas>
+ </body>
+
+function drawPoint(ctx, x, y) {
+    ctx.beginPath();
+    ctx.arc(x,y,5,0,2*Math.PI);
+    ctx.fillStyle = "red";
+    ctx.fill();
+}
+
+$(document).ready(function () {
+  var canvas = $('#canvas[data-pending=y]');
+  var ctx = canvas[0].getContext('2d');
+  var img = new Image(10, 10);
+  img.onload = function(){
+    ctx.drawImage(img,0,0,150,150);
+    var points = canvas.attr('data-points').split(';');
+    $.each(points, function(idx, point){
+        drawPoint(ctx,
+            Number(point.split(',')[0]),
+            Number(point.split(',')[1]));
+    });
+  };
+  img.src = canvas.attr('data-url');
+  canvas.attr('data-pending', 'n');
+});

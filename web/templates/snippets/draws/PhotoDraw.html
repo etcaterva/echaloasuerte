@@ -1,0 +1,6 @@
+<canvas id="canvas{{forloop.counter}}" width="30" height="30" data-url="{{bom.photo_url}}"
+    data-points="{%for result in results%}{{ result |join:"," }};{%endfor%}"
+></canvas>
+<script>
+draw_canvas($("#canvas{{forloop.counter}}"));
+</script>

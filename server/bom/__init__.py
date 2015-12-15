@@ -5,6 +5,7 @@ from server.bom.coin import *
 from server.bom.dice import *
 from server.bom.card import *
 from server.bom.group import *
+from server.bom.photo import *
 from server.bom.tournament import *
 from server.bom.link_sets import *
 from server.bom.spinner import SpinnerDraw
