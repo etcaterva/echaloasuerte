@@ -1,5 +1,6 @@
 import json
 import pytz
+import logging
 from tastypie import fields, resources, http, exceptions
 from tastypie.utils import trailing_slash
 from tastypie.bundle import Bundle
@@ -9,6 +10,7 @@ import dateutil.parser
 from web.common import invite_user, mail_toss
 from server import mongodb, draw_factory, bom
 
+LOG = logging.getLogger('echaloasuerte.rest')
 
 class DrawResource(resources.Resource):
     """Generic resource for draws.
@@ -265,6 +267,7 @@ class DrawResource(resources.Resource):
 
     def obj_create(self, bundle, **kwargs):
         data = bundle.data
+        LOG.info("Creating draw with data: {}".format(data))
         for attr in self.FORBIDDEN_ATTRIBUTES:
             if attr in data:
                 raise exceptions.ImmediateHttpResponse(
