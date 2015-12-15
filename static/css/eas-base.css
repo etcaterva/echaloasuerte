@@ -236,6 +236,17 @@ h2,
     margin-top: 15px;
 }
 
+/** social box **/
+#social-box {
+    background: rgba(153, 153, 153, 0.51);
+    padding: 15px 10px 15px 0;
+    width: 60px;
+    height: 90px;
+    position: absolute;
+    top: 200px;
+    left: 0px;
+}
+
 /* =================== HEADING =================== */
 @media screen and (max-width: 767px) {
     #brand {
