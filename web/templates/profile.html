@@ -144,7 +144,7 @@
     $('input[type=radio][name=option-avatar]').change(function() {
         var avatar_default = "monsterid";
         var email = "{{user.email}}";
-        var url = 'http://www.gravatar.com/avatar/' + hex_md5(email);
+        var url = '//www.gravatar.com/avatar/' + hex_md5(email);
         url += '?d=' + avatar_default;
         // If "random" is selected, the default random image is forced
         if (this.value == 'random') {

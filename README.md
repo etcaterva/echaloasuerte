@@ -7,8 +7,8 @@ It gives you random numbers, chose an random element from a list, flip a coin to
 This version is a rewrite of the old site.
 
 ## Deployment
-- [Dev](http://dev.echaloasuerte.com)
-- [Prod](http://prod.echaloasuerte.com)
+- [Dev](https://dev.echaloasuerte.com)
+- [Prod](https://prod.echaloasuerte.com)
 
 The dev version is on continuous deployment, all changes in master are automatically deployed to dev
 
