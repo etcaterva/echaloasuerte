@@ -8,16 +8,19 @@
                             "<p><b>Shared Draw: </b> You will be able to invite other users in, see the results in live and discuss in the chat.</p>" +
                             "<p class='text-center'><i>(Click to switch between modes)</i></p>";
                         {% endblocktrans %}
-    $('#switch-draw-mode').tooltip({
-        track: true,
-        show: {
-            delay: 500
-        },
-        items: "div[title]",
-        content: function() {
-            return tooltip_text;
-        }
-    });
+    // Set the tooltip for the Shared/Normal draw slider in desktop browser
+    if(!( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) )) {
+        $('#switch-draw-mode').tooltip({
+            track: true,
+            show: {
+                delay: 500
+            },
+            items: "div[title]",
+            content: function() {
+                return tooltip_text;
+            }
+        });
+    }
     // Change the color of the site-frame when the mode is "Shared Draw"
     $('#is-shared').change(function(){
         var is_shared = $(this).prop("checked");

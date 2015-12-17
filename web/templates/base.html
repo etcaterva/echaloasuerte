@@ -226,6 +226,11 @@
             });
 
             {% block extra_jq_ready %}{% endblock extra_jq_ready %}
+
+            // disable tooltips in mobile
+            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+                $(document).tooltip("disable");
+            }
         });
         window.onload = function (){
             {% block extra_js_onload %}{% endblock extra_js_onload %}
