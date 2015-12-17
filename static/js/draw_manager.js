@@ -499,7 +499,7 @@
                         $result_headers.each(function(){
                             var $this = $(this);
                             if (!$this.has('i.fa-exclamation-triangle').length){
-                                var html_audit = '<i class="fa fa-exclamation-triangle" title="' + that.options.msg_audit + '"></i>';
+                                var html_audit = '<i class="fa fa-exclamation-triangle eas-tooltip" title="' + that.options.msg_audit + '"></i>';
                                 $this.append(html_audit);
                             }
                         });

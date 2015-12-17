@@ -247,7 +247,7 @@
                         <span class="user-settings-content">{{ user.email }}</span>
                         <span class="user-settings-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
                     </p>
-                    <div class="panel" title="{% trans "Sorry, changing your email is not possible yet." %}">
+                    <div class="panel eas-tooltip" title="{% trans "Sorry, changing your email is not possible yet." %}">
                         <div class="user-settings-label col-xs-4 text-right">{% trans "New email" %}</div>
                         <div class="col-xs-8 text-left">
                             <input id="new-email" type="email" disabled/>
@@ -314,9 +314,9 @@
             {% for d in draws.owner reversed%}
                 <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" style="cursor: pointer;">
                     <td class="text-right">{% if not d.shared_type  %}
-                            <span class="fa fa-user" title="{% trans 'Private draw' %}"></span>
+                            <span class="fa fa-user eas-tooltip" title="{% trans 'Private draw' %}"></span>
                         {% else %}
-                            <span class="fa fa-globe" title="{% trans 'Public draw' %}"></span>
+                            <span class="fa fa-globe eas-tooltip" title="{% trans 'Public draw' %}"></span>
                         {% endif %}
                     </td>
                     <td>{{ d.title }}</td>

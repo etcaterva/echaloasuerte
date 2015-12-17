@@ -103,7 +103,7 @@
                     <img src="{% static "img/back_arrow.png" %}" alt="{% trans "Back" %}"/>
                 </a>
             {% endif %}
-            <div id="draw-title-container" class="col-xs-12 col-sm-8 {% if is_public %}col-sm-offset-2 {% endif %}text-center" title="{% trans 'Click on the draw title to change it' %}">
+            <div id="draw-title-container" class="col-xs-12 col-sm-8 {% if is_public %}col-sm-offset-2 {% endif %}text-center eas-tooltip" title="{% trans 'Click on the draw title to change it' %}">
                 <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{% if bom.title %}{{ bom.title }}{% else %}{{ default_title }}{% endif %}</textarea>
             </div>
         </div>
