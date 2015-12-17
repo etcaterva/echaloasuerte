@@ -64,6 +64,7 @@
             $('#invite-options').find('.feedback').addClass('hidden');
             var users = $('input#invite-emails').val();
             var url_invite = $('#send-emails').attr('data-link-invite');
+            url_invite = url_invite.replace("http:", "");
 
             // Serialize the emails
             var users_to_invite = {'add_user': users.split(',')};
