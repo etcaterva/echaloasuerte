@@ -56,11 +56,6 @@
     {% block extra_head %}{% endblock extra_head %}
     <script>
         {% block extra_js %}{% endblock extra_js %}
-        // Replaced default tooltip by the one from JQueryUI
-        $(document).tooltip({
-            track: true
-        });
-
         function place_lateral_columns(){
             var $site_frame = $('#site-frame');
             var site_frame_pos = $site_frame.offset();
@@ -116,6 +111,12 @@
         });
 
         $(document).ready(function () {
+            // tooltips!
+            $(document).tooltip({
+                track: true,
+                items: ".eas-tooltip[title]"
+            });
+
             // Collapsed navbar
             var sideslider = $('[data-toggle=collapse-side]');
             var sel = sideslider.attr('data-target');

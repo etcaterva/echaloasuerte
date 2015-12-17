@@ -143,7 +143,7 @@
                     {% else %}
                     data-active="n"
                     {% endif %}
-                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="add-favourites col-sm-push-8 text-center ">
+                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="eas-tooltip add-favourites col-sm-push-8 text-center ">
                         <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x hide"></span>
                     {% if bom.pk in user.favourites %}
                         <img src="{% static "img/star.png" %}" alt="{% trans "Remove from favourites" %}"/>
@@ -151,7 +151,7 @@
                         <img src="{% static "img/star-o.png" %}" alt="{% trans "Add to favourites" %}"/>
                     {% endif %}
                     </a>
-                    <a href="{% url 'create_public_draw' draw_type=draw.NAME_IN_URL %}" class="add-favourites" title="{% trans 'Create a public one' %}">
+                    <a href="{% url 'create_public_draw' draw_type=draw.NAME_IN_URL %}" class="add-favourites eas-tooltip" title="{% trans 'Create a public one' %}">
                         <img src="{% static 'img/share-icon.png' %}" />
                     </a>
                 </div>
@@ -178,7 +178,7 @@
                     {% else %}
                         {%if not bom.owner or bom.owner == user.pk %}
                             <button type="button" id="shared-draw-toss" class="btn btn-success submit-lockable" autocomplete="off">{% trans 'Toss' %}</button>
-                            <button type="button" id="schedule-toss-button" class="btn btn-default submit-lockable" title="{% trans 'Schedule Toss' %}" autocomplete="off">
+                            <button type="button" id="schedule-toss-button" class="btn btn-default submit-lockable eas-tooltip" title="{% trans 'Schedule Toss' %}" autocomplete="off">
                                 <i class="fa fa-clock-o" ></i>
                             </button>
                             {# Buttons to save changes when editing an already published public draw #}
@@ -217,7 +217,7 @@
                                 <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
                             {%endif%}
                             {% if bom.audit and bom.audit.0 and bom.audit.0.datetime > result.datetime %}
-                            <i class="fa fa-exclamation-triangle" title="Warning! The draw was modified after the generation of this result."></i>
+                            <i class="fa fa-exclamation-triangle eas-tooltip" title="Warning! The draw was modified after the generation of this result."></i>
                             {% endif %}
                         </p>
                         <div class="result">

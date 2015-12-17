@@ -110,7 +110,7 @@
                     <th>{%trans 'Draw Name' %}</th>
                     <th>{%trans 'Owner' %}</th>
                     <th>{%trans 'Created' %}</th>
-                    <th><span title="{% trans "Number of spectators" %}" class="fa fa-users"></span></th>
+                    <th><span title="{% trans "Number of spectators" %}" class="fa fa-users eas-tooltip"></span></th>
                     <th>is_participant</th>  {# is_participant: Used to filter by "Only draws you take part in" #}
                     <th>creation_ts</th>
                 </tr>
@@ -120,9 +120,9 @@
                 <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}">
                     <td>{% if user.is_authenticated %}
                             {% if user.pk == d.owner %}
-                                <span title="{% trans "You have created this draw" %}" class="fa fa-paw"></span>
+                                <span title="{% trans "You have created this draw" %}" class="fa fa-paw eas-tooltip"></span>
                             {% elif user.pk in d.users %}
-                                <span title="{% trans "You have been invited to this draw" %}" class="fa fa-envelope-o"></span>
+                                <span title="{% trans "You have been invited to this draw" %}" class="fa fa-envelope-o eas-tooltip"></span>
                             {%endif%}
                         {%endif%}
                     </td>
