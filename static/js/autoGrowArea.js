@@ -70,7 +70,9 @@
                 }
                 var max_width = $("#draw-title-container").width();
                 $(this).width(max_width);
+                check()
             });
+            $(this).blur();
 
         });
 
