@@ -26,7 +26,7 @@
                     return value;
                 }
             } else if (this.hasClass('eas-tokenfield')){
-                return value.split(',');
+                return $.grep(value.split(','),function(n){ return n != "" });
             } else{
                 return value;
             }
