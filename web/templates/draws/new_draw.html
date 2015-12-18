@@ -112,13 +112,12 @@
 
         {# Configure the fields of a draw (both private and public) #}
         <div class="step-configure col-sm-8 col-sm-offset-2">
-            {%for err in messages.errors %}
-                <!-- Errors -->
-                <div class="alert alert-danger text-center" role="alert">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{err}}
-                </div>
-            {% endfor  %}
+            <!-- Errors -->
+            <div id="general-errors" class="alert alert-danger hidden" role="alert">
+                <span class="fa fa-exclamation-triangle " aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                <span class="error-message"></span>
+            </div>
             <!-- Input Form -->
             {% crispy draw draw.helper %}
             <!-- End Input Form -->
