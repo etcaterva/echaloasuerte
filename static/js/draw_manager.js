@@ -327,7 +327,7 @@
                 //window.location.reload();
                 that.add_result(results);
             }).fail(function () {
-                alert("{% trans 'There was an issue when tossing the draw :(' %}");
+                alert("There was an issue when tossing the draw :(");
             }).always(function(){
                 $('.submit-lockable').prop('disabled',false);
             });
