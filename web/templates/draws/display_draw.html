@@ -168,6 +168,11 @@
         <!-- End Draw Heading -->
 
         <div class="col-sm-8 col-sm-offset-2">
+            <div id="general-errors" class="alert alert-danger hidden" role="alert">
+                <span class="fa fa-exclamation-triangle " aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                <span class="error-message"></span>
+            </div>
             <!-- Display Form -->
             {% crispy draw draw.helper %}
             <div class="col-xs-12 text-center">

@@ -311,7 +311,7 @@
          */
         toss: function(){
             var that = this;
-            // Lock submit buttons to avoid unintentional submitions
+            // Lock submit buttons to avoid unintentional submissions
             $('.submit-lockable').prop('disabled',true);
 
             $.ajax({
@@ -365,10 +365,6 @@
                     $('#go-to-draw').attr('href', url_draw_web);
 
                     that.show_spread_step();
-                },
-                callback_fail = function () {
-                    // TODO Error should be rendered manually here
-                    that.try_draw();
                 }
             );
         },
@@ -393,10 +389,6 @@
                     var url_draw_api = xhr.getResponseHeader('Location');
                     var url_draw_web = url_draw_api.replace(/api\/v[\d\.]+\//g,'');
                     window.location.href = url_draw_web;
-                },
-                callback_fail = function (e) {
-                    // TODO Error should be rendered manually here
-                    that.try_draw();
                 }
             );
         },
@@ -407,9 +399,11 @@
          * @param callback_done Function executed if the creation success
          * @param callback_fail Function executed if the creation fails
          */
-        create_draw: function(callback_done, callback_fail){
-            // Lock submit buttons to avoid unintentional submitions
+        create_draw: function(callback_done){
+            var that = this;
+            // Lock submit buttons to avoid unintentional submissions
             $('.submit-lockable').prop('disabled',true);
+            this.clean_errors();
 
             // Serialize and clean the form
             var fields_skipped = ["csrfmiddlewaretoken", "_id"];
@@ -424,7 +418,10 @@
                 data: data
             })
             .done(callback_done)
-            .fail(callback_fail)
+            .fail(function (response) {
+                var errors = $.parseJSON(response.responseText);
+                that.render_errors(errors);
+            })
             .always(function(){
                 $('.submit-lockable').prop('disabled',false);
             });
@@ -438,8 +435,9 @@
          */
         try_draw: function(){
             var that = this;
-            // Lock submit buttons to avoid unintentional submitions
+            // Lock submit buttons to avoid unintentional submissions
             $('.submit-lockable').prop('disabled',true);
+            this.clean_errors();
 
             // Serialize and clean the draw form
             var excluded_fields = ["_id", "csrfmiddlewaretoken"];
@@ -455,16 +453,16 @@
             }).done(function( data ) {
                 // Render result
                 that.add_result(data);
-            }).fail(function (e){
-                // TODO Improve feedback
-                console.log("ERROR: " + e.responseText);
+            }).fail(function (response){
+                var errors = $.parseJSON(response.responseText);
+                that.render_errors(errors);
             }).always(function(){
                 $('.submit-lockable').prop('disabled',false);
             });
         },
 
         schedule_toss: function() {
-            // Lock submit buttons to avoid unintentional submitions
+            // Lock submit buttons to avoid unintentional submissions
             $('.submit-lockable').prop('disabled',true);
 
             var schedule_timestamp = moment.utc(new Date($("#toss-schedule").val())).format();
@@ -505,9 +503,6 @@
                         });
                         that.edited_fields = {};
                         that.toss();
-                    },
-                    callback_fail = function (e) {
-                        alert("Not edited" + e);
                     }
                 );
             }else{
@@ -527,9 +522,6 @@
                     callback_done = function (){
                         // Don't use reload to avoid unintentional form submissions
                         window.location.href = String( window.location.href ).replace( "/#", "" );
-                    },
-                    callback_fail = function (e) {
-                        alert("Not edited" + e);
                     }
                 );
             }else{
@@ -544,9 +536,11 @@
          * @param callback_done Function executed if the update success
          * @param callback_fail Function executed if the update fails
          */
-        update: function(callback_done, callback_fail){
-                // Lock submit buttons to avoid unintentional submitions
+        update: function(callback_done){
+                var that = this;
+                // Lock submit buttons to avoid unintentional submissions
                 $('.submit-lockable').prop('disabled',true);
+                this.clean_errors();
 
                 var edited_data = JSON.stringify(this.edited_fields);
                 $.ajax({
@@ -556,7 +550,10 @@
                     data: edited_data
                 })
                 .done(callback_done)
-                .fail(callback_fail)
+                .fail(function (response) {
+                    var errors = $.parseJSON(response.responseText);
+                    that.render_errors(errors);
+                })
                 .always(function(){
                     $('.submit-lockable').prop('disabled',false);
                 });
@@ -571,6 +568,34 @@
             $('.step-configure').addClass('hidden');
             $('.step-spread').removeClass('hidden');
         },
+
+        render_errors: function (errors){
+            if (errors.attributes.length > 1){
+                var $general_error = $('#general-errors');
+                $general_error.removeClass('hidden');
+                $general_error.find('.error-message').text(errors['message']);
+            }else{
+                errors.attributes.forEach(function(attribute){
+                    var $div_input = $('#div_id_' + attribute);
+                    $div_input.toggleClass('has-error');
+                    var html_error = '<div class="help-block with-errors"><ul class="list-unstyled"><li>' +
+                                     errors.message +
+                                     '</li></ul></div>';
+                    $div_input.find('.controls').append(html_error);
+                });
+            }
+        },
+
+        clean_errors: function () {
+            // Clean general errors
+            var $general_error = $('#general-errors');
+            $general_error.toggleClass('hidden', true);
+            $general_error.find('.error-message').empty();
+
+            // Clean field errors
+            $('.has-error').toggleClass('has-error', false);
+            $('.help-block.with-errors').remove();
+        }
     };
 
     /*********************************
