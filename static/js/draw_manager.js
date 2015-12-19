@@ -580,14 +580,20 @@
                 var $general_error = $('#general-errors');
                 $general_error.removeClass('hidden');
                 $general_error.find('.error-message').text(errors['message']);
-            }else{
+            } else {
                 errors.attributes.forEach(function(attribute){
                     var $div_input = $('#div_id_' + attribute);
-                    $div_input.toggleClass('has-error');
-                    var html_error = '<div class="help-block with-errors"><ul class="list-unstyled"><li>' +
-                                     errors.message +
-                                     '</li></ul></div>';
-                    $div_input.find('.controls').append(html_error);
+                    if ($div_input.length) {
+                        $div_input.toggleClass('has-error');
+                        var html_error = '<div class="help-block with-errors"><ul class="list-unstyled"><li>' +
+                                        errors.message +
+                                        '</li></ul></div>';
+                        $div_input.find('.controls').append(html_error);
+                    } else {
+                        var $general_error = $('#general-errors');
+                        $general_error.removeClass('hidden');
+                        $general_error.find('.error-message').text(errors['message']);
+                    }
                 });
             }
         },
