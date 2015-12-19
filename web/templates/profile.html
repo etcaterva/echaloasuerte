@@ -185,11 +185,13 @@
 
 {% block content %}
     <div id="profile">
-        <div class="col-xs-12 text-center" >
-            <a href="{% url 'index' %}" class="back-arrow pull-left col-xs-2">
-                <img src="{% static "img/back_arrow.png" %}" alt="{% trans "back" %}"/>
-            </a>
-            <h1 class="col-xs-8">{% trans "Profile" %}</h1>
+        <div class="row">
+            <div class="col-xs-12 text-center" >
+                <a href="{% url 'index' %}" class="back-arrow pull-left col-xs-2">
+                    <img src="{% static "img/back_arrow.png" %}" alt="{% trans "back" %}"/>
+                </a>
+                <h1 class="col-xs-8">{% trans "Profile" %}</h1>
+            </div>
         </div>
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
