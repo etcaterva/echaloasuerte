@@ -27,7 +27,7 @@ class InvalidDraw(RuntimeError):
         if message:
             self.message = message
         elif len(self.attributes) == 1:
-            self.message = _("Invalid {0}").format(attributes[0])
+            self.message = _("Invalid {0}").format(attributes)
         else:
             self.message = _("Invalid attributes: {0}").format(attributes)
 
