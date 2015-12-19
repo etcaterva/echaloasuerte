@@ -606,18 +606,31 @@ a#back-old-version:hover {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
-
 .user-settings-content {
     color: rgb(87, 87, 95);
     left: 170px;
     position: absolute;
 }
 
+@media screen and (max-width: 430px) {
+    .user-settings-content {
+        width: 130px;
+        left: 130px;
+        white-space: nowrap;
+        overflow:hidden;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .user-settings-content {
+        display: none;
+    }
+}
+
 .user-settings-label {
     color: rgb(51, 51, 51);
     font-weight: bold;
-    padding-right: 0;
-    padding-top: 3px;
+    padding: 3px 0 0 0;
 }
 
 .user-settings-edit {
@@ -694,8 +707,8 @@ a#back-old-version:hover {
 #avatar-preview {
     width: 98px;
     height: 98px;
-
 }
+
 #div-avatar-preview {
     border: 1px #3c3c3c solid;
     width: 100px;
@@ -718,7 +731,7 @@ a#back-old-version:hover {
 
 .alert-login {
     margin-top: 10px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 /* Separator line with text

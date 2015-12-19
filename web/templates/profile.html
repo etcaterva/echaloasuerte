@@ -185,11 +185,13 @@
 
 {% block content %}
     <div id="profile">
-        <div class="col-xs-12 text-center" >
-            <a href="{% url 'index' %}" class="back-arrow pull-left col-xs-2">
-                <img src="{% static "img/back_arrow.png" %}" alt="{% trans "back" %}"/>
-            </a>
-            <h1 class="col-xs-8">{% trans "Profile" %}</h1>
+        <div class="row">
+            <div class="col-xs-12 text-center" >
+                <a href="{% url 'index' %}" class="back-arrow pull-left col-xs-2">
+                    <img src="{% static "img/back_arrow.png" %}" alt="{% trans "back" %}"/>
+                </a>
+                <h1 class="col-xs-8">{% trans "Profile" %}</h1>
+            </div>
         </div>
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
@@ -218,14 +220,10 @@
                         <span class="user-settings-edit pull-right"><span class="fa fa-pencil"></span> {% trans "Edit" %}</span>
                     </p>
                     <div class="panel">
-                        <ul>
-                            <li>
                                 <div id="group-new-password" class="row">
                                     <label class="user-settings-label col-xs-4 text-right">{% trans "New" %}</label>
                                     <div class="col-xs-8 text-left"><input id="new_password" type="password"/></div>
                                 </div>
-                            </li>
-                            <li>
                                 <div id="group-new-password-repeat" class="row">
                                     <label class="user-settings-label col-xs-4 text-right">{% trans "Repeat new" %}</label>
                                     <div class="col-xs-8 text-left">
@@ -233,8 +231,6 @@
                                         <div class="info-error hidden">{% trans "The passwords didn't match" %}</div>
                                     </div>
                                 </div>
-                            </li>
-                        </ul>
                         <div class="col-xs-12 text-center">
                             <button id="save-password" class="btn btn-primary btn-settings">{% trans "Change password" %}</button>
                             <button class="btn btn-default btn-settings cancel-edition">{% trans "Cancel" %}</button>
