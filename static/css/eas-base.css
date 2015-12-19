@@ -606,11 +606,25 @@ a#back-old-version:hover {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
-
 .user-settings-content {
     color: rgb(87, 87, 95);
     left: 170px;
     position: absolute;
+}
+
+@media screen and (max-width: 430px) {
+    .user-settings-content {
+        width: 130px;
+        left: 130px;
+        white-space: nowrap;
+        overflow:hidden;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .user-settings-content {
+        display: none;
+    }
 }
 
 .user-settings-label {
