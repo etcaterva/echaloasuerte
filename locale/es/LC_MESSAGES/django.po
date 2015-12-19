@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-19 18:05+0000\n"
+"POT-Creation-Date: 2015-12-19 18:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mario Corchero\n"
 "Language: Spanish\n"
@@ -80,7 +80,7 @@ msgstr "Número de grupos"
 msgid "Members"
 msgstr "Miembros"
 
-#: server/forms/group_form.py:14 web/templates/index.html:63
+#: server/forms/group_form.py:14
 msgid "Random Groups"
 msgstr "Grupos Aleatorios"
 
@@ -142,7 +142,7 @@ msgstr "Número Aleatorio"
 msgid "Participants"
 msgstr "Participantes"
 
-#: server/forms/tournament_form.py:12 web/templates/index.html:62
+#: server/forms/tournament_form.py:12
 msgid "Tournament"
 msgstr "Torneo"
 
@@ -906,8 +906,16 @@ msgid "Don't you have a die? Just roll this one"
 msgstr "¿No tienes un dado a mano? ¡Tira este!"
 
 #: web/templates/index.html:62
+msgid "Organise Tournament"
+msgstr "Organiza un Torneo"
+
+#: web/templates/index.html:62
 msgid "Organising a competition? This is your draw!"
 msgstr "¿Quieres organizar una competición? ¡Esta es tu tirada!"
+
+#: web/templates/index.html:63
+msgid "Generate Groups"
+msgstr "Crear groupos"
 
 #: web/templates/index.html:63
 msgid "Needs to group a bunch of people or items? Click here!"
