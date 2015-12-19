@@ -630,8 +630,7 @@ a#back-old-version:hover {
 .user-settings-label {
     color: rgb(51, 51, 51);
     font-weight: bold;
-    padding-right: 0;
-    padding-top: 3px;
+    padding: 3px 0 0 0;
 }
 
 .user-settings-edit {
@@ -708,8 +707,8 @@ a#back-old-version:hover {
 #avatar-preview {
     width: 98px;
     height: 98px;
-
 }
+
 #div-avatar-preview {
     border: 1px #3c3c3c solid;
     width: 100px;
@@ -732,7 +731,7 @@ a#back-old-version:hover {
 
 .alert-login {
     margin-top: 10px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 /* Separator line with text
