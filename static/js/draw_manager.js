@@ -26,7 +26,7 @@
                     return value;
                 }
             } else if (this.hasClass('eas-tokenfield')){
-                return value.split(',');
+                return $.grep(value.split(','),function(n){ return n != "" });
             } else{
                 return value;
             }
@@ -327,7 +327,7 @@
                 //window.location.reload();
                 that.add_result(results);
             }).fail(function () {
-                alert("{% trans 'There was an issue when tossing the draw :(' %}");
+                alert("There was an issue when tossing the draw :(");
             }).always(function(){
                 $('.submit-lockable').prop('disabled',false);
             });
