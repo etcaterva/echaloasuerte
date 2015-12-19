@@ -48,7 +48,11 @@
         url_try: "{% url 'api_draw_try' api_name="v1" %}",
         url_create: "{% url 'api_dispatch_list' api_name="v1" resource_name="draw" %}",
         msg_result: "{% trans "Result" %}",
-        msg_generated_on: "{% trans "generated on" %}"
+        msg_generated_on: "{% trans "generated on" %}",
+        translations: {
+            head: "{% trans 'head' %}",
+            tail: "{% trans 'tail' %}",
+        }
     });
 
     {% if is_public %}

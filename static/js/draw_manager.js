@@ -94,7 +94,11 @@
             url_schedule_toss: "",
             msg_result: "Result",
             msg_generated_on: "generated on",
-            msg_audit: "Warning! The draw was modified after the generation of this result"
+            msg_audit: "Warning! The draw was modified after the generation of this result",
+            translations: {
+                head: "head",
+                tail: "tail",
+            }
         };
 
 
@@ -169,105 +173,107 @@
                     minWidth: 150
                 });
             }
-        },
+            var that = this;
 
-        /**
-         * Store callback functions to render results dynamically
-         * render: Specify how to render the result
-         * animate: Optional function. Only needed in case it needs animation (i.e. roll dice)
-         */
-        draw_callbacks: {
-            'dice': {
-                'render': function(results){
-                    return D6.render_dice(results.length);
-                },
-                'animate': function(results){
-                    D6.roll(results);
-                }
-            },
-            'card': {
-                'render': function(results){
-                    return Card.draw(results);
-                }
-            },
-            'coin': {
-                'render': function(result){
-                    return result;
-                },
-                'animate': function(result){
-                    $('#img-coin').coin('flip', result);
-                }
-            },
-            'number': {
-                'render': function(results){
-                    var html = '<ul class="list-group">';
-                    results.forEach(function(result){
-                        html += '<li class="list-group-item">' + result + '</li>';
-                    });
-                    html += '</ul>';
-                    return html;
-                }
-            },
-            'letter': {
-                'render': function(results){
-                    var html = '<ul class="list-group">';
-                    results.forEach(function(result){
-                        html += '<li class="list-group-item">' + result + '</li>';
-                    });
-                    html += '</ul>';
-                    return html;
-                }
-            },
-            'tournament': {
-                'render': function(){
-                    return '<div id="bracket-result"></div>';
-                },
-                'animate': function (results) {
-                    function cleanBracketDisplay(){
-                        $('.team .label').css('color', 'black')
-                                        .css('text-align','left')
-                                        .css('position','relative');
-                        $('.jQBracket .tools span').css('display','none');
+            /**
+            * Store callback functions to render results dynamically
+            * render: Specify how to render the result
+            * animate: Optional function. Only needed in case it needs animation (i.e. roll dice)
+            */
+            this.draw_callbacks = {
+                'dice': {
+                    'render': function(results){
+                        return D6.render_dice(results.length);
+                    },
+                    'animate': function(results){
+                        D6.roll(results);
                     }
+                },
+                'card': {
+                    'render': function(results){
+                        return Card.draw(results);
+                    }
+                },
+                'coin': {
+                    'render': function(result){
+                        return result=="head"?that.options.translations.head
+                                             :that.options.translations.tail;
+                    },
+                    'animate': function(result){
+                        $('#img-coin').coin('flip', result);
+                    }
+                },
+                'number': {
+                    'render': function(results){
+                        var html = '<ul class="list-group">';
+                        results.forEach(function(result){
+                            html += '<li class="list-group-item">' + result + '</li>';
+                        });
+                        html += '</ul>';
+                        return html;
+                    }
+                },
+                'letter': {
+                    'render': function(results){
+                        var html = '<ul class="list-group">';
+                        results.forEach(function(result){
+                            html += '<li class="list-group-item">' + result + '</li>';
+                        });
+                        html += '</ul>';
+                        return html;
+                    }
+                },
+                'tournament': {
+                    'render': function(){
+                        return '<div id="bracket-result"></div>';
+                    },
+                    'animate': function (results) {
+                        function cleanBracketDisplay(){
+                            $('.team .label').css('color', 'black')
+                                            .css('text-align','left')
+                                            .css('position','relative');
+                            $('.jQBracket .tools span').css('display','none');
+                        }
 
-                    $('#bracket-result').bracket({
-                        init: {teams: results},
-                        save: cleanBracketDisplay,
-                    });
-                    $('.result').css('height','auto','important');
-                    cleanBracketDisplay();
+                        $('#bracket-result').bracket({
+                            init: {teams: results},
+                            save: cleanBracketDisplay,
+                        });
+                        $('.result').css('height','auto','important');
+                        cleanBracketDisplay();
+                    }
+                },
+                'item': {
+                    'render': function(results){
+                        var html = '<ul class="list-group">';
+                        results.forEach(function(result){
+                            html += '<li class="list-group-item">' + result + '</li>';
+                        });
+                        html += '</ul>';
+                        return html;
+                    }
+                },
+                'link_sets': {
+                    'render': function(results){
+                        var html = '<ul class="list-group">';
+                        results.forEach(function(result){
+                            html += '<li class="list-group-item">' + result.join(' - ') + '</li>';
+                        });
+                        html += '</ul>';
+                        return html;
+                    }
+                },
+                'groups': {
+                    'render': function(results){
+                        var html = '<ul class="list-group">';
+                        results.forEach(function(result){
+                            html += '<li class="list-group-item">' + result.join() + '</li>';
+                        });
+                        html += '</ul>';
+                        return html;
+                    }
                 }
-            },
-            'item': {
-                'render': function(results){
-                    var html = '<ul class="list-group">';
-                    results.forEach(function(result){
-                        html += '<li class="list-group-item">' + result + '</li>';
-                    });
-                    html += '</ul>';
-                    return html;
-                }
-            },
-            'link_sets': {
-                'render': function(results){
-                    var html = '<ul class="list-group">';
-                    results.forEach(function(result){
-                        html += '<li class="list-group-item">' + result.join(' - ') + '</li>';
-                    });
-                    html += '</ul>';
-                    return html;
-                }
-            },
-            'groups': {
-                'render': function(results){
-                    var html = '<ul class="list-group">';
-                    results.forEach(function(result){
-                        html += '<li class="list-group-item">' + result.join() + '</li>';
-                    });
-                    html += '</ul>';
-                    return html;
-                }
-            }
+            };
         },
         /**
          * Get the callback functions to render the current draw type
