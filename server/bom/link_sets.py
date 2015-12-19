@@ -34,15 +34,6 @@ class LinkSetsDraw(BaseDraw):
 
         self.number_of_results = 1  # meaningless
 
-        # validation
-        try:
-            if sets:
-                for i in sets:
-                    i[0]  # validate is a list and has at least 1 element
-        except Exception as e:
-            logger.error("Issue when creating a LinkSetsDraw."
-                         " Items: {0}, exception: {1}".format(sets, e))
-
     def validate(self):
         super(LinkSetsDraw, self).validate()
         if not self.sets or not self.sets[0]:
