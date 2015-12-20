@@ -114,8 +114,24 @@
         </div>
         <!-- End Draw Heading -->
 
+        {% if is_public %}
+            <div class="step-general col-sm-8 col-sm-offset-2">
+                <div class="form-group clearfix">
+                    <label for="draw-title" class="col-sm-3 control-label">{% trans "Title" %}</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="draw-title" placeholder="{% trans "i.e 'Lottery 2015'" %}">
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="draw-description" class="col-sm-3 control-label">{% trans "Description (optional)" %}</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" id="draw-description" rows="3" placeholder="{% trans "Type a description here..." %}"></textarea>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         {# Configure the fields of a draw (both private and public) #}
-        <div class="step-configure col-sm-8 col-sm-offset-2">
+        <div class="step-configure col-sm-8 col-sm-offset-2 {% if is_public %}hidden{% endif %}">
             <!-- Errors -->
             <div id="general-errors" class="alert alert-danger hidden" role="alert">
                 <span class="fa fa-exclamation-triangle " aria-hidden="true"></span>
@@ -164,8 +180,9 @@
 
                 {# Buttons "Next Step" and "Cancel" shown when creating a public draw #}
                 <div class="col-sm-8 col-sm-offset-2 btn-row">
-                    <a href="{% url 'index' %}" class="step-configure col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
-                    <button type="button" id="publish" class="step-configure col-xs-6 btn btn-primary submit-lockable">{% trans 'Publish draw' %}</button>
+                    <a href="{% url 'index' %}" class="step-general step-configure col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
+                    <a id="btn-configure" class="step-general col-xs-6 btn btn-primary">{% trans 'Configure draw' %}</a>
+                    <button type="button" id="publish" class="step-configure col-xs-6 hidden btn btn-primary submit-lockable">{% trans 'Publish draw' %}</button>
                     <a id="go-to-draw" class="step-spread btn btn-primary hidden" href="#">{% trans 'Go to the draw' %}</a>
                 </div>
             {% else %}
