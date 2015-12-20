@@ -814,7 +814,7 @@ msgstr "Envía este enlace a cualquier persona que desees invitar"
 
 #: web/templates/draws/new_draw.html:140
 msgid "Type their e-mails here to automatically send them an invitation"
-msgstr "Escribe emails para enviar una invitacion automáticamente"
+msgstr "Añade emails para enviarles una invitación automáticamente"
 
 #: web/templates/draws/new_draw.html:162
 msgid "Try it!"
@@ -1078,8 +1078,8 @@ msgid "Public draws"
 msgstr "Tiradas públicas"
 
 #: web/templates/join_draw.html:110 web/templates/profile.html:303
-msgid "Draw Name"
-msgstr "Nombre de la tirada"
+msgid "Draw Title"
+msgstr "Título de la tirada"
 
 #: web/templates/join_draw.html:111
 msgid "Owner"
@@ -1122,8 +1122,8 @@ msgid "Sign up"
 msgstr "Registro"
 
 #: web/templates/profile.html:53
-msgid "Show only your public draws"
-msgstr "Mostra solo tiradas públicas"
+msgid "Show only shared draws"
+msgstr "Mostrar sólo tiradas compartidas"
 
 #: web/templates/profile.html:130
 msgid "Password updated"
