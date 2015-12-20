@@ -14,8 +14,8 @@
    data-url-shared="{% url 'create_public_draw' draw_type=draw_type%}"
     >
     <div id="{{ draw_type }}-draw" class="draw-box">
-        <img src="{% static draw_icon %}" alt="{% trans title %}"/>
-        <div class="draw-box-title text-center">{% trans title %}</div>
-        <span class="fa fa-question visible-lg eas-tooltip" title="{% trans help %}"></span>
+        <img src="{% static draw_icon %}" alt="{{ title }}"/>
+        <div class="draw-box-title text-center">{{ title }}</div>
+        <span class="fa fa-question visible-lg eas-tooltip" title="{{ help }}"></span>
     </div>
 </a>
