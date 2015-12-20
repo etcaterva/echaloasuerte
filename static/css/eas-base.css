@@ -475,6 +475,10 @@ span.DataTables_sort_icon {
     display: none;
 }
 
+.dataTables_wrapper .dataTables_filter input {
+  margin-left: 0;
+}
+
 .dataTables_wrapper .ui-toolbar {
     padding: 8px;
     background: #EBF2E1 url('images/ui-bg_highlight-soft_75_d5e6cd_1x100.png') 50% 50% repeat-x;

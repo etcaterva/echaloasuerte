@@ -1122,8 +1122,8 @@ msgid "Sign up"
 msgstr "Registro"
 
 #: web/templates/profile.html:53
-msgid "Show only your public draws"
-msgstr "Mostra solo tiradas públicas"
+msgid "Show only shared draws"
+msgstr "Mostrar sólo tiradas compartidas"
 
 #: web/templates/profile.html:130
 msgid "Password updated"
