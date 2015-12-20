@@ -133,6 +133,10 @@ a.fa:focus {
     cursor: default
 }
 
+#toss-schedule {
+    max-width: 190px;
+}
+
 /***** INDIVIDUAL DRAWS *****/
 .checkbox {
     margin-top: 0;
