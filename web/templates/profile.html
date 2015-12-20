@@ -42,7 +42,7 @@
                 { "targets": 1, "sortable": true },
                 { "targets": 2, "width": 120 },
                 { "targets": 3, "width": 80 },
-                { "targets": 4, "visible": false}
+                { "targets": 4, "visible": false }
             ]
         }
     );
@@ -318,7 +318,7 @@
                     <td>{{ d.title }}</td>
                     <td>{{d.creation_time|date:" Y/m/d G:i "}}</td>
                     <td>{{d.results | length}}</td>
-                    <td>{% if d.shared_type  %}y{% endif %}</td>
+                    <td>{% if d.is_shared  %}y{% endif %}</td>
                 </tr>
             {% endfor %}
             </tbody>
