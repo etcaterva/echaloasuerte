@@ -1078,8 +1078,8 @@ msgid "Public draws"
 msgstr "Tiradas públicas"
 
 #: web/templates/join_draw.html:110 web/templates/profile.html:303
-msgid "Draw Name"
-msgstr "Nombre de la tirada"
+msgid "Draw Title"
+msgstr "Título de la tirada"
 
 #: web/templates/join_draw.html:111
 msgid "Owner"
