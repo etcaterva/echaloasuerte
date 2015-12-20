@@ -814,7 +814,7 @@ msgstr "Envía este enlace a cualquier persona que desees invitar"
 
 #: web/templates/draws/new_draw.html:140
 msgid "Type their e-mails here to automatically send them an invitation"
-msgstr "Escribe emails para enviar una invitacion automáticamente"
+msgstr "Añade emails para enviarles una invitación automáticamente"
 
 #: web/templates/draws/new_draw.html:162
 msgid "Try it!"
