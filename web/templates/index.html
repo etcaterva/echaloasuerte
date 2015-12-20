@@ -25,6 +25,11 @@
     $('#is-shared').change(function(){
         var is_shared = $(this).prop("checked");
         $('#site-frame').toggleClass("shared-draw", is_shared);
+        {% if not user.is_authenticated %}
+            if (is_shared){
+                $('#warning-login').modal('show');
+            }
+        {% endif %}
     });
 
     $('.draw-link').click(function (){
@@ -32,9 +37,6 @@
         var create_draw_url = is_shared ? $(this).attr("data-url-shared") : $(this).attr("data-url-normal");
         window.location.href = create_draw_url;
     });
-    {% if not user.is_authenticated and is_public %}
-        $('#warning-login').modal('show');
-    {% endif %}
 <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
 window.cookieconsent_options = {"message":"{% trans 'This website uses cookies to ensure you get the best experience on our website' %}","dismiss":"{% trans 'Got it!' %}","learnMore":"{% trans 'More info' %}","link":null,"theme":"light-bottom"};
 
@@ -79,7 +81,7 @@ window.cookieconsent_options = {"message":"{% trans 'This website uses cookies t
                     <h4 class="modal-title" id="myModalLabel">{% trans "May I say something?" %}</h4>
                 </div>
                 <div class="modal-body">
-                    {% trans "I've seen that you are not logged in.<br> Logging in has several benefits when creating a public draw:" %}
+                    {% trans "I've seen that you are not logged in.<br> Logging in has several benefits when creating a shared draw:" %}
                     <ul>
                         <li>{% trans "Only you can toss" %}</li>
                         <li>{% trans "Only you can edit the details of the draw" %}</li>
