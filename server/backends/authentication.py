@@ -1,5 +1,7 @@
-from server.mongodb.driver import *
 import logging
+
+from server.mongodb.driver import *
+
 
 logger = logging.getLogger("echaloasuerte")
 

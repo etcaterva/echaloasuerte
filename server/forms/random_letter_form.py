@@ -1,11 +1,13 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from server.forms.form_base import FormBase
 from crispy_forms.layout import Layout, Row
+
+from server.forms.form_base import FormBase
 
 
 class RandomLetterDrawForm(FormBase):
-    number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1, max_value=1000)
+    number_of_results = forms.IntegerField(label=_("Number of results"), required=True, initial=1,
+                                           max_value=1000)
 
     DEFAULT_TITLE = _("Random Letter")
 

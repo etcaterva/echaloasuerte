@@ -1,6 +1,8 @@
-from django.test import TestCase
-from server.bom.random_letter import *
 import string
+
+from django.test import TestCase
+
+from server.bom.random_letter import *
 
 
 class RandomLetterDrawTest(TestCase):

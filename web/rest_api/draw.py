@@ -1,6 +1,7 @@
 import json
-import pytz
 import logging
+
+import pytz
 from tastypie import fields, resources, http, exceptions
 from tastypie.utils import trailing_slash
 from tastypie.bundle import Bundle
@@ -10,7 +11,9 @@ import dateutil.parser
 from web.common import invite_user, mail_toss
 from server import mongodb, draw_factory, bom
 
+
 LOG = logging.getLogger('echaloasuerte.rest')
+
 
 class DrawResource(resources.Resource):
     """Generic resource for draws.
@@ -124,7 +127,8 @@ class DrawResource(resources.Resource):
                 if request.user.is_authenticated():
                     self._client.add_chat_message(draw_id, message, user_id=request.user.pk)
                 else:
-                    self._client.add_chat_message(draw_id, message, anonymous_alias=data['anonymous_alias'])
+                    self._client.add_chat_message(draw_id, message,
+                                                  anonymous_alias=data['anonymous_alias'])
             except KeyError:
                 raise exceptions.ImmediateHttpResponse(
                     response=http.HttpBadRequest("Missing message or alias"))
@@ -139,6 +143,7 @@ class DrawResource(resources.Resource):
                     return {}
                 else:
                     return {"user_alias": user.alias, "avatar": user.user_image}
+
             try:
                 messages = self._client.retrieve_chat_messages(draw_id)
             except mongodb.MongoDriver.NotFoundError:
@@ -341,7 +346,7 @@ class DrawResource(resources.Resource):
                 raise exceptions.ImmediateHttpResponse(
                     response=http.HttpUnauthorized("Only the owner can add users"))
             new_users = {str(user) for user in data['add_user']
-                                   if '@' in str(user)}
+                         if '@' in str(user)}
             new_users = [user for user in new_users if user not in draw.users]
             draw.users.extend(new_users)
             self._client.save_draw(draw)

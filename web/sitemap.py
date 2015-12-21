@@ -1,6 +1,8 @@
-from django.contrib import sitemaps
 import datetime
+
+from django.contrib import sitemaps
 from django.core.urlresolvers import reverse
+
 from server.draw_factory import REGISTRY
 
 

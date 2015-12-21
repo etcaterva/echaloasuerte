@@ -1,7 +1,7 @@
 """File defining a helper function to be able to create forms using its string
  type name
 """
-from server.forms import CardDrawForm, CoinDrawForm, DiceDrawForm,\
+from server.forms import CardDrawForm, CoinDrawForm, DiceDrawForm, \
     LinkSetsDrawForm, RandomItemDrawForm, RandomNumberDrawForm, \
     RandomLetterDrawForm, TournamentDrawForm, GroupsDrawForm
 from server.bom import CoinDraw, DiceDraw, CardDraw, RandomNumberDraw, \

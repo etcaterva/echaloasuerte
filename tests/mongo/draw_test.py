@@ -1,8 +1,7 @@
 from django.test import TestCase
-from server.bom.random_number import *
-from server.bom.user import *
-from server.mongodb.driver import *
 import django
+
+from server.mongodb.driver import *
 
 
 class SanityMongo(TestCase):
@@ -14,7 +13,8 @@ class SanityMongo(TestCase):
 
     def persist_draw_test(self):
         """MongoDB: Persist and retrieve RandomNumberDraw"""
-        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4, allow_repeat=False)
+        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4,
+                                       allow_repeat=False)
         res_id = self._driver.save_draw(tested_item)
         raw = self._driver._draws.find_one({"_id": res_id})
         for k, v in tested_item.__dict__.items():
@@ -26,7 +26,8 @@ class SanityMongo(TestCase):
 
     def raw_retrieve_test(self):
         """MongoDB: Persist and retrieve RandomNumberDraw"""
-        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4, allow_repeat=False)
+        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4,
+                                       allow_repeat=False)
         res_id = self._driver.save_draw(tested_item)
         draw = RandomNumberDraw(**self._driver._draws.find_one({"_id": res_id}))
 
@@ -39,7 +40,8 @@ class SanityMongo(TestCase):
 
     def retrieve_draw_test(self):
         """MongoDB: Retrieves an item using mongodb driver"""
-        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4, allow_repeat=False)
+        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4,
+                                       allow_repeat=False)
         res_id = self._driver.save_draw(tested_item)
         retrieved = self._driver.retrieve_draw(res_id)
 
@@ -51,7 +53,8 @@ class SanityMongo(TestCase):
 
     def retrieve_draw_test(self):
         """MongoDB: Retrieves an item using mongodb driver smart method"""
-        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4, allow_repeat=False)
+        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4,
+                                       allow_repeat=False)
         res_id = self._driver.save_draw(tested_item)
         retrieved = self._driver.retrieve_draw(res_id)
         self.assertEqual(type(retrieved), RandomNumberDraw)
@@ -59,7 +62,8 @@ class SanityMongo(TestCase):
     def retrieve_draw_withowner_test(self):
         """MongoDB: Saves and retrieve a draw wich has an owner"""
         u = User("test@email.com")
-        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4, allow_repeat=False)
+        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4,
+                                       allow_repeat=False)
         tested_item.owner = u._id
         res_id = self._driver.save_draw(tested_item)
         retrieved = self._driver.retrieve_draw(res_id)

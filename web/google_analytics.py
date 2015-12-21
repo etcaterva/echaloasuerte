@@ -1,6 +1,9 @@
 import logging
+
 from django.utils.http import urlencode
 from django.conf import settings
+
+
 try:
     from httplib import HTTPConnection
 except ImportError:
@@ -8,12 +11,15 @@ except ImportError:
 
 LOG = logging.getLogger("echaloasuerte")
 
+
 def ga_track_event(category, action, label=None, value=None):
     ga_prop_id = getattr(settings, 'GOOGLE_ANALYTICS_PROPERTY_ID', False)
     if not ga_prop_id:
         return
     if not action or not category:
-        LOG.warning("Error sending event to Google Analytics (Category={0}, Action={1})".format(category, action))
+        LOG.warning(
+            "Error sending event to Google Analytics (Category={0}, Action={1})".format(category,
+                                                                                        action))
         return
 
     params_dict = {

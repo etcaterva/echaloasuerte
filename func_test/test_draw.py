@@ -1,5 +1,6 @@
-from func_test.browserstack_base import BrowserStackTest
 from selenium.webdriver.common.keys import Keys
+
+from func_test.browserstack_base import BrowserStackTest
 
 
 class NormalDrawTest(BrowserStackTest):

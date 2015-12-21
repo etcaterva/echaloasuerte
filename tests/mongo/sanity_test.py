@@ -1,6 +1,7 @@
 from django.test import TestCase
-from server.mongodb.driver import *
 import django
+
+from server.mongodb.driver import *
 
 
 class SanityMongo(TestCase):

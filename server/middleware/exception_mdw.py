@@ -1,6 +1,8 @@
 import logging
+
 from django.core.exceptions import PermissionDenied
 from django.http.response import HttpResponseForbidden
+
 
 logger = logging.getLogger("echaloasuerte")
 from server.mongodb.driver import MongoDriver

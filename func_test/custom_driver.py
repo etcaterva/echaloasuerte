@@ -4,7 +4,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 class CustomWebDriver(webdriver.PhantomJS):
-
     def __init__(self, **kwargs):
         super(CustomWebDriver, self).__init__(**kwargs)
 

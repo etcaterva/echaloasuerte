@@ -1,6 +1,9 @@
 import random
-from server.bom.draw_base import BaseDraw, InvalidDraw
+
 from django.utils.translation import ugettext_lazy as _
+
+from server.bom.draw_base import BaseDraw, InvalidDraw
+
 
 MAX_TECHNICAL_NUMBER = 9223372036854775807
 

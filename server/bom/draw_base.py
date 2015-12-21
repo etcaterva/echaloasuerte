@@ -1,13 +1,13 @@
-from django.utils.translation import ugettext_lazy as _
-import random
 import json
 import datetime
 from abc import ABCMeta, abstractmethod
 import logging
 
+from django.utils.translation import ugettext_lazy as _
 from six import string_types
 import pytz
 import six
+
 
 logger = logging.getLogger("echaloasuerte")
 
@@ -81,6 +81,7 @@ class BaseDraw(object):
         """ID of the owner of the draw"""
 
         from server import draw_factory
+
         self.draw_type = draw_factory.get_draw_name(type(self).__name__)
         """Type of the draw"""
 
