@@ -566,6 +566,19 @@
         },
 
         /**
+         * Show the general step in the creation process of a shared draw
+         *
+         * ONLY USED IN SHARED DRAWS
+         */
+        show_general_step: function () {
+            PublicDrawCreator.update_breadcrumb('general');
+            $('.step-configure').toggleClass('hidden', true);
+            $('.step-invite').toggleClass('hidden', true);
+            $('.step-general').toggleClass('hidden', false);
+        },
+
+
+        /**
          * Show the spread step in the creation process of a shared draw
          *
          * ONLY USED IN SHARED DRAWS

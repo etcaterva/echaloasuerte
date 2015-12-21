@@ -87,6 +87,8 @@
                 console.log("users NOT invited");
             });
         });
+
+        PublicDrawCreator.setup();
     {% else %}
         $("#create-and-toss").click( function() {
             $draw_maneger.drawManager('create_and_toss');
