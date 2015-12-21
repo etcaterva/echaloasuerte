@@ -38,9 +38,9 @@ h2,
 }
 
 @media (max-width: 500px) {
-    #wrapper {
-        padding-left: 5px;
-        padding-right: 5px;
+    #site-frame {
+        margin-left: -10px;
+        margin-right: -10px;
     }
 }
 
