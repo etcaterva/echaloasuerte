@@ -774,7 +774,7 @@ a#back-old-version:hover {
 
 /* Workaround to disable links */
 a[disabled] {
-    pointer-events: none;
+    pointer-events: none !important;
     color: gray;
 }
 

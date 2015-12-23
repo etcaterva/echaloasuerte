@@ -33,40 +33,42 @@ SharedDrawCreator.show_invite_step = function () {
 
 // Updates the breadcrumb to show the steps that have been already done
 SharedDrawCreator.update_breadcrumb = function (target_step){
-    var $label_general = $('.breadcrumb-shared-draw #general');
-    var $label_configure = $('.breadcrumb-shared-draw #configure');
-    var $label_invite = $('.breadcrumb-shared-draw #invite');
+    var $breadcrumb = $('.breadcrumb-shared-draw');
+    var $label_general = $breadcrumb.find('#general');
+    var $label_configure = $breadcrumb.find('#configure');
+    var $label_invite = $breadcrumb.find('#invite');
 
     if (target_step == "invite"){
-
         $label_configure.toggleClass('focus', false);
-
         $label_invite.toggleClass('focus', true);
         $label_invite.toggleClass('done', true);
-        $('.breadcrumb-shared-draw').attr('data-current-step', 'invite');
+        $breadcrumb.attr('data-current-step', 'invite');
+
+        // Disable breadcrumb links to previous steps
+        $breadcrumb.find('#general').attr('disabled', 'disabled');
+        $breadcrumb.find('#configure').attr('disabled', 'disabled');
     }
     else{
         if (target_step == "configure"){
             $label_general.toggleClass('focus', false);
             $label_configure.toggleClass('done', true);
             $label_configure.toggleClass('focus', true);
-            $('.breadcrumb-shared-draw').attr('data-current-step', 'configure');
+            $breadcrumb.attr('data-current-step', 'configure');
         }
         else{
             if (target_step == "general"){
                 $label_general.toggleClass('focus', true);
                 $label_configure.toggleClass('focus', false);
                 $label_invite.toggleClass('focus', false);
-                $('.breadcrumb-shared-draw').attr('data-current-step', 'general');
+                $breadcrumb.attr('data-current-step', 'general');
             }
         }
     }
 };
 
-// Initialize the interface for a shared draw
+// Initialize the links in the breadcrumb
 SharedDrawCreator.setup = function(){
-    $('#btn-configure').click(function () {
-        // Validate title and description
-        SharedDrawCreator.show_configure_step();
-    });
+    var $breadcrumb = $('.breadcrumb-shared-draw');
+    $breadcrumb.find('#general').click(SharedDrawCreator.show_general_step);
+    $breadcrumb.find('#configure').click(SharedDrawCreator.show_configure_step);
 };
