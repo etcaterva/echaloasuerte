@@ -332,6 +332,14 @@ a.fa:focus {
     }
 }
 
+/* In the shared draw, (in general and configure steps) add some 
+   padding between the breadcrumb and the form fields
+*/
+#draw-form > .step-general,
+#draw-form > .step-configure {
+    margin-top: 10px;
+}
+
 /* ===================  SHARED DRAW BREADCRUMB  =================== */
 .breadcrumb-shared-draw {
     display: -webkit-flex;
