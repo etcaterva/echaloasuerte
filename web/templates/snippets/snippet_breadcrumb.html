@@ -1,0 +1,20 @@
+{% comment %}
+================= SNIPPET BREADCRUMB ==================
+It renders the breadcrumb to assist the creation of a shared draw.
+
+It doesn't receive any parameter but it use variables that need to be declared in the parent template, namely:
+    - is_public: This variable only exists when the user is dealing with a shared draw
+{% endcomment %}
+
+{% load i18n %}
+
+<!-- breadcrumb for creating Shared Draw -->
+<div class="row breadcrumb-shared-draw" data-current-step="general">
+    <div class="help-text">
+        <span class="col-xs-12 col-sm-10 col-sm-offset-1 title">{%trans 'Creating a shared draw' %}</span>
+        <a id="general" class="col-xs-4 subtitle done focus"><span>1.</span> {%trans 'General information' %}</a>
+        <a id="configure" class="col-xs-4 subtitle "><span>2.</span> {%trans 'Configure the draw' %}</a>
+        <a id="invite" class="col-xs-4 subtitle "><span>3.</span> {%trans 'Invite' %}</a>
+    </div>
+</div>
+<!-- End breadcrumb Shared Draw -->

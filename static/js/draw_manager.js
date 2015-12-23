@@ -369,7 +369,7 @@
 
                     // Set the link of the "Go to the draw" button
                     $('#go-to-draw').attr('href', url_draw_web);
-                    PublicDrawCreator.show_invite_step();
+                    SharedDrawCreator.show_invite_step();
                 }
             );
         },

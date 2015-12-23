@@ -47,7 +47,7 @@
         $(this).select();
     });
 
-    PublicDrawCreator.setup();
+    SharedDrawCreator.setup();
 
     var $draw_maneger = $('#draw-form').drawManager({
         draw_type: "{{ draw_type }}",
@@ -67,10 +67,10 @@
             $draw_maneger.drawManager('try_draw');
         });
         $("#go-to-configure").click( function() {
-            PublicDrawCreator.show_configure_step();
+            SharedDrawCreator.show_configure_step();
         });
         $("#go-to-general").click( function() {
-            PublicDrawCreator.show_general_step();
+            SharedDrawCreator.show_general_step();
         });
         $("#publish").click( function() {
             $draw_maneger.drawManager('publish');
@@ -109,14 +109,11 @@
 {% endblock extra_jq_ready %}
 {% block content %}
     {% if is_public %}
-        <div class="row shared-draw-status">
-            <span class="col-xs-12 col-sm-10 col-sm-offset-1 step-configure">{%trans 'You are creating a shared draw' %}</span>
-            <span class="col-xs-12 col-sm-10 col-sm-offset-1 hidden step-invite">{%trans 'Your draw has been created!' %}</span>
-        </div>
+        {% include 'snippets/snippet_breadcrumb.html' %}
     {% endif %}
     <form id="draw-form" class="clearfix" method="post">
         <!-- Draw Heading -->
-        <div class="clearfix draw-heading step-configure">
+        <div class="clearfix draw-heading step-configure hidden">
             {% if not is_public %}
                 <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
                     <img src="{% static "img/back_arrow.png" %}" alt="{% trans "Back" %}"/>
