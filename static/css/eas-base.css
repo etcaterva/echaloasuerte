@@ -986,11 +986,19 @@ a[disabled] {
 	box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
     margin-top: 30px;
 }
+.panel-login {
+	color: #4C4C4C;
+}
 .panel-login>.panel-heading {
-	color: #00415d;
 	background-color: #fff;
 	border-color: #fff;
 	text-align:center;
+}
+#registration-success>.panel-body {
+    padding-top: 0;
+}
+#registration-success>.panel-body>img {
+    margin-bottom: 10px;
 }
 .panel-login>.panel-heading a{
 	text-decoration: none;
