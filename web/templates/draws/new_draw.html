@@ -51,6 +51,7 @@
 
     var $draw_maneger = $('#draw-form').drawManager({
         draw_type: "{{ draw_type }}",
+        default_title: "{{ default_title }}",
         is_shared: {{ is_public|yesno:"true,false" }},
         url_try: "{% url 'api_draw_try' api_name="v1" %}",
         url_create: "{% url 'api_dispatch_list' api_name="v1" resource_name="draw" %}",

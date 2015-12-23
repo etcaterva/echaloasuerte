@@ -84,6 +84,7 @@
     var pluginName = 'DrawManager',
         defaults = {
             draw_type: null,
+            default_title: 'Draw',
             is_shared: false,
             callback_render: null,
             callback_animate: null,
@@ -148,7 +149,7 @@
             autosize = function(){
                 var max_width = $("#draw-title-container").width()*2/3;
                 $("textarea.autogrow").width(max_width);
-                $("textarea.autogrow").autoGrowInput({title:'{{ default_title }}',maxWidth: max_width,minWidth:30,comfortZone:30});
+                $("textarea.autogrow").autoGrowInput({title:that.options.default_title,maxWidth: max_width,minWidth:30,comfortZone:30});
             };
             // Autosize the title box the first time
             autosize();
