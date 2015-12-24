@@ -114,7 +114,7 @@
     {% endif %}
     <form id="draw-form" class="clearfix" method="post">
         <!-- Draw Heading -->
-        <div class="clearfix draw-heading step-configure hidden">
+        <div class="clearfix draw-heading step-configure {% if is_public %}hidden{% endif %}">
             {% if not is_public %}
                 <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
                     <img src="{% static "img/back_arrow.png" %}" alt="{% trans "Back" %}"/>
@@ -186,7 +186,7 @@
         <div class="col-xs-12 text-center">
             {% if is_public %}
                 {# Button to try a draw when creating a public one #}
-                <div class="row btn-row step-configure">
+                <div class="row btn-row step-configure hidden">
                     <button type="button" id="try" class="btn btn-success submit-lockable">{% trans 'Try it!' %}</button>
                 </div>
 
@@ -210,7 +210,7 @@
     {% if is_public %}
         {# Show results, in case the user tries the configuration (through the button "Try") #}
         <!-- Results -->
-        <div id="results" class="step-configure col-sm-8 col-sm-offset-2">
+        <div id="results" class="step-configure hidden col-sm-8 col-sm-offset-2">
             <div class="row text-center accordion">
                 {% for result in bom.results reversed %}
                 {% with result.items as results%}
