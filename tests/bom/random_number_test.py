@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from server.bom.random_number import *
 
 
@@ -39,7 +40,8 @@ class RandomNumberDrawTest(TestCase):
 
     def is_feasible_range_and_results_ok_test(self):
         """RandomNumberDraw: Acceptable range and number of results is feasible"""
-        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=3, allow_repeat=False)
+        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=3,
+                                       allow_repeat=False)
         self.assertTrue(tested_item.is_feasible())
 
     def is_feasible_range_ko_test(self):
@@ -56,22 +58,26 @@ class RandomNumberDrawTest(TestCase):
 
     def is_feasible_not_enough_results_ko_test(self):
         """RandomNumberDraw: Number of numbers requested less than one is not feasible"""
-        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=0, allow_repeat=False)
+        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=0,
+                                       allow_repeat=False)
         self.assertFalse(tested_item.is_feasible())
 
     def is_feasible_too_many_results_ko_test(self):
         """RandomNumberDraw: Too many results requested is not feasible"""
-        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4, allow_repeat=False)
+        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=4,
+                                       allow_repeat=False)
         self.assertFalse(tested_item.is_feasible())
 
     def is_feasible_results_over_the_limit_ko_test(self):
         """RandomNumberDraw: Too many results requested is not feasible"""
-        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=60, allow_repeat=True)
+        tested_item = RandomNumberDraw(range_min=2, range_max=5, number_of_results=60,
+                                       allow_repeat=True)
         self.assertFalse(tested_item.is_feasible())
 
     def is_feasible_many_results_with_repeat_ok_test(self):
         """RandomNumberDraw: Many results requested with repeat is feasible"""
-        tested_item = RandomNumberDraw(range_max=5, range_min=2, number_of_results=4, allow_repeat=True)
+        tested_item = RandomNumberDraw(range_max=5, range_min=2, number_of_results=4,
+                                       allow_repeat=True)
         self.assertTrue(tested_item.is_feasible())
 
     def is_feasible_range_with_repeat_ko_test(self):
@@ -99,7 +105,8 @@ class RandomNumberDrawTest(TestCase):
 
     def toss_two_items_test(self):
         """RandomNumberDraw: Toss generate two items"""
-        tested_item2 = RandomNumberDraw(range_max=0, range_min=0, number_of_results=2, allow_repeat=True)
+        tested_item2 = RandomNumberDraw(range_max=0, range_min=0, number_of_results=2,
+                                        allow_repeat=True)
         self.assertEqual(0, len(tested_item2.results))
         self.assertEqual(0, tested_item2.toss()["items"][0])
         self.assertEqual(1, len(tested_item2.results))
@@ -107,7 +114,8 @@ class RandomNumberDrawTest(TestCase):
 
     def toss_on_existing_test(self):
         """RandomNumberDraw: Toss when list created with results already"""
-        tested_item2 = RandomNumberDraw(range_max=0, range_min=0, number_of_results=2, allow_repeat=True,
+        tested_item2 = RandomNumberDraw(range_max=0, range_min=0, number_of_results=2,
+                                        allow_repeat=True,
                                         results=[{"items": [0]}])
         self.assertEqual(1, len(tested_item2.results))
         self.assertEqual(0, tested_item2.toss()["items"][0])

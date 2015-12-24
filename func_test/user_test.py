@@ -75,12 +75,13 @@ class UserTest(BrowserStackTest):
 
         # Check if the alias has changed
         alias_updated = driver.check_condition(
-            lambda driver: driver.find_element_by_id('account-dropdown').text.strip() == "Cool alias"
+            lambda driver: driver.find_element_by_id(
+                'account-dropdown').text.strip() == "Cool alias"
         )
         self.assertTrue(alias_updated)
-        alias_in_table = driver.find_element_by_css_selector('#profile-edit-alias .user-settings-content').text.strip()
+        alias_in_table = driver.find_element_by_css_selector(
+            '#profile-edit-alias .user-settings-content').text.strip()
         self.assertEqual("Cool alias", alias_in_table)
-
 
 
     '''def test_change_password(self):

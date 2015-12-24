@@ -1,7 +1,8 @@
 from django.test import TestCase
+from django.contrib.auth.models import AnonymousUser
+
 from server.bom.random_number import *
 from server.bom.user import User
-from django.contrib.auth.models import AnonymousUser
 
 
 class WritePermissionWithLoggedUserTest(TestCase):

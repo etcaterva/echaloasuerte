@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from server.bom.random_item import *
 
 
@@ -86,7 +87,8 @@ class RandomItemDrawTest(TestCase):
 
     def toss_on_existing_test(self):
         """RandomItemDraw: Toss when list created with results already"""
-        tested_item2 = RandomItemDraw(items=[0], number_of_results=2, allow_repeat=True, results=[{"items": [0]}])
+        tested_item2 = RandomItemDraw(items=[0], number_of_results=2, allow_repeat=True,
+                                      results=[{"items": [0]}])
         self.assertEqual(1, len(tested_item2.results))
         self.assertEqual(0, tested_item2.toss()["items"][0])
         self.assertEqual(2, len(tested_item2.results))

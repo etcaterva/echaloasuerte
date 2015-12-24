@@ -17,7 +17,7 @@ install:
   - "python manage.py syncdb --noinput"
 # command to run tests
 script:
-  - nosetests tests/test_init.py tests -v
+  - nosetests tests -v
 #  - |
 #    if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then
 #        nosetests func_test -v

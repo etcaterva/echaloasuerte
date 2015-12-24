@@ -61,7 +61,7 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
             'filename': BASE_LOG_PATH + 'echaloasuerte_log.txt',
-            'maxBytes': 1024*1024*30, # 30 MB
+            'maxBytes': 1024 * 1024 * 30,  # 30 MB
             'backupCount': 5,
         },
         'error_log_file': {
@@ -69,7 +69,7 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
             'filename': BASE_LOG_PATH + 'echaloasuerte_err.txt',
-            'maxBytes': 1024*1024*30, # 30 MB
+            'maxBytes': 1024 * 1024 * 30,  # 30 MB
             'backupCount': 5,
         },
         'debug_log_file': {
@@ -77,7 +77,7 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
             'filename': BASE_LOG_PATH + 'echaloasuerte_debug.txt',
-            'maxBytes': 1024*1024*30, # 30 MB
+            'maxBytes': 1024 * 1024 * 30,  # 30 MB
             'backupCount': 5,
         },
     },
@@ -96,7 +96,7 @@ LOGGING = {
 }
 ########## END LOGGING CONFIGURATION
 
-#Mongo db configuration list
+# Mongo db configuration list
 MONGO_END_POINTS = [
     {'host': 'localhost', 'port': 27017, 'database': 'prod'},
 ]

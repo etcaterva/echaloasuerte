@@ -1,12 +1,14 @@
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 import datetime
+
 from django import template
 from django.template import defaultfilters
 from django.utils.translation import pgettext, ungettext, ugettext as _
 from django.utils.html import avoid_wrapping
 from django.utils.timezone import is_aware, utc
 from django.utils.translation import ugettext, ungettext_lazy
+
 
 register = template.Library()
 

@@ -2,7 +2,9 @@
 
 import sys
 from os.path import abspath, basename, dirname, join, normpath
+
 from django.utils.translation import ugettext_lazy as _
+
 
 ########## PATH CONFIGURATION
 # Absolute filesystem path to this Django project directory.
@@ -200,12 +202,15 @@ if not hasattr(globals(), 'SECRET_KEY'):
     except EnvironmentError:
         try:
             from random import choice
-            SECRET_KEY = ''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
+
+            SECRET_KEY = ''.join(
+                [choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
             with open(SECRET_FILE, 'w') as secret:
                 secret.write(SECRET_KEY)
                 secret.close()
         except EnvironmentError:
-            raise Exception('Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)
+            raise Exception(
+                'Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)
 
 # Fixing 1_6.W001
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
@@ -230,7 +235,7 @@ ALLOWED_HOSTS = [
 
 LOGIN_URL = "/accounts/login/"
 
-#EMAIL settings
+# EMAIL settings
 DEFAULT_FROM_EMAIL = "EchaloASuerte/Choose Random"
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_HOST_USER = "postmaster@chooserandom.com"

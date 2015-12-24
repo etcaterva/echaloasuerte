@@ -1,9 +1,9 @@
 from os import environ
+
 import django
 from django.test import LiveServerTestCase
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
+
 from server.mongodb.driver import MongoDriver
 
 
@@ -16,7 +16,8 @@ from func_test.custom_driver import CustomWebDriver
 
 def init_browser():
     if BROWSERSTACK_KEY:
-        test_url = "http://{0}:{1}@hub.browserstack.com:80/wd/hub".format(BROWSERSTACK_USERNAME, BROWSERSTACK_KEY)
+        test_url = "http://{0}:{1}@hub.browserstack.com:80/wd/hub".format(BROWSERSTACK_USERNAME,
+                                                                          BROWSERSTACK_KEY)
         # Specify capabilities
         desired_cap = {'browser': 'Firefox',
                        'browser_version': '40.0',
@@ -29,7 +30,7 @@ def init_browser():
         driver = webdriver.Remote(command_executor=test_url, desired_capabilities=desired_cap)
     else:
         # PhantomJS (Silent mode)
-        #self.driver = webdriver.PhantomJS()
+        # self.driver = webdriver.PhantomJS()
 
         # Firefox (Graphic mode)
         #driver = webdriver.Firefox()
@@ -38,7 +39,6 @@ def init_browser():
 
 
 class BrowserStackTest(LiveServerTestCase):
-
     def __init__(self, *args, **kwargs):
         super(BrowserStackTest, self).__init__(*args, **kwargs)
         django.setup()

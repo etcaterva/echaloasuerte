@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from server.forms.random_number_form import RandomNumberDrawForm
 
 

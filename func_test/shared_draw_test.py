@@ -1,6 +1,7 @@
 from selenium.common.exceptions import StaleElementReferenceException
-from func_test.browserstack_base import BrowserStackTest, init_browser
 from selenium.webdriver.common.keys import Keys
+
+from func_test.browserstack_base import BrowserStackTest, init_browser
 from server.bom import User
 
 
@@ -63,9 +64,11 @@ class SharedDrawTest(BrowserStackTest):
         driver.find_element_by_id('send-emails').click()
 
         # Access the draw (as guest) through the link given
-        url_draw = driver.find_element_by_css_selector('#invite-options .url-share').get_attribute('value')
+        url_draw = driver.find_element_by_css_selector('#invite-options .url-share').get_attribute(
+            'value')
         driver_guest.get(url_draw)
-        title_in_guest = driver_guest.find_element_by_css_selector('#draw-title-container textarea').get_attribute('value')
+        title_in_guest = driver_guest.find_element_by_css_selector(
+            '#draw-title-container textarea').get_attribute('value')
         self.assertEqual('Test draw', title_in_guest)
 
         # TODO Check Facebook button
@@ -90,17 +93,21 @@ class SharedDrawTest(BrowserStackTest):
         driver_guest.find_element_by_css_selector('#chat-frame .alias-chat').send_keys('Mr. Nobody')
         driver_guest.find_element_by_css_selector('#chat-frame #access-chat').click()
 
-        driver_guest.find_element_by_css_selector('#chat-frame #chat-message-box').send_keys('First chat message')
+        driver_guest.find_element_by_css_selector('#chat-frame #chat-message-box').send_keys(
+            'First chat message')
         driver_guest.find_element_by_css_selector('#chat-frame #chat-send').click()
-        driver.find_element_by_css_selector('#chat-frame #chat-message-box').send_keys('Second chat message')
+        driver.find_element_by_css_selector('#chat-frame #chat-message-box').send_keys(
+            'Second chat message')
         driver.find_element_by_css_selector('#chat-frame #chat-send').click()
 
         # Check that messages are sent and alias is correct
         two_messages = driver.check_condition(
-            lambda current_driver: len(current_driver.find_elements_by_css_selector('#chat-frame .chatline-details')) == 2
+            lambda current_driver: len(
+                current_driver.find_elements_by_css_selector('#chat-frame .chatline-details')) == 2
         )
         self.assertTrue(two_messages)
-        details = [chatline.get_attribute('innerHTML') for chatline in driver.find_elements_by_css_selector('#chat-frame .chatline-details')]
+        details = [chatline.get_attribute('innerHTML') for chatline in
+                   driver.find_elements_by_css_selector('#chat-frame .chatline-details')]
         for chatline in details:
             if 'test' in chatline:
                 owner_in_chat = True
@@ -146,7 +153,8 @@ class SharedDrawTest(BrowserStackTest):
                 return checked_input.get_attribute('value') == '1'
             except StaleElementReferenceException:
                 # This exception rise if the page reloaded between finding the input and getting its value
-                return current_driver.find_element_by_id('id_range_min').get_attribute('value') == '1'
+                return current_driver.find_element_by_id('id_range_min').get_attribute(
+                    'value') == '1'
 
         self.assertTrue(driver.check_condition(check_changes_applied))
         self.assertTrue(driver_guest.check_condition(check_changes_applied))
@@ -157,7 +165,8 @@ class SharedDrawTest(BrowserStackTest):
             lambda current_driver: current_driver.is_element_visible('#invite')
         )
         driver.find_element_by_id('invite').click()
-        url_invite = driver.find_element_by_css_selector('#settings-invite .url-share').get_attribute('value')
+        url_invite = driver.find_element_by_css_selector(
+            '#settings-invite .url-share').get_attribute('value')
         self.assertEqual(url_draw.split('draw')[-1],
                          url_invite.split('draw')[-1])
         driver.find_element_by_id('invite-emails-tokenfield').send_keys('iker_jimenez@test.com')
@@ -165,8 +174,10 @@ class SharedDrawTest(BrowserStackTest):
 
         # Check that the user has been invited
         def check_user_invited(current_driver):
-            users_invited = [token.get_attribute('innerHTML') for token in current_driver.find_elements_by_css_selector('.token-label')]
+            users_invited = [token.get_attribute('innerHTML') for token in
+                             current_driver.find_elements_by_css_selector('.token-label')]
             return 'iker_jimenez@test.com' in users_invited
+
         self.assertTrue(driver.check_condition(check_user_invited))
 
         driver.find_element_by_id('close-invite').click()

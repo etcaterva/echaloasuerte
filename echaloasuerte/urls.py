@@ -1,10 +1,10 @@
 from django.conf.urls import patterns, include, url
-from django.conf.urls.i18n import i18n_patterns
 from django.views.generic import TemplateView, RedirectView
 from django.contrib.sitemaps.views import sitemap
+from django.contrib import admin
+
 from web.sitemap import LandingSitemap, DrawSitemap, OthersSitemap
 
-from django.contrib import admin
 
 admin.autodiscover()
 
@@ -53,7 +53,7 @@ urlpatterns += patterns(
     url(r'^ws/draw/create/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^draw/(?P<draw_id>[0-9a-g]+)/update/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^draw/try/(?P<draw_type>[^/]+)/$', RedirectView.as_view(url="/", permanent=True)),
-    url(r'^ws/update_profile/$',  RedirectView.as_view(url="/", permanent=True)),
+    url(r'^ws/update_profile/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/favourites/remove/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/favourites/add/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/check_access_to_draw/$', RedirectView.as_view(url="/", permanent=True)),

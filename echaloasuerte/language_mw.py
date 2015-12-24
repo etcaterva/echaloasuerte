@@ -5,6 +5,7 @@ LANGUAGE_DOMAINS = {
     'en': 'chooserandom.com',
 }
 
+
 class LangInDomainMiddleware(object):
     """
     Middleware for determining site's language via the domain name used in
@@ -19,6 +20,6 @@ class LangInDomainMiddleware(object):
             servername = request.META.get('SERVER_NAME')
             host = request.META.get('HTTP_HOST')
             if (servername and lang_domain in servername
-                    or host and lang_domain in host):
+                or host and lang_domain in host):
                 translation.activate(lang)
                 request.LANGUAGE_CODE = translation.get_language()

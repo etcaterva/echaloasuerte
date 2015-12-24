@@ -1,5 +1,6 @@
 import random
 import itertools
+
 from server.bom.draw_base import BaseDraw, InvalidDraw
 
 

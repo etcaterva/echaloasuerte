@@ -1,14 +1,14 @@
 """Common helpers for the pyhon code in the web project"""
 
+from contextlib import contextmanager
+import logging
+import time
+
 from django.core.exceptions import PermissionDenied
 from django.contrib.staticfiles.templatetags.staticfiles import static
-from contextlib import contextmanager
 from django.http import HttpRequest
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
-
-import logging
-import time
 
 
 LOG = logging.getLogger("echaloasuerte")
@@ -53,6 +53,7 @@ TOSS_HTML_EMAIL_TEMPLATE = _("""
 The Choose Random Team</p>
 """)
 
+
 def mail_toss(draw):
     """Sends a mail to the users to notify them about a toss in a draw"""
     draw_id = draw.pk
@@ -75,6 +76,7 @@ def mail_toss(draw):
     except Exception as error:
         LOG.error("Unexpected error when notifing user {0}: {1}".format(users_email,
                                                                         error))
+
 
 def invite_user(users_email, draw):
     """Sends a mail to a list of users to invite them to a draw"""
@@ -136,11 +138,13 @@ def time_it(func):
     def _(*args, **kwargs):
         min_args = [_minimice(x) for x in args]
         min_kwargs = {k: _minimice(x) for k, x in kwargs.items()}
-        LOG.debug("Calling: {0} with args: {1}, and kwargs {2}".format(func.__name__, min_args, min_kwargs))
+        LOG.debug("Calling: {0} with args: {1}, and kwargs {2}".format(func.__name__, min_args,
+                                                                       min_kwargs))
         with _scoped_timer(func.__name__):
             return func(*args, **kwargs)
 
     return _
+
 
 def set_owner(draw, request):
     """Best effort to set the owner given a request"""
