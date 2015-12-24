@@ -1108,6 +1108,9 @@ a[disabled] {
     margin-right: 6px;
 }
 
+#register-now {
+    font-size: 16px;
+}
 
 #registration-success img {
     width: 200px;

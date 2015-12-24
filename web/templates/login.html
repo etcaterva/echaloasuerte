@@ -47,7 +47,7 @@
 {% endblock extra_jq_ready %}
 {% block content %}
     <div id="login" class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-6">
             <div class="panel panel-login">
                 <div class="panel-heading">
                     <div class="row">
@@ -103,6 +103,18 @@
                 </div>
             </div>
         </div>
+        <div id="benefits-register" class="col-md-6 text-center">
+            <div class="h3 text-center">{% trans "Not registered yet?" %}</div>
+            <div class="h4 text-center">{% trans "These are some reasons to do it..." %}</div>
+            <ul class="text-left">
+                <li><span class="fa fa-check text-success"></span>{% trans "<b>Only you have rights</b> to edit or invite people to your shared draws" %}</li>
+                <li><span class="fa fa-check text-success"></span>{% trans "Store your <b>favourite draws</b>" %}</li>
+                <li><span class="fa fa-check text-success"></span>{% trans "Keep track of your <b>history</b>" %}</li>
+                <li><span class="fa fa-check text-success"></span>{% trans "It's <b>totally FREE!</b>" %}</li>
+            </ul>
+            <a id="register-now" href="{% url 'register' %}">{% trans 'Register now' %}</a>
+        </div>
+    </div>
     </div>
 {% endblock %}
 
