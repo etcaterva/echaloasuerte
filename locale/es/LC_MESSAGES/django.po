@@ -915,7 +915,7 @@ msgstr "¿Quieres organizar una competición? ¡Esta es tu tirada!"
 
 #: web/templates/index.html:63
 msgid "Generate Groups"
-msgstr "Crear groupos"
+msgstr "Crear grupos"
 
 #: web/templates/index.html:63
 msgid "Needs to group a bunch of people or items? Click here!"
