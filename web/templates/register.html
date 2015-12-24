@@ -41,7 +41,9 @@
             if (e.statusText == 'CONFLICT'){
                 $email_group.toggleClass('has-error', true);
                 $error_message.empty();
-                $error_message.append("{% trans "This email is already registered" %}");
+                var forgot_password_link = " <a id='forgot-password' href='{% url 'forgot_password' %}'>{% trans 'Forgot your password?' %}</a>";
+                $error_message.append("{% trans "This email is already registered." %}" + forgot_password_link);
+                $form.find('#forgot-password').toggleClass('hidden',false);
             }else{
                 $registration_error.toggleClass('hidden', false);
                 console.log("ERROR: " + e.responseText);
@@ -71,7 +73,7 @@
                             <form id="register-form" role="form" data-toggle="validator">
                                 <div id="email-group" class="form-group">
                                     <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="{% trans "Email Address" %}" required>
-                                    <div class="help-block with-errors"></div>
+                                    <span class="help-block with-errors"></span>
                                 </div>
                                 <div class="form-group">
                                     <input type="password" name="password" tabindex="2" data-minlength="6" class="form-control" id="password" placeholder="{% trans "Password" %}" required >
