@@ -20,6 +20,11 @@
     <script src="{% static 'js/coin.js' %}"></script>
     <script src="{% static 'js/dice.js' %}"></script>
     <script src="{% static 'js/draw_manager.js' %}"></script>
+    {% if is_public %}
+        <script src="{% static 'js/shared_draw_creator.js' %}"></script>
+        <link href="{% static 'css/jquery.datetimepicker.css' %}" rel="stylesheet" />
+        <script src="{% static 'js/jquery.datetimepicker.min.js' %}"></script>
+    {% endif %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
     {% if draw_type == "coin" %}
@@ -42,8 +47,11 @@
         $(this).select();
     });
 
+    SharedDrawCreator.setup();
+
     var $draw_maneger = $('#draw-form').drawManager({
         draw_type: "{{ draw_type }}",
+        default_title: "{{ default_title }}",
         is_shared: {{ is_public|yesno:"true,false" }},
         url_try: "{% url 'api_draw_try' api_name="v1" %}",
         url_create: "{% url 'api_dispatch_list' api_name="v1" resource_name="draw" %}",
@@ -58,6 +66,12 @@
     {% if is_public %}
         $("#try").click( function() {
             $draw_maneger.drawManager('try_draw');
+        });
+        $("#go-to-configure").click( function() {
+            SharedDrawCreator.show_configure_step();
+        });
+        $("#go-to-general").click( function() {
+            SharedDrawCreator.show_general_step();
         });
         $("#publish").click( function() {
             $draw_maneger.drawManager('publish');
@@ -87,6 +101,7 @@
                 console.log("users NOT invited");
             });
         });
+
     {% else %}
         $("#create-and-toss").click( function() {
             $draw_maneger.drawManager('create_and_toss');
@@ -95,14 +110,11 @@
 {% endblock extra_jq_ready %}
 {% block content %}
     {% if is_public %}
-        <div class="row shared-draw-status">
-            <span class="col-xs-12 col-sm-10 col-sm-offset-1 step-configure">{%trans 'You are creating a shared draw' %}</span>
-            <span class="col-xs-12 col-sm-10 col-sm-offset-1 hidden step-spread">{%trans 'Your draw has been created!' %}</span>
-        </div>
+        {% include 'snippets/snippet_breadcrumb.html' %}
     {% endif %}
     <form id="draw-form" class="clearfix" method="post">
         <!-- Draw Heading -->
-        <div class="clearfix draw-heading step-configure">
+        <div class="clearfix draw-heading step-configure hidden">
             {% if not is_public %}
                 <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
                     <img src="{% static "img/back_arrow.png" %}" alt="{% trans "Back" %}"/>
@@ -114,8 +126,24 @@
         </div>
         <!-- End Draw Heading -->
 
+        {% if is_public %}
+            <div class="step-general col-sm-8 col-sm-offset-2">
+                <div class="form-group clearfix">
+                    <label for="draw-title" class="col-sm-3 control-label">{% trans "Title" %}</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="draw-title" placeholder="{% trans "i.e 'Lottery 2015'" %}">
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="draw-description" class="col-sm-3 control-label">{% trans "Description (optional)" %}</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" id="draw-description" rows="3" placeholder="{% trans "Type a description here..." %}"></textarea>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         {# Configure the fields of a draw (both private and public) #}
-        <div class="step-configure col-sm-8 col-sm-offset-2">
+        <div class="step-configure col-sm-8 col-sm-offset-2 {% if is_public %}hidden{% endif %}">
             <!-- Errors -->
             <div id="general-errors" class="alert alert-danger hidden" role="alert">
                 <span class="fa fa-exclamation-triangle " aria-hidden="true"></span>
@@ -129,7 +157,7 @@
 
         {# Only shown when creating a public draw: show the link to invite users #}
         {% if is_public %}
-            <div id="invite-options" class="step-spread hidden col-xs-12 col-md-8 col-md-offset-2">
+            <div id="invite-options" class="step-invite hidden col-xs-12 col-md-8 col-md-offset-2">
                 <p id="shared-draw-created">{% trans "Your draw is online now" %}</p>
                 <p id="shared-draw-smiley">{% trans ":D" %}</p>
                 <p>{% trans "Use any of the methods below to invite people to join and see the results." %}</p>
@@ -164,9 +192,11 @@
 
                 {# Buttons "Next Step" and "Cancel" shown when creating a public draw #}
                 <div class="col-sm-8 col-sm-offset-2 btn-row">
-                    <a href="{% url 'index' %}" class="step-configure col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
-                    <button type="button" id="publish" class="step-configure col-xs-6 btn btn-primary submit-lockable">{% trans 'Publish draw' %}</button>
-                    <a id="go-to-draw" class="step-spread btn btn-primary hidden" href="#">{% trans 'Go to the draw' %}</a>
+                    <a href="{% url 'index' %}" class="step-general col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
+                    <a href="#" id="go-to-general" class="step-configure hidden col-xs-6 btn btn-default">{% trans 'Back' %}</a>
+                    <a href="#" id="go-to-configure" class="step-general col-xs-6 btn btn-primary">{% trans 'Configure draw' %}</a>
+                    <button type="button" id="publish" class="step-configure col-xs-6 hidden btn btn-primary submit-lockable">{% trans 'Publish draw' %}</button>
+                    <a id="go-to-draw" class="step-invite btn btn-primary hidden" href="#">{% trans 'Go to the draw' %}</a>
                 </div>
             {% else %}
                 {# Button to toss the draw in private draws #}

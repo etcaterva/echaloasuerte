@@ -7,7 +7,7 @@
             maxWidth: 100,
             minWidth: 30,
             comfortZone: 7000,
-            title: "Public Draw"
+            title: "Draw"
         }, o);
 
         this.filter('textarea').each(function(){
@@ -73,7 +73,6 @@
                 check()
             });
             $(this).blur();
-
         });
 
         return this;

@@ -331,3 +331,79 @@ a.fa:focus {
         display: none;
     }
 }
+
+/* In the shared draw, (in general and configure steps) add some 
+   padding between the breadcrumb and the form fields
+*/
+#draw-form > .step-general,
+#draw-form > .step-configure {
+    margin-top: 10px;
+}
+
+/* ===================  SHARED DRAW BREADCRUMB  =================== */
+.breadcrumb-shared-draw {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    -webkit-align-items: center;
+    align-items: center;
+    background-color: #F0F8F1;
+    margin-bottom: 10px;
+    padding: 0 0 0 0;
+    border-bottom: 1px #E7E7E7 solid;
+}
+
+.breadcrumb-shared-draw .cancel {
+    flex: 0 0 40px;
+    color: #6f6f6f;
+}
+
+.breadcrumb-shared-draw .help-text {
+    text-align: center;
+    flex: auto;
+}
+
+.breadcrumb-shared-draw .title {
+    margin-top: 10px;
+    padding-bottom:5px;
+    font-size: 20px;
+    color: #4cae4c;
+    border-bottom: 2px #c8e7ca solid;
+}
+
+.breadcrumb-shared-draw .subtitle {
+    margin: 10px 0 10px;
+    font-size: 16px;
+    color: #979797;
+    text-decoration: none;
+
+    /* Disable links */
+    pointer-events: none;
+    cursor: default;
+}
+
+@media screen and (max-width: 400px) {
+    .breadcrumb-shared-draw .subtitle {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.breadcrumb-shared-draw .subtitle.done:not(.focus) {
+    /* Disable links */
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.breadcrumb-shared-draw .subtitle.focus{
+    font-size: 17px;
+    font-weight: bold;
+    color: #4cae4c;
+}
+
+.breadcrumb-shared-draw .subtitle.done {
+    font-weight: bold;
+}
