@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load url from future %}
+{% load i18n %}
+{% block content %}
+    <div class="row">
+        <div id="registration-success" class="col-md-8 col-md-offset-2 panel panel-login text-center">
+            <div class="h2 panel-heading">
+                {% trans "You have created an account!" %}
+                <hr>
+            </div>
+
+            <div class="panel-body">
+                <img src="{% static "img/logo_vector.svg" %}" alt="Logo">
+                <div id="subtitle" >{% trans "Now you have access to all the functionalities of the site" %}</div>
+                <a href="{% url 'index' %}" class="btn btn-primary">{% trans "Go to Home screen" %}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

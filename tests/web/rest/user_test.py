@@ -78,7 +78,7 @@ class UserResourceTest(ResourceTestCase):
         }
         login_url = self.base_url + 'login/'
         resp = self.api_client.post(login_url, format='json', data=credentials)
-        self.assertHttpUnauthorized(resp)
+        self.assertHttpNotFound(resp)
 
     def test_login_wrong_password(self):
         credentials = {

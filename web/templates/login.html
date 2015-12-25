@@ -1,45 +1,111 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% load i18n %}
+{% block extra_jq_ready %}
+    $('#login-form').submit(function(event){
+        var $form = $(this);
+        // Clean previous errors
+        var $login_error = $form.find('#login-error');
+        var $email_group = $form.find('#email-group');
+        var $email_error_message = $email_group.find('.with-errors');
+        $login_error.toggleClass('hidden', true);
+        $email_group.toggleClass('has-error', true);
+        $email_error_message.empty();
+
+        var credentials = {
+            'email': $form.find('#email').val(),
+            'password': $form.find('#password').val(),
+        };
+
+        var callback_done = function(){
+            window.location = "{% url 'index' %}";
+        };
+        var callback_fail = function(e){
+            var $general_error_message = $login_error.find('#error-message');
+            $general_error_message.empty();
+            if (e.status == "404"){  // NOT FOUND
+                $general_error_message.append("{% trans "This email is not registered" %}");
+            } else if (e.status == "401"){  // UNAUTHORIZED
+                $general_error_message.append("{% trans "Incorrect password" %}");
+            } else {
+                $general_error_message.append("{% trans "Impossible to login. Please, try again later" %}");
+            }
+            $login_error.toggleClass('hidden', false);
+        };
+
+        user_login(credentials, callback_done, callback_fail);
+        event.preventDefault();
+    });
+
+{% endblock extra_jq_ready %}
 {% block content %}
     <div id="login" class="row">
-        <div class="col-sm-6 col-sm-offset-3 text-center">
-            <h1>{% trans "Log in" %}</h1>
-            <form class="form-horizontal" name="LoginForm" action="{% url 'login' %}" method="post">
-            {% csrf_token %}
-            {% if next %}
-                <input type="hidden" name="next" value="{{ next }}" />
-            {% endif %}
-            <div class="row control-group">
-                <label class="control-label col-xs-4" for="username">{% trans "Email" %}</label>
-                <div class="controls col-xs-8">
-                    <input class="form-control" type="email" id="email" name="email"  placeholder="{% trans "Email" %}">
+        <div class="col-md-6">
+            <div class="panel panel-login">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <a href="#" class="active" id="login-form-link">{% trans "Login" %}</a>
+                        </div>
+                        <div class="col-xs-6">
+                            <a href="{% url 'register' %}" id="register-form-link">{% trans "Register" %}</a>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form id="login-form" role="form">
+                                <div id="email-group" class="form-group">
+                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="{% trans "Email Address" %}" >
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" data-minlength="6" tabindex="2" class="form-control" id="password" placeholder="{% trans "Password" %}" required >
+                                    <span class="help-block with-errors"></span>
+                                </div>
+                                <div class="form-group text-center">
+                                    <input type="checkbox" tabindex="3" class="" name="keep-logged" id="remember">
+                                    <label for="remember">{% trans "Keep me logged in" %}</label>
+                                </div>
+                                <div id="login-error" class="alert alert-danger hidden" role="alert">
+                                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                  <span class="sr-only">{% trans "Error" %}:</span>
+                                  <span id="error-message"></span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-sm-offset-3">
+                                            <button type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login">{% trans "Log In" %}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="text-center">
+                                                <a href="{% url 'forgot_password' %}" tabindex="5" class="forgot-password">{% trans "Forgot your password?" %}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row control-group">
-                <label class="control-label col-xs-4" for="password">{% trans "Password" %}</label>
-                <div class="controls col-xs-8">
-                    <input class="form-control" type="password" name="password" id="password" placeholder="{% trans "Password" %}">
-                </div>
-            </div>
-            {% if error %}
-                <div class="alert alert-danger alert-login" role="alert">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">{% trans "Error" %}</span>
-                    {{error}}
-                </div>
-            {% endif %}
-            <div class="row control-group">
-                <div class="controls text-center">
-                    <button id="login-button" type="submit" class="btn btn-success">{% trans "Log in" %}</button>
-                </div>
-                <a href="{% url 'forgot_password' %}">{% trans "Forgot your password?" %}</a>
-            </div>
-            </form>
-            <div class="row text-center">
-                <div class="text-separator"><span>{% trans "Or" %}</span></div>
-                <a href="{% url 'register' %}"><button type="button" class="btn btn-primary">{% trans "Sign up" %}</button></a>
-            </div>
+        </div>
+        <div id="benefits-register" class="col-md-6 text-center">
+            <div class="h3 text-center">{% trans "Not registered yet?" %}</div>
+            <div class="h4 text-center">{% trans "These are some reasons to do it..." %}</div>
+            <ul class="text-left">
+                <li><span class="fa fa-check text-success"></span>{% trans "<b>Only you have rights</b> to edit or invite people to your shared draws" %}</li>
+                <li><span class="fa fa-check text-success"></span>{% trans "Store your <b>favourite draws</b>" %}</li>
+                <li><span class="fa fa-check text-success"></span>{% trans "Keep track of your <b>history</b>" %}</li>
+                <li><span class="fa fa-check text-success"></span>{% trans "It's <b>totally FREE!</b>" %}</li>
+            </ul>
+            <a id="register-now" href="{% url 'register' %}">{% trans 'Register now' %}</a>
         </div>
     </div>
 {% endblock %}

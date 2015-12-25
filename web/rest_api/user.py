@@ -83,8 +83,14 @@ class UserResource(resources.Resource):
                 raise exceptions.ImmediateHttpResponse(
                     response=http.HttpUnauthorized("The user is not ativated"))
         else:
-            raise exceptions.ImmediateHttpResponse(
-                response=http.HttpUnauthorized("Incorrect credentials"))
+            try:
+                self._client.retrieve_user(email)
+            except mongodb.MongoDriver.NotFoundError:
+                raise exceptions.ImmediateHttpResponse(
+                    response=http.HttpNotFound("The email {0} is not registered".format(email)))
+            else:
+                raise exceptions.ImmediateHttpResponse(
+                    response=http.HttpUnauthorized("Incorrect password"))
 
     def user_logout(self, request, **_):
         self.method_check(request, allowed=['post'])

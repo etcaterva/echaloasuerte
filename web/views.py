@@ -2,73 +2,17 @@
 import logging
 import random
 
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.templatetags.static import static
 
 from server import draw_factory
-from server.bom.user import User
 from server.mongodb.driver import MongoDriver
 from web.common import time_it
-from web.google_analytics import ga_track_event
-
 
 LOG = logging.getLogger("echaloasuerte")
 MONGO = MongoDriver.instance()
-
-
-@time_it
-def login_user(request):
-    """Serves logging web site
-    Serves a page with data to log in
-    If post data is provided, logs the user in
-    """
-    logout(request)
-    context = {}
-    if request.POST:
-        username = request.POST['email']
-        password = request.POST['password']
-
-        user = authenticate(username=username, password=password)
-        if user:
-            if user.is_active:
-                if 'keep-logged' in request.POST:
-                    request.session.set_expiry(31556926)  # 1 year
-                LOG.info("expiration" + str(request.session.get_expiry_date()))
-                login(request, user)
-                return HttpResponseRedirect('/')
-            else:
-                context = {'error': "User is not activated yet"}
-        else:
-            context = {'error': "Email or password not valid."}
-    return render(request, 'login.html', context)
-
-
-@time_it
-def register(request):
-    """Registers a user
-    Serves a web to register the user
-    Register and logs the user in if POST data is provided
-    """
-    logout(request)
-    context = {}
-    if request.POST:
-        email = request.POST['email']
-        password = request.POST['password']
-        u = User(email)
-        u.set_password(password)
-        try:
-            MONGO.create_user(u)
-        except Exception:
-            context = {'error': _("The email is already registered.")}
-        else:
-            ga_track_event(category="user", action="registration")
-            return login_user(request)
-
-    return render(request, 'register.html', context)
 
 
 @login_required
