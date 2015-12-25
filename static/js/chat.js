@@ -16,8 +16,7 @@
             msg_error_alias: "The alias must have between 2 and 20 characters",
             msg_access_chat: "Access chat",
             msg_send: "Send",
-            default_avatar: false,
-            message_sent_callback: function(){}
+            default_avatar: false
         };
 
     /*********************************
@@ -100,15 +99,12 @@
                 message_object["anonymous_alias"] = this.options.user_alias;
             }
             var data = JSON.stringify(message_object);
-            var that = this;
 
             $.ajax({
                 url : this.options.url_send_message,
                 method : "POST",
                 contentType: 'application/json',
                 data: data
-            }).done(function(){
-                that.options.message_sent_callback(message);
             }).fail(function(e){
                 alert("The message was not sent");
             });
