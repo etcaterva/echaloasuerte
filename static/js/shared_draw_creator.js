@@ -67,7 +67,7 @@ SharedDrawCreator.update_breadcrumb = function (target_step){
 };
 
 // Initialize the links in the breadcrumb
-SharedDrawCreator.setup = function(){
+SharedDrawCreator.setup_breadcrumb = function(){
     var $breadcrumb = $('.breadcrumb-shared-draw');
     $breadcrumb.find('#general').click(SharedDrawCreator.show_general_step);
     $breadcrumb.find('#configure').click(SharedDrawCreator.show_configure_step);

@@ -47,7 +47,6 @@
         $(this).select();
     });
 
-    SharedDrawCreator.setup();
 
     var $draw_maneger = $('#draw-form').drawManager({
         draw_type: "{{ draw_type }}",
@@ -64,6 +63,7 @@
     });
 
     {% if is_public %}
+        SharedDrawCreator.setup_breadcrumb();
         $("#try").click( function() {
             $draw_maneger.drawManager('try_draw');
         });
