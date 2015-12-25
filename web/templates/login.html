@@ -2,16 +2,8 @@
 {% load url from future %}
 {% load i18n %}
 {% block extra_jq_ready %}
-    // Submit with enter key
-    $('input').keypress(function (e) {
-        if (e.which == 13) {
-            $('#login-submit').click();
-        }
-    });
-
-    $('#login-submit').click(function(){
-        var $form = $('form#login-form');
-
+    $('#login-form').submit(function(event){
+        var $form = $(this);
         // Clean previous errors
         var $login_error = $form.find('#login-error');
         var $email_group = $form.find('#email-group');
@@ -42,6 +34,7 @@
         };
 
         user_login(credentials, callback_done, callback_fail);
+        event.preventDefault();
     });
 
 {% endblock extra_jq_ready %}
@@ -84,7 +77,7 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <button type="button" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login">{% trans "Log In" %}</button>
+                                            <button type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login">{% trans "Log In" %}</button>
                                         </div>
                                     </div>
                                 </div>
