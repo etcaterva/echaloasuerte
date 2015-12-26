@@ -235,6 +235,8 @@ ALLOWED_HOSTS = [
 
 LOGIN_URL = "/accounts/login/"
 
+PUSHER_SECRET = u'PUSHER_SECRET_PLACEHOLDER'
+
 # EMAIL settings
 DEFAULT_FROM_EMAIL = "EchaloASuerte/Choose Random"
 EMAIL_HOST = 'smtp.mailgun.org'

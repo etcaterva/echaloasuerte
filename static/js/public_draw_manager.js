@@ -160,8 +160,6 @@ PublicDraw.check_draw_changes = function () {
     }).fail (function() {
         console.log("Error when retrieving draw details");
     });
-
-    setTimeout(PublicDraw.check_draw_changes,2000);
 };
 
 PublicDraw.save_settings = function (){

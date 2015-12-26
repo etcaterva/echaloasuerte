@@ -2,10 +2,14 @@
 import logging
 import random
 
+from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.templatetags.static import static
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from pusher import Pusher
 
 from server import draw_factory
 from server.mongodb.driver import MongoDriver
@@ -116,3 +120,16 @@ def display_draw(request, draw_id):
 def under_construction(request):
     """under construction page. This should be temporary"""
     return render(request, 'under_construction.html', {})
+
+
+pusher = Pusher(app_id=u'163051', key=u'61af23772ca14dff55e5', secret=settings.PUSHER_SECRET)
+
+
+@csrf_exempt
+def pusher_authenticate(request):
+    """Authentication end point for pusher priv channels"""
+    auth = pusher.authenticate(
+        channel=request.POST['channel_name'],
+        socket_id=request.POST['socket_id']
+    )
+    return JsonResponse(auth)
