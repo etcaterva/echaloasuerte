@@ -95,7 +95,6 @@
             url_schedule_toss: "",
             msg_result: "Result",
             msg_generated_on: "generated on",
-            updated_callback: function() {},
             msg_audit: "Warning! The draw was modified after the generation of this result",
             translations: {
                 head: "head",
@@ -322,7 +321,6 @@
             // Lock submit buttons to avoid unintentional submissions
             $('.submit-lockable').prop('disabled',true);
 
-            var that = this;
             $.ajax({
                 method : "POST",
                 contentType : 'application/json',
@@ -331,10 +329,10 @@
                 // Register the event in Google Analytics
                 var is_shared = that.options.is_shared ? 'shared' : 'private';
                 ga('send', 'event', 'toss', that.options.draw_type, is_shared);
+
                 // Here results should be rendered without reloading
                 //window.location.reload();
                 that.add_result(results);
-                that.options.updated_callback();
             }).fail(function () {
                 alert("There was an issue when tossing the draw :(");
             }).always(function(){
@@ -475,13 +473,13 @@
 
             var schedule_timestamp = moment.utc(new Date($("#toss-schedule").val())).format();
             this.options.url_schedule_toss = this.options.url_schedule_toss.replace('ts_placeholder',schedule_timestamp);
-            var that = this;
             $.ajax({
                 type : 'POST',
                 contentType : 'application/json',
                 url : this.options.url_schedule_toss
             }).done(function (){
-                that.options.updated_callback();
+                // Here response should be rendered without reloading
+                window.location.reload();
             })
             .fail(function (e) {
                 alert("There was an issue when scheduling the draw :(");
@@ -520,6 +518,7 @@
 
         /**
          * Updates the current draw if there were any changes
+         * As a result, the page is always reloaded.
          *
          * ONLY USED IN SHARED DRAWS
          */
@@ -531,8 +530,8 @@
                         window.location.href = String( window.location.href ).replace( "/#", "" );
                     }
                 );
-            } else {
-                this.options.updated_callback();
+            }else{
+                window.location.href = String( window.location.href ).replace( "/#", "" );
             }
         },
 
