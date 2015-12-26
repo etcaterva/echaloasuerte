@@ -407,7 +407,7 @@ msgstr "Mi perfil"
 
 #: web/templates/base.html:400
 msgid "Logout"
-msgstr ""
+msgstr "Salir"
 
 #: web/templates/base.html:422 web/templates/base.html.py:423
 #: web/templates/profile.html:242
@@ -794,7 +794,7 @@ msgstr "Título"
 
 #: web/templates/draws/new_draw.html:134
 msgid "i.e 'Lottery 2015'"
-msgstr ""
+msgstr "ej: 'Lotería 2015'"
 
 #: web/templates/draws/new_draw.html:138
 msgid "Description (optional)"
