@@ -97,7 +97,7 @@
             tail: "{% trans 'tail' %}"
         },
         updated_callback: function() {
-            channel.trigger('client-draw_update');
+            channel.trigger('client-draw_update', "");
         }
     });
 
