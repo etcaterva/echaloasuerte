@@ -97,6 +97,7 @@
             tail: "{% trans 'tail' %}"
         },
         updated_callback: function() {
+            PublicDraw.check_draw_changes();
             channel.trigger('client-draw_update', "");
         }
     });
