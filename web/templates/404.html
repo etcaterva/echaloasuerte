@@ -1,0 +1,28 @@
+{% load staticfiles %}
+{% load i18n %}
+<html>
+    <head>
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+        <style>
+            body {
+                max-width: 400px;
+                margin: 10px;
+            }
+            #error-code {
+                font-size: 35px;
+                font-weight: bold;
+            }
+            @media screen and (min-width: 768px) {
+                body {
+                    margin: 150px auto;
+                }
+
+            }
+        </style>
+    </head>
+    <body>
+        <img src="{% static 'img/brand/brand_es.png' %}" alt="">
+        <div><span id="error-code">404.</span> {% trans "Yes, that's an error." %}</div>
+        <div>{% trans "The requested URL was not found on the server" %}</div>
+    </body>
+</html>
