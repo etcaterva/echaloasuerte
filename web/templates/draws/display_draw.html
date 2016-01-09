@@ -42,6 +42,10 @@
         Card.baseUrl = '{{ STATIC_URL }}' + "img/img_cards/"
     {% endif %}
 
+    $('#create-shared-from-private').click(function(){
+        ga('send', 'event', 'link', 'private to shared draw');
+    });
+
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 
     $('#fav-button').favourites({
@@ -188,7 +192,7 @@
                         <img src="{% static "img/star-o.png" %}" alt="{% trans "Add to favourites" %}"/>
                     {% endif %}
                     </a>
-                    <a href="{% url 'create_public_draw' draw_type=draw.NAME_IN_URL %}" class="add-favourites eas-tooltip" title="{% trans 'Create a public one' %}">
+                    <a id="create-shared-from-private" href="{% url 'create_public_draw' draw_type=draw.NAME_IN_URL %}" class="add-favourites eas-tooltip" title="{% trans 'Create a public one' %}">
                         <img src="{% static 'img/share-icon.png' %}" />
                     </a>
                 </div>
