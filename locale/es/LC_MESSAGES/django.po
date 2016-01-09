@@ -864,8 +864,8 @@ msgid ""
 "                        "
 msgstr ""
 "\n"
-"                            \"<p><b>Tirada Normal:</b> Tirada normal en "
-"lasolo tu podrás ver el resultado.</p>\" +\n"
+"                            \"<p><b>Tirada Normal:</b> Tirada personal en "
+"la que sólo tú podrás ver el resultado.</p>\" +\n"
 "                            \"<p><b>Tirada Compartida: </b> Podrás invitar "
 "invitar otros usuarios, ver los resulos online y discutir en un chat</p>\" "
 "+\n"
@@ -1142,7 +1142,7 @@ msgstr "Entrar"
 
 #: web/templates/login.html:51 web/templates/register.html:65
 msgid "Register"
-msgstr "Registro"
+msgstr "Regístrate"
 
 #: web/templates/login.html:61 web/templates/register.html:75
 msgid "Email Address"
@@ -1158,17 +1158,17 @@ msgstr "Acceder"
 
 #: web/templates/login.html:100
 msgid "Not registered yet?"
-msgstr "¿Aun no tienes cuenta?"
+msgstr "¿Aún no tienes cuenta?"
 
 #: web/templates/login.html:101
 msgid "These are some reasons to do it..."
-msgstr "Aqui tienes algunas razones para hacerlo..."
+msgstr "Aquí tienes algunas razones para hacerlo..."
 
 #: web/templates/login.html:103 web/templates/register.html:107
 msgid ""
 "<b>Only you have rights</b> to edit or invite people to your shared draws"
 msgstr ""
-"<b>Solo tu puedes</b> editar o invitar a alguien a tus tiradas compartidas"
+"<b>Sólo tú puedes</b> editar o invitar a alguien a tus tiradas compartidas"
 
 #: web/templates/login.html:104 web/templates/register.html:108
 msgid "Store your <b>favourite draws</b>"
@@ -1313,7 +1313,7 @@ msgstr "Regístrate ahora"
 
 #: web/templates/register.html:105
 msgid "Why should you register?"
-msgstr "¿Por que deberia registrarme?"
+msgstr "¿Por qué deberías registrarte?"
 
 #: web/templates/register.html:119
 msgid "Does not match"
