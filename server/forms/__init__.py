@@ -8,4 +8,5 @@ from server.forms.card_form import *
 from server.forms.group_form import *
 from server.forms.link_sets_form import *
 from server.forms.tournament_form import *
+from server.forms.raffle_form import *
 from server.forms.form_base import DrawFormError

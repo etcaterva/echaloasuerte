@@ -4,6 +4,12 @@ a.fa:focus {
     text-decoration: none;
 }
 
+.alert-info {
+    background-color: #F0F8F1;
+    border-color: #94B294;
+    color: #5A825A;
+}
+
 /***** DRAW HEADER *****/
 .draw-heading .draw-editable-title {
     background: transparent;

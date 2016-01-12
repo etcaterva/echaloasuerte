@@ -11,7 +11,7 @@
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/moment.js' %}"></script>
     <!-- Bootstrap TokenField -->
-    <script src="{% static 'js/bootstrap-tokenfield.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-tokenfield.js' %}"></script>
     <link href="{% static 'css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
 
     <link href="{% static 'css/jquery.bracket.css' %}" rel="stylesheet" />
@@ -20,6 +20,7 @@
     <script src="{% static 'js/coin.js' %}"></script>
     <script src="{% static 'js/dice.js' %}"></script>
     <script src="{% static 'js/spinable.js' %}"></script>
+    <script src="{% static 'js/raffle.js' %}"></script>
     <script src="{% static 'js/draw_manager.js' %}"></script>
     {% if is_public %}
         <script src="{% static 'js/shared_draw_creator.js' %}"></script>
@@ -39,6 +40,9 @@
         D6Animator.getImageBank("", D6.baseUrl);
     {% elif draw_type == "card" %}
         Card.baseUrl = '{{ STATIC_URL }}' + "img/img_cards/"
+    {% elif draw_type == "raffle" %}
+        var is_shared = {{ is_public|yesno:"true,false" }};
+        Raffle.setup_creation(is_shared);
     {% endif %}
 
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});

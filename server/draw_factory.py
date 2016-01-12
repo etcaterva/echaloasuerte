@@ -4,10 +4,10 @@
 from server.forms import CardDrawForm, CoinDrawForm, DiceDrawForm, \
     LinkSetsDrawForm, RandomItemDrawForm, RandomNumberDrawForm, \
     RandomLetterDrawForm, TournamentDrawForm, GroupsDrawForm, \
-    SpinnerDrawForm
+    SpinnerDrawForm, RaffleDrawForm
 from server.bom import CoinDraw, DiceDraw, CardDraw, RandomNumberDraw, \
     RandomLetterDraw, TournamentDraw, LinkSetsDraw, RandomItemDraw, GroupsDraw, \
-    SpinnerDraw
+    SpinnerDraw, RaffleDraw
 
 REGISTRY = {}
 
@@ -47,7 +47,7 @@ register_draw('item', RandomItemDraw, RandomItemDrawForm, 'RandomItemDraw')
 register_draw('link_sets', LinkSetsDraw, LinkSetsDrawForm, 'LinkSetsDraw')
 register_draw('groups', GroupsDraw, GroupsDrawForm, 'GroupsDraw')
 register_draw('spinner', SpinnerDraw, SpinnerDrawForm, 'SpinnerDraw')
-
+register_draw('raffle', RaffleDraw, RaffleDrawForm, 'RaffleDraw')
 
 
 def get_draw_name(draw_type=None):

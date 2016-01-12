@@ -82,6 +82,12 @@ class DrawResource(resources.Resource):
                 "resource_type": "detail",
                 "description": "Retrieve chat entries",
             },
+            {
+                "name": "register_in_raffle",
+                "http_method": "POST",
+                "resource_type": "detail",
+                "description": "Register a user in a raffle as participant",
+            },
         ]
 
     @property
@@ -106,7 +112,45 @@ class DrawResource(resources.Resource):
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('chat'),
                 name="api_draw_chat"),
+            url(r"^%s/(?P<pk>.*?)/register%s$"
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('register_in_raffle'),
+                name="api_draw_register"),
         ]
+
+    def register_in_raffle(self, request, **kwargs):
+        from server.bom.raffle import Participant
+        self.method_check(request, allowed=['post'])
+        self.throttle_check(request)
+        draw_id = kwargs['pk']
+        try:
+            data = json.loads(request.body)
+        except TypeError:
+            data = json.loads(request.body.decode('utf-8'))
+        try:
+            participant_id = data['participant_id']
+            participant_name = data['participant_name']
+        except KeyError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Missing participant_id or participant_name"))
+        participant = Participant(id=participant_id, name=participant_name)
+        try:
+            bom_draw = self._client.retrieve_draw(draw_id)
+        except mongodb.MongoDriver.NotFoundError:
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpNotFound("the draw does not exists"))
+        if not isinstance(bom_draw, bom.RaffleDraw):
+            raise exceptions.ImmediateHttpResponse(
+                response=http.HttpBadRequest("Registration is only available in Raffles"))
+        try:
+            bom_draw.register_participant(participant)
+        except bom.RaffleDraw.RegistrationError as e:
+            raise exceptions.ImmediateHttpResponse(response=http.HttpBadRequest(e))
+        except bom.RaffleDraw.AlreadyRegisteredError:
+            raise exceptions.ImmediateHttpResponse(response=http.HttpNotModified())
+        self._client.save_draw(bom_draw)
+        self.log_throttled_access(request)
+        return http.HttpResponse()
 
     def chat(self, request, **kwargs):
         self.method_check(request, allowed=['post', 'get'])

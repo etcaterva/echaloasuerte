@@ -4,15 +4,33 @@
 {% load i18n %}
 {% load eas_humanize %}
 {% load is_future %}
+{% load draw_tags %}
 {% block title %}{{ bom.title }} | {% endblock title %}
+{% block description %}
+    {% if bom.description %}
+        {{ bom.description }}
+    {% else %}
+        {% if "echaloasuerte" in request.get_host %}
+            Deja que el azar tome una decision por ti. Olvídate de los papelitos, números, listas, rifas, etc... Esta es tu página, y cada uno desde su ordenador!
+        {% else %}
+            Not sure about a choice? Choose random! Heads or tails, lottery, etc...
+        {% endif %}
+    {% endif %}
+{% endblock description %}
 {% block extra_head %}
+    {# Open Graph Markup: https://developers.facebook.com/docs/sharing/webmasters#markup #}
+    <meta property="og:url"           content="{{ bom|permalink:request }}" />
+	<meta property="og:type"          content="website" />
+	<meta property="og:title"         content="{{ bot.title }}" />
+	<meta property="og:description"   content="{{ bom.description }}" />
+	<meta property="og:image"         content="{% static 'img/icon192x192.png' %}" />
     <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
     <script src="{% static 'js/favourites.js' %}"></script>
     <script src="{% static 'js/moment.js' %}"></script>
     <script src="//js.pusher.com/3.0/pusher.min.js"></script>
     <!-- Bootstrap TokenField -->
-    <script src="{% static 'js/bootstrap-tokenfield.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-tokenfield.js' %}"></script>
     <link href="{% static 'css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
 
     <link href="{% static 'css/jquery.bracket.css' %}" rel="stylesheet" />
@@ -21,6 +39,7 @@
     <script src="{% static 'js/spinable.js' %}"></script>
     <script src="{% static 'js/coin.js' %}"></script>
     <script src="{% static 'js/dice.js' %}"></script>
+    <script src="{% static 'js/raffle.js' %}"></script>
     <script src="{% static 'js/draw_manager.js' %}"></script>
     {% if bom.is_shared %}
         <script src="{% static 'js/public_draw_manager.js' %}"></script>
@@ -30,6 +49,7 @@
     {% endif %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
+    $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
     {% if bom.draw_type == "coin" %}
         var base_url = '{{ STATIC_URL }}' + "img/img_coin/";
         var $coin = $('#img-coin').coin({
@@ -43,13 +63,16 @@
         spin($('#img-spinner'), {{bom.results.0.items.0}});
     {% elif bom.draw_type == "card" %}
         Card.baseUrl = '{{ STATIC_URL }}' + "img/img_cards/"
+    {% elif bom.draw_type == "raffle" %}
+        Raffle.url_raffle = "{{ bom|permalink:request }}";
+        Raffle.url_register = '{% url 'api_draw_register' api_name='v1' pk=bom.pk %}';
+        Raffle.setup_display('{{ bom.registration_type }}');
     {% endif %}
 
     $('#create-shared-from-private').click(function(){
         ga('send', 'event', 'link', 'private to shared draw');
     });
 
-    $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
 
     $('#fav-button').favourites({
         "url_add": "{% url 'api_dispatch_list' api_name="v1" resource_name="favourite" %}",
@@ -163,6 +186,12 @@
 
 
 {% endblock extra_jq_ready %}
+
+{% block fb_async %}
+    {% if bom.draw_type == "raffle" and bom.registration_type == bom.FACEBOOK %}
+        Raffle.fb_enable_registration();
+    {% endif %}
+{% endblock fb_async %}
 {% block content %}
     <form class="clearfix" method="post" id="draw-form">
         <!-- Draw Heading -->
@@ -240,10 +269,9 @@
                                 <button type="button" id="edit-draw-save" class="col-xs-6 btn btn-primary submit-lockable" autocomplete="off">{% trans 'Save changes' %}</button>
                             </div>
                         {%else%}
-                            <button id="toss-disabled-button" class="btn btn-success" disabled="disabled">{% trans 'Toss' %}</button>
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <a class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></a>
-                                {%trans 'Only the owner of the draw can toss. '%}[{{bom.owner}}]
+                                {%trans 'The resuls will be automatically shown as soon as they are released'%}
                             </div>
                         {% endif %}
                     {% endif %}

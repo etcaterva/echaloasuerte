@@ -26,7 +26,18 @@
                     return value;
                 }
             } else if (this.hasClass('eas-tokenfield')){
-                return $.grep(value.split(','),function(n){ return n != "" });
+                var value_list =  $.grep(value.split(','),function(n){ return n != "" });
+                if (this.hasClass('tokenfield-value-label')){
+                    // Parse [value,label] TokenField tuples
+                    var regexp_fb_participant = /{(.*):(.*)}/;
+                    for (var i = 0; i < value_list.length; i++) {
+                        var match = value_list[i].match(regexp_fb_participant)
+                        if (match) {
+                            value_list[i] = [match[1], match[2]]
+                        }
+                    }
+                }
+                return value_list;
             } else{
                 return value;
             }
@@ -70,7 +81,7 @@
                         serialized_draw['sets'] = [];
                     }
                     serialized_draw['sets'].push(this.value);
-                }else if (serialized_draw[this.name] === undefined) {
+                } else if (serialized_draw[this.name] === undefined) {
                     serialized_draw[this.name] = this.value;
                 } else {
                     console.log("ERROR: Two inputs in the forms share the same name (" + this.name + ")");
@@ -283,6 +294,23 @@
                         var html = '<ul class="list-group">';
                         results.forEach(function(result){
                             html += '<li class="list-group-item">' + result.join() + '</li>';
+                        });
+                        html += '</ul>';
+                        return html;
+                    }
+                },
+                'raffle': {
+                    'render': function(results){
+                        var html = '<ul class="list-group">';
+                        results.forEach(function(result){
+                            if( result[1] instanceof Array ) {
+                                // It's a Facebook raffle
+                                var winner = '<a href="www.facebook.com/' + result[1][0] + '">' + result[1][1] + '</a>';
+                                html += '<li class="list-group-item">' + result[0] + ' - ' + winner + '</li>';
+                            } else {
+                                html += '<li class="list-group-item">' + result[0] + ' - ' + result[1] + '</li>';
+                            }
+
                         });
                         html += '</ul>';
                         return html;
