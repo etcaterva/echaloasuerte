@@ -100,10 +100,12 @@
             head: "{% trans 'head' %}",
             tail: "{% trans 'tail' %}"
         },
+        {% if bom.is_shared %}
         updated_callback: function() {
             PublicDraw.check_draw_changes();
             channel.trigger('client-draw_update', "");
         }
+        {% endif %}
     });
 
     {% if bom.is_shared %}
