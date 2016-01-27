@@ -94,6 +94,7 @@
             url_try: "",
             url_schedule_toss: "",
             msg_result: "Result",
+            spinner_image_url: "",
             msg_generated_on: "generated on",
             updated_callback: function() {},
             msg_audit: "Warning! The draw was modified after the generation of this result",
@@ -194,6 +195,18 @@
                 'card': {
                     'render': function(results){
                         return Card.draw(results);
+                    }
+                },
+                'spinner': {
+                    'render': function(result){
+                        return '<img type="image" id="img-spinner" src="' +
+                               that.options.spinner_image_url +
+                               '" width="30%" ' +
+                               ' style="transform: rotate(' +
+                               result[0] +  'deg);">'
+                    },
+                    'animate': function(result){
+                        spin($('#img-spinner'), result[0]);
                     }
                 },
                 'coin': {
