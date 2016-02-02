@@ -283,7 +283,7 @@ msgstr ""
 "            Ups, algo se ha roto en nuestro servidor.\n"
 "            El que leas esto no va a solucionar el problema.\n"
 "            De hecho, debes estar bastante enfadado ahora mismo.\n"
-"            Tomalo con calma, <strong>hombretón</strong> hemos sido "
+"            Pero relájate, <strong>nuestros mejores hombres</strong> han sido "
 "informados.\n"
 "        "
 
