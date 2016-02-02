@@ -1,6 +1,7 @@
 from server.forms.random_number_form import *
 from server.forms.random_letter_form import *
 from server.forms.random_item_form import *
+from server.forms.spinner_form import *
 from server.forms.coin_form import *
 from server.forms.dice_form import *
 from server.forms.card_form import *

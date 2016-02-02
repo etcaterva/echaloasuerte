@@ -18,6 +18,7 @@
     <link href="{% static 'css/jquery.bracket.css' %}" rel="stylesheet" />
     <script src="{% static 'js/jquery.bracket.js' %}"></script>
     <script src="{% static 'js/card.js' %}"></script>
+    <script src="{% static 'js/spinable.js' %}"></script>
     <script src="{% static 'js/coin.js' %}"></script>
     <script src="{% static 'js/dice.js' %}"></script>
     <script src="{% static 'js/draw_manager.js' %}"></script>
@@ -96,6 +97,7 @@
         msg_result: "{% trans "Result" %}",
         msg_generated_on: "{% trans "generated on" %}",
         msg_audit: "{% trans "Warning! The draw was modified after the generation of this result" %}",
+        spinner_image_url: "{% static 'img/draw_icons/spinner.svg' %}",
         translations: {
             head: "{% trans 'head' %}",
             tail: "{% trans 'tail' %}"

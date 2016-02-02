@@ -3,9 +3,11 @@
 """
 from server.forms import CardDrawForm, CoinDrawForm, DiceDrawForm, \
     LinkSetsDrawForm, RandomItemDrawForm, RandomNumberDrawForm, \
-    RandomLetterDrawForm, TournamentDrawForm, GroupsDrawForm
+    RandomLetterDrawForm, TournamentDrawForm, GroupsDrawForm, \
+    SpinnerDrawForm
 from server.bom import CoinDraw, DiceDraw, CardDraw, RandomNumberDraw, \
-    RandomLetterDraw, TournamentDraw, LinkSetsDraw, RandomItemDraw, GroupsDraw
+    RandomLetterDraw, TournamentDraw, LinkSetsDraw, RandomItemDraw, GroupsDraw, \
+    SpinnerDraw
 
 REGISTRY = {}
 
@@ -44,6 +46,8 @@ register_draw('tournament', TournamentDraw, TournamentDrawForm, 'TournamentDraw'
 register_draw('item', RandomItemDraw, RandomItemDrawForm, 'RandomItemDraw')
 register_draw('link_sets', LinkSetsDraw, LinkSetsDrawForm, 'LinkSetsDraw')
 register_draw('groups', GroupsDraw, GroupsDrawForm, 'GroupsDraw')
+register_draw('spinner', SpinnerDraw, SpinnerDrawForm, 'SpinnerDraw')
+
 
 
 def get_draw_name(draw_type=None):
@@ -61,7 +65,7 @@ def get_draw_name(draw_type=None):
 
 def create_form(draw_type, *args, **kwargs):
     """Creates the correct type of a form
-    
+
     :param draw_type: string name of the draw
     :return: Form that inherits from DrawFormBase
     """

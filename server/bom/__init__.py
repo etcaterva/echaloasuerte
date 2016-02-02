@@ -7,5 +7,6 @@ from server.bom.card import *
 from server.bom.group import *
 from server.bom.tournament import *
 from server.bom.link_sets import *
+from server.bom.spinner import SpinnerDraw
 from server.bom.user import User
 from server.bom.draw_base import InvalidDraw

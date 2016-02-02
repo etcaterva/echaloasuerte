@@ -1,0 +1,32 @@
+$wheel_height: 200px;
+$wheel_width: $wheel_height;
+
+.wheel_holder{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -$wheel_width/2;
+  margin-top: -$wheel_height/2;
+  transform-origin: $wheel_width/2+0.5 $wheel_height/2;
+  text-align: center;
+}
+
+.wheel{
+    border-radius: 50%;
+}
+.vibrate{
+    animation: needle_vibration 1s infinite;
+}
+
+@keyframes needle_vibration{
+  $base_rotation: -5deg;
+  0%, 100% {
+    transform: rotate($base_rotation + 2);
+  }
+  30% {
+    transform: rotate($base_rotation + 1);
+  }
+  80%{
+    transform: rotate($base_rotation - 1);
+  }
+}
