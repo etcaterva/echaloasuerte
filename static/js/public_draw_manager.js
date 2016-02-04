@@ -198,6 +198,7 @@ PublicDraw.setup_buttons = function (){
 
         $("#shared-draw-toss").click( function() {
             PublicDraw.options.draw_manager.drawManager('toss');
+            return false;
         });
 
         $('#subscribe-button').click(function() {
