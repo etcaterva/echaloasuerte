@@ -39,7 +39,7 @@
         D6.baseUrl = '{{ STATIC_URL }}' + "img/img_dice/"
         //Precaching the images
         D6Animator.getImageBank("", D6.baseUrl);
-    {% elif bom.draw_type == "spinner" %}
+    {% elif bom.draw_type == "spinner" and bom.results %}
         spin($('#img-spinner'), {{bom.results.0.items.0}});
     {% elif bom.draw_type == "card" %}
         Card.baseUrl = '{{ STATIC_URL }}' + "img/img_cards/"
