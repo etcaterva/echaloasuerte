@@ -16,7 +16,6 @@ class SpinnerDrawForm(FormBase):
                 '<a href="#">'
                 '<img type="image" id="img-spinner" src="{0}" width="70%" name="spinner" '
                 '''onclick="$('#create-and-toss,#normal-draw-toss, #shared-draw-toss, #try').click();" />'''
-                '<a>'
-                '<p>{1}</p></div>'.format(
+                '</a><p>{1}</p></div>'.format(
                     static('img/draw_icons/spinner.svg'), _("Tap the spinner to spin it")))
         )
