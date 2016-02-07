@@ -9,14 +9,15 @@
     <meta charset="utf-8">
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-    <meta name="description" content="
+    <meta name="description" content="{% spaceless %}
         {% block description %}
             {% if "echaloasuerte" in request.get_host %}
                 Deja que el azar tome una decision por ti. Olvídate de los papelitos, números, listas, rifas, etc... Esta es tu página, y cada uno desde su ordenador!
             {% else %}
                 Not sure about a choice? Choose random! Heads or tails, lottery, etc...
             {% endif %}
-        {% endblock description %}" />
+        {% endblock description %}
+    {% endspaceless %}" />
     {% if "echaloasuerte" in request.get_host %}
         <meta name="keywords" content="echaloasuerte, suerte, dados, cara, cruz, aleatorio, distribuido, a distancia, azar, echalo, pick, ban, cara o cruz, loteria, random, draw" />
         <link rel="alternate" hreflang="en" href="//chooserandom.com/" />
