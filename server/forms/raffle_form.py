@@ -42,7 +42,7 @@ class RaffleDrawForm(FormBase):
                      '<img id="register-button" src="http://facebook-app.loyalpanda.com/images/common/fb-login-button_small.png">'
                      '<div id="already-registered" class="hidden alert alert-info"  role="alert">{0}</div>'
                      '</div>'.format(_('You are registered in this raffle'))),
-                HTML("<div id='shared-draw-required' class='hidden alert alert-warning' role='alert'>{0}<a href='{1}'>{2}</a>"
+                HTML(u"<div id='shared-draw-required' class='hidden alert alert-warning' role='alert'>{0}<a href='{1}'>{2}</a>"
                      "</div>".format(pgettext('[...] to create a shared raffle', 'To use this type of registration you need to create a '),
                                      reverse('create_public_draw', kwargs={'draw_type': self.NAME_IN_URL}),
                                      _('shared raffle'))),
