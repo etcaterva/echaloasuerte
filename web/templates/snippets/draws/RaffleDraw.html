@@ -1,0 +1,11 @@
+<ul class="list-group">
+    {% for winner in results %}
+        <li class="list-group-item col-xs-12">
+            {% if bom.registration_type == bom.FACEBOOK %}
+                {{ winner.0 }} - <a href="//www.facebook.com/{{ winner.1.0 }}">{{ winner.1.1 }}</a>
+            {% else %}
+                {{ winner.0 }} - {{ winner.1 }}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

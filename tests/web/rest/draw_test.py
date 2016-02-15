@@ -2,7 +2,6 @@ import datetime
 
 import pytz
 
-
 try:
     import urllib.parse as urllib
 except ImportError:
@@ -21,8 +20,9 @@ from server.bom.group import GroupsDraw
 from server.bom.random_letter import RandomLetterDraw
 from server.bom.random_number import RandomNumberDraw
 from server.bom.tournament import TournamentDraw
+from server.bom.raffle import RaffleDraw, Participant
 
-
+    
 class DrawResource_ValidateTest(ResourceTestCase):
     urls = 'web.rest_api.urls'
 
@@ -1667,3 +1667,104 @@ class DrawResourceChat_Test(ResourceTestCase):
         })
         print(resp)
         self.assertHttpBadRequest(resp)
+
+
+class DrawResourceRaffle_Test(ResourceTestCase):
+    def setUp(self):
+        super(DrawResourceRaffle_Test, self).setUp()
+        django.setup()
+
+        # mongodb instance
+        self.mongo = mongodb.MongoDriver.instance()
+
+        # base url of the resource
+        self.base_url = '/api/v1/draw/'
+
+    def detail_uri(self, draw):
+        return self.base_url + draw.pk + '/'
+
+    def registration_uri(self, draw):
+        return self.detail_uri(draw) + 'register/'
+
+    def test_post_register_non_existing_raffle(self):
+        registration_uri = self.base_url + '0000000000' + '/register/'
+        resp = self.api_client.post(registration_uri, data={
+            "participant_id": '6546511842313216',
+            "participant_name": 'Juan Cuesta',
+        })
+        self.assertHttpNotFound(resp)
+
+    def test_post_register_non_raffle(self):
+        data = {
+            'title': 'test_draw',
+            'is_shared': True,
+            'sets': [[1, 2], [2, 3]],
+        }
+        draw = LinkSetsDraw(**data)
+        self.mongo.save_draw(draw)
+        resp = self.api_client.post(self.registration_uri(draw), data={
+            "participant_id": '6546511842313216',
+            "participant_name": 'Juan Cuesta',
+        })
+        self.assertHttpBadRequest(resp)
+
+    def test_post_register_restricted_raffle(self):
+        data = {
+            'title': 'test_raffle',
+            'is_shared': True,
+            'registration_type': RaffleDraw.RESTRICTED,
+            'prices': ['price1'],
+        }
+        draw = RaffleDraw(**data)
+        self.mongo.save_draw(draw)
+        registration_uri = self.detail_uri(draw) + 'register/'
+        resp = self.api_client.post(registration_uri, data={
+            "participant_id": '6546511842313216',
+            "participant_name": 'Juan Cuesta',
+
+        })
+        self.assertHttpBadRequest(resp)
+
+    def test_post_register_raffle_ok(self):
+        data = {
+            'title': 'test_raffle',
+            'is_shared': True,
+            'registration_type': RaffleDraw.FACEBOOK,
+            'prices': ['price1'],
+        }
+        draw = RaffleDraw(**data)
+        self.mongo.save_draw(draw)
+        registration_uri = self.detail_uri(draw) + 'register/'
+        participant_id = '6546511842313216'
+        participant_name = 'Juan Cuesta'
+        resp = self.api_client.post(registration_uri, data={
+            "participant_id": participant_id,
+            "participant_name": participant_name,
+
+        })
+        self.assertHttpOK(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(Participant(participant_id, participant_name), draw.participants[0])
+
+    def test_post_register_raffle_twice(self):
+        data = {
+            'title': 'test_raffle',
+            'is_shared': True,
+            'registration_type': RaffleDraw.FACEBOOK,
+            'prices': ['price1'],
+        }
+        draw = RaffleDraw(**data)
+        self.mongo.save_draw(draw)
+        registration_uri = self.detail_uri(draw) + 'register/'
+        participant_id = '6546511842313216'
+        participant_name = 'Juan Cuesta'
+        data = {
+            "participant_id": participant_id,
+            "participant_name": participant_name,
+        }
+        resp = self.api_client.post(registration_uri, data=data)
+        self.assertHttpOK(resp)
+        resp = self.api_client.post(registration_uri, data=data)
+        self.assertHttpNotModified(resp)
+        draw = self.mongo.retrieve_draw(draw.pk)
+        self.assertEqual(1, len(draw.participants))
