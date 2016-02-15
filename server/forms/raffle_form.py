@@ -1,5 +1,5 @@
 from django import forms
-from django.utils.translation import ugettext_lazy as _, pgettext
+from django.utils.translation import ugettext as _, pgettext
 from crispy_forms.layout import Layout, Row, HTML
 from django.core.urlresolvers import reverse
 
@@ -33,12 +33,12 @@ class RaffleDrawForm(FormBase):
         self.helper.field_class = 'col-xs-9'
         self.helper.layout = Layout(
             Row(
-                HTML("<div id='info-comma-separated' class='alert alert-info' role='alert'>"
+                HTML(u"<div id='info-comma-separated' class='alert alert-info' role='alert'>"
                      "{0}</div>".format(_('Separate prices by commas. e.g: Trip to Rome, Luxury dinner, ...'))),
                 'prices',
                 'registration_type',
                 'participants',
-                HTML('<div id="register-raffle-fb" class="hidden text-center">'
+                HTML(u'<div id="register-raffle-fb" class="hidden text-center">'
                      '<img id="register-button" src="http://facebook-app.loyalpanda.com/images/common/fb-login-button_small.png">'
                      '<div id="already-registered" class="hidden alert alert-info"  role="alert">{0}</div>'
                      '</div>'.format(_('You are registered in this raffle'))),
@@ -46,7 +46,7 @@ class RaffleDrawForm(FormBase):
                      "</div>".format(pgettext('[...] to create a shared raffle', 'To use this type of registration you need to create a '),
                                      reverse('create_public_draw', kwargs={'draw_type': self.NAME_IN_URL}),
                                      _('shared raffle'))),
-                HTML("<div id='info-facebook-registration' class='hidden alert alert-info' role='alert'>"
+                HTML(u"<div id='info-facebook-registration' class='hidden alert alert-info' role='alert'>"
                      "{0}</div>".format(_('Once you publish the raffle, you will get a link that you have to share on social networks.'
                                           ' Participants will must access the raffle and share it on facebook to register on it.'))),
             ),
