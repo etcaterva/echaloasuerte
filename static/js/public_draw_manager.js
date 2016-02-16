@@ -135,7 +135,7 @@ PublicDraw.lock_fields = function(locked){
     }else{
         // Remove read-only property to the inputs of the draw
         $protected_fields.removeProp('readonly');
-        $protected_fields.removeProp('title');
+        $protected_fields.prop('title','');
 
         // Remove read-only property to inputs with tokenField
         $protected_fields.tokenfield('writeable');
@@ -285,4 +285,15 @@ PublicDraw.setup = function(options){
     PublicDraw.check_draw_changes();
 
     $('#save-settings').bind("click", PublicDraw.save_settings);
+
+    // Make description box collapsible
+    var $description_area = $('#draw-description-area');
+    var collapsed_height = $description_area.outerHeight();
+    $description_area.focus(function () {
+        var text = document.getElementById('draw-description-area');
+        $(this).animate({ height: text.scrollHeight }, 500);
+    });
+    $description_area.blur(function () {
+        $(this).animate({ height: collapsed_height }, 500);
+    });
 };
