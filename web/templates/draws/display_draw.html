@@ -189,7 +189,7 @@
 
 {% block fb_async %}
     {% if bom.draw_type == "raffle" and bom.registration_type == bom.FACEBOOK %}
-        Raffle.fb_enable_registration();
+        Raffle.fb_enable_registration("{{ bom.registration_requirement }}");
     {% endif %}
 {% endblock fb_async %}
 {% block content %}
