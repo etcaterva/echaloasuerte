@@ -32,12 +32,18 @@ class RaffleDraw(BaseDraw):
     REGISTRATION_CHOICES = ((RESTRICTED, _('Restricted')),
                             (FACEBOOK, _('Facebook')),
                             )
+    LOGIN = 'login'
+    SHARE = 'share'
+    REGISTRATION_REQUIREMENT_CHOICES = ((LOGIN, _('Log in Facebook')),
+                                        (SHARE, _('Share in Facebook')),
+                                        )
+
     TYPES = BaseDraw.TYPES.copy()
     TYPES['prices'] = list
     TYPES['participants'] = list
     TYPES['registration_type'] = string_types
 
-    def __init__(self, prices=None, participants=None, registration_type=None, **kwargs):
+    def __init__(self, prices=None, participants=None, registration_type=None, registration_requirement=None, **kwargs):
         super(RaffleDraw, self).__init__(**kwargs)
 
         self.prices = prices if prices else []
@@ -45,9 +51,13 @@ class RaffleDraw(BaseDraw):
 
         if registration_type == RaffleDraw.FACEBOOK:
             self.participants = [Participant(*participant) for participant in participants] if participants else []
+            """List of participants"""
+            self.registration_requirement = registration_requirement
+            """The action required to register in the draw"""
         else:
             self.participants = participants if participants else []
-        """List of participants"""
+            self.registration_requirement = None
+
 
         self.registration_type = registration_type
 

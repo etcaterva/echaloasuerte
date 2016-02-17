@@ -21,7 +21,7 @@
     {# Open Graph Markup: https://developers.facebook.com/docs/sharing/webmasters#markup #}
     <meta property="og:url"           content="{{ bom|permalink:request }}" />
 	<meta property="og:type"          content="website" />
-	<meta property="og:title"         content="{{ bot.title }}" />
+	<meta property="og:title"         content="{{ bom.title }}" />
 	<meta property="og:description"   content="{{ bom.description }}" />
 	<meta property="og:image"         content="{% static 'img/icon192x192.png' %}" />
     <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
@@ -189,7 +189,7 @@
 
 {% block fb_async %}
     {% if bom.draw_type == "raffle" and bom.registration_type == bom.FACEBOOK %}
-        Raffle.fb_enable_registration();
+        Raffle.fb_enable_registration("{{ bom.registration_requirement }}");
     {% endif %}
 {% endblock fb_async %}
 {% block content %}
@@ -237,9 +237,11 @@
                 <textarea name="title" class="form-control protected autogrow draw-title-area text-center" rows="1">{{ bom.title }}</textarea>
             </div>
             {% if bom.description %}
-            <div class="col-xs-12 col-sm-12 text-center">
-                <p>{{bom.description}}</p>
-            </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
+                        <textarea id="draw-description-area" name="description" class="protected">{{bom.description}}</textarea>
+                    </div>
+                </div>
             {% endif %}
         </div>
         <!-- End Draw Heading -->

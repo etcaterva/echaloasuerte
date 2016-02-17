@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext as _, pgettext
-from crispy_forms.layout import Layout, Row, HTML
+from crispy_forms.layout import Layout, Row, HTML, Div, Field
 from django.core.urlresolvers import reverse
 
 from server.forms import FormBase
@@ -11,6 +11,10 @@ class RaffleDrawForm(FormBase):
     participants = forms.CharField(label=_('Participants'), widget=forms.TextInput(), required=True)
     registration_type = forms.ChoiceField(label=_('Type of registration'), widget=forms.Select(),
                                           choices=RaffleDraw.REGISTRATION_CHOICES, required=True)
+    registration_requirement = forms.ChoiceField(label=_('Requirement to register'),
+                                                 widget=forms.RadioSelect(),
+                                                 choices=RaffleDraw.REGISTRATION_REQUIREMENT_CHOICES,
+                                                 required=True)
 
     DEFAULT_TITLE = _("Raffle")
 
@@ -27,21 +31,28 @@ class RaffleDrawForm(FormBase):
         # Add "protected" class to the input that will be read-only when the draw is shared
         self.fields['prices'].widget.attrs.update({'class': 'protected eas-tokenfield tokenfield-value-label'})
         self.fields['registration_type'].widget.attrs.update({'class': 'protected'})
+        self.fields['registration_requirement'].widget.attrs.update({'class': 'protected'})
         self.fields['participants'].widget.attrs.update({'class': 'protected eas-tokenfield'})
 
         self.helper.label_class = 'col-xs-3'
         self.helper.field_class = 'col-xs-9'
+        if self.initial.get('registration_requirement') == RaffleDraw.SHARE:
+            label_fb_button = _('Share in Facebook to participate')
+        else:
+            label_fb_button = _('Login with Facebook to participate')
+
         self.helper.layout = Layout(
             Row(
                 HTML(u"<div id='info-comma-separated' class='alert alert-info' role='alert'>"
                      "{0}</div>".format(_('Separate prices by commas. e.g: Trip to Rome, Luxury dinner, ...'))),
                 'prices',
                 'registration_type',
+                Field('registration_requirement', wrapper_class="hidden clearfix"),
                 'participants',
                 HTML(u'<div id="register-raffle-fb" class="hidden text-center">'
-                     '<img id="register-button" src="http://facebook-app.loyalpanda.com/images/common/fb-login-button_small.png">'
-                     '<div id="already-registered" class="hidden alert alert-info"  role="alert">{0}</div>'
-                     '</div>'.format(_('You are registered in this raffle'))),
+                     '<a class="btn btn-social btn-facebook"><span class="fa fa-facebook"></span>{0}</a>'
+                     '<div id="already-registered" class="hidden alert alert-info" role="alert">{1}</div>'
+                     '</div>'.format(label_fb_button, _('You are registered in this raffle'))),
                 HTML(u"<div id='shared-draw-required' class='hidden alert alert-warning' role='alert'>{0}<a href='{1}'>{2}</a>"
                      "</div>".format(pgettext('[...] to create a shared raffle', 'To use this type of registration you need to create a '),
                                      reverse('create_public_draw', kwargs={'draw_type': self.NAME_IN_URL}),

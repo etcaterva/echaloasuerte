@@ -5,10 +5,14 @@ Raffle.url_raffle = null;
 /**
  * Show FB registration button and bind the registration event to it
  */
-Raffle.fb_enable_registration = function(){
+Raffle.fb_enable_registration = function(registration_requirement){
     var $fb_register = $('#register-raffle-fb');
     $fb_register.toggleClass('hidden', false);
-    $fb_register.click(Raffle.fb_share_to_participate);
+    if (registration_requirement == 'login'){
+        $fb_register.click(Raffle.fb_login_to_participate);
+    } else if (registration_requirement == 'share') {
+        $fb_register.click(Raffle.fb_share_to_participate);
+    }
 };
 
 Raffle.register_in_server = function(participant_id, participant_name){
@@ -82,6 +86,7 @@ Raffle.setup_creation = function(is_shared){
         $('#div_id_participants').toggleClass('hidden', option_selected != 'restricted');
         if (is_shared){
             $('#info-facebook-registration').toggleClass('hidden', option_selected != 'facebook');
+            $('#div_id_registration_requirement').toggleClass('hidden', option_selected != 'facebook');
             // Disable 'Try' button when creating a shared draw
             $('#try').toggleClass('hidden', option_selected == 'facebook');
         } else {
@@ -94,6 +99,7 @@ Raffle.setup_creation = function(is_shared){
 
 Raffle.setup_display = function(registration_type){
     $('#div_id_registration_type').addClass('hidden');
+    $('#div_id_registration_requirement').addClass('hidden');
     if (registration_type == 'facebook'){
         // Make the 'participants' field read-only
         var $participants = $('#id_participants');
