@@ -22,7 +22,7 @@ class RaffleDrawForm(FormBase):
         if 'initial' in kwargs and 'participants' in kwargs['initial']:
             kwargs['initial']['prices'] = ','.join(kwargs['initial']['prices'])
             if kwargs['initial']['registration_type'] == RaffleDraw.FACEBOOK:
-                participant_names = ['{{{0}:{1}}}'.format(*participant_details) for participant_details in kwargs['initial']['participants']]
+                participant_names = [u'{{{0}:{1}}}'.format(*participant_details) for participant_details in kwargs['initial']['participants']]
             else:
                 participant_names = kwargs['initial']['participants']
             kwargs['initial']['participants'] = ','.join(participant_names)
