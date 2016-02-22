@@ -20,11 +20,11 @@
     {% endspaceless %}" />
     {% if "echaloasuerte" in request.get_host %}
         <meta name="keywords" content="echaloasuerte, suerte, dados, cara, cruz, aleatorio, distribuido, a distancia, azar, echalo, pick, ban, cara o cruz, loteria, random, draw" />
-        <link rel="alternate" hreflang="en" href="//chooserandom.com/" />
     {% else %}
         <meta name="keywords" content="chooserandom, pickforme, luck, dice, tails, head, random, distributed, multiple user, chance, pick, ban, heads or tails, lottery, random, draw" />
-        <link rel="alternate" hreflang="es" href="//echaloasuerte.com/" />
     {% endif %}
+    <link rel="alternate" hreflang="es" href="https://echaloasuerte.com{{request.path}}" />
+    <link rel="alternate" hreflang="en" href="https://chooserandom.com{{request.path}}" />
     <title>{% block title %}{% endblock title %}{% trans 'Choose Random' %}</title>
 
     <!-- Manifest for homescreen android apps -->

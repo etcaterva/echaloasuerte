@@ -88,17 +88,13 @@ def create_draw(request, draw_type, is_public):
 
     is_public = is_public or is_public == 'True'
 
-    if request.method == 'GET':
-        LOG.debug("Serving view to create a draw: {0}".format(draw_type))
-        draw_form = draw_factory.create_form(draw_type,
-                                             initial={'is_shared': is_public})
-        return render(request, 'draws/new_draw.html',
-                      {"draw": draw_form, "is_public": is_public,
-                       "draw_type": draw_type,
-                       "default_title": draw_form.DEFAULT_TITLE})
-    else:
-        LOG.error(
-            "Deprecated draw creation, the api should have been used instead")
+    LOG.debug("Serving view to create a draw: {0}".format(draw_type))
+    draw_form = draw_factory.create_form(draw_type,
+                                            initial={'is_shared': is_public})
+    return render(request, 'draws/new_draw.html',
+                    {"draw": draw_form, "is_public": is_public,
+                    "draw_type": draw_type,
+                    "default_title": draw_form.DEFAULT_TITLE})
 
 
 @time_it
