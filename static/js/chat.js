@@ -120,8 +120,10 @@
             for (var i = 0, length = messages.length; i < length; i++) {
                 var element = messages[i];
                 var entry = this.formatChatEntry(element);
-                $chat.append(entry);
+                $chat.prepend(entry);
             }
+            var $chat_body = this.$element.find('.panel-body');
+            $chat_body.scrollTop($chat.height());
         },
 
         enable: function (enabled) {
