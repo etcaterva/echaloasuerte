@@ -692,15 +692,15 @@ msgstr "Chat"
 
 #: web/templates/draws/display_draw.html:172
 msgid "There was an issue when subscribing to the draw :("
-msgstr "Hubo un problema al subscribirte a la tirada:("
+msgstr "Hubo un problema al subscríbirte a la tirada:("
 
 #: web/templates/draws/display_draw.html:173
 msgid "There was an issue when unsubscribing to the draw :("
-msgstr "Hubo un problema al desubscribirte de la tirada"
+msgstr "Hubo un problema al desubscríbirte de la tirada"
 
 #: web/templates/draws/display_draw.html:175
 msgid "To edit the details go to Settings"
-msgstr "Para editar la tirada ve al panel de configuración"
+msgstr "Para editar la tirada ve al panel de ajustes"
 
 #: web/templates/draws/display_draw.html:200 web/templates/profile.html:191
 #: web/templates/under_construction.html:7
