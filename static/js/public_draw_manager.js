@@ -264,7 +264,7 @@ PublicDraw.setup = function(options){
     $('.datetimepicker').datetimepicker({value:moment().format()});
 
     // When fields are focused, pre-selected its content
-    $('.form-control').click(function() {
+    $('#draw-form').find('.form-control').click(function() {
         var attr = $(this).hasClass('protected');
         if (typeof attr === typeof undefined || attr === false) {
             $(this).select();
