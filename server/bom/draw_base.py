@@ -181,7 +181,10 @@ class BaseDraw(object):
 
     def toss(self):
         """Generates a new result for the draw"""
-        result = {"datetime": get_utc_now(), "items": self.generate_result()}
+        result = {
+            "datetime": get_utc_now(),
+            "items": self.generate_result()
+        }
         self.results.append(result)
         logger.debug("Tossed draw: {0}".format(self))
         logger.info("Generated result: {0}".format(result))
@@ -191,7 +194,7 @@ class BaseDraw(object):
         """Adds a result with a publication time"""
         result = {
             "datetime": get_utc_now(),
-            "items": self.generate_result(),
+            # "items": self.generate_result(), Will be generated in the future
             "publication_datetime": publication_datetime
         }
         self.results.append(result)

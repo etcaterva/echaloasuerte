@@ -1,6 +1,7 @@
 """Definition of views for the website"""
 import logging
 import random
+import datetime
 
 from django.http.response import JsonResponse
 from django.shortcuts import render
@@ -103,7 +104,18 @@ def display_draw(request, draw_id):
     Given a draw id, retrieves it and returns the data required to display it
     """
     bom_draw = MONGO.retrieve_draw(draw_id)
+    now = datetime.datetime.utcnow()
     if bom_draw.check_read_access(request.user):
+        generated_results = False
+        for result in bom_draw.results:
+            if ("publication_datetime" in result and "items" not in result
+                    and now > result["publication_datetime"]):
+                result["items"] = bom_draw.generate_result()
+                generated_results = True
+        if generated_results:
+            LOG.info("Generated results for draw {} as they were scheduled"
+                    .format(bom_draw))
+            MONGO.save_draw(bom_draw)
         draw_data = bom_draw.__dict__.copy()
         draw_form = draw_factory.create_form(bom_draw.draw_type, initial=draw_data)
         return render(request, "draws/display_draw.html",
