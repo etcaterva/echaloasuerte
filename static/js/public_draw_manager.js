@@ -124,22 +124,42 @@ PublicDraw.setup_settings_panel = function () {
  */
 PublicDraw.lock_fields = function(locked){
     var $protected_fields = $('.protected');
+    var $protected_hidden_fields = $('.protected-hidden');
+    var $protected_inputs = $('input.protected');
+    var $protected_buttons = $('button.protected');
+    var $protected_tokenfields = $('input.protected.eas-tokenfield');
     if (locked){
-        // Add read-only property to the inputs of the draw
-        $protected_fields.prop('readonly', true);
+        // Add tooltip to state that they are protected
         $protected_fields.prop('title', PublicDraw.options.msg_tooltip_protected);
 
+        // Hide fields that should not be shown in shared draws
+        $protected_hidden_fields.toggleClass('hidden', true);
+
+        // Add read-only property to the inputs of the draw
+        $protected_inputs.prop('readonly', true);
+
+        // If disabled class to buttons
+        $protected_buttons.toggleClass('disabled', true);
+
         // Add read-only property to inputs with tokenField
-        $protected_fields.tokenfield('readonly');
-        $protected_fields.parent('.tokenfield').attr('readonly', "true");
+        $protected_tokenfields.tokenfield('readonly');
+        $protected_tokenfields.parent('.tokenfield').attr('readonly', "true");
     }else{
-        // Remove read-only property to the inputs of the draw
-        $protected_fields.removeProp('readonly');
+        // Remove the tooltip
         $protected_fields.prop('title','');
 
+        // Show fields that were hidden in shared draws
+        $protected_hidden_fields.toggleClass('hidden', false);
+
+        // Remove read-only property to the inputs of the draw
+        $protected_fields.removeProp('readonly');
+
+        // Remove disabled class from buttons
+        $protected_buttons.toggleClass('disabled', false);
+
         // Remove read-only property to inputs with tokenField
-        $protected_fields.tokenfield('writeable');
-        $protected_fields.parent('.tokenfield').removeAttr('readonly');
+        $protected_tokenfields.tokenfield('writeable');
+        $protected_tokenfields.parent('.tokenfield').removeAttr('readonly');
     }
 };
 

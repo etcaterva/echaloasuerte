@@ -49,8 +49,8 @@ class RaffleDrawForm(FormBase):
                 'registration_type',
                 Field('registration_requirement', wrapper_class="hidden clearfix"),
                 'participants',
-                HTML(u'<div id="register-raffle-fb" class="hidden text-center">'
-                     '<a class="btn btn-social btn-facebook"><span class="fa fa-facebook"></span>{0}</a>'
+                HTML(u'<div class="text-center">'
+                     '<a id="register-raffle-fb" class="hidden btn btn-social btn-facebook"><span class="fa fa-facebook"></span>{0}</a>'
                      '<div id="already-registered" class="hidden alert alert-info" role="alert">{1}</div>'
                      '</div>'.format(label_fb_button, _('You are registered in this raffle'))),
                 HTML(u"<div id='shared-draw-required' class='hidden alert alert-warning' role='alert'>{0}<a href='{1}'>{2}</a>"

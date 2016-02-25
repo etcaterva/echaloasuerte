@@ -267,9 +267,10 @@
                         results.forEach(function(result){
                             points_string += result.join(',') + ';';
                         });
-                        $("#canvas-main").attr('data-points', points_string);
-                        $("#canvas-main").attr('data-url', $("#id_photo_url").val());
-                        draw_canvas($("#canvas-main"));
+                        var $canvas_photo_main = $("#canvas-photo-main");
+                        $canvas_photo_main.attr('data-points', points_string);
+                        $canvas_photo_main.attr('data-url', $("#id_photo_url").val());
+                        draw_canvas($canvas_photo_main);
                     }
                 },
                 'tournament': {
