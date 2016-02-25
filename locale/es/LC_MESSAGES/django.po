@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-21 19:41+0000\n"
+"POT-Creation-Date: 2016-02-21 19:49+0000\n"
 "PO-Revision-Date: 2016-02-14 20:01+0100\n"
 "Last-Translator: Mario Corchero\n"
 "Language-Team: \n"
@@ -122,6 +122,18 @@ msgstr "Conjunto 2"
 #: server/forms/link_sets_form.py:12
 msgid "Link sets"
 msgstr "Lista de conjuntos"
+
+#: server/forms/photo_form.py:9
+msgid "Number of points"
+msgstr "Número de puntos"
+
+#: server/forms/photo_form.py:11
+msgid "Photo URL"
+msgstr "URL de la imagen"
+
+#: server/forms/photo_form.py:14 web/templates/index.html:74
+msgid "Photo Draw"
+msgstr "Imagen Aleatoria"
 
 #: server/forms/raffle_form.py:10
 msgid "Prices"
@@ -492,7 +504,7 @@ msgstr ""
 "    "
 
 #: web/templates/base.html:349 web/templates/base.html.py:421
-#: web/templates/base.html:444 web/templates/index.html:94
+#: web/templates/base.html:444 web/templates/index.html:95
 msgid "Log in"
 msgstr "Acceder"
 
@@ -611,12 +623,12 @@ msgid ""
 "Once again, thank you for your help. Your feedback will be very usefull! :D"
 msgstr "De nuevo, gracias por tu ayuda. Nos es muy útil"
 
-#: web/templates/base.html:589 web/templates/draws/display_draw.html:401
+#: web/templates/base.html:589 web/templates/draws/display_draw.html:402
 msgid "Close"
 msgstr "Cerrar"
 
 #: web/templates/base.html:590 web/templates/base.html.py:592
-#: web/templates/draws/display_draw.html:157
+#: web/templates/draws/display_draw.html:158
 msgid "Send"
 msgstr "Enviar"
 
@@ -624,179 +636,179 @@ msgstr "Enviar"
 msgid "Finish"
 msgstr "Terminar"
 
-#: web/templates/draws/display_draw.html:84
+#: web/templates/draws/display_draw.html:85
 msgid "You need an account to save your favourite draws"
 msgstr "Necesitas una cuenta para guardar tus favoritos"
 
-#: web/templates/draws/display_draw.html:85
+#: web/templates/draws/display_draw.html:86
 msgid "Click on the 'Toss' button to try the draw first"
 msgstr "Haz click en Tirar para probar la tirada"
 
-#: web/templates/draws/display_draw.html:122
-#: web/templates/draws/display_draw.html:294
-#: web/templates/draws/new_draw.html:62 web/templates/draws/new_draw.html:224
+#: web/templates/draws/display_draw.html:123
+#: web/templates/draws/display_draw.html:295
+#: web/templates/draws/new_draw.html:63 web/templates/draws/new_draw.html:225
 msgid "Result"
 msgstr "Resultado"
 
-#: web/templates/draws/display_draw.html:123
-#: web/templates/draws/new_draw.html:63
+#: web/templates/draws/display_draw.html:124
+#: web/templates/draws/new_draw.html:64
 msgid "generated on"
 msgstr "generado el"
 
-#: web/templates/draws/display_draw.html:124
+#: web/templates/draws/display_draw.html:125
 msgid "Warning! The draw was modified after the generation of this result"
 msgstr ""
 "¡Atención! La tirada fué modificada más tarde de la generacion de este "
 "resultado."
 
-#: web/templates/draws/display_draw.html:127
-#: web/templates/draws/new_draw.html:65
+#: web/templates/draws/display_draw.html:128
+#: web/templates/draws/new_draw.html:66
 msgid "head"
 msgstr "cara"
 
-#: web/templates/draws/display_draw.html:128
-#: web/templates/draws/new_draw.html:66
+#: web/templates/draws/display_draw.html:129
+#: web/templates/draws/new_draw.html:67
 msgid "tail"
 msgstr "cruz"
 
-#: web/templates/draws/display_draw.html:150
+#: web/templates/draws/display_draw.html:151
 msgid "Type your message here..."
 msgstr "Escribe tu mensaje aquí..."
 
-#: web/templates/draws/display_draw.html:151
+#: web/templates/draws/display_draw.html:152
 msgid "Type your alias"
 msgstr "Escribe tu alias"
 
-#: web/templates/draws/display_draw.html:152
+#: web/templates/draws/display_draw.html:153
 msgid ""
 "To use the chat you should <a href='#'>login</a> or <a href='#'>register</a>"
 msgstr ""
 "Para user el chat debes <a href='#'>iniciar sesión</a> o <a "
 "href='#'>regístrarte</a>"
 
-#: web/templates/draws/display_draw.html:153
+#: web/templates/draws/display_draw.html:154
 msgid "If not, simply type an Alias that allows others to recognize you"
 msgstr "También puedes escribir un alias para que el resto te reconozca."
 
-#: web/templates/draws/display_draw.html:154
+#: web/templates/draws/display_draw.html:155
 msgid "The alias must have between 2 and 20 characters"
 msgstr "El alias debe tener entre 2 y 20 caracteres"
 
-#: web/templates/draws/display_draw.html:155
+#: web/templates/draws/display_draw.html:156
 msgid "Access chat"
 msgstr "Acceder al chat"
 
-#: web/templates/draws/display_draw.html:156
+#: web/templates/draws/display_draw.html:157
 msgid "Chat"
 msgstr "Chat"
 
-#: web/templates/draws/display_draw.html:172
+#: web/templates/draws/display_draw.html:173
 msgid "There was an issue when subscribing to the draw :("
 msgstr "Hubo un problema al subscríbirte a la tirada:("
 
-#: web/templates/draws/display_draw.html:173
+#: web/templates/draws/display_draw.html:174
 msgid "There was an issue when unsubscribing to the draw :("
 msgstr "Hubo un problema al desubscríbirte de la tirada"
 
-#: web/templates/draws/display_draw.html:175
+#: web/templates/draws/display_draw.html:176
 msgid "To edit the details go to Settings"
 msgstr "Para editar la tirada ve al panel de ajustes"
 
-#: web/templates/draws/display_draw.html:200 web/templates/profile.html:191
+#: web/templates/draws/display_draw.html:201 web/templates/profile.html:191
 #: web/templates/under_construction.html:7
 msgid "back"
 msgstr "atrás"
 
-#: web/templates/draws/display_draw.html:207
+#: web/templates/draws/display_draw.html:208
 msgid "Settings"
 msgstr "Ajustes"
 
-#: web/templates/draws/display_draw.html:212
+#: web/templates/draws/display_draw.html:213
 msgid "Subscribe"
 msgstr "Subscribir"
 
-#: web/templates/draws/display_draw.html:223
+#: web/templates/draws/display_draw.html:224
 msgid "Add draw to favourites"
 msgstr "Añadir tirada a favoritos"
 
-#: web/templates/draws/display_draw.html:226
+#: web/templates/draws/display_draw.html:227
 msgid "Remove from favourites"
 msgstr "Eliminar de favoritos"
 
-#: web/templates/draws/display_draw.html:228
+#: web/templates/draws/display_draw.html:229
 msgid "Add to favourites"
 msgstr "Añadir a favoritos"
 
-#: web/templates/draws/display_draw.html:231
+#: web/templates/draws/display_draw.html:232
 msgid "Create a public one"
 msgstr "Crear tirada compartida"
 
-#: web/templates/draws/display_draw.html:261
-#: web/templates/draws/display_draw.html:264
+#: web/templates/draws/display_draw.html:262
+#: web/templates/draws/display_draw.html:265
 msgid "Toss"
 msgstr "Tirar"
 
-#: web/templates/draws/display_draw.html:265
-#: web/templates/draws/display_draw.html:414
+#: web/templates/draws/display_draw.html:266
+#: web/templates/draws/display_draw.html:415
 msgid "Schedule Toss"
 msgstr "Programar Tirada"
 
-#: web/templates/draws/display_draw.html:270
+#: web/templates/draws/display_draw.html:271
 msgid "Cancel edition"
 msgstr "Cancelar edición"
 
-#: web/templates/draws/display_draw.html:271
+#: web/templates/draws/display_draw.html:272
 msgid "Save changes"
 msgstr "Guardar cambios"
 
-#: web/templates/draws/display_draw.html:276
+#: web/templates/draws/display_draw.html:277
 msgid "The resuls will be automatically shown as soon as they are released"
 msgstr ""
 "Los resultados se mostraran automáticamente en cuanto estén disponibles"
 
-#: web/templates/draws/display_draw.html:297
+#: web/templates/draws/display_draw.html:298
 msgid " published on "
 msgstr " publicada el "
 
-#: web/templates/draws/display_draw.html:300
+#: web/templates/draws/display_draw.html:301
 msgid " generated on "
 msgstr " generado el "
 
-#: web/templates/draws/display_draw.html:308
+#: web/templates/draws/display_draw.html:309
 msgid "This result will be available in "
 msgstr "Este resultado será visible en "
 
-#: web/templates/draws/display_draw.html:335
+#: web/templates/draws/display_draw.html:336
 msgid "Public draw settings"
 msgstr "Configuración de la tirada pública"
 
-#: web/templates/draws/display_draw.html:339
-#: web/templates/draws/display_draw.html:352
+#: web/templates/draws/display_draw.html:340
+#: web/templates/draws/display_draw.html:353
 msgid "Edit draw configuration"
 msgstr "Editar configuración de la tirada"
 
-#: web/templates/draws/display_draw.html:340
-#: web/templates/draws/display_draw.html:365
+#: web/templates/draws/display_draw.html:341
+#: web/templates/draws/display_draw.html:366
 #: web/templates/snippets/snippet_breadcrumb.html:27
 msgid "Invite people"
 msgstr "Invitar personas"
 
-#: web/templates/draws/display_draw.html:341
+#: web/templates/draws/display_draw.html:342
 msgid "Enable chat"
 msgstr "Habilitar chat"
 
-#: web/templates/draws/display_draw.html:345
-#: web/templates/draws/new_draw.html:200 web/templates/profile.html:212
+#: web/templates/draws/display_draw.html:346
+#: web/templates/draws/new_draw.html:201 web/templates/profile.html:212
 #: web/templates/profile.html.py:236 web/templates/profile.html:261
 #: web/templates/profile.html.py:291
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: web/templates/draws/display_draw.html:346 web/templates/profile.html:290
+#: web/templates/draws/display_draw.html:347 web/templates/profile.html:290
 msgid "Save"
 msgstr "Guardar"
 
-#: web/templates/draws/display_draw.html:355
+#: web/templates/draws/display_draw.html:356
 msgid ""
 "If you modify the draw's configuration the spectator will be notified about "
 "these changes. Are you sure you want to continue?"
@@ -804,82 +816,82 @@ msgstr ""
 "Si modificas la configuración de la tirada, el resto de usuarios serán "
 "notificados ¿Estás seguro de continuar?"
 
-#: web/templates/draws/display_draw.html:358
-#: web/templates/draws/display_draw.html:400
-#: web/templates/draws/new_draw.html:125 web/templates/draws/new_draw.html:201
+#: web/templates/draws/display_draw.html:359
+#: web/templates/draws/display_draw.html:401
+#: web/templates/draws/new_draw.html:126 web/templates/draws/new_draw.html:202
 msgid "Back"
 msgstr "Atrás"
 
-#: web/templates/draws/display_draw.html:359
+#: web/templates/draws/display_draw.html:360
 msgid "Edit draw"
 msgstr "Editar la tirada"
 
-#: web/templates/draws/display_draw.html:368
-#: web/templates/draws/new_draw.html:169
+#: web/templates/draws/display_draw.html:369
+#: web/templates/draws/new_draw.html:170
 msgid "Option 1)"
 msgstr "Opción 1)"
 
-#: web/templates/draws/display_draw.html:369
+#: web/templates/draws/display_draw.html:370
 msgid "Share the link to the draw:"
 msgstr "Comparte el enlace de la tirada:"
 
-#: web/templates/draws/display_draw.html:371
-#: web/templates/draws/new_draw.html:172
+#: web/templates/draws/display_draw.html:372
+#: web/templates/draws/new_draw.html:173
 msgid "Option 2)"
 msgstr "Opción 2)"
 
-#: web/templates/draws/display_draw.html:372
+#: web/templates/draws/display_draw.html:373
 msgid "Send an invitation to the emails below"
 msgstr "Enviar una invitación a los correos siguientes:"
 
-#: web/templates/draws/display_draw.html:374
-#: web/templates/draws/new_draw.html:175
+#: web/templates/draws/display_draw.html:375
+#: web/templates/draws/new_draw.html:176
 msgid "Oops!"
 msgstr "Ups!"
 
-#: web/templates/draws/display_draw.html:374
-#: web/templates/draws/new_draw.html:175
+#: web/templates/draws/display_draw.html:375
+#: web/templates/draws/new_draw.html:176
 msgid "One or more emails contain errors..."
 msgstr "Uno o más emails parecen incorrectos..."
 
-#: web/templates/draws/display_draw.html:377
-#: web/templates/draws/new_draw.html:178
+#: web/templates/draws/display_draw.html:378
+#: web/templates/draws/new_draw.html:179
 msgid "Everything went right!"
 msgstr "Todo fue como bien!"
 
-#: web/templates/draws/display_draw.html:377
-#: web/templates/draws/new_draw.html:178
+#: web/templates/draws/display_draw.html:378
+#: web/templates/draws/new_draw.html:179
 msgid "The invitation will arrive soon to these emails."
 msgstr "La invitación llegará en unos momentos a estos correos."
 
-#: web/templates/draws/display_draw.html:379
-#: web/templates/draws/new_draw.html:180
+#: web/templates/draws/display_draw.html:380
+#: web/templates/draws/new_draw.html:181
 msgid "Type the emails here..."
 msgstr "Lista los correos aquí..."
 
-#: web/templates/draws/display_draw.html:380
-#: web/templates/draws/new_draw.html:181
+#: web/templates/draws/display_draw.html:381
+#: web/templates/draws/new_draw.html:182
 msgid "Send emails"
 msgstr "Enviar emails"
 
-#: web/templates/draws/display_draw.html:381
-#: web/templates/draws/new_draw.html:182
+#: web/templates/draws/display_draw.html:382
+#: web/templates/draws/new_draw.html:183
 msgid "Option 3)"
 msgstr "Opción 3)"
 
-#: web/templates/draws/display_draw.html:389
+#: web/templates/draws/display_draw.html:390
 msgid "Who is already invited?"
 msgstr "¿Quién ha sido invitado?"
 
-#: web/templates/draws/display_draw.html:417
+#: web/templates/draws/display_draw.html:418
 msgid "Do you want to schedule the generation of a result?"
 msgstr "¿Quieres programar la generación de un resultado?"
 
-#: web/templates/draws/display_draw.html:418
+#: web/templates/draws/display_draw.html:419
 msgid "This way it will appear automatically."
 msgstr "De esta forma aparecerá automáticamente."
 
-#: web/templates/draws/display_draw.html:422
+#: web/templates/draws/display_draw.html:423
 msgid "Schedule it!"
 msgstr "¡Programa la tirada!"
 
@@ -887,66 +899,66 @@ msgstr "¡Programa la tirada!"
 msgid "(optional)"
 msgstr "(opcional)"
 
-#: web/templates/draws/new_draw.html:128
+#: web/templates/draws/new_draw.html:129
 msgid "Click on the draw title to change it"
 msgstr "Haz clic en el título de la tirada para cambiarlo"
 
-#: web/templates/draws/new_draw.html:137 web/templates/profile.html:305
+#: web/templates/draws/new_draw.html:138 web/templates/profile.html:305
 msgid "Title"
 msgstr "Título"
 
-#: web/templates/draws/new_draw.html:139
+#: web/templates/draws/new_draw.html:140
 msgid "i.e 'Lottery 2015'"
 msgstr "ej: 'Lotería 2015'"
 
-#: web/templates/draws/new_draw.html:143
+#: web/templates/draws/new_draw.html:144
 msgid "Description (optional)"
 msgstr "Descripción (opcional)"
 
-#: web/templates/draws/new_draw.html:145
+#: web/templates/draws/new_draw.html:146
 msgid "Type a description here..."
 msgstr "Describe la tirada aquí..."
 
-#: web/templates/draws/new_draw.html:166
+#: web/templates/draws/new_draw.html:167
 msgid "Your draw is online now"
 msgstr "La tiarada esta online ahora"
 
-#: web/templates/draws/new_draw.html:167
+#: web/templates/draws/new_draw.html:168
 msgid ":D"
 msgstr ":D"
 
-#: web/templates/draws/new_draw.html:168
+#: web/templates/draws/new_draw.html:169
 msgid ""
 "Use any of the methods below to invite people to join and see the results."
 msgstr ""
 "Utiliza cualquiera de los métodos a continuación para invitar a mas personas "
 "a la tirada."
 
-#: web/templates/draws/new_draw.html:170
+#: web/templates/draws/new_draw.html:171
 msgid "Send this link to anyone you wish to invite"
 msgstr "Envía este enlace a cualquier persona que desees invitar"
 
-#: web/templates/draws/new_draw.html:173
+#: web/templates/draws/new_draw.html:174
 msgid "Type their e-mails here to automatically send them an invitation"
 msgstr "Añade emails para enviarles una invitación automáticamente"
 
-#: web/templates/draws/new_draw.html:195
+#: web/templates/draws/new_draw.html:196
 msgid "Try it!"
 msgstr "¡Pruébala!"
 
-#: web/templates/draws/new_draw.html:202
+#: web/templates/draws/new_draw.html:203
 msgid "Configure draw"
 msgstr "Configurar tirada"
 
-#: web/templates/draws/new_draw.html:203
+#: web/templates/draws/new_draw.html:204
 msgid "Publish draw"
 msgstr "Publicar tirada"
 
-#: web/templates/draws/new_draw.html:204
+#: web/templates/draws/new_draw.html:205
 msgid "Go to the draw"
 msgstr "Llévame a la tirada"
 
-#: web/templates/draws/new_draw.html:209
+#: web/templates/draws/new_draw.html:210
 msgid "Toss!"
 msgstr "¡Tirar!"
 
@@ -1075,11 +1087,15 @@ msgstr "¿Toca limpiar la casa? Reparte las tareas con tus compañeros"
 msgid "Just hit the spinner and you say the meaning!"
 msgstr "¡Pincha en la flecha y tu decides el significado!"
 
-#: web/templates/index.html:83
+#: web/templates/index.html:74
+msgid "Just make a photo and we'll choose some points from it!"
+msgstr "Elige una foto y te indicamos puntos aleatorios en ella!"
+
+#: web/templates/index.html:84
 msgid "May I say something?"
 msgstr "¿Puedo dar un consejo?"
 
-#: web/templates/index.html:86
+#: web/templates/index.html:87
 msgid ""
 "I've seen that you are not logged in.<br> Logging in has several benefits "
 "when creating a shared draw:"
@@ -1087,39 +1103,39 @@ msgstr ""
 "Parece que no estás registrado.<br> Los usuarios registrados tienen varios "
 "beneficios cuando crean tiradas públicas: "
 
-#: web/templates/index.html:88
+#: web/templates/index.html:89
 msgid "Only you can toss"
 msgstr "Sólo tu puedes tirar"
 
-#: web/templates/index.html:89
+#: web/templates/index.html:90
 msgid "Only you can edit the details of the draw"
 msgstr "Nadie más puede editar los detalles de la tirada"
 
-#: web/templates/index.html:90
+#: web/templates/index.html:91
 msgid "Only you can invite or remove people"
 msgstr "Sólo tu puedes invitar a gente"
 
-#: web/templates/index.html:91
+#: web/templates/index.html:92
 msgid "The draw will be in your history for future access"
 msgstr "La tirada permanecerá en tu historial para facilitar el acceso"
 
-#: web/templates/index.html:96
+#: web/templates/index.html:97
 msgid "Don't you have an account yet?"
 msgstr "¿Aún no tienes cuenta?"
 
-#: web/templates/index.html:97
+#: web/templates/index.html:98
 msgid "It takes only 30 seconds, and <strong>it's totally FREE!</strong>"
 msgstr "Sólo tardarás 30 segundos, y <strong>es totalmente GRATIS!</strong>"
 
-#: web/templates/index.html:98
+#: web/templates/index.html:99
 msgid "Create an account"
 msgstr "Crea una cuenta"
 
-#: web/templates/index.html:103
+#: web/templates/index.html:104
 msgid "No thanks, I know what I'm doing"
 msgstr "No gracias, sé lo que hago"
 
-#: web/templates/index.html:115
+#: web/templates/index.html:116
 msgid "Let the luck decide!"
 msgstr "¡Deja que la suerte decida!"
 

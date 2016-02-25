@@ -1,5 +1,7 @@
 ;(function ($) {
-
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
     jQuery.fn.extend({
 
         /**
@@ -247,6 +249,28 @@
                         });
                         html += '</ul>';
                         return html;
+                    }
+                },
+                'photo': {
+                    'render': function(results){
+                        var num_id = getRandomInt(400, 1000000000);
+                        var html = '<canvas id="canvas' + num_id + '" width="0" height="0" data-url="' + $("#id_photo_url").val()  + '" data-points="';
+                        results.forEach(function(result){
+                            html += result.join(',') + ';';
+                        });
+                        html += '"></canvas>';
+                        html += '<script>draw_canvas($("#canvas'+ num_id +'"))</script>';
+                        return html;
+                    },
+                    'animate': function (results) {
+                        points_string = ''
+                        results.forEach(function(result){
+                            points_string += result.join(',') + ';';
+                        });
+                        var $canvas_photo_main = $("#canvas-photo-main");
+                        $canvas_photo_main.attr('data-points', points_string);
+                        $canvas_photo_main.attr('data-url', $("#id_photo_url").val());
+                        draw_canvas($canvas_photo_main);
                     }
                 },
                 'tournament': {

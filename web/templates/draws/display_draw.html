@@ -40,7 +40,10 @@
     <script src="{% static 'js/coin.js' %}"></script>
     <script src="{% static 'js/dice.js' %}"></script>
     <script src="{% static 'js/raffle.js' %}"></script>
+    <script src="{% static 'js/photo.js' %}"></script>
     <script src="{% static 'js/draw_manager.js' %}"></script>
+    <script src="{% static 'js/csphotoselector.js' %}"></script>
+    <link href="{% static 'css/csphotoselector.css' %}" rel="stylesheet">
     {% if bom.is_shared %}
         <script src="{% static 'js/public_draw_manager.js' %}"></script>
         <script src="{% static 'js/chat.js' %}"></script>
@@ -188,7 +191,11 @@
 {% endblock extra_jq_ready %}
 
 {% block fb_async %}
-    {% if bom.draw_type == "raffle" and bom.registration_type == bom.FACEBOOK %}
+    {% if bom.draw_type == "photo" %}
+        var $fetch_fb_photos = $('#fetch-fb-photos');
+		$fetch_fb_photos.click(fetch_fb_photos);
+		$fetch_fb_photos.toggleClass('hidden', {{ bom.is_shared|yesno:"true,false" }});
+    {% elif bom.draw_type == "raffle" and bom.registration_type == bom.FACEBOOK %}
         Raffle.fb_enable_registration("{{ bom.registration_requirement }}");
     {% endif %}
 {% endblock fb_async %}
@@ -245,7 +252,6 @@
             {% endif %}
         </div>
         <!-- End Draw Heading -->
-
         <div class="col-sm-8 col-sm-offset-2">
             <div id="general-errors" class="alert alert-danger hidden" role="alert">
                 <span class="fa fa-exclamation-triangle " aria-hidden="true"></span>
@@ -425,6 +431,10 @@
             </div>
         </div>
     {% endif %}
+    {% if bom.draw_type == "photo" %}
+        {% include 'snippets/fb_photo_selector.html' %}
+    {% endif %}
+
 {% endblock content %}
 
 {% block right_column %}
