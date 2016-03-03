@@ -336,9 +336,13 @@
             var $results = $('#results').find('.accordion');
 
             // Add the new result to the accordion
+            var result_datetime = result.datetime;
+            if(moment) {
+                result_datetime = moment(moment.utc(result.datetime).toDate()).format("DD MMM YYYY, HH:mm:ss ");
+            }
             var result_html =   '<p class="h3">' + this.options.msg_result +
                                 '       <small class="result-timestamp hidden-xs">' +
-                                '       ' + this.options.msg_generated_on + ' ' + result.datetime +
+                                '       ' + this.options.msg_generated_on + ' ' + result_datetime +
                                 '   </small>' +
                                 '</p>' +
                                 '<div class="result">';
