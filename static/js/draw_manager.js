@@ -106,7 +106,7 @@
             url_schedule_toss: "",
             msg_result: "Result",
             spinner_image_url: "",
-            msg_generated_on: "generated on",
+            msg_generated_on: "generated",
             updated_callback: function() {},
             msg_audit: "Warning! The draw was modified after the generation of this result",
             translations: {
@@ -338,9 +338,10 @@
             // Add the new result to the accordion
             var result_datetime = result.datetime;
             if(moment) {
-                result_datetime = moment(moment.utc(result.datetime).toDate()).format("DD MMM YYYY, HH:mm:ss ");
+                result_datetime = moment.utc(result.datetime).fromNow()
             }
             var result_html =   '<p class="h3">' + this.options.msg_result +
+                                '       <small class="visible-xs-inline">' + result_datetime + '</small>' +
                                 '       <small class="result-timestamp hidden-xs">' +
                                 '       ' + this.options.msg_generated_on + ' ' + result_datetime +
                                 '   </small>' +

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-21 19:41+0000\n"
+"POT-Creation-Date: 2016-03-04 23:05+0000\n"
 "PO-Revision-Date: 2016-02-14 20:01+0100\n"
 "Last-Translator: Mario Corchero\n"
 "Language-Team: \n"
@@ -640,8 +640,8 @@ msgstr "Resultado"
 
 #: web/templates/draws/display_draw.html:123
 #: web/templates/draws/new_draw.html:63
-msgid "generated on"
-msgstr "generado el"
+msgid "generated"
+msgstr "generado"
 
 #: web/templates/draws/display_draw.html:124
 msgid "Warning! The draw was modified after the generation of this result"
@@ -755,12 +755,12 @@ msgstr ""
 "Los resultados se mostraran automáticamente en cuanto estén disponibles"
 
 #: web/templates/draws/display_draw.html:297
-msgid " published on "
-msgstr " publicada el "
+msgid " published "
+msgstr " publicada "
 
 #: web/templates/draws/display_draw.html:300
-msgid " generated on "
-msgstr " generado el "
+msgid " generated "
+msgstr " generado "
 
 #: web/templates/draws/display_draw.html:308
 msgid "This result will be available in "

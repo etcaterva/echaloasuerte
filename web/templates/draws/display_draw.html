@@ -120,7 +120,7 @@
         url_update: "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
         url_schedule_toss: "{% url 'api_draw_schedule' api_name="v1" pk=bom.pk schedule="ts_placeholder"%}",
         msg_result: "{% trans "Result" %}",
-        msg_generated_on: "{% trans "generated on" %}",
+        msg_generated_on: "{% trans "generated" %}",
         msg_audit: "{% trans "Warning! The draw was modified after the generation of this result" %}",
         spinner_image_url: "{% static 'img/draw_icons/spinner.svg' %}",
         translations: {
@@ -294,10 +294,10 @@
                             {%trans 'Result' %}{{results|length|pluralize}}
                             {% if result.publication_datetime and not result.publication_datetime|is_future %}
                                 <small class="visible-xs-inline">{{result.publication_datetime|naturaltime}}</small>
-                                <small class="result-timestamp hidden-xs">{%trans ' published on '%}{{result.publication_datetime|date:"d M Y, H:i:s"}}</small>
+                                <small class="result-timestamp hidden-xs">{%trans ' published '%}{{result.publication_datetime|naturaltime}}</small>
                             {%else%}
                                 <small class="visible-xs-inline">{{result.datetime|naturaltime}}</small>
-                                <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                                <small class="result-timestamp hidden-xs">{%trans ' generated '%}{{result.datetime|naturaltime}}</small>
                             {%endif%}
                             {% if bom.audit and bom.audit.0 and bom.audit.0.datetime > result.datetime %}
                             <i class="fa fa-exclamation-triangle eas-tooltip" title="Warning! The draw was modified after the generation of this result."></i>
