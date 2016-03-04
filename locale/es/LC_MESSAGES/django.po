@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-04 23:05+0000\n"
+"POT-Creation-Date: 2016-03-04 23:44+0000\n"
 "PO-Revision-Date: 2016-02-14 20:01+0100\n"
 "Last-Translator: Mario Corchero\n"
 "Language-Team: \n"
@@ -611,7 +611,7 @@ msgid ""
 "Once again, thank you for your help. Your feedback will be very usefull! :D"
 msgstr "De nuevo, gracias por tu ayuda. Nos es muy útil"
 
-#: web/templates/base.html:589 web/templates/draws/display_draw.html:401
+#: web/templates/base.html:589 web/templates/draws/display_draw.html:405
 msgid "Close"
 msgstr "Cerrar"
 
@@ -737,7 +737,7 @@ msgid "Toss"
 msgstr "Tirar"
 
 #: web/templates/draws/display_draw.html:265
-#: web/templates/draws/display_draw.html:414
+#: web/templates/draws/display_draw.html:418
 msgid "Schedule Toss"
 msgstr "Programar Tirada"
 
@@ -758,45 +758,45 @@ msgstr ""
 msgid " published "
 msgstr " publicada "
 
-#: web/templates/draws/display_draw.html:300
+#: web/templates/draws/display_draw.html:302
 msgid " generated "
 msgstr " generado "
 
-#: web/templates/draws/display_draw.html:308
-msgid "This result will be available in "
-msgstr "Este resultado será visible en "
+#: web/templates/draws/display_draw.html:312
+msgid "This result will be available "
+msgstr "Este resultado será visible "
 
-#: web/templates/draws/display_draw.html:335
+#: web/templates/draws/display_draw.html:339
 msgid "Public draw settings"
 msgstr "Configuración de la tirada pública"
 
-#: web/templates/draws/display_draw.html:339
-#: web/templates/draws/display_draw.html:352
+#: web/templates/draws/display_draw.html:343
+#: web/templates/draws/display_draw.html:356
 msgid "Edit draw configuration"
 msgstr "Editar configuración de la tirada"
 
-#: web/templates/draws/display_draw.html:340
-#: web/templates/draws/display_draw.html:365
+#: web/templates/draws/display_draw.html:344
+#: web/templates/draws/display_draw.html:369
 #: web/templates/snippets/snippet_breadcrumb.html:27
 msgid "Invite people"
 msgstr "Invitar personas"
 
-#: web/templates/draws/display_draw.html:341
+#: web/templates/draws/display_draw.html:345
 msgid "Enable chat"
 msgstr "Habilitar chat"
 
-#: web/templates/draws/display_draw.html:345
+#: web/templates/draws/display_draw.html:349
 #: web/templates/draws/new_draw.html:200 web/templates/profile.html:212
 #: web/templates/profile.html.py:236 web/templates/profile.html:261
 #: web/templates/profile.html.py:291
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: web/templates/draws/display_draw.html:346 web/templates/profile.html:290
+#: web/templates/draws/display_draw.html:350 web/templates/profile.html:290
 msgid "Save"
 msgstr "Guardar"
 
-#: web/templates/draws/display_draw.html:355
+#: web/templates/draws/display_draw.html:359
 msgid ""
 "If you modify the draw's configuration the spectator will be notified about "
 "these changes. Are you sure you want to continue?"
@@ -804,82 +804,82 @@ msgstr ""
 "Si modificas la configuración de la tirada, el resto de usuarios serán "
 "notificados ¿Estás seguro de continuar?"
 
-#: web/templates/draws/display_draw.html:358
-#: web/templates/draws/display_draw.html:400
+#: web/templates/draws/display_draw.html:362
+#: web/templates/draws/display_draw.html:404
 #: web/templates/draws/new_draw.html:125 web/templates/draws/new_draw.html:201
 msgid "Back"
 msgstr "Atrás"
 
-#: web/templates/draws/display_draw.html:359
+#: web/templates/draws/display_draw.html:363
 msgid "Edit draw"
 msgstr "Editar la tirada"
 
-#: web/templates/draws/display_draw.html:368
+#: web/templates/draws/display_draw.html:372
 #: web/templates/draws/new_draw.html:169
 msgid "Option 1)"
 msgstr "Opción 1)"
 
-#: web/templates/draws/display_draw.html:369
+#: web/templates/draws/display_draw.html:373
 msgid "Share the link to the draw:"
 msgstr "Comparte el enlace de la tirada:"
 
-#: web/templates/draws/display_draw.html:371
+#: web/templates/draws/display_draw.html:375
 #: web/templates/draws/new_draw.html:172
 msgid "Option 2)"
 msgstr "Opción 2)"
 
-#: web/templates/draws/display_draw.html:372
+#: web/templates/draws/display_draw.html:376
 msgid "Send an invitation to the emails below"
 msgstr "Enviar una invitación a los correos siguientes:"
 
-#: web/templates/draws/display_draw.html:374
+#: web/templates/draws/display_draw.html:378
 #: web/templates/draws/new_draw.html:175
 msgid "Oops!"
 msgstr "Ups!"
 
-#: web/templates/draws/display_draw.html:374
+#: web/templates/draws/display_draw.html:378
 #: web/templates/draws/new_draw.html:175
 msgid "One or more emails contain errors..."
 msgstr "Uno o más emails parecen incorrectos..."
 
-#: web/templates/draws/display_draw.html:377
+#: web/templates/draws/display_draw.html:381
 #: web/templates/draws/new_draw.html:178
 msgid "Everything went right!"
 msgstr "Todo fue como bien!"
 
-#: web/templates/draws/display_draw.html:377
+#: web/templates/draws/display_draw.html:381
 #: web/templates/draws/new_draw.html:178
 msgid "The invitation will arrive soon to these emails."
 msgstr "La invitación llegará en unos momentos a estos correos."
 
-#: web/templates/draws/display_draw.html:379
+#: web/templates/draws/display_draw.html:383
 #: web/templates/draws/new_draw.html:180
 msgid "Type the emails here..."
 msgstr "Lista los correos aquí..."
 
-#: web/templates/draws/display_draw.html:380
+#: web/templates/draws/display_draw.html:384
 #: web/templates/draws/new_draw.html:181
 msgid "Send emails"
 msgstr "Enviar emails"
 
-#: web/templates/draws/display_draw.html:381
+#: web/templates/draws/display_draw.html:385
 #: web/templates/draws/new_draw.html:182
 msgid "Option 3)"
 msgstr "Opción 3)"
 
-#: web/templates/draws/display_draw.html:389
+#: web/templates/draws/display_draw.html:393
 msgid "Who is already invited?"
 msgstr "¿Quién ha sido invitado?"
 
-#: web/templates/draws/display_draw.html:417
+#: web/templates/draws/display_draw.html:421
 msgid "Do you want to schedule the generation of a result?"
 msgstr "¿Quieres programar la generación de un resultado?"
 
-#: web/templates/draws/display_draw.html:418
+#: web/templates/draws/display_draw.html:422
 msgid "This way it will appear automatically."
 msgstr "De esta forma aparecerá automáticamente."
 
-#: web/templates/draws/display_draw.html:422
+#: web/templates/draws/display_draw.html:426
 msgid "Schedule it!"
 msgstr "¡Programa la tirada!"
 

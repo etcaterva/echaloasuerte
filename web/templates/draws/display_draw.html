@@ -293,11 +293,15 @@
                         <p class="h3">
                             {%trans 'Result' %}{{results|length|pluralize}}
                             {% if result.publication_datetime and not result.publication_datetime|is_future %}
-                                <small class="visible-xs-inline">{{result.publication_datetime|naturaltime}}</small>
-                                <small class="result-timestamp hidden-xs">{%trans ' published '%}{{result.publication_datetime|naturaltime}}</small>
+                            <small class="result-timestamp">
+                                <span class="hidden-xs">{%trans ' published '%}</span>
+                                <span class="relative-time" data-value="{{result.publication_datetime|date:"c"}}">{{result.publication_datetime|naturaltime}}</span>
+                            </small>
                             {%else%}
-                                <small class="visible-xs-inline">{{result.datetime|naturaltime}}</small>
-                                <small class="result-timestamp hidden-xs">{%trans ' generated '%}{{result.datetime|naturaltime}}</small>
+                            <small class="result-timestamp">
+                                <span class="hidden-xs">{%trans ' generated '%}</span>
+                                <span class="relative-time" data-value="{{result.datetime|date:"c"}}">{{result.datetime|naturaltime}}</span>
+                            </small>
                             {%endif%}
                             {% if bom.audit and bom.audit.0 and bom.audit.0.datetime > result.datetime %}
                             <i class="fa fa-exclamation-triangle eas-tooltip" title="Warning! The draw was modified after the generation of this result."></i>
@@ -305,7 +309,7 @@
                         </p>
                         <div class="result">
                             {% if result.publication_datetime and result.publication_datetime|is_future %}
-                                <p>{% trans 'This result will be available in '%}{{result.publication_datetime|naturaltime}}</p>
+                            <p>{% trans 'This result will be available '%}<span class="relative-time" data-value="{{result.publication_datetime|date:"c"}}">loading...</span></p>
                             {% else %}
                                 {% include draw.TEMPLATE_PATH %}
                             {% endif %}

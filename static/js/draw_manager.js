@@ -336,15 +336,11 @@
             var $results = $('#results').find('.accordion');
 
             // Add the new result to the accordion
-            var result_datetime = result.datetime;
-            if(moment) {
-                result_datetime = moment.utc(result.datetime).fromNow()
-            }
             var result_html =   '<p class="h3">' + this.options.msg_result +
-                                '       <small class="visible-xs-inline">' + result_datetime + '</small>' +
-                                '       <small class="result-timestamp hidden-xs">' +
-                                '       ' + this.options.msg_generated_on + ' ' + result_datetime +
-                                '   </small>' +
+                                '<small class="result-timestamp">' +
+                                '   <span class="hidden-xs">' + this.options.msg_generated_on + '</span>' +
+                                '   <span class="relative-time" data-value="' + result.datetime + '">loading..</span>' +
+                                '</small>' +
                                 '</p>' +
                                 '<div class="result">';
             result_html += callbacks.render(result.items) + '</div>';
@@ -669,6 +665,17 @@
             $('.help-block.with-errors').remove();
         }
     };
+
+
+    /**Refresh result datetimes**/
+    function updateResultsTime(resultDatetime) {
+        $(".relative-time").each(function(){
+            var resultTime = $(this).attr('data-value');
+            resultTime = moment.utc(resultTime).fromNow();
+            $(this).html(resultTime);
+        });
+    }
+    setInterval(updateResultsTime, 500);
 
     /*********************************
      *   DRAW MANAGER PLUGIN DEFINITION
