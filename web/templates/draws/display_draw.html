@@ -49,6 +49,7 @@
     {% endif %}
 {% endblock extra_head %}
 {% block extra_jq_ready %}
+    moment.locale('{%if "echaloasuerte" in request.get_host%}es{%else%}en{%endif%}');
     $('.eas-tokenfield').tokenfield({createTokensOnBlur:true});
     {% if bom.draw_type == "coin" %}
         var base_url = '{{ STATIC_URL }}' + "img/img_coin/";
