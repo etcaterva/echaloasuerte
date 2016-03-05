@@ -22,7 +22,7 @@ from server.bom.random_number import RandomNumberDraw
 from server.bom.tournament import TournamentDraw
 from server.bom.raffle import RaffleDraw, Participant
 
-    
+
 class DrawResource_ValidateTest(ResourceTestCase):
     urls = 'web.rest_api.urls'
 
@@ -1088,7 +1088,7 @@ class DrawResourceToss_Test(ResourceTestCase):
         resp = self.schedule_toss(draw, '2015-10-21T00:00:00Z')
         print(resp)
         self.assertHttpOK(resp)
-        self.assertEqual([1, 2], self.deserialize(resp)['items'][0])
+        self.assertTrue('items' not in self.deserialize(resp))
         self.assertEqual('2015-10-21T00:00:00',
                          self.deserialize(resp)['publication_datetime'])
         draw = self.mongo.retrieve_draw(draw.pk)
