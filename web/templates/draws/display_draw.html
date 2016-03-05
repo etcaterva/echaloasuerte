@@ -120,7 +120,7 @@
         url_update: "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
         url_schedule_toss: "{% url 'api_draw_schedule' api_name="v1" pk=bom.pk schedule="ts_placeholder"%}",
         msg_result: "{% trans "Result" %}",
-        msg_generated_on: "{% trans "generated on" %}",
+        msg_generated_on: "{% trans "generated" %}",
         msg_audit: "{% trans "Warning! The draw was modified after the generation of this result" %}",
         spinner_image_url: "{% static 'img/draw_icons/spinner.svg' %}",
         translations: {
@@ -293,11 +293,15 @@
                         <p class="h3">
                             {%trans 'Result' %}{{results|length|pluralize}}
                             {% if result.publication_datetime and not result.publication_datetime|is_future %}
-                                <small class="visible-xs-inline">{{result.publication_datetime|naturaltime}}</small>
-                                <small class="result-timestamp hidden-xs">{%trans ' published on '%}{{result.publication_datetime|date:"d M Y, H:i:s"}}</small>
+                            <small class="result-timestamp">
+                                <span class="hidden-xs">{%trans ' published '%}</span>
+                                <span class="relative-time" data-value="{{result.publication_datetime|date:"c"}}">{{result.publication_datetime|naturaltime}}</span>
+                            </small>
                             {%else%}
-                                <small class="visible-xs-inline">{{result.datetime|naturaltime}}</small>
-                                <small class="result-timestamp hidden-xs">{%trans ' generated on '%}{{result.datetime|date:"d M Y, H:i:s"}}</small>
+                            <small class="result-timestamp">
+                                <span class="hidden-xs">{%trans ' generated '%}</span>
+                                <span class="relative-time" data-value="{{result.datetime|date:"c"}}">{{result.datetime|naturaltime}}</span>
+                            </small>
                             {%endif%}
                             {% if bom.audit and bom.audit.0 and bom.audit.0.datetime > result.datetime %}
                             <i class="fa fa-exclamation-triangle eas-tooltip" title="Warning! The draw was modified after the generation of this result."></i>
@@ -305,7 +309,7 @@
                         </p>
                         <div class="result">
                             {% if result.publication_datetime and result.publication_datetime|is_future %}
-                                <p>{% trans 'This result will be available in '%}{{result.publication_datetime|naturaltime}}</p>
+                            <p>{% trans 'This result will be available '%}<span class="relative-time" data-value="{{result.publication_datetime|date:"c"}}">loading...</span></p>
                             {% else %}
                                 {% include draw.TEMPLATE_PATH %}
                             {% endif %}

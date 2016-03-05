@@ -119,9 +119,14 @@ class BaseDraw(object):
                            "passed as argument! Fix it!"
                            .format(draw_type, self.draw_type))
         if self.last_updated_time.tzinfo is None:
-            self.last_updated_time.replace(tzinfo=pytz.utc)
+            self.last_updated = self.last_updated_time.replace(tzinfo=pytz.utc)
         if self.creation_time.tzinfo is None:
-            self.creation_time.replace(tzinfo=pytz.utc)
+            self.creation_time = self.creation_time.replace(tzinfo=pytz.utc)
+        for result in self.results:
+            if "datetime" in result:
+                result["datetime"] = result["datetime"].replace(tzinfo=pytz.utc)
+            if "publication_datetime" in result:
+                result["publication_datetime"] = result["publication_datetime"].replace(tzinfo=pytz.utc)
 
     @property
     def pk(self):
