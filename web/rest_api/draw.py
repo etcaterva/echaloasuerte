@@ -15,6 +15,8 @@ from server import mongodb, draw_factory, bom
 LOG = logging.getLogger('echaloasuerte.rest')
 
 
+# TODO at the moment scheduled draws are generated only when they are retrieved through
+# the view
 class DrawResource(resources.Resource):
     """Generic resource for draws.
 
