@@ -118,15 +118,18 @@ class BaseDraw(object):
             logger.warning("A draw was built with type {0} but type {1} was "
                            "passed as argument! Fix it!"
                            .format(draw_type, self.draw_type))
-        if self.last_updated_time.tzinfo is None:
-            self.last_updated = self.last_updated_time.replace(tzinfo=pytz.utc)
-        if self.creation_time.tzinfo is None:
-            self.creation_time = self.creation_time.replace(tzinfo=pytz.utc)
-        for result in self.results:
-            if "datetime" in result:
-                result["datetime"] = result["datetime"].replace(tzinfo=pytz.utc)
-            if "publication_datetime" in result:
-                result["publication_datetime"] = result["publication_datetime"].replace(tzinfo=pytz.utc)
+        try:
+            if self.last_updated_time.tzinfo is None:
+                self.last_updated = self.last_updated_time.replace(tzinfo=pytz.utc)
+            if self.creation_time.tzinfo is None:
+                self.creation_time = self.creation_time.replace(tzinfo=pytz.utc)
+            for result in self.results:
+                if "datetime" in result:
+                    result["datetime"] = result["datetime"].replace(tzinfo=pytz.utc)
+                if "publication_datetime" in result:
+                    result["publication_datetime"] = result["publication_datetime"].replace(tzinfo=pytz.utc)
+        except TypeError:
+            pass  # Some old draw have the time encoded as a string
 
     @property
     def pk(self):
