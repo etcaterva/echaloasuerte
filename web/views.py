@@ -2,6 +2,7 @@
 import logging
 import random
 import datetime
+import pytz
 
 from django.http.response import JsonResponse
 from django.shortcuts import render
@@ -104,7 +105,7 @@ def display_draw(request, draw_id):
     Given a draw id, retrieves it and returns the data required to display it
     """
     bom_draw = MONGO.retrieve_draw(draw_id)
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
     if bom_draw.check_read_access(request.user):
         generated_results = False
         for result in bom_draw.results:
