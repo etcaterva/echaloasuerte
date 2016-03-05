@@ -354,6 +354,7 @@
             if (callbacks.animate){
                 callbacks.animate(result.items);
             }
+            updateResultsTime();
         },
 
         /**
@@ -675,7 +676,7 @@
             $(this).html(resultTime);
         });
     }
-    setInterval(updateResultsTime, 500);
+    setInterval(updateResultsTime, 5000);
 
     /*********************************
      *   DRAW MANAGER PLUGIN DEFINITION
