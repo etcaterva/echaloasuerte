@@ -76,9 +76,9 @@ class RaffleDraw(BaseDraw):
 
     def register_participant(self, new_participant):
         if self.registration_type != self.FACEBOOK:
-            raise RaffleDraw.RegistrationError()
+            raise RaffleDraw.RegistrationError("Canot register in a non FB draw")
         if any(participant.id == new_participant.id for participant in self.participants):
-            raise RaffleDraw.AlreadyRegisteredError()
+            raise RaffleDraw.AlreadyRegisteredError("User already registered")
         self.participants.append(new_participant)
 
 
