@@ -70,7 +70,7 @@ def create_form(draw_type, *args, **kwargs):
     :return: Form that inherits from DrawFormBase
     """
     if draw_type not in REGISTRY:
-        raise DrawNotRegistered()
+        raise DrawNotRegistered(draw_type)
 
     form_class = REGISTRY[draw_type]["form"]
     form = form_class(*args, **kwargs)
@@ -86,7 +86,7 @@ def create_draw(draw_type, draw_data=None):
     :rtype: BaseDraw
     """
     if draw_type not in REGISTRY:
-        raise DrawNotRegistered()
+        raise DrawNotRegistered(draw_type)
 
     bom_class = REGISTRY[draw_type]["bom"]
     if draw_data:

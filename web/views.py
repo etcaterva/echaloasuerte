@@ -5,6 +5,7 @@ import datetime
 import pytz
 
 from django.http.response import JsonResponse
+from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
@@ -91,8 +92,11 @@ def create_draw(request, draw_type, is_public):
     is_public = is_public or is_public == 'True'
 
     LOG.debug("Serving view to create a draw: {0}".format(draw_type))
-    draw_form = draw_factory.create_form(draw_type,
+    try:
+        draw_form = draw_factory.create_form(draw_type,
                                             initial={'is_shared': is_public})
+    except draw_factory.DrawNotRegistered as e:
+        return HttpResponseNotFound("Draw type not registered: " + str(e))
     return render(request, 'draws/new_draw.html',
                     {"draw": draw_form, "is_public": is_public,
                     "draw_type": draw_type,
