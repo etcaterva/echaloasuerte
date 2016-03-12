@@ -43,7 +43,7 @@ class RaffleDraw(BaseDraw):
     TYPES['participants'] = list
     TYPES['registration_type'] = string_types
 
-    def __init__(self, prices=None, participants=None, registration_type=None, registration_requirement=None, **kwargs):
+    def __init__(self, prices=None, participants=None, registration_type=RESTRICTED, registration_requirement=LOGIN, **kwargs):
         super(RaffleDraw, self).__init__(**kwargs)
 
         self.prices = prices if prices else []
