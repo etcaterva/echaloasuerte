@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% load staticfiles %}
+{% load eas_humanize %}
 {% load i18n %}
 {% block extra_head %}
     <!-- Datatables -->
@@ -304,7 +305,7 @@
                         <span class="hidden-xs">{%trans 'Draw Title' %}</span>
                         <span class="visible-xs">{%trans 'Title' %}</span>
                     </th>
-                    <th>{%trans 'Created on' %}</th>
+                    <th>{%trans 'Created' %}</th>
                     <th>{%trans '# results' %}</th>
                     <th>is_public</th>
                 </tr>
@@ -319,7 +320,7 @@
                         {% endif %}
                     </td>
                     <td>{{ d.title }}</td>
-                    <td>{{d.creation_time|date:" Y/m/d G:i "}}</td>
+                    <td>{{d.creation_time|naturaltime}}</td>
                     <td>{{d.results | length}}</td>
                     <td>{% if d.is_shared  %}y{% endif %}</td>
                 </tr>
