@@ -1,5 +1,5 @@
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext
 from crispy_forms.layout import Layout, Row, HTML, Field
 
 from server.forms import FormBase
@@ -27,7 +27,7 @@ class PhotoDrawForm(FormBase):
             Row(
                 Row('number_of_results'),
                 Field('photo_url', wrapper_class="protected-hidden clearfix"),
-                HTML('<div class="text-center"><button type="button" id="fetch-fb-photos" class="btn btn-social hidden protected protected-hidden btn-facebook"><span class="fa fa-facebook"></span>{0}</button></div>'.format(_('Use a picture from Facebook')))
+                HTML('<div class="text-center"><button type="button" id="fetch-fb-photos" class="btn btn-social hidden protected protected-hidden btn-facebook"><span class="fa fa-facebook"></span>{0}</button></div>'.format(ugettext('Use a picture from Facebook')))
             ),
             Row(
                 HTML("""<canvas id="canvas-photo-main" width="0" height="0" data-url="{{bom.photo_url}}" data-points="{% with bom.results|last as results%}{%for result in results.items%}{{result|join:","}}{%endfor%}{%endwith%}"></canvas>"""
