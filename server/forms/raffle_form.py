@@ -10,10 +10,13 @@ class RaffleDrawForm(FormBase):
     prices = forms.CharField(label=_('Prices'), widget=forms.TextInput(), required=True)
     participants = forms.CharField(label=_('Participants'), widget=forms.TextInput(), required=True)
     registration_type = forms.ChoiceField(label=_('Type of registration'), widget=forms.Select(),
-                                          choices=RaffleDraw.REGISTRATION_CHOICES, required=True)
+                                          choices=RaffleDraw.REGISTRATION_CHOICES,
+                                          initial=RaffleDraw.RESTRICTED,
+                                          required=True)
     registration_requirement = forms.ChoiceField(label=_('Requirement to register'),
                                                  widget=forms.RadioSelect(),
                                                  choices=RaffleDraw.REGISTRATION_REQUIREMENT_CHOICES,
+                                                 initial=RaffleDraw.LOGIN,
                                                  required=True)
 
     DEFAULT_TITLE = _("Raffle")
