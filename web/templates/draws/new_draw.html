@@ -21,7 +21,10 @@
     <script src="{% static 'js/dice.js' %}"></script>
     <script src="{% static 'js/spinable.js' %}"></script>
     <script src="{% static 'js/raffle.js' %}"></script>
+    <script src="{% static 'js/photo.js' %}"></script>
     <script src="{% static 'js/draw_manager.js' %}"></script>
+    <script src="{% static 'js/csphotoselector.js' %}"></script>
+    <link href="{% static 'css/csphotoselector.css' %}" rel="stylesheet">
     {% if is_public %}
         <script src="{% static 'js/shared_draw_creator.js' %}"></script>
         <link href="{% static 'css/jquery.datetimepicker.css' %}" rel="stylesheet" />
@@ -114,6 +117,13 @@
         });
     {% endif %}
 {% endblock extra_jq_ready %}
+{% block fb_async %}
+    {% if draw_type == "photo" %}
+        var $fetch_fb_photos = $('#fetch-fb-photos');
+		$fetch_fb_photos.click(fetch_fb_photos);
+		$fetch_fb_photos.toggleClass('hidden', false);
+    {% endif %}
+{% endblock fb_async %}
 {% block content %}
     {% if is_public %}
         {% include 'snippets/snippet_breadcrumb.html' %}
@@ -232,5 +242,9 @@
             </div>
         </div>
         <!-- End Results -->
+    {% endif %}
+
+    {% if draw_type == "photo" %}
+        {% include 'snippets/fb_photo_selector.html' %}
     {% endif %}
 {% endblock %}
