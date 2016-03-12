@@ -16,6 +16,9 @@ class PhotoDraw(BaseDraw):
         if self.number_of_results > 50:
             raise InvalidDraw('number_of_results')
 
+        if not self.photo_url:
+            raise InvalidDraw('url')
+
     def is_feasible(self):
         if self.number_of_results <= 0:
             # At least one result is requested
