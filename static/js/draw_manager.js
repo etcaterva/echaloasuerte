@@ -691,9 +691,19 @@
         }
     };
 
+    /*Set intervals to refresh the page when a scheduled result is published*/
+    function refreshOnPublished() {
+        $(".result .relative-time").each(function(){
+            var resultTime = moment($(this).attr('data-value'));
+            var timeToPublish = resultTime.diff(moment.utc());
+            if(timeToPublish > 0) {
+                setTimeout(window.location.reload.bind(window.location), timeToPublish);
+            }
+        });
+    }
 
     /**Refresh result datetimes**/
-    function updateResultsTime(resultDatetime) {
+    function updateResultsTime() {
         $(".relative-time").each(function(){
             var resultTime = $(this).attr('data-value');
             resultTime = moment.utc(resultTime).fromNow();
@@ -701,6 +711,12 @@
         });
     }
     setInterval(updateResultsTime, 5000);
+
+    /** Init after 500ms **/
+    setTimeout(function() {
+        refreshOnPublished();
+        updateResultsTime();
+    }, 500)
 
     /*********************************
      *   DRAW MANAGER PLUGIN DEFINITION
