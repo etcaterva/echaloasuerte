@@ -50,7 +50,15 @@ class RaffleDraw(BaseDraw):
         """List of prices"""
 
         if registration_type == RaffleDraw.FACEBOOK:
-            self.participants = [Participant(*participant) for participant in participants] if participants else []
+            participants = participants or []
+            self.participants = []
+            for participant in participants:
+                if isinstance(participant, basestring):
+                    participant = participant.strip()
+                    id_ = participant.split(':')[0]
+                    value = participant.split(':')[1]
+                    participant = [id_, value]
+                self.participants.append(Participant(*participant))
             """List of participants"""
             self.registration_requirement = registration_requirement
             """The action required to register in the draw"""
