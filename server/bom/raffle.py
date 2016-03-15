@@ -53,10 +53,10 @@ class RaffleDraw(BaseDraw):
             participants = participants or []
             self.participants = []
             for participant in participants:
-                if isinstance(participant, basestring):
+                if isinstance(participant, string_types):
                     participant = participant.strip()
-                    id_ = participant.split(':')[0]
-                    value = participant.split(':')[1]
+                    id_ = participant.split(':')[0].replace('{', '')
+                    value = participant.split(':')[1].replace('}', '')
                     participant = [id_, value]
                 self.participants.append(Participant(*participant))
             """List of participants"""
