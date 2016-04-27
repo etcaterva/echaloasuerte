@@ -11,7 +11,7 @@ class PhotoDrawForm(FormBase):
     photo_url = forms.URLField(label=_("Photo URL"),
                                 required=True)
 
-    DEFAULT_TITLE = _("Photo Draw")
+    DEFAULT_TITLE = _("Random selection in image")
 
     def __init__(self, *args, **kwargs):
         super(PhotoDrawForm, self).__init__(*args, **kwargs)

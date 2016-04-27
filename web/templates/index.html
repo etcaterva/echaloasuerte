@@ -58,12 +58,12 @@ window.cookieconsent_options = {"message":"{% trans 'This website uses cookies t
     </div>
     <div class="container-draws row">
         <div class="col-sm-6">
+            {% include "snippets/snippet_draw_box.html" with draw_type="raffle" draw_icon="img/draw_icons/raffle.png" title=_("Raffle") help=_("Want to make a raffle? Make it public here!") %}
+            {% include "snippets/snippet_draw_box.html" with draw_type="groups" draw_icon="img/draw_icons/groups.png" title=_("Generate Groups") help=_("Needs to group a bunch of people or items? Click here!") %}
+            {% include "snippets/snippet_draw_box.html" with draw_type="tournament" draw_icon="img/draw_icons/tournament.png" title=_("Organise Tournament") help=_("Organising a competition? This is your draw!") %}
             {% include "snippets/snippet_draw_box.html" with draw_type="coin" draw_icon="img/draw_icons/coin.png" title=_("Flip a coin") help=_("Afraid of taking the wrong decision? Don't hesitate and throw the coin!") %}
             {% include "snippets/snippet_draw_box.html" with draw_type="card" draw_icon="img/draw_icons/cards.png" title=_("Take a card") help=_("Let's play some drinking games!") %}
             {% include "snippets/snippet_draw_box.html" with draw_type="dice" draw_icon="img/draw_icons/dice.png" title=_("Roll a dice") help=_("Don't you have a die? Just roll this one") %}
-            {% include "snippets/snippet_draw_box.html" with draw_type="tournament" draw_icon="img/draw_icons/tournament.png" title=_("Organise Tournament") help=_("Organising a competition? This is your draw!") %}
-            {% include "snippets/snippet_draw_box.html" with draw_type="groups" draw_icon="img/draw_icons/groups.png" title=_("Generate Groups") help=_("Needs to group a bunch of people or items? Click here!") %}
-            {% include "snippets/snippet_draw_box.html" with draw_type="raffle" draw_icon="img/draw_icons/raffle.png" title=_("Raffle") help=_("Want to make a raffle? Make it public here!") %}
         </div>
         <div class="col-sm-6">
             {% include "snippets/snippet_draw_box.html" with draw_type="number" draw_icon="img/draw_icons/random_number.png" title=_("Random number") help=_("Doing a raffle? Luck will decide who is the winner") %}
@@ -71,7 +71,7 @@ window.cookieconsent_options = {"message":"{% trans 'This website uses cookies t
             {% include "snippets/snippet_draw_box.html" with draw_type="item" draw_icon="img/draw_icons/random_item.png" title=_("Pick random items from a list") help=_("Doing a raffle? Luck will decide who is the winner") %}
             {% include "snippets/snippet_draw_box.html" with draw_type="link_sets" draw_icon="img/draw_icons/item_association.png" title=_("Associate items from two lists") help=_("Cleaning the house? Allocate the tasks within your housemates") %}
             {% include "snippets/snippet_draw_box.html" with draw_type="spinner" draw_icon="img/draw_icons/spinner.svg" title=_("Spinner") help=_("Just hit the spinner and you say the meaning!") %}
-            {% include "snippets/snippet_draw_box.html" with draw_type="photo" draw_icon="img/draw_icons/photo.png" title=_("Photo Draw") help=_("Just make a photo and we'll choose some points from it!") %}
+            {% include "snippets/snippet_draw_box.html" with draw_type="photo" draw_icon="img/draw_icons/photo.png" title=_("Random selection in image") help=_("Just make a photo and we'll choose some points from it!") %}
         </div>
     </div>
 
