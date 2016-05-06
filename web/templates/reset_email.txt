@@ -1,0 +1,8 @@
+{% load i18n %}
+{% trans "Password Request for"%} {{ email }}
+--------------------------------------
+{% trans "Someone asked for password reset for email" %} {{ email }}
+
+{% trans "Please follow the link" %}: https://{% trans "chooserandom.com" %}{% url 'password_reset_confirm' uidb64=uid token=token %}
+
+{% trans "The Choose Random Team" %}

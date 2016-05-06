@@ -1,4 +1,6 @@
 import json
+import datetime
+import pytz
 
 from django.conf.urls import url
 from django.contrib.auth import authenticate, login, logout
@@ -78,10 +80,13 @@ class UserResource(resources.Resource):
                 if 'keep-logged' in request.POST:
                     request.session.set_expiry(31556926)  # 1 year
                 login(request, user)
+                user = self._client.retrieve_user(user.pk)
+                user.last_login = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+                self._client.save_user(user)
                 return self.create_response(request, "User authenticated")
             else:
                 raise exceptions.ImmediateHttpResponse(
-                    response=http.HttpUnauthorized("The user is not ativated"))
+                    response=http.HttpUnauthorized("The user is not activated"))
         else:
             try:
                 self._client.retrieve_user(email)

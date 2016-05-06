@@ -1,0 +1,7 @@
+{% load i18n %}
+{% load staticfiles %}
+<img src="{% static "img/brand/brand_es.png" %}" alt="{% trans 'Choose Random' %}">
+<h2>{% trans "Password Request for"%} {{ email }}</h2>
+<p>{% trans "Someone asked for password reset for email" %} {{ email }}</p>
+<p><a href="https://{% trans "chooserandom.com" %}{% url 'password_reset_confirm' uidb64=uid token=token %}"><h3>Click Here</h3></a> Or {% trans "follow the link" %}: https://{% trans "chooserandom.com" %}{% url 'password_reset_confirm' uidb64=uid token=token %}</p>
+<p>{% trans "The Choose Random Team" %}</p>

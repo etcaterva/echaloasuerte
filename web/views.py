@@ -2,16 +2,28 @@
 import logging
 import random
 import datetime
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.tokens import default_token_generator
+from django.template.response import TemplateResponse
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.views.decorators.cache import never_cache
+from django.views.decorators.debug import sensitive_post_parameters
 import pytz
 
-from django.http.response import JsonResponse
+from django import forms
+from django.template import loader
+from django.http.response import JsonResponse, HttpResponseRedirect
 from django.http import HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url
+from django.core.urlresolvers import reverse
+from django.contrib.auth.views import password_reset
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.templatetags.static import static
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+from django.core.mail import send_mail
 from pusher import Pusher
 
 from server import draw_factory
@@ -146,3 +158,110 @@ def pusher_authenticate(request):
         socket_id=request.POST['socket_id']
     )
     return JsonResponse(auth)
+
+
+# from: http://code.runnable.com/UqMu5Wsrl3YsAAfX/using-django-s-built-in-views-for-password-reset-for-python
+class MongoSetPasswordForm(SetPasswordForm):
+    """Set form with our logic for mongo"""
+    def save(self, commit=True):
+        user = MONGO.retrieve_user(self.user.pk)
+        user.set_password(self.cleaned_data['new_password1'])
+        MONGO.save_user(user)
+        return self.user
+
+
+class MongoResetForm(forms.Form):
+    email = forms.EmailField(label=_("Email"), max_length=254)
+
+    def save(self, subject_template_name, email_template_name,
+             token_generator=default_token_generator,
+             html_email_template_name=None, **_):
+        """
+        Generates a one-use only link for resetting password and sends to the
+        user.
+        """
+        email = self.cleaned_data["email"]
+        user = MONGO.retrieve_user(email)
+        c = {
+            'email': user.email,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'user': user,
+            'token': token_generator.make_token(user),
+        }
+        subject = loader.render_to_string(subject_template_name, c)
+        # Email subject *must not* contain newlines
+        subject = ''.join(subject.splitlines())
+        email = loader.render_to_string(email_template_name, c)
+
+        if html_email_template_name:
+            html_email = loader.render_to_string(html_email_template_name, c)
+        else:
+            html_email = None
+        send_mail(subject, email, "reset_password@echaloasuerte.com", [user.email], html_message=html_email)
+
+
+def reset(request):
+    """Wrap the built-in password reset view and pass it the arguments
+    like the template name, email template name, subject template name
+    and the url to redirect after the password reset is initiated."""
+    return password_reset(request, template_name='reset.html',
+        email_template_name='reset_email.html',
+        html_email_template_name='reset_email.html',
+        subject_template_name='reset_subject.txt',
+        password_reset_form=MongoResetForm,
+        post_reset_redirect=reverse('reset_success'))
+
+
+def reset_confirm(request, uidb64=None, token=None):
+    """Wrap the built-in reset confirmation view and pass to it all the captured parameters like uidb64, token
+    and template name, url to redirect after password reset is confirmed."""
+    return password_reset_confirm(request, template_name='reset_confirm.html',
+        uidb64=uidb64, token=token, post_reset_redirect=reverse('login'))
+
+# Doesn't need csrf_protect since no-one can guess the URL
+@sensitive_post_parameters()
+@never_cache
+def password_reset_confirm(request, uidb64=None, token=None,
+                           template_name='registration/password_reset_confirm.html',
+                           token_generator=default_token_generator,
+                           set_password_form=MongoSetPasswordForm,
+                           post_reset_redirect=None,
+                           current_app=None, extra_context=None):
+    """
+    View that checks the hash in a password reset link and presents a
+    form for entering a new password.
+    """
+    assert uidb64 is not None and token is not None  # checked by URLconf
+    if post_reset_redirect is None:
+        post_reset_redirect = reverse('password_reset_complete')
+    else:
+        post_reset_redirect = resolve_url(post_reset_redirect)
+    try:
+        uid = urlsafe_base64_decode(uidb64)
+        user = MONGO.retrieve_user(uid)
+    except (TypeError, ValueError, OverflowError, MONGO.NotFoundError):
+        user = None
+
+    if user is not None and token_generator.check_token(user, token):
+        validlink = True
+        title = _('Enter new password')
+        if request.method == 'POST':
+            form = set_password_form(user, request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(post_reset_redirect)
+        else:
+            form = set_password_form(user)
+    else:
+        validlink = False
+        form = None
+        title = _('Password reset unsuccessful')
+    context = {
+        'form': form,
+        'title': title,
+        'validlink': validlink,
+        }
+    if extra_context is not None:
+        context.update(extra_context)
+    return TemplateResponse(request, template_name, context,
+                            current_app=current_app)
