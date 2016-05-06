@@ -17,10 +17,8 @@ def feedback(request):
     comment = request.POST.get("comment")
     email = request.POST.get("email", "anonymous")
     browser = request.POST.get("browser", "Unknown Browser")
-    subject = """Feedback ({0})""".format(type_)
-    message = """{0}\nBy {1} on {2}""".format(comment,
-                                              email,
-                                              browser)
+    subject = "Feedback ({0})".format(type_)
+    message = u"{0}\nBy {1} on {2}".format(comment, email, browser)
     if type_ and comment:
         mail_admins(subject, message, True)
         return HttpResponse()
