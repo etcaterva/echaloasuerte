@@ -3,6 +3,7 @@ import logging
 import random
 import datetime
 import pytz
+import six.moves.urllib
 
 from django.http.response import JsonResponse
 from django.http import HttpResponseNotFound
@@ -141,8 +142,12 @@ pusher = Pusher(app_id=u'163051', key=u'61af23772ca14dff55e5', secret=settings.P
 @csrf_exempt
 def pusher_authenticate(request):
     """Authentication end point for pusher priv channels"""
-    auth = pusher.authenticate(
-        channel=request.POST['channel_name'],
-        socket_id=request.POST['socket_id']
-    )
+    if request.POST and 'channel_name' in request.POST:
+        data = request.POST
+    else:
+        data = six.moves.urllib.parse.parse_qs(request.body)
+        data = {k: v[0] for k,v in data.items()}
+    channel = data['channel_name']
+    socket_id = data['socket_id']
+    auth = pusher.authenticate(channel=channel, socket_id=socket_id)
     return JsonResponse(auth)
