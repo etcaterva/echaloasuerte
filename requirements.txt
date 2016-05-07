@@ -7,3 +7,4 @@ django-tastypie==0.12.2
 django-tastypie-swagger==0.1.4
 six==1.9.0
 pusher==1.2.3
+mock==1.0.1
