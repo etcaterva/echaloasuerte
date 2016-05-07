@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import TemplateView
 
 from web import views
 from web import web_services as ws
@@ -28,18 +29,13 @@ urlpatterns += patterns(
     url(r'^accounts/profile/$', views.profile, name='profile'),
     url(r'^join_draw.html$', views.join_draw, name="join_public_draw"),
     url(r'^pusher/auth$', views.pusher_authenticate, name="pusher_auth"),
+    url(r'^service\-worker\.js$', TemplateView.as_view(template_name='sw.js'))
 )
 
 # web services
 urlpatterns += patterns(
     '',
     url(r'^ws/feedback/$', ws.feedback, name="ws_feedback"),
-)
-
-# service workers
-urlpatterns += patterns(
-    'django.contrib.staticfiles.views',
-    url(r'^service-worker\.js$', 'serve', kwargs={'path': 'js/sw.js'})
 )
 
 urlpatterns += staticfiles_urlpatterns()
