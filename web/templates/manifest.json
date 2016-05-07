@@ -4,7 +4,7 @@
   "name": "{%trans 'EchaloASuerte'%}"
   "icons": [
     {
-      "src": "",
+      "src": "{{ STATIC_URL }}img/icon192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
