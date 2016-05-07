@@ -49,9 +49,12 @@ class RaffleDraw(BaseDraw):
         self.prices = prices if prices else []
         """List of prices"""
 
+        self.registration_type = registration_type
+
         if registration_type == RaffleDraw.FACEBOOK:
             participants = participants or []
-            self.participants = []
+            # Initialize participants with __dict__ to bypass the setter
+            self.__dict__['participants'] = []
             for participant in participants:
                 if isinstance(participant, string_types):
                     participant = participant.strip()
@@ -66,8 +69,19 @@ class RaffleDraw(BaseDraw):
             self.participants = participants if participants else []
             self.registration_requirement = None
 
+    @property
+    def participants(self):
+        return self.__dict__['participants']
 
-        self.registration_type = registration_type
+    @participants.setter
+    def participants(self, participants):
+        """
+        In Facebook raffle, the list or participants can't be set.
+        Participants can only by edited by the 'append' or 'remove' methods of the dict
+        Pass silently, any exception is thrown.
+        """
+        if self.registration_type != self.FACEBOOK:
+            self.__dict__['participants'] = participants
 
     def validate(self):
         super(RaffleDraw, self).validate()
