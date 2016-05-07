@@ -36,4 +36,10 @@ urlpatterns += patterns(
     url(r'^ws/feedback/$', ws.feedback, name="ws_feedback"),
 )
 
+# service workers
+urlpatterns += patterns(
+    'django.contrib.staticfiles.views',
+    url(r'^service-worker\.js$', 'serve', kwargs={'path': 'js/sw.js'})
+)
+
 urlpatterns += staticfiles_urlpatterns()
