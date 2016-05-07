@@ -29,7 +29,7 @@ urlpatterns += patterns(
     url(r'^accounts/profile/$', views.profile, name='profile'),
     url(r'^join_draw.html$', views.join_draw, name="join_public_draw"),
     url(r'^pusher/auth$', views.pusher_authenticate, name="pusher_auth"),
-    url(r'^service\-worker\.js$', TemplateView.as_view(template_name='sw.js'))
+    url(r'^service\-worker\.js$', TemplateView.as_view(template_name='sw.js', content_type='application/javascript'))
 )
 
 # web services
