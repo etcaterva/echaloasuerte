@@ -17,6 +17,8 @@ class SanityMongo(TestCase):
         res_id = self._driver.save_user(tested_item)
         raw = self._driver._users.find_one({"_id": res_id})
         for k, v in tested_item.__dict__.items():
+            if k in ("last_login"):
+                continue
             self.assertTrue(k in raw.keys())
             self.assertTrue(v == raw[k])
         self._driver._users.remove({"_id": res_id})
@@ -29,6 +31,8 @@ class SanityMongo(TestCase):
 
         self.assertIsInstance(retrieved, User)
         for k, v in tested_item.__dict__.items():
+            if k in ("last_login"):
+                continue
             self.assertTrue(k in retrieved.__dict__.keys())
             self.assertEqual(v, retrieved.__dict__[k])
         self._driver._users.remove({"_id": res_id})
@@ -42,6 +46,8 @@ class SanityMongo(TestCase):
 
         self.assertIsInstance(retrieved, User)
         for k, v in tested_item.__dict__.items():
+            if k in ("last_login"):
+                continue
             self.assertTrue(k in retrieved.__dict__.keys())
             self.assertEqual(v, retrieved.__dict__[k])
         self._driver._users.remove({"_id": res_id})

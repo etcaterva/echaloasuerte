@@ -1,4 +1,6 @@
 import logging
+import datetime
+import pytz
 import hashlib
 
 from django.contrib.auth.hashers import (check_password, make_password)
@@ -45,7 +47,8 @@ class User(object):
         gravatar_url += urlencode(parameters)
         return gravatar_url
 
-    def __init__(self, _id, password=None, favourites=None, alias=None, use_gravatar=True):
+    def __init__(self, _id, password=None, favourites=None, alias=None, use_gravatar=True,
+                 last_login=None):
         self._id = _id
         """Email of the user"""
 
@@ -63,6 +66,12 @@ class User(object):
 
         self.use_gravatar = use_gravatar
         """Permission from the user to use his Gravatar"""
+
+        self.last_login = last_login or datetime.datetime.utcnow()
+        """Last time the user log in"""
+
+        if self.last_login.tzinfo is None:
+            self.last_login = self.last_login.replace(tzinfo=pytz.utc)
 
     @property
     def email(self):
