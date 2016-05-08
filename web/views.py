@@ -106,14 +106,16 @@ def create_draw(request, draw_type, is_public):
 
     LOG.debug("Serving view to create a draw: {0}".format(draw_type))
     try:
+        initial = request.GET.copy()
+        initial['is_shared'] = is_public
         draw_form = draw_factory.create_form(draw_type,
-                                            initial={'is_shared': is_public})
+                                             initial=initial)
     except draw_factory.DrawNotRegistered as e:
         return HttpResponseNotFound("Draw type not registered: " + str(e))
     return render(request, 'draws/new_draw.html',
-                    {"draw": draw_form, "is_public": is_public,
-                    "draw_type": draw_type,
-                    "default_title": draw_form.DEFAULT_TITLE})
+                  {"draw": draw_form, "is_public": is_public,
+                   "draw_type": draw_type,
+                   "default_title": draw_form.DEFAULT_TITLE})
 
 
 @time_it

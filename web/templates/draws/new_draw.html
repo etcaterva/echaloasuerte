@@ -63,6 +63,7 @@
         is_shared: {{ is_public|yesno:"true,false" }},
         url_try: "{% url 'api_draw_try' api_name="v1" %}",
         url_create: "{% url 'api_dispatch_list' api_name="v1" resource_name="draw" %}",
+        url_shared_draw: "{% url 'create_public_draw' draw_type=draw_type %}",
         msg_result: "{% trans "Result" %}",
         msg_generated_on: "{% trans "generated" %}",
         translations: {
@@ -115,6 +116,9 @@
         $("#create-and-toss").click( function() {
             $draw_maneger.drawManager('create_and_toss');
         });
+        $("#normal-to-shared").click( function() {
+            $draw_maneger.drawManager('normal_to_shared');
+        });
     {% endif %}
 {% endblock extra_jq_ready %}
 {% block fb_async %}
@@ -137,7 +141,7 @@
                 </a>
             {% endif %}
             <div id="draw-title-container" class="col-xs-12 col-sm-8 {% if is_public %}col-sm-offset-2 {% endif %}text-center eas-tooltip" title="{% trans 'Click on the draw title to change it' %}">
-                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{% if bom.title %}{{ bom.title }}{% else %}{{ default_title }}{% endif %}</textarea>
+                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{% if draw.title.value %}{{ draw.title.value }}{% else %}{{ default_title }}{% endif %}</textarea>
             </div>
         </div>
         <!-- End Draw Heading -->
@@ -147,7 +151,7 @@
                 <div class="form-group clearfix">
                     <label for="draw-title" class="col-sm-3 control-label">{% trans "Title" %}</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="draw-title" placeholder="{% trans "i.e 'Lottery 2015'" %}">
+                        <input type="text" class="form-control" id="draw-title" placeholder="{% trans "i.e 'Lottery 2015'" %}" value="{{ draw.title.value }}">
                     </div>
                 </div>
                 <div class="form-group clearfix">
@@ -218,6 +222,7 @@
                 {# Button to toss the draw in private draws #}
                 <div class="row ">
                     <button type="button" id="create-and-toss" class="btn btn-success submit-lockable">{% trans 'Toss!' %}</button>
+                    <button type="button" id="normal-to-shared" class="btn btn-primary submit-lockable">{% trans 'Create shared draw' %}</button>
                 </div>
             {% endif %}
         </div>
@@ -228,17 +233,7 @@
         <!-- Results -->
         <div id="results" class="step-configure hidden col-sm-8 col-sm-offset-2">
             <div class="row text-center accordion">
-                {% for result in bom.results reversed %}
-                {% with result.items as results%}
-                    {% if results %}
-                        <p id="header-try-result" class="h3">
-                            {%trans 'Result' %}{{results|length|pluralize}}
-                        <div class="result">
-                            {% include draw.TEMPLATE_PATH %}
-                        </div>
-                    {% endif %}
-                {% endwith %}
-                {% endfor %}
+                {# Results rendered with JS #}
             </div>
         </div>
         <!-- End Results -->
