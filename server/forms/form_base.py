@@ -31,6 +31,9 @@ class FormBase(forms.Form):
     def __init__(self, *args, **kwargs):
         super(FormBase, self).__init__(*args, **kwargs)
 
+        if 'initial' in kwargs and 'title' not in kwargs['initial']:
+            kwargs['initial']['title'] = self.DEFAULT_TITLE
+
         self.helper = FormHelper()
         self.helper.form_tag = False
         # All hidden fields will be automatically rendered,

@@ -50,7 +50,7 @@ class RaffleDrawForm(FormBase):
                      "{0}</div>".format(ugettext('Separate prices by commas. e.g: Trip to Rome, Luxury dinner, ...'))),
                 'prices',
                 'registration_type',
-                Field('registration_requirement', wrapper_class="hidden clearfix"),
+                Field('registration_requirement', wrapper_class="hidden clearfix", template='draws/eas_crispy_field.html'),
                 'participants',
                 HTML(u'<div class="text-center">'
                      '<a id="register-raffle-fb" class="hidden btn btn-social btn-facebook"><span class="fa fa-facebook"></span>{0}</a>'

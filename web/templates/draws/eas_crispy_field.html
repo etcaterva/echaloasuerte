@@ -20,7 +20,9 @@
             {% endif %}
 
             {% if field|is_radioselect %}
-                {% include 'bootstrap3/layout/radioselect.html' %}
+                <div class="ratio-button-wrapper clearfix">
+                    {% include 'bootstrap3/layout/radioselect.html' %}
+                </div>
             {% endif %}
 
             {% if not field|is_checkboxselectmultiple and not field|is_radioselect %}
