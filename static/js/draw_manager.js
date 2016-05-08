@@ -105,6 +105,7 @@
             url_update: "",
             url_create: "",
             url_try: "",
+            url_shared_draw: "",
             url_schedule_toss: "",
             msg_result: "Result",
             spinner_image_url: "",
@@ -631,6 +632,16 @@
                 .always(function(){
                     $('.submit-lockable').prop('disabled',false);
                 });
+        },
+
+        /**
+         * Redirect to the page to create a shared draw using the current draw configuration
+         */
+        normal_to_shared: function(){
+            this.$element.attr('action', this.options.url_shared_draw);
+            this.$element.attr('method', 'get');
+            this.$element.find("[name='csrfmiddlewaretoken']").remove();  // No need to send the CRSF token
+            this.$element.submit();
         },
 
         /**
