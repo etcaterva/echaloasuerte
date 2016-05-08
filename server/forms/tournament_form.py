@@ -17,7 +17,7 @@ class TournamentDrawForm(FormBase):
             kwargs['initial']['participants'] = ','.join(kwargs['initial']['participants'])
         super(TournamentDrawForm, self).__init__(*args, **kwargs)
 
-        # Add "protected" class to the input that will be read-only when the draw is public
+        # Add "protected" class to the input that will be read-only when the draw is shared
         self.fields['participants'].widget.attrs.update({'class': 'protected eas-tokenfield'})
 
         self.helper.label_class = 'col-xs-6 text-right'

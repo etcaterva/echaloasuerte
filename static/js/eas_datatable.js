@@ -3,7 +3,7 @@
     // Set the defaults
     var pluginName = 'EASDataTable',
         defaults = {
-            type: "profile", // Can be "profile" or "public_draw"
+            type: "profile", // Can be "profile" or "shared_draw"
             dataTable_plugin: null,
             msg_your_draws: "",
             msg_search: ""
@@ -25,11 +25,11 @@
             this.$element = $(element);
             this.options = $.extend( {}, defaults, options) ;
 
-            if (this.options.type == "public_draw" ){
+            if (this.options.type == "shared_draw" ){
                 this.checkbox_filter_your_draws();
             }
             else{ // Then is the datatable for the profile
-                this.checkbox_filter_public_draws();
+                this.checkbox_filter_shared_draws();
             }
             this.add_bootstrap();
         },
@@ -52,16 +52,16 @@
             });
         },
 
-        checkbox_filter_public_draws: function(){
+        checkbox_filter_shared_draws: function(){
             var that = this;
             // Render checkbox and label
-            var html_only_public_draws = '<div class="checkbox"><label><input id="only-public-draws" type="checkbox">' +
+            var html_only_shared_draws = '<div class="checkbox"><label><input id="only-shared-draws" type="checkbox">' +
                             this.options.msg_your_draws + '</label></div>';
             var $el = this.$element.find('.dataTables_length');
-            $el.append(html_only_public_draws);
+            $el.append(html_only_shared_draws);
 
             // Set the action of the checkbox
-            this.$element.find('#only-public-draws').click(function(){
+            this.$element.find('#only-shared-draws').click(function(){
                 var dataTable = that.options.dataTable_plugin.api();
                 if ($(this).prop('checked')){
                     dataTable.column(4).search("y").draw();

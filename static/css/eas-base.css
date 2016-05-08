@@ -431,17 +431,6 @@ div.alert {
         cursor: pointer;
     }
 
-
-/* ===================  PUBLIC DRAW  =================== */
-#public-draw-dropdown .dropdown-menu a{
-      padding: 7px 10px;
-}
-
-#public-draw-dropdown .dropdown-menu .nav-divider {
-    margin-top: 3px;
-    margin-bottom: 3px;
-}
-
 /* ===================  ABOUT PAGE  =================== */
 .team-member {
     margin-bottom: 10px;
@@ -455,7 +444,7 @@ div.alert {
     margin: 8px 0 8px 0;
 }
 
-/* ===================  DATATABLES (To show public draws and history)  =================== */
+/* ===================  DATATABLES (To show shared draws and history)  =================== */
 .dataTables_wrapper {
     margin-bottom: 15px;
 }

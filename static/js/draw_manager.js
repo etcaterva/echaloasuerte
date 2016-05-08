@@ -644,29 +644,6 @@
             this.$element.submit();
         },
 
-        /**
-         * Show the general step in the creation process of a shared draw
-         *
-         * ONLY USED IN SHARED DRAWS
-         */
-        show_general_step: function () {
-            PublicDrawCreator.update_breadcrumb('general');
-            $('.step-configure').toggleClass('hidden', true);
-            $('.step-invite').toggleClass('hidden', true);
-            $('.step-general').toggleClass('hidden', false);
-        },
-
-
-        /**
-         * Show the spread step in the creation process of a shared draw
-         *
-         * ONLY USED IN SHARED DRAWS
-         */
-        show_spread_step: function () {
-            $('.step-configure').addClass('hidden');
-            $('.step-spread').removeClass('hidden');
-        },
-
         render_errors: function (errors){
             if (errors.attributes.length > 1){
                 var $general_error = $('#general-errors');

@@ -45,7 +45,7 @@
     <script src="{% static 'js/csphotoselector.js' %}"></script>
     <link href="{% static 'css/csphotoselector.css' %}" rel="stylesheet">
     {% if bom.is_shared %}
-        <script src="{% static 'js/public_draw_manager.js' %}"></script>
+        <script src="{% static 'js/shared_draw_manager.js' %}"></script>
         <script src="{% static 'js/chat.js' %}"></script>
         <link href="{% static 'css/jquery.datetimepicker.css' %}" rel="stylesheet" />
         <script src="{% static 'js/jquery.datetimepicker.min.js' %}"></script>
@@ -102,13 +102,13 @@
         });
         var channel = pusher.subscribe('private-{{bom.pk}}');
         channel.bind('pusher:subscription_error', function(status) {
-            setInterval(PublicDraw.check_draw_changes,2000);
+            setInterval(SharedDraw.check_draw_changes,2000);
         });
         channel.bind('client-message', function () {
-            PublicDraw.check_draw_changes();
+            SharedDraw.check_draw_changes();
         });
         channel.bind('client-draw_update', function () {
-            PublicDraw.check_draw_changes();
+            SharedDraw.check_draw_changes();
         });
 
     {% else %}
@@ -133,7 +133,7 @@
         },
         {% if bom.is_shared %}
         updated_callback: function() {
-            PublicDraw.check_draw_changes();
+            SharedDraw.check_draw_changes();
             channel.trigger('client-draw_update', "");
         }
         {% endif %}
@@ -144,7 +144,7 @@
 		var $chats = $chat_containers.chat({
             "is_enabled": {{bom.enable_chat|yesno:"true,false"}},
             "message_sent_callback": function(message){
-                PublicDraw.check_draw_changes();
+                SharedDraw.check_draw_changes();
                 channel.trigger('client-message', message);
             },
             "url_send_message": "{% url 'api_draw_chat' api_name="v1" pk=bom.pk %}",
@@ -162,7 +162,7 @@
             "default_avatar": "{% static 'img/anon-user-avatar.png' %}"
         });
 
-        var public_draw_options = {
+        var shared_draw_options = {
             draw_id: "{{ bom.pk }}",
             is_authenticated: {{ user.is_authenticated|yesno:"true,false" }},
             bom_last_updated: moment.utc("{{bom.last_updated_time.isoformat}}"),
@@ -179,7 +179,7 @@
                 msg_tooltip_protected: "{% trans "To edit the details go to Settings" %}",
             {% endif %}
         }
-        PublicDraw.setup(public_draw_options);
+        SharedDraw.setup(shared_draw_options);
     {% else %}
 
         $("#normal-draw-toss").click( function() {
@@ -210,8 +210,8 @@
             <div class="col-xs-8 visible-xs"></div>
             {% if bom.is_shared %}
                 {% if not bom.owner or bom.owner == user.pk %}
-                    <a id="edit-settings-button" data-toggle="modal" href="#public-draw-settings" class="public-draw-settings col-xs-2 col-sm-2 col-sm-push-8 text-center ">
-                        <span id="public-draw-options" class="fa fa-gear fa-2x"></span>
+                    <a id="edit-settings-button" data-toggle="modal" href="#shared-draw-settings" class="shared-draw-settings col-xs-2 col-sm-2 col-sm-push-8 text-center ">
+                        <span id="shared-draw-settings" class="fa fa-gear fa-2x"></span>
                         <p>{% trans "Settings" %}</p>
                     </a>
                 {% else %}
@@ -236,7 +236,7 @@
                         <img src="{% static "img/star-o.png" %}" alt="{% trans "Add to favourites" %}"/>
                     {% endif %}
                     </a>
-                    <a id="create-shared-from-private" href="{% url 'create_public_draw' draw_type=draw.NAME_IN_URL %}" class="add-favourites eas-tooltip" title="{% trans 'Create a public one' %}">
+                    <a id="create-shared-from-private" href="{% url 'create_shared_draw' draw_type=draw.NAME_IN_URL %}" class="add-favourites eas-tooltip" title="{% trans 'Create a shared one' %}">
                         <img src="{% static 'img/share-icon.png' %}" />
                     </a>
                 </div>
@@ -272,7 +272,7 @@
                             <button type="button" id="schedule-toss-button" class="btn btn-default submit-lockable eas-tooltip" title="{% trans 'Schedule Toss' %}" autocomplete="off">
                                 <i class="fa fa-clock-o" ></i>
                             </button>
-                            {# Buttons to save changes when editing an already published public draw #}
+                            {# Buttons to save changes when editing an already published shared draw #}
                             <div id="edit-draw-save-changes" class="btn-row hide">
                                 <a href="#" id="edit-draw-cancel" class="col-xs-6 btn btn-default">{% trans 'Cancel edition' %}</a>
                                 <button type="button" id="edit-draw-save" class="col-xs-6 btn btn-primary submit-lockable" autocomplete="off">{% trans 'Save changes' %}</button>
@@ -337,13 +337,13 @@
 
     {% if bom.is_shared %}
         <!-- Modal settings Panel -->
-        <div id="public-draw-settings" class="modal fade" tabindex="-1" role="dialog" data-focus-on="input:first">
+        <div id="shared-draw-settings" class="modal fade" tabindex="-1" role="dialog" data-focus-on="input:first">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div id="settings-general">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">{% trans "Public draw settings" %}</h4>
+                            <h4 class="modal-title">{% trans "Shared draw settings" %}</h4>
                         </div>
                         <div class="modal-body">
                             <ul id="" class="list-group">

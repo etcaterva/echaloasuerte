@@ -41,7 +41,7 @@ class SharedDrawTest(BrowserStackTest):
         password_input.send_keys('test')
         driver.find_element_by_css_selector("#login #login-button").click()
 
-    def test_public_draw(self):
+    def test_shared_draw(self):
         self.login()
         driver = self.driver
         driver_guest = init_browser()

@@ -20,7 +20,7 @@ class RandomItemDrawForm(FormBase):
             kwargs['initial']['items'] = ','.join(kwargs['initial']['items'])
         super(RandomItemDrawForm, self).__init__(*args, **kwargs)
 
-        # Add "protected" class to the input that will be read-only when the draw is public
+        # Add "protected" class to the input that will be read-only when the draw is shared
         self.fields['number_of_results'].widget.attrs.update({'class': 'protected', 'min': 1})
         self.fields['items'].widget.attrs.update({'class': 'protected eas-tokenfield'})
         self.fields['allow_repeat'].widget.attrs.update({'class': 'protected'})

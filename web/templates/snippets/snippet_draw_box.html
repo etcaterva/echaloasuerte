@@ -11,7 +11,7 @@
 
 <a class="draw-link" href="javascript:void(0);"
    data-url-normal="{% url 'create_draw' draw_type=draw_type%}"
-   data-url-shared="{% url 'create_public_draw' draw_type=draw_type%}"
+   data-url-shared="{% url 'create_shared_draw' draw_type=draw_type%}"
     >
     <div id="{{ draw_type }}-draw" class="draw-box">
         <img src="{% static draw_icon %}" alt="{{ title }}"/>

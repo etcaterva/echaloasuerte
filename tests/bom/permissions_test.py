@@ -41,7 +41,7 @@ class WritePermissionWithNotLoggedUserTest(TestCase):
         self.assertFalse(self.draw.check_write_access(self.user))
 
 
-class ReadPermissionWithLoggedUserPublicTest(TestCase):
+class ReadPermissionWithLoggedUserSharedTest(TestCase):
     def setUp(self):
         self.draw = RandomNumberDraw(is_shared=True)
         self.user = User("test")
@@ -69,7 +69,7 @@ class ReadPermissionWithLoggedUserPublicTest(TestCase):
         self.assertTrue(self.draw.check_read_access(self.user))
 
 
-class ReadPermissionWithNotLoggedUserPublicTest(TestCase):
+class ReadPermissionWithNotLoggedUserSharedTest(TestCase):
     def setUp(self):
         self.draw = RandomNumberDraw(is_shared=True)
         self.user = AnonymousUser()
@@ -90,7 +90,7 @@ class ReadPermissionWithNotLoggedUserPublicTest(TestCase):
 
 class ReadPermissionWithLoggedUserBCTest(TestCase):
     def setUp(self):
-        self.draw = RandomNumberDraw(shared_type='Public')
+        self.draw = RandomNumberDraw(is_shared=True)
         self.user = User("test")
 
     def user_is_owner_test(self):

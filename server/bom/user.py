@@ -60,7 +60,7 @@ class User(object):
 
         if alias:
             self.alias = alias
-            """Alias of the user (name it appears for the public)"""
+            """Alias of the user (name it appears for the shared)"""
         else:
             self.alias = str(_id).split('@')[0]
 
