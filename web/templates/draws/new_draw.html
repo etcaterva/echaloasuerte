@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% block title %}{{ default_title }} | {% endblock title %}
+{% block title %}{{ draw.title.value }} | {% endblock title %}
 {% comment %}
     variables: draw_type, is_public, default_title
 {% endcomment %}
@@ -141,7 +141,7 @@
                 </a>
             {% endif %}
             <div id="draw-title-container" class="col-xs-12 col-sm-8 {% if is_public %}col-sm-offset-2 {% endif %}text-center eas-tooltip" title="{% trans 'Click on the draw title to change it' %}">
-                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{% if draw.title.value %}{{ draw.title.value }}{% else %}{{ default_title }}{% endif %}</textarea>
+                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ draw.title.value }}</textarea>
             </div>
         </div>
         <!-- End Draw Heading -->
@@ -151,7 +151,7 @@
                 <div class="form-group clearfix">
                     <label for="draw-title" class="col-sm-3 control-label">{% trans "Title" %}</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="draw-title" placeholder="{% trans "i.e 'Lottery 2015'" %}" value="{{ draw.title.value }}">
+                        <input type="text" class="form-control" id="draw-title" placeholder="{% trans "i.e 'Lottery 2015'" %}" value="{% if draw.title.value != default_title %}{{ draw.title.value }}{% endif %}">
                     </div>
                 </div>
                 <div class="form-group clearfix">
