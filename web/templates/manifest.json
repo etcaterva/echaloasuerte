@@ -1,13 +1,13 @@
 {% load i18n %}
 {
-  "short_name": "{%trans 'EchaloASuerte'%}"
-  "name": "{%trans 'EchaloASuerte'%}"
+  "short_name": "{%trans 'EchaloASuerte'%}",
+  "name": "{%trans 'EchaloASuerte'%}",
   "icons": [
     {
       "src": "{{ STATIC_URL }}img/icon192x192.png",
       "sizes": "192x192",
       "type": "image/png"
-    },
+    }
   ],
   "start_url": "/",
   "display": "standalone",
