@@ -37,8 +37,8 @@ class RaffleDrawForm(FormBase):
         self.fields['registration_requirement'].widget.attrs.update({'class': 'protected'})
         self.fields['participants'].widget.attrs.update({'class': 'protected eas-tokenfield'})
 
-        self.helper.label_class = 'col-xs-3'
-        self.helper.field_class = 'col-xs-9'
+        self.helper.label_class = 'col-xs-4 text-right'
+        self.helper.field_class = 'col-xs-8'
         if self.initial.get('registration_requirement') == RaffleDraw.SHARE:
             label_fb_button = _('Share in Facebook to participate')
         else:
