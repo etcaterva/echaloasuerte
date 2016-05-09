@@ -1,6 +1,6 @@
-var PublicDraw = {};
+var SharedDraw = {};
 
-PublicDraw.defaults = {
+SharedDraw.defaults = {
     draw_id: null,
     is_authenticated: false,
     bom_last_updated: null,
@@ -15,14 +15,14 @@ PublicDraw.defaults = {
     msg_error_unsubscribe: "There was an issue when unsubscribing to the draw :(",
 };
 
-PublicDraw.setup_settings_panel = function () {
+SharedDraw.setup_settings_panel = function () {
     function show_settings_panel(){
         // Show the main settings screen
         $('#settings-general').removeClass("hide");
         $('.settings-submenu').addClass("hide");
 
         // Remove previous feedback in case they exist
-        $('div#public-draw-settings div.feedback').addClass('hide');
+        $('div#shared-draw-settings div.feedback').addClass('hide');
     }
 
     // Open settings panel
@@ -46,17 +46,17 @@ PublicDraw.setup_settings_panel = function () {
 
     /*
     SETTINGS OPTION: Edit draw
-    Set up the UI to edit a public draw (already published)
+    Set up the UI to edit a shared draw (already published)
     Unlock the fields, hide toss button and present buttons to save changes and cancel the edition
     */
     $('a#edit-draw-confirmation').click(function() {
-        PublicDraw.lock_fields(false);
+        SharedDraw.lock_fields(false);
         // Hide the toss button
         $('#shared-draw-toss, #schedule-toss-button').addClass('hide');
         // Show the "Save changes" and "Cancel edition" buttons
         $('div#edit-draw-save-changes').removeClass('hide');
         // Close settings panel
-        $('#public-draw-settings').modal('hide');
+        $('#shared-draw-settings').modal('hide');
         // Disable Settings button
         $('#edit-settings-button').addClass( "hidden" );
         // Show the information div ("Separate items by commas...")
@@ -74,10 +74,10 @@ PublicDraw.setup_settings_panel = function () {
 
     /*
     SETTINGS OPTION: Edit draw
-    If the has edited a public draw so the configuration is submitted to the server
+    If the has edited a shared draw so the configuration is submitted to the server
     */
     $('#edit-draw-save').click(function() {
-        PublicDraw.options.draw_manager.drawManager('update_shared_draw');
+        SharedDraw.options.draw_manager.drawManager('update_shared_draw');
     });
 
 
@@ -106,7 +106,7 @@ PublicDraw.setup_settings_panel = function () {
             type: 'POST',
             contentType: 'application/json',
             data: data,
-            url: PublicDraw.options.url_invite_users
+            url: SharedDraw.options.url_invite_users
         }).done(function(){
             $('#alert-invitation-success').removeClass('hidden');
             console.log("users invited");
@@ -122,7 +122,7 @@ PublicDraw.setup_settings_panel = function () {
  *
  * @param locked Determines whether the fields will be locked or unlocked
  */
-PublicDraw.lock_fields = function(locked){
+SharedDraw.lock_fields = function(locked){
     var $protected_fields = $('.protected');
     var $protected_hidden_fields = $('.protected-hidden');
     var $protected_inputs = $('input.protected');
@@ -130,7 +130,7 @@ PublicDraw.lock_fields = function(locked){
     var $protected_tokenfields = $('input.protected.eas-tokenfield');
     if (locked){
         // Add tooltip to state that they are protected
-        $protected_fields.prop('title', PublicDraw.options.msg_tooltip_protected);
+        $protected_fields.prop('title', SharedDraw.options.msg_tooltip_protected);
 
         // Hide fields that should not be shown in shared draws
         $protected_hidden_fields.toggleClass('hidden', true);
@@ -165,51 +165,51 @@ PublicDraw.lock_fields = function(locked){
 
 // Make a request to the server to check whether the draw has changed
 // If so, reload the page.
-PublicDraw.check_draw_changes = function () {
+SharedDraw.check_draw_changes = function () {
     $.ajax({
         method : "GET",
         contentType : 'application/json',
-        url : PublicDraw.options.url_get_chat_messages
+        url : SharedDraw.options.url_get_chat_messages
     }).done(function(data) {
-        if(PublicDraw.options.bom_last_updated < moment.utc(data.last_updated_time)){
+        if(SharedDraw.options.bom_last_updated < moment.utc(data.last_updated_time)){
             window.location.reload();
         }
-        for(var i=0; i<PublicDraw.options.chats.length; i++) {
-            PublicDraw.options.chats[i].messages = data.messages;
+        for(var i=0; i<SharedDraw.options.chats.length; i++) {
+            SharedDraw.options.chats[i].messages = data.messages;
         }
     }).fail (function() {
         console.log("Error when retrieving draw details");
     });
 };
 
-PublicDraw.save_settings = function (){
+SharedDraw.save_settings = function (){
     var enable = $("#settings-chat-enabled").prop( "checked");
     var data = JSON.stringify({'enable_chat': enable});
     $.ajax({
         method : "PATCH",
         contentType : 'application/json',
-        url : PublicDraw.options.url_update,
+        url : SharedDraw.options.url_update,
         data: data
     }).done(function(data) {
         // TODO show feedback to indicate that the changes were applied
-        PublicDraw.enable_chat(enable);
-        PublicDraw.options.bom_last_updated = new Date();
+        SharedDraw.enable_chat(enable);
+        SharedDraw.options.bom_last_updated = new Date();
     }).fail (function() {
         // TODO Show feedback when the change could not be done
         console.log("Error when updating the draw details");
     });
 };
 
-PublicDraw.enable_chat = function (enable){
-    $.each(PublicDraw.options.chats, function(){
+SharedDraw.enable_chat = function (enable){
+    $.each(SharedDraw.options.chats, function(){
         this.enable(enable);
     });
 };
 
-PublicDraw.setup_buttons = function (){
+SharedDraw.setup_buttons = function (){
         $("#confirm-schedule-button").click( function() {
             $('#confirm-schedule-button').prop('disabled',true);
-            PublicDraw.options.draw_manager.drawManager('schedule_toss');
+            SharedDraw.options.draw_manager.drawManager('schedule_toss');
         });
 
         $('#schedule-toss-button').click(function() {
@@ -217,56 +217,56 @@ PublicDraw.setup_buttons = function (){
         });
 
         $("#shared-draw-toss").click( function() {
-            PublicDraw.options.draw_manager.drawManager('toss');
+            SharedDraw.options.draw_manager.drawManager('toss');
             return false;
         });
 
         $('#subscribe-button').click(function() {
-            if (PublicDraw.options.is_authenticated){
+            if (SharedDraw.options.is_authenticated){
                 var isSubscribed = $('#subscribe-button').attr("data-active") === "y";
-                PublicDraw.subscribe(!isSubscribed)
+                SharedDraw.subscribe(!isSubscribed)
             }else{
-                alert(PublicDraw.options.msg_login_to_subscribe);
+                alert(SharedDraw.options.msg_login_to_subscribe);
             }
         });
 };
 
-PublicDraw.subscribe = function (subscribe){
+SharedDraw.subscribe = function (subscribe){
     var $subscribe_button = $('#subscribe-button');
     if (subscribe) {
         $.ajax({
             method : "POST",
-            url : PublicDraw.options.url_subscribe,
+            url : SharedDraw.options.url_subscribe,
             data: "{}"
         }).done(function (){
             console.log("subscribed to draw");
             $subscribe_button.attr("data-active", "n");
         })
         .fail(function (error) {
-            alert(PublicDraw.options.msg_error_subscribe);
+            alert(SharedDraw.options.msg_error_subscribe);
             console.log(error);
         });
     } else {
         $.ajax({
             method : "DELETE",
-            url : PublicDraw.options.url_subscribe,
+            url : SharedDraw.options.url_subscribe,
             data: {}
         }).done(function (){
             console.log("Unsubscribed to draw");
             $subscribe_button.attr("data-active", "y");
         })
         .fail(function (error) {
-            alert(PublicDraw.options.msg_error_unsubscribe);
+            alert(SharedDraw.options.msg_error_unsubscribe);
             console.log(error);
         });
     }
 };
 
-// Initialize the interface for a public draw
-PublicDraw.setup = function(options){
-    PublicDraw.options = $.extend({}, PublicDraw.defaults, options);
+// Initialize the interface for a shared draw
+SharedDraw.setup = function(options){
+    SharedDraw.options = $.extend({}, SharedDraw.defaults, options);
 
-    // Hide the information div ("Separate items by commas...") when displaying a public draw
+    // Hide the information div ("Separate items by commas...") when displaying a shared draw
     $('#info-comma-separated').addClass('hidden');
 
     // Initialize input to submit emails to be shown as a tokenField
@@ -278,7 +278,7 @@ PublicDraw.setup = function(options){
 	});
 
     // Update url in the FB share button
-    $('.url-share').val(PublicDraw.options.url_share_fb);
+    $('.url-share').val(SharedDraw.options.url_share_fb);
 
     // Add datetime picker to schedule draws
     $('.datetimepicker').datetimepicker({value:moment().format()});
@@ -296,15 +296,15 @@ PublicDraw.setup = function(options){
         show: {delay: 500},
         track: true
     });
-    PublicDraw.lock_fields(true);
+    SharedDraw.lock_fields(true);
 
-    PublicDraw.setup_settings_panel();
-    PublicDraw.setup_buttons();
+    SharedDraw.setup_settings_panel();
+    SharedDraw.setup_buttons();
 
     // Check periodically if the draw has been updated
-    PublicDraw.check_draw_changes();
+    SharedDraw.check_draw_changes();
 
-    $('#save-settings').bind("click", PublicDraw.save_settings);
+    $('#save-settings').bind("click", SharedDraw.save_settings);
 
     // Make description box collapsible
     var $description_area = $('#draw-description-area');

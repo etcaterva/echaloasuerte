@@ -4,7 +4,7 @@
 {% load i18n %}
 {% block title %}{{ draw.title.value }} | {% endblock title %}
 {% comment %}
-    variables: draw_type, is_public, default_title
+    variables: draw_type, is_shared, default_title
 {% endcomment %}
 {% block extra_head %}
     <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
@@ -25,7 +25,7 @@
     <script src="{% static 'js/draw_manager.js' %}"></script>
     <script src="{% static 'js/csphotoselector.js' %}"></script>
     <link href="{% static 'css/csphotoselector.css' %}" rel="stylesheet">
-    {% if is_public %}
+    {% if is_shared %}
         <script src="{% static 'js/shared_draw_creator.js' %}"></script>
         <link href="{% static 'css/jquery.datetimepicker.css' %}" rel="stylesheet" />
         <script src="{% static 'js/jquery.datetimepicker.min.js' %}"></script>
@@ -45,7 +45,7 @@
     {% elif draw_type == "card" %}
         Card.baseUrl = '{{ STATIC_URL }}' + "img/img_cards/"
     {% elif draw_type == "raffle" %}
-        var is_shared = {{ is_public|yesno:"true,false" }};
+        var is_shared = {{ is_shared|yesno:"true,false" }};
         Raffle.setup_creation(is_shared);
     {% endif %}
 
@@ -60,10 +60,10 @@
     var $draw_maneger = $('#draw-form').drawManager({
         draw_type: "{{ draw_type }}",
         default_title: "{{ default_title }}",
-        is_shared: {{ is_public|yesno:"true,false" }},
+        is_shared: {{ is_shared|yesno:"true,false" }},
         url_try: "{% url 'api_draw_try' api_name="v1" %}",
         url_create: "{% url 'api_dispatch_list' api_name="v1" resource_name="draw" %}",
-        url_shared_draw: "{% url 'create_public_draw' draw_type=draw_type %}",
+        url_shared_draw: "{% url 'create_shared_draw' draw_type=draw_type %}",
         msg_result: "{% trans "Result" %}",
         msg_generated_on: "{% trans "generated" %}",
         translations: {
@@ -72,7 +72,7 @@
         }
     });
 
-    {% if is_public %}
+    {% if is_shared %}
         SharedDrawCreator.setup_breadcrumb();
         $("#try").click( function() {
             $draw_maneger.drawManager('try_draw');
@@ -129,24 +129,24 @@
     {% endif %}
 {% endblock fb_async %}
 {% block content %}
-    {% if is_public %}
+    {% if is_shared %}
         {% include 'snippets/snippet_breadcrumb.html' %}
     {% endif %}
     <form id="draw-form" class="clearfix" method="post">
         <!-- Draw Heading -->
-        <div class="clearfix draw-heading step-configure {% if is_public %}hidden{% endif %}">
-            {% if not is_public %}
+        <div class="clearfix draw-heading step-configure {% if is_shared %}hidden{% endif %}">
+            {% if not is_shared %}
                 <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
                     <img src="{% static "img/back_arrow.png" %}" alt="{% trans "Back" %}"/>
                 </a>
             {% endif %}
-            <div id="draw-title-container" class="col-xs-12 col-sm-8 {% if is_public %}col-sm-offset-2 {% endif %}text-center eas-tooltip" title="{% trans 'Click on the draw title to change it' %}">
+            <div id="draw-title-container" class="col-xs-12 col-sm-8 {% if is_shared %}col-sm-offset-2 {% endif %}text-center eas-tooltip" title="{% trans 'Click on the draw title to change it' %}">
                 <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{{ draw.title.value }}</textarea>
             </div>
         </div>
         <!-- End Draw Heading -->
 
-        {% if is_public %}
+        {% if is_shared %}
             <div class="step-general col-sm-8 col-sm-offset-2">
                 <div class="form-group clearfix">
                     <label for="draw-title" class="col-sm-3 control-label">{% trans "Title" %}</label>
@@ -162,8 +162,8 @@
                 </div>
             </div>
         {% endif %}
-        {# Configure the fields of a draw (both private and public) #}
-        <div class="step-configure col-sm-8 col-sm-offset-2 {% if is_public %}hidden{% endif %}">
+        {# Configure the fields of a draw (both private and shared) #}
+        <div class="step-configure col-sm-8 col-sm-offset-2 {% if is_shared %}hidden{% endif %}">
             <!-- Errors -->
             <div id="general-errors" class="alert alert-danger hidden" role="alert">
                 <span class="fa fa-exclamation-triangle " aria-hidden="true"></span>
@@ -175,8 +175,8 @@
             <!-- End Input Form -->
         </div>
 
-        {# Only shown when creating a public draw: show the link to invite users #}
-        {% if is_public %}
+        {# Only shown when creating a shared draw: show the link to invite users #}
+        {% if is_shared %}
             <div id="invite-options" class="step-invite hidden col-xs-12 col-md-8 col-md-offset-2">
                 <p id="shared-draw-created">{% trans "Your draw is online now" %}</p>
                 <p id="shared-draw-smiley">{% trans ":D" %}</p>
@@ -204,13 +204,13 @@
 
         {# Buttons for Try, Next step, Cancel, toss #}
         <div class="col-xs-12 text-center">
-            {% if is_public %}
-                {# Button to try a draw when creating a public one #}
+            {% if is_shared %}
+                {# Button to try a draw when creating a shared one #}
                 <div class="row btn-row step-configure hidden">
                     <button type="button" id="try" class="btn btn-success submit-lockable">{% trans 'Try it!' %}</button>
                 </div>
 
-                {# Buttons "Next Step" and "Cancel" shown when creating a public draw #}
+                {# Buttons "Next Step" and "Cancel" shown when creating a shared draw #}
                 <div class="col-sm-8 col-sm-offset-2 btn-row">
                     <a href="{% url 'index' %}" class="step-general col-xs-6 btn btn-default">{% trans 'Cancel' %}</a>
                     <a href="#" id="go-to-general" class="step-configure hidden col-xs-6 btn btn-default">{% trans 'Back' %}</a>
@@ -228,7 +228,7 @@
         </div>
     </form>
 
-    {% if is_public %}
+    {% if is_shared %}
         {# Show results, in case the user tries the configuration (through the button "Try") #}
         <!-- Results -->
         <div id="results" class="step-configure hidden col-sm-8 col-sm-offset-2">

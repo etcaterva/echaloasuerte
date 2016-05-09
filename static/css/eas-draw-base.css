@@ -60,7 +60,7 @@ a.fa:focus {
 
 .draw-heading .back-arrow,
 .draw-heading .add-favourites,
-.draw-heading .public-draw-settings {
+.draw-heading #shared-draw-settings {
     padding: 10px 0 0 0;
 }
 
@@ -242,7 +242,7 @@ a.fa:focus {
 
 }
 
-/* When trying a public draw, the results tag seemed to be not centered */
+/* When trying a shared draw, the results tag seemed to be not centered */
 #header-try-result {
     padding-right: 30px;
 }

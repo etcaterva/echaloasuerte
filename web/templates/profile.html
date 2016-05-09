@@ -306,7 +306,7 @@
                     </th>
                     <th>{%trans 'Created on' %}</th>
                     <th>{%trans '# results' %}</th>
-                    <th>is_public</th>
+                    <th>is_shared</th>
                 </tr>
             </thead>
             <tbody>
@@ -315,7 +315,7 @@
                     <td class="text-right">{% if not d.shared_type  %}
                             <span class="fa fa-user eas-tooltip" title="{% trans 'Private draw' %}"></span>
                         {% else %}
-                            <span class="fa fa-globe eas-tooltip" title="{% trans 'Public draw' %}"></span>
+                            <span class="fa fa-globe eas-tooltip" title="{% trans 'Shared draw' %}"></span>
                         {% endif %}
                     </td>
                     <td>{{ d.title }}</td>

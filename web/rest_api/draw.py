@@ -35,7 +35,7 @@ class DrawResource(resources.Resource):
                                    null=True)
     is_shared = fields.BooleanField(attribute='is_shared',
                                     default=False,
-                                    help_text="Whether the draw is public or not")
+                                    help_text="Whether the draw is shared or not")
     owner = fields.CharField(attribute='owner',
                              null=True,
                              help_text="Owner of the draw")

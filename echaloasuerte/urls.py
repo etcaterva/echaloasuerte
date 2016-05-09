@@ -2,7 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView, RedirectView
 from django.contrib.sitemaps.views import sitemap
 from django.contrib import admin
-
 from web.sitemap import LandingSitemap, DrawSitemap, OthersSitemap
 
 
@@ -59,4 +58,5 @@ urlpatterns += patterns(
     url(r'^ws/check_access_to_draw/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^es/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^en/$', RedirectView.as_view(url="/", permanent=True)),
+    url(r'^draw/new/(?P<draw_type>[^/]+)/public/$', RedirectView.as_view(url="/", permanent=True)),
 )

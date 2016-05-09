@@ -17,7 +17,7 @@ class LinkSetsDrawForm(FormBase):
                 kwargs['initial']['set_{0}'.format(i + 1)] = ','.join(kwargs['initial']['sets'][i])
         super(LinkSetsDrawForm, self).__init__(*args, **kwargs)
 
-        # Add "protected" class to the input that will be read-only when the draw is public
+        # Add "protected" class to the input that will be read-only when the draw is shared
         self.fields['set_1'].widget.attrs.update({'class': 'protected eas-tokenfield'})
         self.fields['set_2'].widget.attrs.update({'class': 'protected eas-tokenfield'})
 

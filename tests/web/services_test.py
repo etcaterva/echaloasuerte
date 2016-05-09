@@ -36,7 +36,7 @@ class TestToss(TestServices):
 
 
 class TestAddUser(TestServices):
-    """ Test the adding a user to a public draw
+    """ Test the adding a user to a shared draw
     """
 
     def setUp(self):

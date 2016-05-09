@@ -53,8 +53,8 @@ def profile(request):
 @time_it
 def join_draw(request):
     """view to show the list of draws a user can join"""
-    public_draws = MONGO.get_draws_with_filter({"is_shared": True})
-    context = {'public_draws': public_draws}
+    shared_draws = MONGO.get_draws_with_filter({"is_shared": True})
+    context = {'shared_draws': shared_draws}
     return render(request, 'join_draw.html', context)
 
 
@@ -81,11 +81,11 @@ SENTENCES = (
 
 
 @time_it
-def index(request, is_public=None):
+def index(request, is_shared=None):
     """landpage"""
     context = {}
-    if is_public:
-        context['is_public'] = True
+    if is_shared:
+        context['is_shared'] = True
     sentence = random.choice(SENTENCES)
     context["sentence"] = {
         "image": static("img/sentences/" + str(sentence[1])),
@@ -96,24 +96,24 @@ def index(request, is_public=None):
 
 
 @time_it
-def create_draw(request, draw_type, is_public):
+def create_draw(request, draw_type, is_shared):
     """create_draw view
 
     Servers the page to create a draw
     """
 
-    is_public = is_public or is_public == 'True'
+    is_shared = is_shared or is_shared == 'True'
 
     LOG.debug("Serving view to create a draw: {0}".format(draw_type))
     try:
         initial = request.GET.copy()
-        initial['is_shared'] = is_public
+        initial['is_shared'] = is_shared
         draw_form = draw_factory.create_form(draw_type,
                                              initial=initial)
     except draw_factory.DrawNotRegistered as e:
         return HttpResponseNotFound("Draw type not registered: " + str(e))
     return render(request, 'draws/new_draw.html',
-                  {"draw": draw_form, "is_public": is_public,
+                  {"draw": draw_form, "is_shared": is_shared,
                    "draw_type": draw_type,
                    "default_title": draw_form.DEFAULT_TITLE})
 

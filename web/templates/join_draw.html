@@ -11,7 +11,7 @@
 {% endblock extra_head %}
 {% block extra_jq_ready %}
     // Fill the datatable
-    var $public_draws = $('#public-draws').dataTable(
+    var $shared_draws = $('#shared-draws').dataTable(
     {
         "bJQueryUI": true,
         "language" : {
@@ -51,30 +51,30 @@
     );
 
     // Add eas_datatable plugin to the table
-    $('#public-draws_wrapper').easDataTable({
-        "type": "public_draw",
-        "dataTable_plugin": $public_draws,
+    $('#shared-draws_wrapper').easDataTable({
+        "type": "shared_draw",
+        "dataTable_plugin": $shared_draws,
         "msg_your_draws": "{% trans "Show only the draws you take part in" %}",
         "msg_search": "{% trans "Search" %}..."
     });
 
     // Workaround to sort the table by date correctly
-    $('#public-draws th:nth-child(4)').click(function (){
-        $public_draws.fnSort( [ [6,'desc'] ] );
+    $('#shared-draws th:nth-child(4)').click(function (){
+        $shared_draws.fnSort( [ [6,'desc'] ] );
     });
 
     // Hide or show columns based on the size of the table
     set_table_size = function(){
-        var public_draw_table = $("#public-draws").width();
-        var public_draw_wrapper = $("#public-draws_wrapper").width();
+        var shared_draw_table_width = $("#shared-draws").width();
+        var shared_draw_wrapper_width = $("#shared-draws_wrapper").width();
         var participants_column = 4; // Fourth column (number of participants)
-        if (public_draw_table > public_draw_wrapper){
-            $public_draws.fnSetColumnVis( participants_column, false );
+        if (shared_draw_table_width > shared_draw_wrapper_width){
+            $shared_draws.fnSetColumnVis( participants_column, false );
         }else{
-            $public_draws.fnSetColumnVis( participants_column, true );
-            public_draw_table = $("#public-draws").width();
-            if (public_draw_table > public_draw_wrapper){
-                $public_draws.fnSetColumnVis( participants_column, false );
+            $shared_draws.fnSetColumnVis( participants_column, true );
+            shared_draw_table_width = $("#shared-draws").width();
+            if (shared_draw_table_width > shared_draw_wrapper_width){
+                $shared_draws.fnSetColumnVis( participants_column, false );
             }
         }
     };
@@ -101,9 +101,9 @@
 {% endblock extra_jq_ready %}
 
 {% block content %}
-    {%if public_draws %}
-        <p class="h1 text-center">{% trans "Public draws" %}</p>
-        <table id="public-draws" class="draw-list data-table" width="100%" cellspacing="0">
+    {%if shared_draws %}
+        <p class="h1 text-center">{% trans "Shared draws" %}</p>
+        <table id="shared-draws" class="draw-list data-table" width="100%" cellspacing="0">
             <thead>
                 <tr>
                     <th></th>
@@ -116,7 +116,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for d in public_draws %}
+            {% for d in shared_draws %}
                 <tr alt="{% url 'retrieve_draw' draw_id=d.pk %}" data-draw_id="{{d.pk}}">
                     <td>{% if user.is_authenticated %}
                             {% if user.pk == d.owner %}

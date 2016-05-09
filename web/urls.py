@@ -14,9 +14,9 @@ urlpatterns += patterns(
     url(r'^$', views.index, name='index'),
     url(r'^about.html$', TemplateView.as_view(template_name='about.html'), name="about"),
     url(r'^draw/(?P<draw_id>[0-9a-g]+)/$', views.display_draw, name="retrieve_draw"),
-    url(r'^draw/new/(?P<draw_type>[^/]+)/public/$', views.create_draw, {'is_public': True},
-        name="create_public_draw"),
-    url(r'^draw/new/(?P<draw_type>[^/]+)/$', views.create_draw, {'is_public': False},
+    url(r'^draw/new/(?P<draw_type>[^/]+)/shared/$', views.create_draw, {'is_shared': True},
+        name="create_shared_draw"),
+    url(r'^draw/new/(?P<draw_type>[^/]+)/$', views.create_draw, {'is_shared': False},
         name="create_draw"),
     url(r'^registration_success/$', TemplateView.as_view(template_name='registration_success.html'),
         name='registration_success'),
@@ -27,7 +27,7 @@ urlpatterns += patterns(
     url(r'^accounts/reset_success/$', TemplateView.as_view(template_name='reset_success.html'), name='reset_success'),
     url(r'^accounts/login/$', TemplateView.as_view(template_name='login.html'), name='login'),
     url(r'^accounts/profile/$', views.profile, name='profile'),
-    url(r'^join_draw.html$', views.join_draw, name="join_public_draw"),
+    url(r'^join_draw.html$', views.join_draw, name="join_shared_draw"),
     url(r'^pusher/auth$', views.pusher_authenticate, name="pusher_auth"),
     url(r'^service\-worker\.js$', TemplateView.as_view(template_name='sw.js', content_type='application/javascript'))
 )

@@ -58,7 +58,7 @@ class RaffleDrawForm(FormBase):
                      '</div>'.format(label_fb_button, ugettext('You are registered in this raffle'))),
                 HTML(u"<div id='shared-draw-required' class='hidden alert alert-warning' role='alert'>{0}<a href='{1}'>{2}</a>"
                      "</div>".format(pgettext('[...] to create a shared raffle', 'To use this type of registration you need to create a '),
-                                     reverse('create_public_draw', kwargs={'draw_type': self.NAME_IN_URL}),
+                                     reverse('create_shared_draw', kwargs={'draw_type': self.NAME_IN_URL}),
                                      ugettext('shared raffle'))),
                 HTML(u"<div id='info-facebook-registration' class='hidden alert alert-info' role='alert'>"
                      "{0}</div>".format(ugettext('Once you publish the raffle, you will get a link that you have to share on social networks.'
