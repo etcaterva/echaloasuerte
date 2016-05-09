@@ -4,6 +4,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.contrib import admin
 
 from web.sitemap import LandingSitemap, DrawSitemap, OthersSitemap
+from web import views as
 
 
 admin.autodiscover()
@@ -59,4 +60,5 @@ urlpatterns += patterns(
     url(r'^ws/check_access_to_draw/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^es/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^en/$', RedirectView.as_view(url="/", permanent=True)),
+    url(r'^draw/new/(?P<draw_type>[^/]+)/public/$', views.create_draw, {'is_shared': True}),
 )
