@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-08 18:46+0200\n"
+"POT-Creation-Date: 2016-05-09 20:30+0200\n"
 "PO-Revision-Date: 2016-05-08 18:50+0200\n"
 "Last-Translator: Mario Corchero\n"
 "Language-Team: \n"
@@ -714,9 +714,9 @@ msgstr "Hubo un problema al desubscríbirte de la tirada"
 msgid "To edit the details go to Settings"
 msgstr "Para editar la tirada ve al panel de ajustes"
 
-#: .\web\templates\draws\display_draw.html:208 .\web\templates\profile.html:191
-#: .\web\templates\reset.html:7 .\web\templates\reset_confirm.html:7
-#: .\web\templates\reset_success.html:7
+#: .\web\templates\draws\display_draw.html:208
+#: .\web\templates\profile.html:191 .\web\templates\reset.html:7
+#: .\web\templates\reset_confirm.html:7 .\web\templates\reset_success.html:7
 #: .\web\templates\under_construction.html:7
 msgid "back"
 msgstr "atrás"
@@ -806,7 +806,8 @@ msgstr "Habilitar chat"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: .\web\templates\draws\display_draw.html:357 .\web\templates\profile.html:290
+#: .\web\templates\draws\display_draw.html:357
+#: .\web\templates\profile.html:290
 msgid "Save"
 msgstr "Guardar"
 
@@ -1597,7 +1598,8 @@ msgctxt "naturaltime"
 msgid "%(delta)s ago"
 msgstr "hace %(delta)s "
 
-#: .\web\templatetags\eas_humanize.py:86 .\web\templatetags\eas_humanize.py:114
+#: .\web\templatetags\eas_humanize.py:86
+#: .\web\templatetags\eas_humanize.py:114
 msgid "now"
 msgstr "ahora"
 
