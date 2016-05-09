@@ -1,3 +1,8 @@
+/* Fixup for bootstrap radio buttons */
+.radio{
+    padding-left: 20px;
+}
+
 /* Remove underline when hover from icons */
 a.fa:hover ,
 a.fa:focus {
