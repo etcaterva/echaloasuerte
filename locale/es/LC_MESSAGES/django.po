@@ -968,7 +968,7 @@ msgstr "¡Tirar!"
 
 #: .\web\templates\draws\new_draw.html:225
 msgid "Create shared draw"
-msgstr "Crear tirada compartido"
+msgstr "Crear tirada compartida"
 
 #: .\web\templates\draws\secure_draw.html:6
 msgid "The draw is private, you cannot access it."
