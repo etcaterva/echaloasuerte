@@ -31,8 +31,13 @@ class FormBase(forms.Form):
     def __init__(self, *args, **kwargs):
         super(FormBase, self).__init__(*args, **kwargs)
 
-        if 'initial' in kwargs and 'title' not in kwargs['initial']:
-            kwargs['initial']['title'] = self.DEFAULT_TITLE
+        if 'initial' in kwargs:
+            if 'title' not in kwargs['initial']:
+                kwargs['initial']['title'] = self.DEFAULT_TITLE
+
+            for attr in kwargs['initial']:
+                if self.DrawClass.TYPES.get(attr) == list and isinstance(kwargs['initial'][attr], list):
+                    kwargs['initial'][attr] = ','.join(kwargs['initial'][attr])
 
         self.helper = FormHelper()
         self.helper.form_tag = False

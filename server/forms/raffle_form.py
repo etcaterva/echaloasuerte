@@ -23,12 +23,8 @@ class RaffleDrawForm(FormBase):
 
     def __init__(self, *args, **kwargs):
         if 'initial' in kwargs and 'participants' in kwargs['initial']:
-            kwargs['initial']['prices'] = ','.join(kwargs['initial']['prices'])
             if kwargs['initial']['registration_type'] == RaffleDraw.FACEBOOK:
-                participant_names = [u'{{{0}:{1}}}'.format(*participant_details) for participant_details in kwargs['initial']['participants']]
-            else:
-                participant_names = kwargs['initial']['participants']
-            kwargs['initial']['participants'] = ','.join(participant_names)
+                kwargs['initial']['participants'] = [u'{{{0}:{1}}}'.format(*participant_details) for participant_details in kwargs['initial']['participants']]
         super(RaffleDrawForm, self).__init__(*args, **kwargs)
 
         # Add "protected" class to the input that will be read-only when the draw is shared

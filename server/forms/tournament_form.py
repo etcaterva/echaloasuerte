@@ -13,8 +13,6 @@ class TournamentDrawForm(FormBase):
     DEFAULT_TITLE = _("Tournament")
 
     def __init__(self, *args, **kwargs):
-        if 'initial' in kwargs and 'participants' in kwargs['initial']:
-            kwargs['initial']['participants'] = ','.join(kwargs['initial']['participants'])
         super(TournamentDrawForm, self).__init__(*args, **kwargs)
 
         # Add "protected" class to the input that will be read-only when the draw is shared

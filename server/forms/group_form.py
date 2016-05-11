@@ -14,8 +14,6 @@ class GroupsDrawForm(FormBase):
     DEFAULT_TITLE = _("Random Groups")
 
     def __init__(self, *args, **kwargs):
-        if 'initial' in kwargs and 'items' in kwargs['initial']:
-            kwargs['initial']['items'] = ','.join(kwargs['initial']['items'])
         super(GroupsDrawForm, self).__init__(*args, **kwargs)
 
         # Add "protected" class to the input that will be read-only when the draw is shared
