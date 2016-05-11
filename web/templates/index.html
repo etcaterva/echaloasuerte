@@ -46,16 +46,16 @@ window.cookieconsent_options = {"message":"{% trans 'This website uses cookies t
 
 {% block content %}
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
-    <div title="" id="switch-draw-mode" class="col-sm-6 col-sm-offset-3">
-        <label class="switch-light switch-candy" >
-            <input id='is-shared' type="checkbox">
-            <span>
-                <span>{% trans "Normal Draw" %}</span>
-                <span>{% trans "Shared Draw" %}</span>
-            </span>
-            <a></a>
-        </label>
-    </div>
+{#    <div title="" id="switch-draw-mode" class="col-sm-6 col-sm-offset-3">#}
+{#        <label class="switch-light switch-candy" >#}
+{#            <input id='is-shared' type="checkbox">#}
+{#            <span>#}
+{#                <span>{% trans "Normal Draw" %}</span>#}
+{#                <span>{% trans "Shared Draw" %}</span>#}
+{#            </span>#}
+{#            <a></a>#}
+{#        </label>#}
+{#    </div>#}
     <div class="container-draws row">
         <div class="col-sm-6">
             {% include "snippets/snippet_draw_box.html" with draw_type="raffle" draw_icon="img/draw_icons/raffle.png" title=_("Raffle") help=_("Want to make a raffle? Make it public here!") %}
