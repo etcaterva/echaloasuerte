@@ -161,6 +161,12 @@ a.fa:focus {
     max-width: 190px;
 }
 
+#help-shared-draw {
+    margin-left: 4px;
+    margin-top: 3px;
+    position: absolute;
+}
+
 /***** INDIVIDUAL DRAWS *****/
 .checkbox {
     margin-top: 0;

@@ -119,6 +119,11 @@
         $("#normal-to-shared").click( function() {
             $draw_maneger.drawManager('normal_to_shared');
         });
+        $( '#help-shared-draw' ).tooltip({
+            content: function() {
+                return "{% trans 'Allow others to access the draw, see <b>live results</b> and use <b>the chat</b> by creating a shared draw!' %}";
+            }
+        });
     {% endif %}
 {% endblock extra_jq_ready %}
 {% block fb_async %}
@@ -223,6 +228,7 @@
                 <div class="row ">
                     <button type="button" id="create-and-toss" class="btn btn-success submit-lockable">{% trans 'Toss!' %}</button>
                     <button type="button" id="normal-to-shared" class="btn btn-primary submit-lockable">{% trans 'Create shared draw' %}</button>
+                    <span id="help-shared-draw" class="fa fa-question-circle" aria-hidden="true" title=""></span>
                 </div>
             {% endif %}
         </div>
