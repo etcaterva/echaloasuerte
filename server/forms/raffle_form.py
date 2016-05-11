@@ -22,6 +22,8 @@ class RaffleDrawForm(FormBase):
     DEFAULT_TITLE = _("Raffle")
 
     def __init__(self, *args, **kwargs):
+        # If it is facebook RaffleDraw, participants will be a list(Participant)
+        # Parse them as {fb_id:participant_name} to be rendered as tokenfields
         if 'initial' in kwargs and 'participants' in kwargs['initial']:
             if kwargs['initial']['registration_type'] == RaffleDraw.FACEBOOK:
                 kwargs['initial']['participants'] = [u'{{{0}:{1}}}'.format(*participant_details) for participant_details in kwargs['initial']['participants']]

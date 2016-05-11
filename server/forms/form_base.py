@@ -35,6 +35,8 @@ class FormBase(forms.Form):
             if 'title' not in kwargs['initial']:
                 kwargs['initial']['title'] = self.DEFAULT_TITLE
 
+            # If lists come in initial, merge them as a comma separated values lists so they
+            # will be rendered as tokenfields
             for attr in kwargs['initial']:
                 if self.DrawClass.TYPES.get(attr) == list and isinstance(kwargs['initial'][attr], list):
                     kwargs['initial'][attr] = ','.join(kwargs['initial'][attr])
