@@ -904,7 +904,7 @@ msgid ""
 "chat</b> by creating a shared draw!"
 msgstr ""
 "¡Deja que otros accedan a la tirada, vean los <b>resultados en directo</b> y "
-"usen <b>el chat</> creando una tirada compartida!"
+"usen <b>el chat</b> creando una tirada compartida!"
 
 #: .\web\templates\draws\new_draw.html:148
 msgid "Click on the draw title to change it"
