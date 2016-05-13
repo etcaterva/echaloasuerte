@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-09 20:30+0200\n"
-"PO-Revision-Date: 2016-05-08 18:50+0200\n"
+"POT-Creation-Date: 2016-05-12 00:59+0200\n"
+"PO-Revision-Date: 2016-05-12 01:01+0200\n"
 "Last-Translator: Mario Corchero\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -100,8 +100,8 @@ msgstr "Miembros"
 msgid "Random Groups"
 msgstr "Grupos Aleatorios"
 
-#: .\server\forms\group_form.py:32 .\server\forms\link_sets_form.py:29
-#: .\server\forms\random_item_form.py:33
+#: .\server\forms\group_form.py:30 .\server\forms\link_sets_form.py:29
+#: .\server\forms\random_item_form.py:31
 msgid ""
 "<div id='info-comma-separated' class='alert alert-info' "
 "role='alert'>Separate items by commas. e.g: Maria, David S, Leo, ...</div>"
@@ -157,32 +157,28 @@ msgstr "Requisito para participar"
 msgid "Raffle"
 msgstr "Sorteo"
 
-#: .\server\forms\raffle_form.py:43
+#: .\server\forms\raffle_form.py:39
 msgid "Share in Facebook to participate"
 msgstr "Compartir en facebook para participar"
 
-#: .\server\forms\raffle_form.py:45
+#: .\server\forms\raffle_form.py:41
 msgid "Login with Facebook to participate"
 msgstr "Iniciar sesion en facebook para participar"
 
-#: .\server\forms\raffle_form.py:50
+#: .\server\forms\raffle_form.py:46
 msgid "Separate prices by commas. e.g: Trip to Rome, Luxury dinner, ..."
 msgstr "Separar premios por comas. Ej: Viaje a Roma, Cena en restaurante"
 
-#: .\server\forms\raffle_form.py:58
+#: .\server\forms\raffle_form.py:54
 msgid "You are registered in this raffle"
 msgstr "Estas registrado en este sorteo"
 
-#: .\server\forms\raffle_form.py:60
-msgctxt "[...] to create a shared raffle"
-msgid "To use this type of registration you need to create a "
-msgstr "Para usar este tipo de inscripción necesitar crear un "
+#: .\server\forms\raffle_form.py:56
+msgid "To use this type of registration you need to create a shared raffle"
+msgstr ""
+"Para usar este tipo de inscripción necesitar crear una tirada compartida"
 
-#: .\server\forms\raffle_form.py:62
-msgid "shared raffle"
-msgstr "tirada compartida"
-
-#: .\server\forms\raffle_form.py:64
+#: .\server\forms\raffle_form.py:58
 msgid ""
 "Once you publish the raffle, you will get a link that you have to share on "
 "social networks. Participants will must access the raffle and share it on "
@@ -238,7 +234,7 @@ msgstr "Toca la flecha para girarla"
 msgid "Tournament"
 msgstr "Torneo"
 
-#: .\server\forms\tournament_form.py:28
+#: .\server\forms\tournament_form.py:26
 msgid ""
 "<div id='info-comma-separated' class='alert alert-info' "
 "role='alert'>Separate participants by commas. e.g: Maria, David S, Leo, ...</"
@@ -714,9 +710,9 @@ msgstr "Hubo un problema al desubscríbirte de la tirada"
 msgid "To edit the details go to Settings"
 msgstr "Para editar la tirada ve al panel de ajustes"
 
-#: .\web\templates\draws\display_draw.html:208
-#: .\web\templates\profile.html:191 .\web\templates\reset.html:7
-#: .\web\templates\reset_confirm.html:7 .\web\templates\reset_success.html:7
+#: .\web\templates\draws\display_draw.html:208 .\web\templates\profile.html:191
+#: .\web\templates\reset.html:7 .\web\templates\reset_confirm.html:7
+#: .\web\templates\reset_success.html:7
 #: .\web\templates\under_construction.html:7
 msgid "back"
 msgstr "atrás"
@@ -800,14 +796,13 @@ msgid "Enable chat"
 msgstr "Habilitar chat"
 
 #: .\web\templates\draws\display_draw.html:356
-#: .\web\templates\draws\new_draw.html:215 .\web\templates\profile.html:212
+#: .\web\templates\draws\new_draw.html:220 .\web\templates\profile.html:212
 #: .\web\templates\profile.html.py:236 .\web\templates\profile.html:261
 #: .\web\templates\profile.html.py:291
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: .\web\templates\draws\display_draw.html:357
-#: .\web\templates\profile.html:290
+#: .\web\templates\draws\display_draw.html:357 .\web\templates\profile.html:290
 msgid "Save"
 msgstr "Guardar"
 
@@ -821,8 +816,8 @@ msgstr ""
 
 #: .\web\templates\draws\display_draw.html:369
 #: .\web\templates\draws\display_draw.html:411
-#: .\web\templates\draws\new_draw.html:140
-#: .\web\templates\draws\new_draw.html:216
+#: .\web\templates\draws\new_draw.html:145
+#: .\web\templates\draws\new_draw.html:221
 msgid "Back"
 msgstr "Atrás"
 
@@ -831,7 +826,7 @@ msgid "Edit draw"
 msgstr "Editar la tirada"
 
 #: .\web\templates\draws\display_draw.html:379
-#: .\web\templates\draws\new_draw.html:184
+#: .\web\templates\draws\new_draw.html:189
 msgid "Option 1)"
 msgstr "Opción 1)"
 
@@ -840,7 +835,7 @@ msgid "Share the link to the draw:"
 msgstr "Comparte el enlace de la tirada:"
 
 #: .\web\templates\draws\display_draw.html:382
-#: .\web\templates\draws\new_draw.html:187
+#: .\web\templates\draws\new_draw.html:192
 msgid "Option 2)"
 msgstr "Opción 2)"
 
@@ -849,37 +844,37 @@ msgid "Send an invitation to the emails below"
 msgstr "Enviar una invitación a los correos siguientes:"
 
 #: .\web\templates\draws\display_draw.html:385
-#: .\web\templates\draws\new_draw.html:190
+#: .\web\templates\draws\new_draw.html:195
 msgid "Oops!"
 msgstr "Ups!"
 
 #: .\web\templates\draws\display_draw.html:385
-#: .\web\templates\draws\new_draw.html:190
+#: .\web\templates\draws\new_draw.html:195
 msgid "One or more emails contain errors..."
 msgstr "Uno o más emails parecen incorrectos..."
 
 #: .\web\templates\draws\display_draw.html:388
-#: .\web\templates\draws\new_draw.html:193
+#: .\web\templates\draws\new_draw.html:198
 msgid "Everything went right!"
 msgstr "Todo fue como bien!"
 
 #: .\web\templates\draws\display_draw.html:388
-#: .\web\templates\draws\new_draw.html:193
+#: .\web\templates\draws\new_draw.html:198
 msgid "The invitation will arrive soon to these emails."
 msgstr "La invitación llegará en unos momentos a estos correos."
 
 #: .\web\templates\draws\display_draw.html:390
-#: .\web\templates\draws\new_draw.html:195
+#: .\web\templates\draws\new_draw.html:200
 msgid "Type the emails here..."
 msgstr "Lista los correos aquí..."
 
 #: .\web\templates\draws\display_draw.html:391
-#: .\web\templates\draws\new_draw.html:196
+#: .\web\templates\draws\new_draw.html:201
 msgid "Send emails"
 msgstr "Enviar emails"
 
 #: .\web\templates\draws\display_draw.html:392
-#: .\web\templates\draws\new_draw.html:197
+#: .\web\templates\draws\new_draw.html:202
 msgid "Option 3)"
 msgstr "Opción 3)"
 
@@ -903,70 +898,78 @@ msgstr "¡Programa la tirada!"
 msgid "(optional)"
 msgstr "(opcional)"
 
-#: .\web\templates\draws\new_draw.html:143
+#: .\web\templates\draws\new_draw.html:124
+msgid ""
+"Allow others to access the draw, see <b>live results</b> and use <b>the "
+"chat</b> by creating a shared draw!"
+msgstr ""
+"¡Deja que otros accedan a la tirada, vean los <b>resultados en directo</b> y "
+"usen <b>el chat</> creando una tirada compartida!"
+
+#: .\web\templates\draws\new_draw.html:148
 msgid "Click on the draw title to change it"
 msgstr "Haz clic en el título de la tirada para cambiarlo"
 
-#: .\web\templates\draws\new_draw.html:152 .\web\templates\profile.html:305
+#: .\web\templates\draws\new_draw.html:157 .\web\templates\profile.html:305
 msgid "Title"
 msgstr "Título"
 
-#: .\web\templates\draws\new_draw.html:154
+#: .\web\templates\draws\new_draw.html:159
 msgid "i.e 'Lottery 2015'"
 msgstr "ej: 'Lotería 2015'"
 
-#: .\web\templates\draws\new_draw.html:158
+#: .\web\templates\draws\new_draw.html:163
 msgid "Description (optional)"
 msgstr "Descripción (opcional)"
 
-#: .\web\templates\draws\new_draw.html:160
+#: .\web\templates\draws\new_draw.html:165
 msgid "Type a description here..."
 msgstr "Describe la tirada aquí..."
 
-#: .\web\templates\draws\new_draw.html:181
+#: .\web\templates\draws\new_draw.html:186
 msgid "Your draw is online now"
 msgstr "La tiarada esta online ahora"
 
-#: .\web\templates\draws\new_draw.html:182
+#: .\web\templates\draws\new_draw.html:187
 msgid ":D"
 msgstr ":D"
 
-#: .\web\templates\draws\new_draw.html:183
+#: .\web\templates\draws\new_draw.html:188
 msgid ""
 "Use any of the methods below to invite people to join and see the results."
 msgstr ""
 "Utiliza cualquiera de los métodos a continuación para invitar a mas personas "
 "a la tirada."
 
-#: .\web\templates\draws\new_draw.html:185
+#: .\web\templates\draws\new_draw.html:190
 msgid "Send this link to anyone you wish to invite"
 msgstr "Envía este enlace a cualquier persona que desees invitar"
 
-#: .\web\templates\draws\new_draw.html:188
+#: .\web\templates\draws\new_draw.html:193
 msgid "Type their e-mails here to automatically send them an invitation"
 msgstr "Añade emails para enviarles una invitación automáticamente"
 
-#: .\web\templates\draws\new_draw.html:210
+#: .\web\templates\draws\new_draw.html:215
 msgid "Try it!"
 msgstr "¡Pruébala!"
 
-#: .\web\templates\draws\new_draw.html:217
+#: .\web\templates\draws\new_draw.html:222
 msgid "Configure draw"
 msgstr "Configurar tirada"
 
-#: .\web\templates\draws\new_draw.html:218
+#: .\web\templates\draws\new_draw.html:223
 msgid "Publish draw"
 msgstr "Publicar tirada"
 
-#: .\web\templates\draws\new_draw.html:219
+#: .\web\templates\draws\new_draw.html:224
 msgid "Go to the draw"
 msgstr "Llévame a la tirada"
 
-#: .\web\templates\draws\new_draw.html:224
+#: .\web\templates\draws\new_draw.html:229
 msgid "Toss!"
 msgstr "¡Tirar!"
 
-#: .\web\templates\draws\new_draw.html:225
+#: .\web\templates\draws\new_draw.html:230
 msgid "Create shared draw"
 msgstr "Crear tirada compartida"
 
@@ -1009,14 +1012,6 @@ msgstr "Acepto"
 #: .\web\templates\index.html:41
 msgid "More info"
 msgstr "Mas información"
-
-#: .\web\templates\index.html:53
-msgid "Normal Draw"
-msgstr "Tirada Normal"
-
-#: .\web\templates\index.html:54
-msgid "Shared Draw"
-msgstr "Tirada Compartida"
 
 #: .\web\templates\index.html:61
 msgid "Want to make a raffle? Make it public here!"
@@ -1598,8 +1593,7 @@ msgctxt "naturaltime"
 msgid "%(delta)s ago"
 msgstr "hace %(delta)s "
 
-#: .\web\templatetags\eas_humanize.py:86
-#: .\web\templatetags\eas_humanize.py:114
+#: .\web\templatetags\eas_humanize.py:86 .\web\templatetags\eas_humanize.py:114
 msgid "now"
 msgstr "ahora"
 
@@ -1738,6 +1732,15 @@ msgstr "Introduzca la nueva contraseña"
 #: .\web\views.py:265
 msgid "Password reset unsuccessful"
 msgstr "Contraseña cambiada con éxito"
+
+#~ msgid "shared raffle"
+#~ msgstr "tirada compartida"
+
+#~ msgid "Normal Draw"
+#~ msgstr "Tirada Normal"
+
+#~ msgid "Shared Draw"
+#~ msgstr "Tirada Compartida"
 
 #~ msgid "Create a public one"
 #~ msgstr "Crear tirada compartida"

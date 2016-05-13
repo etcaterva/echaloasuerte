@@ -26,7 +26,6 @@ class LinkSetsDraw(BaseDraw):
         - If needed, items will be added to the others set or ignored to match the length of the first
     """
     TYPES = BaseDraw.TYPES.copy()
-    TYPES['sets'] = list
 
     def __init__(self, sets=None, **kwargs):
         super(LinkSetsDraw, self).__init__(**kwargs)

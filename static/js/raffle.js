@@ -81,20 +81,23 @@ Raffle.fb_share_to_participate = function(){
 };
 
 Raffle.setup_creation = function(is_shared){
-    $('#id_registration_type').on('change', function(){
-        var option_selected = $(this).find(":selected").val();
+    var change_interface = function(){
+        var option_selected = $('#id_registration_type').find(":selected").val();
         $('#div_id_participants').toggleClass('hidden', option_selected != 'restricted');
         if (is_shared){
             $('#info-facebook-registration').toggleClass('hidden', option_selected != 'facebook');
             $('#div_id_registration_requirement').toggleClass('hidden', option_selected != 'facebook');
             // Disable 'Try' button when creating a shared draw
             $('#try').toggleClass('hidden', option_selected == 'facebook');
+            var registration_requirement = $('input[name=registration_requirement]:checked').val();
         } else {
             // Disable Facebook registration type in normal draws
             $('#shared-draw-required').toggleClass('hidden', option_selected != 'facebook');
             $('#create-and-toss').toggleClass('disabled', option_selected == 'facebook');
         }
-    });
+    };
+    $('#id_registration_type').on('change', change_interface);
+    change_interface();
 };
 
 Raffle.setup_display = function(registration_type){

@@ -22,13 +22,11 @@ class RaffleDrawForm(FormBase):
     DEFAULT_TITLE = _("Raffle")
 
     def __init__(self, *args, **kwargs):
+        # If it is facebook RaffleDraw, participants will be a list(Participant)
+        # Parse them as {fb_id:participant_name} to be rendered as tokenfields
         if 'initial' in kwargs and 'participants' in kwargs['initial']:
-            kwargs['initial']['prices'] = ','.join(kwargs['initial']['prices'])
             if kwargs['initial']['registration_type'] == RaffleDraw.FACEBOOK:
-                participant_names = [u'{{{0}:{1}}}'.format(*participant_details) for participant_details in kwargs['initial']['participants']]
-            else:
-                participant_names = kwargs['initial']['participants']
-            kwargs['initial']['participants'] = ','.join(participant_names)
+                kwargs['initial']['participants'] = [u'{{{0}:{1}}}'.format(*participant_details) for participant_details in kwargs['initial']['participants']]
         super(RaffleDrawForm, self).__init__(*args, **kwargs)
 
         # Add "protected" class to the input that will be read-only when the draw is shared
@@ -56,10 +54,8 @@ class RaffleDrawForm(FormBase):
                      '<a id="register-raffle-fb" class="hidden btn btn-social btn-facebook"><span class="fa fa-facebook"></span>{0}</a>'
                      '<div id="already-registered" class="hidden alert alert-info" role="alert">{1}</div>'
                      '</div>'.format(label_fb_button, ugettext('You are registered in this raffle'))),
-                HTML(u"<div id='shared-draw-required' class='hidden alert alert-warning' role='alert'>{0}<a href='{1}'>{2}</a>"
-                     "</div>".format(pgettext('[...] to create a shared raffle', 'To use this type of registration you need to create a '),
-                                     reverse('create_shared_draw', kwargs={'draw_type': self.NAME_IN_URL}),
-                                     ugettext('shared raffle'))),
+                HTML(u"<div id='shared-draw-required' class='hidden alert alert-warning' role='alert'>{0}"
+                     "</div>".format(ugettext('To use this type of registration you need to create a shared raffle'))),
                 HTML(u"<div id='info-facebook-registration' class='hidden alert alert-info' role='alert'>"
                      "{0}</div>".format(ugettext('Once you publish the raffle, you will get a link that you have to share on social networks.'
                                           ' Participants will must access the raffle and share it on facebook to register on it.'))),
