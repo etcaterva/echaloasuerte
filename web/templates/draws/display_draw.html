@@ -210,7 +210,7 @@
         <div id="draw-options" class="col-xs-4 col-xs-push-6 col-sm-2 col-sm-push-8">
             {% if bom.is_shared %}
                 {% if not bom.owner or bom.owner == user.pk %}
-                    <a id="edit-settings-button" data-toggle="modal" href="#shared-draw-settings" class="draw-option-icon text-center ">
+                    <a id="edit-settings-button" data-toggle="modal" href="#shared-draw-settings-modal" class="draw-option-icon text-center ">
                         <span id="shared-draw-settings" class="fa fa-gear fa-2x"></span>
                         <p>{% trans "Settings" %}</p>
                     </a>
@@ -336,7 +336,7 @@
 
     {% if bom.is_shared %}
         <!-- Modal settings Panel -->
-        <div id="shared-draw-settings" class="modal fade" tabindex="-1" role="dialog" data-focus-on="input:first">
+        <div id="shared-draw-settings-modal" class="modal fade" tabindex="-1" role="dialog" data-focus-on="input:first">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div id="settings-general">
