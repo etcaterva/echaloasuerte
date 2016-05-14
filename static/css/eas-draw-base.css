@@ -58,16 +58,26 @@ a.fa:focus {
           box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(76, 174, 76, 0.60);
 }
 
-.draw-heading .back-arrow,
-.draw-heading .add-favourites,
-.draw-heading #shared-draw-settings {
-    padding: 10px 0 0 0;
+#draw-options {
+    padding: 10px 0;
 }
 
-.draw-heading .back-arrow img,
-.draw-heading .add-favourites img {
+#draw-options .draw-option-icon {
+    float: right;
+    margin: 0 5px;
+}
+
+.draw-option-icon img {
     width: 35px;
     height: auto;
+
+}
+
+.draw-option-icon .fa {
+    text-align: center;
+    font-size: 35px;
+    vertical-align: middle;
+    color: #376181;
 }
 
 .draw-heading #draw-description-area {
@@ -82,17 +92,6 @@ a.fa:focus {
     resize: none;
     width: 100%;
     height:50px;
-}
-
-#edit-settings-button {
-    color: #35414B;
-}
-
-@media (min-width: 992px) {
-    .draw-heading .back-arrow img,
-    .draw-heading .add-favourites img {
-        width: 40px;
-    }
 }
 
 .draw-heading .access-level {

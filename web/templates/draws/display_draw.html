@@ -204,31 +204,30 @@
     <form class="clearfix" method="post" id="draw-form">
         <!-- Draw Heading -->
         <div class="clearfix draw-heading">
-            <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
+            <a href="{% url 'index' %}" class="draw-option-icon back-arrow col-xs-2 col-sm-2 text-center">
                 <img src="{% static "img/back_arrow.png" %}" alt="{% trans "back" %}"/>
             </a>
-            <div class="col-xs-8 visible-xs"></div>
+        <div id="draw-options" class="col-xs-4 col-xs-push-6 col-sm-2 col-sm-push-8">
             {% if bom.is_shared %}
                 {% if not bom.owner or bom.owner == user.pk %}
-                    <a id="edit-settings-button" data-toggle="modal" href="#shared-draw-settings" class="shared-draw-settings col-xs-2 col-sm-2 col-sm-push-8 text-center ">
+                    <a id="edit-settings-button" data-toggle="modal" href="#shared-draw-settings-modal" class="draw-option-icon text-center ">
                         <span id="shared-draw-settings" class="fa fa-gear fa-2x"></span>
                         <p>{% trans "Settings" %}</p>
                     </a>
                 {% else %}
-                    <a id="subscribe-button" data-active="{% if user.pk in bom.users %}y{%else%}n{%endif%}" href="#" class="col-xs-2 col-sm-2 col-sm-push-8">
+                    <a id="subscribe-button" data-active="{% if user.pk in bom.users %}y{%else%}n{%endif%}" href="#" class="draw-option-icon">
                         <span class="fa fa-envelope fa-2x"></span>
                         <p>{% trans "Subscribe" %}</p>
                     </a>
                 {% endif %}
             {% else %}
-                <div class="col-xs-2 col-sm-2 col-sm-push-8 text-center ">
                     <a id="fav-button"
                     {% if bom.pk in user.favourites %}
                     data-active="y"
                     {% else %}
                     data-active="n"
                     {% endif %}
-                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="eas-tooltip add-favourites col-sm-push-8 text-center ">
+                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="draw-option-icon eas-tooltip add-favourites col-sm-push-8 text-center ">
                         <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x hide"></span>
                     {% if bom.pk in user.favourites %}
                         <img src="{% static "img/star.png" %}" alt="{% trans "Remove from favourites" %}"/>
@@ -236,11 +235,11 @@
                         <img src="{% static "img/star-o.png" %}" alt="{% trans "Add to favourites" %}"/>
                     {% endif %}
                     </a>
-                    <a id="create-shared-from-private" href="{% url 'create_shared_draw' draw_type=draw.NAME_IN_URL %}" class="add-favourites eas-tooltip" title="{% trans 'Create a shared one' %}">
-                        <img src="{% static 'img/share-icon.png' %}" />
+                    <a id="create-shared-from-private" href="{% url 'create_shared_draw' draw_type=draw.NAME_IN_URL %}" class="draw-option-icon eas-tooltip" title="{% trans 'Create a shared one' %}">
+                        <span class="fa fa-share-alt fa-2x"></span>
                     </a>
-                </div>
             {% endif %}
+                </div>
             <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
                 <textarea name="title" class="form-control protected autogrow draw-title-area text-center" rows="1">{{ bom.title }}</textarea>
             </div>
@@ -337,7 +336,7 @@
 
     {% if bom.is_shared %}
         <!-- Modal settings Panel -->
-        <div id="shared-draw-settings" class="modal fade" tabindex="-1" role="dialog" data-focus-on="input:first">
+        <div id="shared-draw-settings-modal" class="modal fade" tabindex="-1" role="dialog" data-focus-on="input:first">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div id="settings-general">
