@@ -62,8 +62,9 @@ a.fa:focus {
     padding: 10px 0;
 }
 
-.draw-option-icon {
-    padding: 10px 0 0 0;
+#draw-options .draw-option-icon {
+    float: right;
+    margin: 0 5px;
 }
 
 .draw-option-icon img {
@@ -74,7 +75,6 @@ a.fa:focus {
 
 .draw-option-icon .fa {
     text-align: center;
-    padding-left: 5px;
     font-size: 35px;
     vertical-align: middle;
     color: #376181;
