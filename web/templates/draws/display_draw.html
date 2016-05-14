@@ -434,6 +434,7 @@
                 </div>
             </div>
         </div>
+
     {% endif %}
     {% if bom.draw_type == "photo" %}
         {% include 'snippets/fb_photo_selector.html' %}
@@ -444,4 +445,37 @@
 {% block right_column %}
     <div id="chat-column" class="col-xs-12 chat chat-outside hidden"></div>
 {% endblock right_column %}
+
+{% block extra_body %}
+    <!-- Warning "Log in" modal -->
+    <div class="modal fade" id="warning-login" tabindex="-1" role="dialog" aria-labelledby="WarningLogin">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans "Ops, who are you?" %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% trans "In order to save your favourite draws and used them later you need to log in. Check out the list of benefits of using an account!" %}
+                    <ul>
+                        <li>{% trans "Only you can manage the shared draws you create (edit them, invite users, enable/disable the chat...)" %}</li>
+                        <li>{% trans "Store your favourite draws for faster access" %}</li>
+                        <li>{% trans "Access your draw history at any moment" %}</li>
+                    </ul>
+                    <div class="text-center" >
+                        <a href="{% url 'login' %}" type="button" class="btn btn-success">{% trans "Log in" %}</a>
+                        <div id="create-account">
+                            <p>{% trans "Don't you have an account yet?" %}<br/>
+                            {% trans "It takes only 30 seconds, and <strong>it's totally FREE!</strong>" %}</p>
+                            <a href="{% url 'register' %}" type="button" >{% trans "Create an account" %}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "No thanks" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock extra_body %}
 

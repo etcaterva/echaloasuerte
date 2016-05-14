@@ -116,9 +116,18 @@
         $("#create-and-toss").click( function() {
             $draw_maneger.drawManager('create_and_toss');
         });
-        $("#normal-to-shared").click( function() {
-            $draw_maneger.drawManager('normal_to_shared');
-        });
+        {% if not user.is_authenticated %}
+            $("#normal-to-shared").click( function() {
+                $('#warning-login').modal('show');
+            });
+            $("#normal-to-shared-confirm").click( function() {
+                $draw_maneger.drawManager('normal_to_shared');
+            });
+        {% else %}
+            $("#normal-to-shared").click( function() {
+                $draw_maneger.drawManager('normal_to_shared');
+            });
+        {% endif %}
         $( '#help-shared-draw' ).tooltip({
             content: function() {
                 return "{% trans 'Allow others to access the draw, see <b>live results</b> and use <b>the chat</b> by creating a shared draw!' %}";
@@ -249,3 +258,37 @@
         {% include 'snippets/fb_photo_selector.html' %}
     {% endif %}
 {% endblock %}
+
+{% block extra_body %}
+    <!-- Warning "Log in" modal -->
+    <div class="modal fade" id="warning-login" tabindex="-1" role="dialog" aria-labelledby="WarningLogin">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans "May I say something?" %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% trans "I've seen that you are not logged in.<br> Logging in has several benefits when creating a shared draw:" %}
+                    <ul>
+                        <li>{% trans "Only you can toss" %}</li>
+                        <li>{% trans "Only you can edit the details of the draw" %}</li>
+                        <li>{% trans "Only you can invite or remove people" %}</li>
+                        <li>{% trans "The draw will be in your history for future access" %}</li>
+                    </ul>
+                    <div class="text-center" >
+                        <a href="{% url 'login' %}" type="button" class="btn btn-success">{% trans "Log in" %}</a>
+                        <div id="create-account">
+                            <p>{% trans "Don't you have an account yet?" %}<br/>
+                            {% trans "It takes only 30 seconds, and <strong>it's totally FREE!</strong>" %}</p>
+                            <a href="{% url 'register' %}" type="button" >{% trans "Create an account" %}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="normal-to-shared-confirm" type="button" class="btn btn-default" data-dismiss="modal">{% trans "No thanks, I know what I'm doing" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock extra_body %}

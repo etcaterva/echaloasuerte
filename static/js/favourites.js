@@ -30,7 +30,7 @@
             this.options = $.extend({}, defaults, options);
             this.$element.click(function () {
                 if (that.options.user_authenticated == false) {
-                    alert("You need an account to save your favourite draws");
+                    $('#warning-login').modal('show');
                 } else {
                     if (that.options.draw_id == 'None') {
                         alert("Click on the 'Toss' button to try the draw first");
