@@ -22,7 +22,7 @@ SharedDraw.setup_settings_panel = function () {
         $('.settings-submenu').addClass("hide");
 
         // Remove previous feedback in case they exist
-        $('div#shared-draw-settings div.feedback').addClass('hide');
+        $('div#shared-draw-settings-modal div.feedback').addClass('hide');
     }
 
     // Open settings panel
@@ -56,7 +56,7 @@ SharedDraw.setup_settings_panel = function () {
         // Show the "Save changes" and "Cancel edition" buttons
         $('div#edit-draw-save-changes').removeClass('hide');
         // Close settings panel
-        $('#shared-draw-settings').modal('hide');
+        $('#shared-draw-settings-modal').modal('hide');
         // Disable Settings button
         $('#edit-settings-button').addClass( "hidden" );
         // Show the information div ("Separate items by commas...")
