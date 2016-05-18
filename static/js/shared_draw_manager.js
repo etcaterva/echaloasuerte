@@ -13,6 +13,7 @@ SharedDraw.defaults = {
     msg_login_to_subscribe: "Please, log in to be able to subscribe to a draw",
     msg_error_subscribe: "There was an issue when subscribing to the draw :(",
     msg_error_unsubscribe: "There was an issue when unsubscribing to the draw :(",
+    msg_tooltip_protected: "To edit the details go to Settings"
 };
 
 SharedDraw.setup_settings_panel = function () {
