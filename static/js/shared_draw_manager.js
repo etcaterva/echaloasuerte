@@ -125,7 +125,7 @@ SharedDraw.setup_settings_panel = function () {
 SharedDraw.lock_fields = function(locked){
     var $protected_fields = $('.protected');
     var $protected_hidden_fields = $('.protected-hidden');
-    var $protected_inputs = $('input.protected');
+    var $protected_inputs = $('input.protected, textarea.protected');
     var $protected_buttons = $('button.protected');
     var $protected_tokenfields = $('input.protected.eas-tokenfield');
     if (locked){
@@ -152,7 +152,7 @@ SharedDraw.lock_fields = function(locked){
         $protected_hidden_fields.toggleClass('hidden', false);
 
         // Remove read-only property to the inputs of the draw
-        $protected_fields.removeProp('readonly');
+        $protected_inputs.removeProp('readonly');
 
         // Remove disabled class from buttons
         $protected_buttons.toggleClass('disabled', false);
