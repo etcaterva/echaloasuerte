@@ -190,7 +190,6 @@
                     minWidth: 150
                 });
             }
-            var that = this;
 
             /**
             * Store callback functions to render results dynamically
@@ -473,7 +472,6 @@
          * Creates a draw with the data from the current draw form
          *
          * @param callback_done Function executed if the creation success
-         * @param callback_fail Function executed if the creation fails
          */
         create_draw: function(callback_done){
             var that = this;
@@ -569,6 +567,7 @@
             if (Object.keys(this.edited_fields).length > 0) {
                 this.update(
                     callback_done = function (){
+                        ga('send', 'event', 'update', that.options.draw_type, is_shared);
                         var $result_headers = $('.ui-accordion-header');
                         $result_headers.each(function(){
                             var $this = $(this);
@@ -595,6 +594,8 @@
             if (Object.keys(this.edited_fields).length > 0) {
                 this.update(
                     callback_done = function (){
+                        ga('send', 'event', 'update', that.options.draw_type, is_shared);
+
                         // Don't use reload to avoid unintentional form submissions
                         window.location.href = String( window.location.href ).replace( "/#", "" );
                     }
@@ -609,7 +610,6 @@
          * Only the fields stored in 'this.edited_fields' are updated
          *
          * @param callback_done Function executed if the update success
-         * @param callback_fail Function executed if the update fails
          */
         update: function(callback_done){
                 var that = this;
@@ -704,7 +704,7 @@
     setTimeout(function() {
         refreshOnPublished();
         updateResultsTime();
-    }, 500)
+    }, 500);
 
     /*********************************
      *   DRAW MANAGER PLUGIN DEFINITION
