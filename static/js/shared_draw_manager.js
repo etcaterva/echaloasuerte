@@ -1,3 +1,37 @@
+function disable_tooltip_share_url(){
+    // Do not open tooltip for the url input when hovered
+    $('.url-share').tooltip({
+        position: { my: 'center bottom' , at: 'center top-10' },
+        disabled: true,
+        close: function( event, ui ) {
+            $(this).tooltip('disable');
+        }
+    });
+}
+
+jQuery.fn.extend({
+    /**
+     * Select the content of an input and try to copy it into the clipboard
+     */
+    select_and_copy: function () {
+        // Select the input text
+        var $this = $(this);
+        var input = $this[0];
+        input.setSelectionRange(0, input.value.length);
+        try {
+            // Try to copy the selected text into the clipboard
+            if (document.execCommand('copy')) {
+                $this.tooltip('enable').tooltip('open');
+                setTimeout(function(){
+                    $this.tooltip('close');
+                }, 2000);
+            }
+        } catch (err) {
+            // Browser does not support copying to clipboard
+        }
+    }
+});
+
 /*******************************
       Shared draw creation
  ******************************/
@@ -68,8 +102,10 @@ SharedDrawCreator.update_breadcrumb = function (target_step){
     }
 };
 
-// Initialize the links in the breadcrumb
-SharedDrawCreator.setup_breadcrumb = function(){
+SharedDrawCreator.setup = function(){
+    disable_tooltip_share_url();
+
+    // Initialize the links in the breadcrumb
     var $breadcrumb = $('.breadcrumb-shared-draw');
     $breadcrumb.find('#general').click(SharedDrawCreator.show_general_step);
     $breadcrumb.find('#configure').click(SharedDrawCreator.show_configure_step);
@@ -346,6 +382,8 @@ SharedDraw.subscribe = function (subscribe){
 SharedDraw.setup = function(options){
     SharedDraw.options = $.extend({}, SharedDraw.defaults, options);
 
+    disable_tooltip_share_url();
+
     // Hide the information div ("Separate items by commas...") when displaying a shared draw
     $('#info-comma-separated').addClass('hidden');
 
@@ -397,3 +435,4 @@ SharedDraw.setup = function(options){
         $(this).animate({ height: collapsed_height }, 500);
     });
 };
+

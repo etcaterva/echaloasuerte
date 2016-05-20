@@ -377,7 +377,7 @@
                         <div class="modal-body">
                             <span class="invite-people-option">{% trans "Option 1)" %}</span>
                             <p>{% trans "Share the link to the draw:" %}</p>
-                            <input class="url-share text-center" readonly>
+                            <input class="url-share text-center" readonly onclick="$(this).select_and_copy();" title="{% trans 'URL copied to clipboard' %}">
                             <span class="invite-people-option">{% trans "Option 2)" %}</span>
                             <p>{% trans "Send an invitation to the emails below" %}</p>
                             <div id="alert-invitation-failed" class="alert feedback alert-danger hidden" role="alert">
