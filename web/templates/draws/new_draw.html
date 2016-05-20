@@ -26,7 +26,7 @@
     <script src="{% static 'js/csphotoselector.js' %}"></script>
     <link href="{% static 'css/csphotoselector.css' %}" rel="stylesheet">
     {% if is_shared %}
-        <script src="{% static 'js/shared_draw_creator.js' %}"></script>
+        <script src="{% static 'js/shared_draw_manager.js' %}"></script>
         <link href="{% static 'css/jquery.datetimepicker.css' %}" rel="stylesheet" />
         <script src="{% static 'js/jquery.datetimepicker.min.js' %}"></script>
     {% endif %}
@@ -73,7 +73,7 @@
     });
 
     {% if is_shared %}
-        SharedDrawCreator.setup_breadcrumb();
+        SharedDrawCreator.setup();
         $("#try").click( function() {
             $draw_maneger.drawManager('try_draw');
         });
@@ -197,7 +197,7 @@
                 <p>{% trans "Use any of the methods below to invite people to join and see the results." %}</p>
                 <span class="invite-people-option">{% trans "Option 1)" %}</span>
                 <p>{% trans "Send this link to anyone you wish to invite" %}</p>
-                <input class="url-share text-center" readonly>
+                <input class="url-share text-center" readonly onclick="$(this).select_and_copy();" title="{% trans 'URL copied to clipboard' %}">
                 <span class="invite-people-option">{% trans "Option 2)" %}</span>
                 <p>{% trans "Type their e-mails here to automatically send them an invitation" %}</p>
                 <div id="alert-invitation-failed" class="alert feedback alert-danger hidden" role="alert">
