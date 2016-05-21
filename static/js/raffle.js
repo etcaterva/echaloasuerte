@@ -84,6 +84,7 @@ Raffle.setup_creation = function(is_shared){
     var change_interface = function(){
         var option_selected = $('#id_registration_type').find(":selected").val();
         $('#div_id_participants').toggleClass('hidden', option_selected != 'restricted');
+        $('#div_id_participants input').prop('disabled', option_selected != 'restricted');
         if (is_shared){
             $('#info-facebook-registration').toggleClass('hidden', option_selected != 'facebook');
             $('#div_id_registration_requirement').toggleClass('hidden', option_selected != 'facebook');
