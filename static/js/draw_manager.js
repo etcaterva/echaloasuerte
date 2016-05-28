@@ -567,6 +567,7 @@
             if (Object.keys(this.edited_fields).length > 0) {
                 this.update(
                     callback_done = function (){
+                        var is_shared = that.options.is_shared ? 'shared' : 'private';
                         ga('send', 'event', 'update', that.options.draw_type, is_shared);
                         var $result_headers = $('.ui-accordion-header');
                         $result_headers.each(function(){
