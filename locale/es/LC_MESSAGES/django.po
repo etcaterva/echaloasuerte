@@ -1769,6 +1769,11 @@ msgstr "Introduzca la nueva contraseña"
 msgid "Password reset unsuccessful"
 msgstr "Contraseña cambiada con éxito"
 
+#: web/templates/draws/display_draw.html:380
+#: web/templates/draws/new_draw.html:200
+msgid "URL copied to clipboard"
+msgstr "URL copiada al portapapeles"
+
 #~ msgid "shared raffle"
 #~ msgstr "tirada compartida"
 
