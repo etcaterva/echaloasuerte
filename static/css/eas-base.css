@@ -551,21 +551,6 @@ table.draw-list tr{
     }
 }
 
-a#back-old-version {
-    background-image: url('../img/back_to_old_version/corner_old_version.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    position: absolute;
-    width: 150px;
-    height: 200px;
-    left: 0;
-    top: 0;
-}
-
-a#back-old-version:hover {
-    background-image: url('../img/back_to_old_version/corner_old_version_hover.png');
-}
-
 /* ===================  Edit Profile  =================== */
 #user-settings {
     font-family: helvetica, arial, sans-serif;

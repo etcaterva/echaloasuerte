@@ -221,17 +221,6 @@
                 $('.suggestion-step-final').removeClass('hidden');
             });
 
-            if(location.host.indexOf("pickforme") > -1){
-                var old_site_url = "//2011.pickforme.net";
-            } else {
-                var old_site_url = "//2011.echaloasuerte.com";
-            }
-            var $old_site_link = $('#back-old-version');
-            $old_site_link.attr('href', old_site_url);
-            $old_site_link.on('click', function() {
-                ga('send', 'event', 'link', 'go to old site');
-            });
-
             var user_login = function(credentials, callback_done, callback_fail){
                 var data = JSON.stringify(credentials);
                 $.ajax({
@@ -317,7 +306,6 @@
        }(document, 'script', 'facebook-jssdk'));
     </script>
 
-    <a href="//2011.echaloasuerte.com/" id="back-old-version" class="visible-lg"></a>
 {% block pre-content %}
 {% endblock pre-content %}
 <div id="wrapper" class="container">
