@@ -1,6 +1,7 @@
 """Common settings and globals."""
 
 import sys
+import os
 from os.path import abspath, basename, dirname, join, normpath
 
 from django.utils.translation import ugettext_lazy as _
@@ -235,13 +236,17 @@ ALLOWED_HOSTS = [
 
 LOGIN_URL = "/accounts/login/"
 
-PUSHER_SECRET = u'PUSHER_SECRET_PLACEHOLDER'
+PUSHER_SECRET = os.environ.get("EAS_PUSHER_SECRET", "N/A")
+try:
+    PUSHER_SECRET = PUSHER_SECRET.decode("utf-8")
+except AttributeError:
+    pass
 
 # EMAIL settings
 DEFAULT_FROM_EMAIL = "EchaloASuerte/Choose Random"
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_HOST_USER = "postmaster@chooserandom.com"
-EMAIL_HOST_PASSWORD = 'GMAIL_PASSWORD_PLACEHOLDER'
+EMAIL_HOST_PASSWORD = os.environ.get("EAS_MAIL_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX = "[django][echaloasuerte] "  #for admin mails
