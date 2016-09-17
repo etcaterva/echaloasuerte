@@ -1,4 +1,5 @@
 from echaloasuerte.settings.common import *
+import os
 
 # WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 
@@ -24,7 +25,7 @@ DATABASES = {
 ########## LOGGING CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#logging
 ##########
-BASE_LOG_PATH = join(SITE_ROOT, 'logs/')
+BASE_LOG_PATH = os.environ.get("ECHALOASUERTE_LOGS_PATH", "/var/logs/echaloasuerte/")
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -48,7 +49,6 @@ LOGGING = {
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
-            'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'console': {
@@ -60,7 +60,7 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': BASE_LOG_PATH + 'echaloasuerte_log.txt',
+            'filename': os.path.join(BASE_LOG_PATH, 'echaloasuerte_log.txt'),
             'maxBytes': 1024 * 1024 * 30,  # 30 MB
             'backupCount': 5,
         },
@@ -68,7 +68,7 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': BASE_LOG_PATH + 'echaloasuerte_err.txt',
+            'filename': os.path.join(BASE_LOG_PATH, 'echaloasuerte_err.txt'),
             'maxBytes': 1024 * 1024 * 30,  # 30 MB
             'backupCount': 5,
         },
@@ -76,14 +76,14 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': BASE_LOG_PATH + 'echaloasuerte_debug.txt',
+            'filename': os.path.join(BASE_LOG_PATH, 'echaloasuerte_debug.txt'),
             'maxBytes': 1024 * 1024 * 30,  # 30 MB
             'backupCount': 5,
         },
     },
     'loggers': {
         'django.request': {
-            'handlers': ['console'],
+            'handlers': ['debug_log_file'],
             'level': 'DEBUG',
             'propagate': False,
         },
