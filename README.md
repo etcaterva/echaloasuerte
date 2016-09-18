@@ -26,10 +26,16 @@ automatically deployed to dev
 All domains can be accessed through http and https and are served through
 cloudflare.
 
+
 ## CI builds
-- Travis: [![Travis Master](https://travis-ci.org/etcaterva/EchaloASuerte.svg?branch=master)](https://travis-ci.org/etcaterva/EchaloASuerte)
-- CI: [![Jenkins CI](http://jenkins.etcaterva.com/buildStatus/icon?job=Echaloasuerte-DEV-CI)](http://jenkins.etcaterva.com/job/Echaloasuerte-DEV-CI)
-- CD: [![Jenkins CD](http://jenkins.etcaterva.com/buildStatus/icon?job=Echaloasuerte-DEV-Deploy)](http://jenkins.etcaterva.com/job/Echaloasuerte-DEV-Deploy)
+- Travis (CI & CD): [![Travis Master](https://travis-ci.org/etcaterva/EchaloASuerte.svg?branch=master)](https://travis-ci.org/etcaterva/EchaloASuerte)
+
+Pull Requests targeting `master` branch will trigger the CI with Travis. Once
+the PR is merged, Travis will be triggered again, but this time it will execute
+the CD part of the script.
+
+> **Warning**: PR's created from branches in `etcaterva/EchaloASuerte` will
+  trigger also the CD.
 
 ## Acknowledgements
 * Selenium tests running on [BrowserStack](www.browserstack.com)
