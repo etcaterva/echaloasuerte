@@ -1,4 +1,5 @@
 from echaloasuerte.settings.common import *
+import os
 
 # WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 
@@ -25,6 +26,10 @@ DATABASES = {
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#logging
 ##########
 BASE_LOG_PATH = join(SITE_ROOT, 'logs/')
+try:
+    os.makedirs(BASE_LOG_PATH)
+except OSError as exception:
+    pass
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
