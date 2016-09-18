@@ -37,6 +37,6 @@ after_success:
   # Install Ansible
   - pip install ansible
   # Deploy to Dev
-  - git clone https://github.com/etcaterva/EtCaterva-Ansible.git ansible
+  - git clone https://github.com/etcaterva/deployment.git ansible
   - export ANSIBLE_HOST_KEY_CHECKING=False
   - cd ansible &&  ansible-playbook -i hosts_dev webservers.yml --vault-password-file=../vault-pass --extra-vars "ansible_user=automation"
