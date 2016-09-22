@@ -25,7 +25,7 @@ DATABASES = {
 ########## LOGGING CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#logging
 ##########
-BASE_LOG_PATH = os.environ.get("ECHALOASUERTE_LOGS_PATH", "/var/logs/echaloasuerte/")
+BASE_LOG_PATH = os.environ.get("ECHALOASUERTE_LOGS_PATH", "/var/log/echaloasuerte/")
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
