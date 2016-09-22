@@ -95,7 +95,7 @@ MEDIA_URL = '/media/'
 # Absolute path to the directory static files should be collected to. Don't put
 # anything in this directory yourself; store your static files in apps' static/
 # subdirectories and in STATICFILES_DIRS.
-STATIC_ROOT = '/data/apache/serve/echaloasuerte/static'
+STATIC_ROOT = os.environ.get("EAS_STATIC_ROOT", "/var/www/echaloasuerte/static")
 
 # URL prefix for static files.
 STATIC_URL = '/static/'
