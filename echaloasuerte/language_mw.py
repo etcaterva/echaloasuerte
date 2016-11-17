@@ -1,9 +1,10 @@
 from django.utils import translation
 
 LANGUAGE_DOMAINS = {
-    'es': 'echaloasuerte.com',
-    'en': 'chooserandom.com',
+    'echaloasuerte': 'es',
+    'chooserandom': 'en',
 }
+DEFAULT_LANGUAGE = 'es'
 
 
 class LangInDomainMiddleware(object):
@@ -15,11 +16,11 @@ class LangInDomainMiddleware(object):
     """
 
     def process_request(self, request):
-        for lang in LANGUAGE_DOMAINS.keys():
-            lang_domain = LANGUAGE_DOMAINS[lang]
-            servername = request.META.get('SERVER_NAME')
-            host = request.META.get('HTTP_HOST')
-            if (servername and lang_domain in servername
-                or host and lang_domain in host):
-                translation.activate(lang)
-                request.LANGUAGE_CODE = translation.get_language()
+        host = request.META.get('HTTP_HOST', '')
+        host_domain = [_ for _ in host.split('.') if _ in LANGUAGE_DOMAINS]
+        if host_domain:
+            language = LANGUAGE_DOMAINS[host_domain[0]]
+        else:
+            language = DEFAULT_LANGUAGE
+        translation.activate(language)
+        request.LANGUAGE_CODE = translation.get_language()
