@@ -129,7 +129,7 @@ def display_draw(request, draw_id):
         generated_results = False
         for result in bom_draw.results:
             if ("publication_datetime" in result and "items" not in result
-                    and now > result["publication_datetime"]):
+                    and now.replace(tzinfo=pytz.utc) > result["publication_datetime"]):
                 result["items"] = bom_draw.generate_result()
                 generated_results = True
         if generated_results:
