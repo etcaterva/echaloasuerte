@@ -47,7 +47,7 @@ class DrawResource(resources.Resource):
     HIDDEN_ATTRIBUTES = ['draw_type', '_id']
     FORBIDDEN_ATTRIBUTES = ['results', 'owner', '_id', 'pk', 'creation_time',
                             'last_updated_time', 'audit']
-    FROZEN_ATTRIBUTES = ['type']
+    FROZEN_ATTRIBUTES = ['type', 'participants']
 
     class Meta:
         resource_name = 'draw'
