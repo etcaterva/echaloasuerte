@@ -28,7 +28,7 @@ cloudflare.
 
 
 ## CI builds
-- Travis (CI & CD): [![Travis Master](https://travis-ci.org/etcaterva/EchaloASuerte.svg?branch=master)](https://travis-ci.org/etcaterva/EchaloASuerte)
+- Travis (CI & CD): [![Travis Master](https://travis-ci.org/etcaterva/echaloasuerte.svg?branch=master)](https://travis-ci.org/etcaterva/echaloasuerte)
 
 Pull Requests targeting `master` branch will trigger the CI with Travis. Once
 the PR is merged, Travis will be triggered again, but this time it will execute
