@@ -7,12 +7,13 @@ services:
 python:
   - "2.7"
   - "3.4"
+# before_install:
+# for func tests only
+#  - wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
+#  - tar -xjf phantomjs-2.0.0-ubuntu-12.04.tar.bz2
+#  - sudo rm -rf /usr/local/phantomjs/bin/phantomjs
+#  - sudo mv phantomjs /usr/local/phantomjs/bin/phantomjs
 # command to install dependencies
-before_install:
-  - wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
-  - tar -xjf phantomjs-2.0.0-ubuntu-12.04.tar.bz2
-  - sudo rm -rf /usr/local/phantomjs/bin/phantomjs
-  - sudo mv phantomjs /usr/local/phantomjs/bin/phantomjs
 install:
   - "pip install -r requirements.txt"
   - "pip install selenium pyvirtualdisplay coverage"
