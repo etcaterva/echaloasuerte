@@ -421,9 +421,6 @@
 
             this.create_draw(
                 callback_done = function( data, textStatus, xhr ){
-                    // Register the event in Google Analytics
-                    ga('send', 'event', 'create_draw', that.options.draw_type, 'shared');
-
                     // Get the url to the draw
                     var url_draw_api = xhr.getResponseHeader('Location');
                     var url_draw_web = url_draw_api.replace(/api\/v[\d\.]+\//g,'');
@@ -440,6 +437,16 @@
                     // Set the link of the "Go to the draw" button
                     $('#go-to-draw').attr('href', url_draw_web);
                     SharedDrawCreator.show_invite_step();
+
+                    var draw_id;
+                    var url_id_match = url_draw_api.match(/(?:.*)v1\/draw\/(.*)\//);
+                    if (url_id_match.length > 1) {
+                        draw_id = url_id_match[1];
+                    }
+
+                    // Register the event in Google Analytics
+                    ga('send', 'event', 'create_draw', that.options.draw_type, 'shared');
+                    ga('send', 'event', 'shared_draw_create', that.options.draw_type, draw_id);
                 }
             );
         },
@@ -640,6 +647,7 @@
          * Redirect to the page to create a shared draw using the current draw configuration
          */
         normal_to_shared: function(){
+            ga('send', 'event', 'shared_draw', 'create_attempt', 'normal');
             this.$element.attr('action', this.options.url_shared_draw);
             this.$element.attr('method', 'get');
             this.$element.find("[name='csrfmiddlewaretoken']").remove();  // No need to send the CRSF token

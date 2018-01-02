@@ -166,6 +166,7 @@ SharedDraw.setup_settings_panel = function () {
     Unlock the fields, hide toss button and present buttons to save changes and cancel the edition
     */
     $('a#edit-draw-confirmation').click(function() {
+        ga('send', 'event', 'edit_public_draw', 'started', '');
         SharedDraw.lock_fields(false);
         // Hide the toss button
         $('#shared-draw-toss, #schedule-toss-button').addClass('hide');
@@ -185,6 +186,7 @@ SharedDraw.setup_settings_panel = function () {
     */
     $('a#edit-draw-cancel').click(function() {
         // Don't use reload to avoid unintentional form submissions
+        ga('send', 'event', 'edit_public_draw', 'cancelled', '');
         window.location.href = String( window.location.href ).replace( "/#", "" );
     });
 
@@ -193,6 +195,7 @@ SharedDraw.setup_settings_panel = function () {
     If the has edited a shared draw so the configuration is submitted to the server
     */
     $('#edit-draw-save').click(function() {
+        ga('send', 'event', 'edit_public_draw', 'saved', '');
         SharedDraw.options.draw_manager.drawManager('update_shared_draw');
     });
 

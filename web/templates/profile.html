@@ -57,8 +57,8 @@
     $('#my-draws').on( 'click', 'tr', function () {
         if(!($(this).attr('alt')))
             return true;
-
-        window.location = $(this).attr('alt');
+        ga('send', 'event', 'draw_history', 'go_to_draw', '');
+        setTimeout(function(){window.location = $(this).attr('alt');}, 1000);
     } );
 
     // ------------- Edit profile table -----------------------
