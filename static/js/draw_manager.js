@@ -592,6 +592,7 @@
          * ONLY USED IN SHARED DRAWS
          */
         update_shared_draw: function(){
+            var that = this;
             if (Object.keys(this.edited_fields).length > 0) {
                 this.update(
                     callback_done = function (){
