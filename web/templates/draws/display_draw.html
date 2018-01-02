@@ -74,7 +74,7 @@
     {% endif %}
 
     $('#create-shared-from-private').click(function(){
-        ga('send', 'event', 'link', 'private to shared draw');
+        ga('send', 'event', 'shared_draw', 'create_attempt', 'from_private');
     });
 
 
@@ -187,8 +187,17 @@
             return false;
         });
     {% endif %}
-
-
+    {% if bom.is_shared %}
+      {% if not bom.owner%}
+         ga('send', 'event', 'shared_draw_display', 'no_owner', '{{ bom.pk }}');
+      {% else %}
+        {% if bom.owner == user.pk %}
+           ga('send', 'event', 'shared_draw_display', 'owner', '{{ bom.pk }}');
+        {% else %}
+           ga('send', 'event', 'shared_draw_display', 'guest', '{{ bom.pk }}');
+        {% endif %}
+      {% endif %}
+    {% endif %}
 {% endblock extra_jq_ready %}
 
 {% block fb_async %}
