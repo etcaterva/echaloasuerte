@@ -603,7 +603,7 @@
             if (Object.keys(this.edited_fields).length > 0) {
                 this.update(
                     callback_done = function (){
-                        ga('send', 'event', 'update', that.options.draw_type, is_shared);
+                        ga('send', 'event', 'update', that.options.draw_type, 'shared');
 
                         // Don't use reload to avoid unintentional form submissions
                         window.location.href = String( window.location.href ).replace( "/#", "" );
