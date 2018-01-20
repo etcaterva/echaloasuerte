@@ -55,10 +55,11 @@
     });
 
     $('#my-draws').on( 'click', 'tr', function () {
+        var that = this;
         if(!($(this).attr('alt')))
             return true;
         ga('send', 'event', 'draw_history', 'go_to_draw', '');
-        setTimeout(function(){window.location = $(this).attr('alt');}, 1000);
+        setTimeout(function(){window.location = $(that).attr('alt');}, 1000);
     } );
 
     // ------------- Edit profile table -----------------------
