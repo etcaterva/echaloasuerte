@@ -18,6 +18,7 @@
     {% endif %}
 {% endblock description %}
 {% block extra_head %}
+    <meta name="robots" content="noindex">
     {# Open Graph Markup: https://developers.facebook.com/docs/sharing/webmasters#markup #}
     <meta property="og:url"           content="{{ bom|permalink:request }}" />
 	<meta property="og:type"          content="website" />
