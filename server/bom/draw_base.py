@@ -132,12 +132,9 @@ class BaseDraw(object):
     def pk(self):
         return str(self._id)
 
-    def check_read_access(self, user):
+    def check_read_access(self, _):
         """Checks for read access"""
-        if self.owner:
-            return self.owner == user.pk or self.is_shared
-        else:
-            return True
+        return True
 
     def check_write_access(self, user):
         """Checks whether user can write"""
