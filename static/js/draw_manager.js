@@ -180,17 +180,6 @@
                 heightStyle: "content"
             });
 
-
-            if (this.options.is_shared){
-                // Initialize input to submit emails as a tokenFields
-                $('input#invite-emails').tokenfield({
-                    createTokensOnBlur:true,
-                    delimiter: [',',' '],
-                    inputType: 'email',
-                    minWidth: 150
-                });
-            }
-
             /**
             * Store callback functions to render results dynamically
             * render: Specify how to render the result
@@ -574,8 +563,7 @@
             if (Object.keys(this.edited_fields).length > 0) {
                 this.update(
                     callback_done = function (){
-                        var is_shared = that.options.is_shared ? 'shared' : 'private';
-                        ga('send', 'event', 'update', that.options.draw_type, is_shared);
+                        ga('send', 'event', 'update', that.options.draw_type, 'private');
                         var $result_headers = $('.ui-accordion-header');
                         $result_headers.each(function(){
                             var $this = $(this);
