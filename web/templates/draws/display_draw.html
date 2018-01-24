@@ -120,6 +120,7 @@
     {% endif %}
 
     var $draw_maneger = $('#draw-form').drawManager({
+        is_shared: "{{ bom.is_shared }}",
         url_toss: "{% url 'api_draw_toss' api_name="v1" pk=bom.pk %}",
         draw_type: "{{ bom.draw_type }}",
         url_update: "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
