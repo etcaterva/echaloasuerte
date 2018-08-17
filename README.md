@@ -34,9 +34,6 @@ Pull Requests targeting `master` branch will trigger the CI with Travis. Once
 the PR is merged, Travis will be triggered again, but this time it will execute
 the CD part of the script.
 
-> **Warning**: PR's created from branches in `etcaterva/EchaloASuerte` will
-  trigger also the CD.
-
 ## Acknowledgements
 * Selenium tests running on [BrowserStack](www.browserstack.com)
 
