@@ -297,13 +297,13 @@
         {% endblock fb_async %}
       };
 
-      (function(d, s, id) {
+      (function(d, s, id){
          var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) return;
+         if (d.getElementById(id)) {return;}
          js = d.createElement(s); js.id = id;
-         js.src = 'https://connect.facebook.net/en_US/sdk.js';
+         js.src = "//connect.facebook.net/en_US/sdk.js";
          fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
+       }(document, 'script', 'facebook-jssdk'));
     </script>
 
 {% block pre-content %}
@@ -452,6 +452,7 @@
                                                   data-use-continue-as="false"
                                                 />
                                                 </div>
+                                                <script>FB.XFBML.parse();</script>
                                                 <li class="nav-divider"></li>
                                                 <div class="register-now text-center">
                                                     {% trans "Don't have an account?"%}<br>
@@ -613,7 +614,6 @@
 
   ga('create', '{{ GOOGLE_ANALYTICS_PROPERTY_ID }}', 'auto');
   ga('send', 'pageview');
-
 </script>
 </body>
 </html>
