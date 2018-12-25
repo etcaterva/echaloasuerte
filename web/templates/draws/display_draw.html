@@ -27,7 +27,6 @@
 	<meta property="og:image"         content="{% static 'img/icon192x192.png' %}" />
     <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
     <script src="{% static 'js/autoGrowArea.js' %}"></script>
-    <script src="{% static 'js/favourites.js' %}"></script>
     <script src="{% static 'js/moment.js' %}"></script>
     <script src="//js.pusher.com/3.0/pusher.min.js"></script>
     <!-- Bootstrap TokenField -->
@@ -79,16 +78,6 @@
     });
 
 
-    $('#fav-button').favourites({
-        "url_add": "{% url 'api_dispatch_list' api_name="v1" resource_name="favourite" %}",
-        "url_remove": "{% url 'api_dispatch_detail' api_name="v1" resource_name="favourite" pk=bom.pk %}",
-        "user_authenticated": {{ user.is_authenticated|yesno:"true,false" }},
-        "draw_id": "{{ bom.pk }}",
-        "path_img_star": "{% static "img/star.png" %}",
-        "path_img_star_empty": "{% static "img/star-o.png" %}",
-        "msg_regsiter": "{% trans "You need an account to save your favourite draws" %}",
-        "msg_toss": "{% trans "Click on the 'Toss' button to try the draw first" %}"
-    });
     {% if bom.is_shared %}
 
         {% if user.is_authenticated %}
@@ -232,20 +221,6 @@
                     </a>
                 {% endif %}
             {% else %}
-                    <a id="fav-button"
-                    {% if bom.pk in user.favourites %}
-                    data-active="y"
-                    {% else %}
-                    data-active="n"
-                    {% endif %}
-                    href="#" data-id="{{bom.pk}}" title="{%trans 'Add draw to favourites'%}" class="draw-option-icon eas-tooltip add-favourites col-sm-push-8 text-center ">
-                        <span id="fav-loading" class="fa fa-spinner fa-pulse fa-2x hide"></span>
-                    {% if bom.pk in user.favourites %}
-                        <img src="{% static "img/star.png" %}" alt="{% trans "Remove from favourites" %}"/>
-                    {% else %}
-                        <img src="{% static "img/star-o.png" %}" alt="{% trans "Add to favourites" %}"/>
-                    {% endif %}
-                    </a>
                     <a id="create-shared-from-private" href="{% url 'create_shared_draw' draw_type=draw.NAME_IN_URL %}" class="draw-option-icon eas-tooltip" title="{% trans 'Create a shared one' %}">
                         <span class="fa fa-share-alt fa-2x"></span>
                     </a>
@@ -467,10 +442,8 @@
                     <h4 class="modal-title" id="myModalLabel">{% trans "Ops, who are you?" %}</h4>
                 </div>
                 <div class="modal-body">
-                    {% trans "In order to save your favourite draws and used them later you need to log in. Check out the list of benefits of using an account!" %}
                     <ul>
                         <li>{% trans "Only you can manage the shared draws you create (edit them, invite users, enable/disable the chat...)" %}</li>
-                        <li>{% trans "Store your favourite draws for faster access" %}</li>
                         <li>{% trans "Access your draw history at any moment" %}</li>
                     </ul>
                     <div class="text-center" >

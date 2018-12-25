@@ -15,16 +15,6 @@ class User(object):
     """
 
     @property
-    def favourites_list(self):
-        try:
-            rd = server.mongodb.driver.MongoDriver.instance().retrieve_draw
-            return [rd(f) for f in self.favourites]
-        except Exception as e:
-            logger.error(
-                "Error when retrieving the list of favourites for user {0}. {1}".format(self.pk, e))
-            return []
-
-    @property
     def pk(self):
         return str(self._id)
 
@@ -54,9 +44,6 @@ class User(object):
 
         self.password = password
         """encripted password of the user"""
-
-        self.favourites = favourites if favourites is not None else []
-        """List of favourites of a user"""
 
         if alias:
             self.alias = alias

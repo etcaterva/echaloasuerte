@@ -410,27 +410,6 @@ div.alert {
     margin-top: 10px;
 }
 
-/* ===================  FAVOURITES  =================== */
-    #favourites-panel {
-        margin-bottom: 10px;
-        border-bottom: 1px #E7E7E7 solid;
-        background-color: #f9f9f9;
-        background-color: rgba(255, 255, 255, 0.46);
-    }
-
-    #favourites-panel a{
-        color: #666666;
-    }
-
-    #favourites-panel a:hover{
-        color: #3c703c;
-    }
-
-    #close-favourites {
-        padding-top: 15px;
-        cursor: pointer;
-    }
-
 /* ===================  ABOUT PAGE  =================== */
 .team-member {
     margin-bottom: 10px;
