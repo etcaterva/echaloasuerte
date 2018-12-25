@@ -53,8 +53,6 @@ urlpatterns += patterns(
     url(r'^draw/(?P<draw_id>[0-9a-g]+)/update/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^draw/try/(?P<draw_type>[^/]+)/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/update_profile/$', RedirectView.as_view(url="/", permanent=True)),
-    url(r'^ws/favourites/remove/$', RedirectView.as_view(url="/", permanent=True)),
-    url(r'^ws/favourites/add/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^ws/check_access_to_draw/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^es/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^en/$', RedirectView.as_view(url="/", permanent=True)),

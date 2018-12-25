@@ -25,7 +25,7 @@ class DrawResource(resources.Resource):
     GET on the resource returns all draws you are linked with. Either as a owner
     or as an user.
     """
-    id = fields.CharField(attribute='_id', help_text="id of the favourite draw")
+    id = fields.CharField(attribute='_id', help_text="id of the draw")
     type = fields.CharField(attribute='draw_type', help_text="type of the draw")
     title = fields.CharField(attribute='title',
                              help_text="Title of the draw",
