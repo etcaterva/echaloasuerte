@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block title %} Spinner | {% endblock title %}
+{% block extra_head %}
+    <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
+    <script src="{% static 'js/autoGrowArea.js' %}"></script>
+    <script src="{% static 'js/moment.js' %}"></script>
+    <!-- Bootstrap TokenField -->
+    <script src="{% static 'js/bootstrap-tokenfield.js' %}"></script>
+    <link href="{% static 'css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/jquery.bracket.css' %}" rel="stylesheet" />
+    <script src="{% static 'js/jquery.bracket.js' %}"></script>
+    <script src="{% static 'js/spinable.js' %}"></script>
+    <script src="{% static 'js/draw_manager.js' %}"></script>
+    <script src="{% static 'js/csphotoselector.js' %}"></script>
+    <link href="{% static 'css/csphotoselector.css' %}" rel="stylesheet">
+{% endblock extra_head %}
+{% block extra_jq_ready %}
+    moment.locale('{%if "echaloasuerte" in request.get_host%}es{%else%}en{%endif%}');
+    var $draw_maneger = $('#draw-form').drawManager({
+        draw_type: "spinner",
+        default_title: "Spin an arrow",
+        is_shared: false,
+        url_try: "{% url 'api_draw_try' api_name="v1" %}",
+        url_create: "{% url 'api_dispatch_list' api_name="v1" resource_name="draw" %}",
+        url_shared_draw: "{% url 'create_shared_draw' draw_type="spinner" %}",
+        msg_result: "{% trans "Result" %}",
+        msg_generated_on: "{% trans "generated" %}",
+        translations: {
+            head: "{% trans 'head' %}",
+            tail: "{% trans 'tail' %}",
+        }
+    });
+    $("#create-and-toss").click( function() {
+        $draw_maneger.drawManager('create_and_toss');
+    });
+{% endblock extra_jq_ready %}
+{% block content %}
+    <form id="draw-form" class="clearfix" method="post">
+        <!-- Draw Heading -->
+        <div class="clearfix draw-heading step-configure">
+            <a href="{% url 'index' %}" class="back-arrow col-xs-2 col-sm-2 text-center">
+                <img src="{% static "img/back_arrow.png" %}" alt="{% trans "Back" %}"/>
+            </a>
+            <div id="draw-title-container" class="col-xs-12 col-sm-8 text-center">
+                <textarea name="title" class="form-control autogrow draw-title-area text-center" rows="1">{%  trans "Spin an arrow" %}</textarea>
+            </div>
+        </div>
+        <!-- End Draw Heading -->
+        {# Configure the fields of a draw (both private and shared) #}
+        <div class="step-configure col-sm-8 col-sm-offset-2">
+            <!-- Errors -->
+            <div id="general-errors" class="alert alert-danger hidden" role="alert">
+                <span class="fa fa-exclamation-triangle " aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                <span class="error-message"></span>
+            </div>
+            <!-- Input Form -->
+            <div class="text-center">
+                <a href="#">
+                    <img type="image" id="img-spinner" src="{% static 'img/draw_icons/spinner.svg' %}" width="70%" name="spinner"
+                         onclick="$('#create-and-toss,#normal-draw-toss, #shared-draw-toss, #try').click();" />
+                </a><p>{% trans "Tap the spinner to spin it" %}</p>
+            </div>
+            <!-- End Input Form -->
+        </div>
+
+        <div class="col-xs-12 text-center">
+            {# Button to toss the draw in private draws #}
+            <div class="row ">
+                <button type="button" id="create-and-toss" class="btn btn-success submit-lockable">{% trans 'Toss!' %}</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

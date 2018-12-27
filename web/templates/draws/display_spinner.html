@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load eas_humanize %}
+{% load is_future %}
+{% load draw_tags %}
+{% block title %}{{ bom.title }} | {% endblock title %}
+{% block description %}
+    {% if bom.description %}
+        {{ bom.description }}
+    {% else %}
+        {% if "echaloasuerte" in request.get_host %}
+            Deja que el azar tome una decision por ti. Olvídate de los papelitos, números, listas, rifas, etc... Esta es tu página, y cada uno desde su ordenador!
+        {% else %}
+            Not sure about a choice? Choose random! Heads or tails, lottery, etc...
+        {% endif %}
+    {% endif %}
+{% endblock description %}
+{% block extra_head %}
+    <meta name="robots" content="noindex">
+    {# Open Graph Markup: https://developers.facebook.com/docs/sharing/webmasters#markup #}
+    <meta property="og:url"           content="{{ bom|permalink:request }}" />
+	<meta property="og:type"          content="website" />
+	<meta property="og:title"         content="{{ bom.title }}" />
+	<meta property="og:description"   content="{{ bom.description }}" />
+	<meta property="og:image"         content="{% static 'img/icon192x192.png' %}" />
+    <link href="{% static 'css/eas-draw-base.css' %}" rel="stylesheet">
+    <script src="{% static 'js/autoGrowArea.js' %}"></script>
+    <script src="{% static 'js/moment.js' %}"></script>
+    <!-- Bootstrap TokenField -->
+    <script src="{% static 'js/bootstrap-tokenfield.js' %}"></script>
+    <link href="{% static 'css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/jquery.bracket.css' %}" rel="stylesheet" />
+    <script src="{% static 'js/jquery.bracket.js' %}"></script>
+    <script src="{% static 'js/spinable.js' %}"></script>
+    <script src="{% static 'js/draw_manager.js' %}"></script>
+    <script src="{% static 'js/csphotoselector.js' %}"></script>
+    <link href="{% static 'css/csphotoselector.css' %}" rel="stylesheet">
+{% endblock extra_head %}
+{% block extra_jq_ready %}
+    moment.locale('{%if "echaloasuerte" in request.get_host%}es{%else%}en{%endif%}');
+    spin($('#img-spinner'), {{bom.results.0.items.0}});
+    var $draw_maneger = $('#draw-form').drawManager({
+        is_shared: false,
+        url_toss: "{% url 'api_draw_toss' api_name="v1" pk=bom.pk %}",
+        draw_type: "spinner",
+        url_update: "{% url 'api_dispatch_detail' api_name="v1" resource_name="draw" pk=bom.pk %}",
+        url_schedule_toss: "{% url 'api_draw_schedule' api_name="v1" pk=bom.pk schedule="ts_placeholder"%}",
+        msg_result: "{% trans "Result" %}",
+        msg_generated_on: "{% trans "generated" %}",
+        msg_audit: "{% trans "Warning! The draw was modified after the generation of this result" %}",
+        spinner_image_url: "{% static 'img/draw_icons/spinner.svg' %}",
+    });
+    $("#normal-draw-toss").click( function() {
+        $draw_maneger.drawManager('check_changes_and_toss');
+        return false;
+    });
+{% endblock extra_jq_ready %}
+
+{% block content %}
+    <form class="clearfix" method="post" id="draw-form">
+        <!-- Draw Heading -->
+        <div class="clearfix draw-heading">
+            <a href="{% url 'index' %}" class="draw-option-icon back-arrow col-xs-2 col-sm-2 text-center">
+                <img src="{% static "img/back_arrow.png" %}" alt="{% trans "back" %}"/>
+            </a>
+        <div id="draw-options" class="col-xs-4 col-xs-push-6 col-sm-2 col-sm-push-8">
+            </div>
+            <div id="draw-title-container" class="col-xs-12 col-sm-8 col-sm-pull-2 text-center">
+                <h1 class="form-control protected draw-title-area text-center">{{ bom.title }}</h1>
+            </div>
+            {% if bom.description %}
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
+                        <textarea id="draw-description-area" name="description" class="protected">{{bom.description}}</textarea>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <!-- End Draw Heading -->
+        <div class="col-sm-8 col-sm-offset-2">
+            <div id="general-errors" class="alert alert-danger hidden" role="alert">
+                <span class="fa fa-exclamation-triangle " aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                <span class="error-message"></span>
+            </div>
+            <!-- Display Form -->
+            <div class="text-center">
+            <a href="#">
+                <img type="image" id="img-spinner" src="{% static 'img/draw_icons/spinner.svg' %}" width="70%" name="spinner"
+                onclick="$('#create-and-toss,#normal-draw-toss, #shared-draw-toss, #try').click();" />
+                </a><p>{% trans "Tap the spinner to spin it" %}</p>
+            </div>
+            <div class="col-xs-12 text-center">
+                <!-- Button to toss -->
+                <div class="row btn-row">
+                    <button type="button" id="normal-draw-toss" class="btn btn-success submit-lockable" autocomplete="off">{% trans 'Toss' %}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- End Input Form -->
+
+    <!-- Results -->
+    <div id="results" class="col-sm-8 col-sm-offset-2">
+        <div class="row text-center accordion">
+            {% for result in bom.results reversed %}
+            {% with result.items as results%}
+                {% if results %}
+                    <p class="h3">
+                        {%trans 'Result' %}{{results|length|pluralize}}
+                        {% if result.publication_datetime and not result.publication_datetime|is_future %}
+                        <small class="result-timestamp">
+                            <span class="hidden-xs">{%trans ' published '%}</span>
+                            <span class="relative-time" data-value="{{result.publication_datetime|date:"c"}}">{{result.publication_datetime|naturaltime}}</span>
+                        </small>
+                        {%else%}
+                        <small class="result-timestamp">
+                            <span class="hidden-xs">{%trans ' generated '%}</span>
+                            <span class="relative-time" data-value="{{result.datetime|date:"c"}}">{{result.datetime|naturaltime}}</span>
+                        </small>
+                        {%endif%}
+                        {% if bom.audit and bom.audit.0 and bom.audit.0.datetime > result.datetime %}
+                        <i class="fa fa-exclamation-triangle eas-tooltip" title="Warning! The draw was modified after the generation of this result."></i>
+                        {% endif %}
+                    </p>
+                    <div class="result">
+                        <img src="{% static 'img/draw_icons/spinner.svg'%}" style="transform: rotate({{result.items.0}}deg);" width="30%" >
+                    </div>
+                {% endif %}
+            {% endwith %}
+            {% endfor %}
+        </div>
+    </div>
+    <!-- End Results -->
+{% endblock content %}

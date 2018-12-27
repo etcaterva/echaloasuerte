@@ -101,9 +101,10 @@ def create_draw(request, draw_type, is_shared):
 
     Servers the page to create a draw
     """
+    if draw_type == 'spinner':
+        return render(request, 'draws/create_spinner.html', {})
 
     is_shared = is_shared or is_shared == 'True'
-
     LOG.debug("Serving view to create a draw: {0}".format(draw_type))
     try:
         initial = request.GET.copy()
@@ -124,6 +125,9 @@ def display_draw(request, draw_id):
     Given a draw id, retrieves it and returns the data required to display it
     """
     bom_draw = MONGO.retrieve_draw(draw_id)
+    if bom_draw.draw_type == 'spinner':
+        return render(request, "draws/display_spinner.html", {"bom": bom_draw})
+
     now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
     if bom_draw.check_read_access(request.user):
         generated_results = False
