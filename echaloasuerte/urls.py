@@ -57,4 +57,5 @@ urlpatterns += patterns(
     url(r'^es/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^en/$', RedirectView.as_view(url="/", permanent=True)),
     url(r'^draw/new/(?P<draw_type>[^/]+)/public/$', RedirectView.as_view(url="/", permanent=True)),
+    url(r'^join_draw.html$', RedirectView.as_view(url="/", permanent=True)),
 )

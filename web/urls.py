@@ -27,7 +27,6 @@ urlpatterns += patterns(
     url(r'^accounts/reset_success/$', TemplateView.as_view(template_name='reset_success.html'), name='reset_success'),
     url(r'^accounts/login/$', TemplateView.as_view(template_name='login.html'), name='login'),
     url(r'^accounts/profile/$', views.profile, name='profile'),
-    url(r'^join_draw.html$', views.join_draw, name="join_shared_draw"),
     url(r'^pusher/auth$', views.pusher_authenticate, name="pusher_auth"),
     url(r'^service\-worker\.js$', TemplateView.as_view(template_name='sw.js', content_type='application/javascript'))
 )

@@ -50,14 +50,6 @@ def profile(request):
     return render(request, 'profile.html', context)
 
 
-@time_it
-def join_draw(request):
-    """view to show the list of draws a user can join"""
-    shared_draws = MONGO.get_draws_with_filter({"is_shared": True})
-    context = {'shared_draws': shared_draws}
-    return render(request, 'join_draw.html', context)
-
-
 # stores pairs of sentences and image url under static/img/sentences/
 SENTENCES = (
     (_("10 seconds, which wire should you cut?"), "dinamite.png"),
