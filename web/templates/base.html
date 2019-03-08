@@ -63,6 +63,18 @@
       <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+    <!-- Hotjar -->
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:1051921,hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+
     {% block extra_head %}{% endblock extra_head %}
     <script>
         {% block extra_js %}{% endblock extra_js %}
@@ -510,20 +522,6 @@
 <!-- end container -->
 <div id="column-left" class="lateral-column">
     {% block left_column %}
-        <div id="social-box">
-            <div class="fb-like" data-href="https://www.facebook.com/EchaloASuerte-202874843092116/" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
-        </div>
-        <div id="suggestion-box">
-            <a data-toggle="modal" href="#suggestion-box-panel">
-                <div id="suggestion-box-text" class="text-center">
-                    <p>{% trans "Do you have any suggestion?" %}</p>
-                    <span>Tell us!</span>
-                </div>
-            </a>
-            <div id="suggestion-box-icon">
-                <img src="{% static 'img/suggestion_box.png' %}" alt="{% trans 'Suggestion box' %}"/>
-            </div>
-        </div>
     {% endblock left_column %}
 </div>
 
