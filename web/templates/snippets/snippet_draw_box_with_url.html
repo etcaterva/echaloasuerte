@@ -1,0 +1,22 @@
+{% load staticfiles %}
+{% load i18n %}
+
+{% comment %}
+    Parameters received:
+        - draw_type
+        - url
+        - draw_icon
+        - title
+        - help
+{% endcomment %}
+
+<a class="draw-link" href="javascript:void(0);"
+   data-url-normal="{{ url }}"
+   data-url-shared="{{ url }}/public"
+    >
+    <div id="{{ draw_type }}-draw" class="draw-box">
+        <img src="{% static draw_icon %}" alt="{{ title }}"/>
+        <div class="draw-box-title text-center">{{ title }}</div>
+        <span class="fa fa-question visible-lg eas-tooltip" title="{{ help }}"></span>
+    </div>
+</a>
