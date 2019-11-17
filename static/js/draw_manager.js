@@ -180,6 +180,11 @@
                 heightStyle: "content"
             });
 
+            if (that.options.draw_type === 'raffle'){
+                mixpanel.track("Page Loaded - Raffle (old)", {
+                    test_version: getCookie('raffle_split_test_version')
+                });
+            }
             /**
             * Store callback functions to render results dynamically
             * render: Specify how to render the result
@@ -436,6 +441,14 @@
                     // Register the event in Google Analytics
                     ga('send', 'event', 'create_draw', that.options.draw_type, 'shared');
                     ga('send', 'event', 'shared_draw_create', that.options.draw_type, draw_id);
+                    if (that.options.draw_type === 'raffle'){
+                        var data = that.$element.serializeForm([]);
+                        mixpanel.track("Publish - Raffle (old)",{
+                            raffle_type: data && data.registration_type,
+                            test_version: getCookie('raffle_split_test_version')
+                        });
+                    }
+
                 }
             );
         },
@@ -455,6 +468,13 @@
                     // Register the event in Google Analytics
                     ga('send', 'event', 'create_draw', that.options.draw_type, 'private');
                     ga('send', 'event', 'toss', that.options.draw_type, 'private');
+                    if (that.options.draw_type === 'raffle'){
+                        var data = that.$element.serializeForm([]);
+                        mixpanel.track("Toss - Raffle (old)", {
+                            raffle_type: data && data.registration_type,
+                            test_version: getCookie('raffle_split_test_version')
+                        });
+                    }
 
                     // Get the url to the draw
                     var url_draw_api = xhr.getResponseHeader('Location');
