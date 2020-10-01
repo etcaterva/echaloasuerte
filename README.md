@@ -1,3 +1,4 @@
+Logr - An Amazing Project
 ![EchaloASuerte](https://raw.githubusercontent.com/etcaterva/EchaloASuerte/master/static/img/brand/brand_es.png) / ![ChooseRandom](https://raw.githubusercontent.com/etcaterva/EchaloASuerte/master/static/img/brand/brand_en.png)
 =============
 Echaloasuerte/ChooseRandom is a simple website that allows people to take
