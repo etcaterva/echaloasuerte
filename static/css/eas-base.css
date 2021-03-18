@@ -1055,3 +1055,12 @@ button.disabled {
 #registration-success #subtitle {
     margin-bottom: 20px;
 }
+
+#help-shared-draw,
+#normal-to-shared,
+#create-shared-from-private,
+.nav a.login-option,
+.navbar-toggle
+ {
+    display: none;
+}
